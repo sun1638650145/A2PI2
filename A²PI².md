@@ -342,7 +342,32 @@ model.summary()
 
 ### 5.7.nn
 
-####5.7.1.lrn()
+#### 5.7.1.avg_pool()
+
+均值池化层
+
+```python
+import tensorflow as tf
+tf.nn.avg_pool(value,# 输入张量
+               ksize,# 整数，池化核数量
+               strides,# 整数、或者列表或者元组，滑动步长
+               padding,# 'SAME''VALID'，是否使用全零填充
+               data_format="NHWC",# 数据格式，默认"NHWC"
+               name)# 名称
+```
+
+#### 5.7.2.dropout()
+
+在训练阶段按照比例随机丢弃神经元
+
+```python
+import tensorflow as tf 
+tf.nn.dropout(x,# 输入张量
+              keep_prob,# 保留概率
+							name)# 整数
+```
+
+####5.7.3.lrn()
 
 局部响应归一化层(Local Response Normalization)
 $$
@@ -362,7 +387,7 @@ tf.nn.lrn(input,# 输入张量
           name)# 名称
 ```
 
-#### 5.7.2.max_pool()
+#### 5.7.4.max_pool()
 
 最大池化层
 
@@ -374,6 +399,15 @@ tf.nn.max_pool(value,# 输入张量
                padding,# 'SAME''VALID'，是否使用全零填充
                data_format="NHWC",# 数据格式，默认"NHWC"
                name)# 名称
+```
+
+#### 5.7.5.softmax()
+
+softmax激活函数
+
+```python
+import tensorflow as tf
+tf.nn.softmax(logits)# 输入张量（非空）
 ```
 
 ### 5.8.placeholder()
@@ -569,6 +603,15 @@ saver = tf.train.Saver()
 ```python
 saver.restore(sess,# 会话，eager模式为None
               save_path)# 检查点文件的路径
+```
+
+### 5.14.variable_scope()
+
+用于定义变量操作的上下文管理器
+
+``` python
+import tensorflow as tf
+with tf.variable_scope(name_or_scope):# 字符串，作用域
 ```
 
 ## 6.tensorflow.js@0.x
