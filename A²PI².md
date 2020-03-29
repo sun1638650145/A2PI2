@@ -393,7 +393,7 @@ model.summary()
 
 ## 2.8.optimizers
 
-###2.8.1.Adam()
+### 2.8.1.Adam()
 
 Adam优化器
 
@@ -700,9 +700,9 @@ tensor = tf.import_graph_def(graph_def,# graph_def实例
                      				 return_elements)# 字符串列表，输出张量的名称
 ```
 
-## 5.10.nn
+## 5.9.nn
 
-### 5.10.1.avg_pool()
+### 5.9.1.avg_pool()
 
 均值池化层
 
@@ -716,7 +716,7 @@ tf.nn.avg_pool(value,# 输入张量
                name)# 名称
 ```
 
-### 5.10.2.dropout()
+### 5.9.2.dropout()
 
 在训练阶段按照比例随机丢弃神经元
 
@@ -724,10 +724,10 @@ tf.nn.avg_pool(value,# 输入张量
 import tensorflow as tf 
 tf.nn.dropout(x,# 输入张量
               keep_prob,# 保留概率
-							name)# 整数
+	      name)# 整数
 ```
 
-### 5.10.3.lrn()
+### 5.9.3.lrn()
 
 局部响应归一化层(Local Response Normalization)
 $$
@@ -747,7 +747,7 @@ tf.nn.lrn(input,# 输入张量
           name)# 名称
 ```
 
-### 5.10.4.max_pool()
+### 5.9.4.max_pool()
 
 最大池化层
 
@@ -761,7 +761,7 @@ tf.nn.max_pool(value,# 输入张量
                name)# 名称
 ```
 
-### 5.10.5.softmax()
+### 5.9.5.softmax()
 
 softmax激活函数
 
@@ -770,7 +770,7 @@ import tensorflow as tf
 tf.nn.softmax(logits)# 输入张量（非空）
 ```
 
-## 5.11.placeholder()
+## 5.10.placeholder()
 
 添加一个占位符
 
@@ -781,13 +781,13 @@ x = tf.placeholder(dtype,# 自负床数据类型
                    name)# 名称
 ```
 
-## 5.12.python
+## 5.11.python
 
-### 5.12.1.framework
+### 5.11.1.framework
 
-#### 5.12.1.1.graph_util
+#### 5.11.1.1.graph_util
 
-##### 5.12.1.1.1.convert_variables_to_constants
+##### 5.11.1.1.1.convert_variables_to_constants
 
 将计算图中的变量转换为常量
 
@@ -798,7 +798,7 @@ output_graph = convert_variables_to_constants(sess,# 需要转换变量的会话
                                    						output_node_names)#字符串列表，输出层的名称
 ```
 
-###### 5.12.1.1.1.1.SerializeToString()
+###### 5.11.1.1.1.1.SerializeToString()
 
 将protobuf数据转换为二进制字符串
 
@@ -807,11 +807,11 @@ output_graph = convert_variables_to_constants(sess,# 需要转换变量的会话
 output_graph.SerializeToString()
 ```
 
-## 5.13.saved_model
+## 5.12.saved_model
 
-### 5.13.1.builder
+### 5.12.1.builder
 
-#### 5.13.1.1.SavedModelBuilder()
+#### 5.12.1.1.SavedModelBuilder()
 
 构建一个生成SavedModel的实例
 
@@ -820,7 +820,7 @@ from tensorflow.saved_model import builder
 builder = builder.SavedModelBuilder(export_dir)# SavedModel的保存路径
 ```
 
-##### 5.13.1.1.1.add_meta_graph_and_variables()
+##### 5.12.1.1.1.add_meta_graph_and_variables()
 
 添加图结构和变量信息
 
@@ -830,7 +830,7 @@ builder.add_meta_graph_and_variables(sess,# 会话
                                    	 signature_def_map)# 预测签名字典
 ```
 
-##### 5.13.1.1.2.save()
+##### 5.12.1.1.2.save()
 
 将SaveModel写入磁盘
 
@@ -838,9 +838,9 @@ builder.add_meta_graph_and_variables(sess,# 会话
 builder.save()
 ```
 
-### 5.13.2.loader
+### 5.12.2.loader
 
-#### 5.13.2.1.load()
+#### 5.12.2.1.load()
 
 从标签指定的SavedModel加载模型
 
@@ -851,9 +851,9 @@ tf.saved_model.loader.load(sess,# 模型还原到的会话
                            export_dir)# 待还原的SavedModel目录
 ```
 
-### 5.13.3.signature_def_utils
+### 5.12.3.signature_def_utils
 
-#### 5.13.3.1.predict_signature_def()
+#### 5.12.3.1.predict_signature_def()
 
 构建预测签名
 
@@ -863,7 +863,7 @@ signature = signatures_def_utils.predict_signature_def(inputs,# 字典，输入�
                                                        outputs)# 字典，输出变量
 ```
 
-### 5.13.4.simple_save()
+### 5.12.4.simple_save()
 
 使用简单方法构建SavedModel用于服务器
 
@@ -875,7 +875,7 @@ simple_save(session,# 会话
             outputs)# 字典，输出变量
 ```
 
-### 5.13.5.tag_constants
+### 5.12.5.tag_constants
 
 SaveModel的标签
 
@@ -887,7 +887,7 @@ tags = tag_constants.SERVING
 """
 ```
 
-## 5.14.Session()
+## 5.13.Session()
 
 生成一个tensorflow的会话
 
@@ -896,7 +896,7 @@ import tensorflow as tf
 sess = tf.Session(config)# 使用ConfigProto配置会话
 ```
 
-### 5.14.1.close()
+### 5.13.1.close()
 
 关闭当前会话
 
@@ -904,9 +904,9 @@ sess = tf.Session(config)# 使用ConfigProto配置会话
 sess.close()
 ```
 
-### 5.14.2.graph
+### 5.13.2.graph
 
-#### 5.14.2.1.get_tensor_by_name()
+#### 5.13.2.1.get_tensor_by_name()
 
 根据名称返回张量，可以使用多个线程同时调用
 
@@ -914,7 +914,7 @@ sess.close()
 sess.graph.get_tensor_by_name(name)# 张量的名称
 ```
 
-### 5.14.3.run()
+### 5.13.3.run()
 
 运行传入会话的操作，返回结果张量
 
@@ -923,7 +923,7 @@ sess.run(fetches,# 待计算的操作 'Operation''Tensor'
          feed_dict# 输入的值，默认为None
 ```
 
-## 5.15.split()
+## 5.14.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -936,9 +936,9 @@ value需要拆分的张量，num_or_size_splits要拆分的数量，axis按某�
 """
 ```
 
-## 5.16.train
+## 5.15.train
 
-### 5.16.1.AdamOptimizer()
+### 5.15.1.AdamOptimizer()
 
 Adam优化器
 
@@ -947,7 +947,7 @@ import tensorflow as tf
 optimizer = tf.train.AdamOptimizer(learning_rate)# 学习率
 ```
 
-### 5.16.2.GradientDescentOptimizer()
+### 5.15.2.GradientDescentOptimizer()
 
 梯度下降优化器
 
@@ -956,7 +956,7 @@ import tensorflow as tf
 optimizer = tf.train.GradientDescentOptimizer(learning_rate)# 学习率
 ```
 
-### 5.16.3.latest_checkpoint()
+### 5.15.3.latest_checkpoint()
 
 查找最近的保存点文件
 
@@ -965,7 +965,7 @@ import tensorflow as tf
 checkpoint = tf.train.latest_checkpoint(checkpoint_dir)# 保存点路径
 ```
 
-### 5.16.3.Saver()
+### 5.15.4.Saver()
 
 生成用于保存和还原计算图的实例
 
@@ -975,7 +975,7 @@ saver = tf.train.Saver(var_list)
 # 将被保存和恢复的变量列表或者变量字典，默认为None（保存全部） 
 ```
 
-#### 5.16.3.1.restore()
+#### 5.15.4.1.restore()
 
 恢复保存的变量
 
@@ -984,7 +984,7 @@ saver.restore(sess,# 会话，eager模式为None
               save_path)# 检查点文件的路径
 ```
 
-## 5.17.variable_scope()
+## 5.16.variable_scope()
 
 用于定义变量操作的上下文管理器
 
