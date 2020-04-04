@@ -1433,7 +1433,20 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
                    axis)# 维度
 ```
 
-## 9.5.linspace()
+## 9.5.linalg
+
+### 9.5.1.norm()
+
+计算矩阵或者向量范数
+
+```python
+import numpy as np
+x = [[1, 2], [3, 4]]
+norm = np.linalg.norm(x,# 输入矩阵或向量，维数必须是1-D或2-D
+                      ord)# 范数选项，默认None，计算2范数
+```
+
+## 9.6.linspace()
 
 生成一个等差数列
 
@@ -1444,7 +1457,7 @@ a = np.linspace(start,# 序列的起始值
                 num)# 生成样本数，默认50
 ```
 
-## 9.6.load()
+## 9.7.load()
 
 从npy或者npz文件中加载数组
 
@@ -1455,7 +1468,7 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 9.7.mat()
+## 9.8.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -1465,7 +1478,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 9.8.matmul()
+## 9.9.matmul()
 
 矩阵乘法
 
@@ -1476,7 +1489,7 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 9.9.mean()
+## 9.10.mean()
 
 按照指定的维度计算算术平均值
 
@@ -1486,7 +1499,7 @@ np.mean(a,# 待计算均值的列表、矩阵
 				axis)# 维度
 ```
 
-## 9.10.transpose()
+## 9.11.transpose()
 
 对矩阵进行转置
 
@@ -1496,9 +1509,9 @@ a = [[1, 2], [3, 4]]
 a_t = np.transpose(a)
 ```
 
-## 9.11.random
+## 9.12.random
 
-### 9.11.1.normal()
+### 9.12.1.normal()
 
 生成一个正态分布的数组
 
@@ -1507,7 +1520,7 @@ import numpy as np
 a = np.random.normal(size=[2,3])# 形状
 ```
 
-## 9.12.reshape()
+## 9.13.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -1521,7 +1534,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 9.13.split()
+## 9.14.split()
 
 将张量按某个维度拆分成多个张量
 
