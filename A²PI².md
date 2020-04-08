@@ -17,7 +17,7 @@ image = imageio.imread(uri)# 文件对象或http地址，图片的路径
 
 # 2.keras
 
-keras在tensorflow r1.x和r2.1以及plaidml中版本均是2.2.4；除了模型初始化的策略有些许不同，不能混合续训，但是代码完全兼容，且可以混用执行预测和部署
+keras在tensorflow r1.x和r2.1以及plaidml中版本均是2.2.4；除了模型初始化时的初始化器不同，不能混合续训，但是代码完全兼容，且可以混用执行预测和部署
 
 ## 2.1.applications
 
@@ -47,9 +47,31 @@ model = ResNet50(include_top,# 是否包含全连接的输出层
                  input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.3.xception
+### 2.1.3.vgg19
 
-#### 2.1.3.1.Xception()
+#### 2.1.3.1.preprocess_input()
+
+对数据进行预处理
+
+```python
+from tensorflow.keras.applications.vgg19 import preprocess_input
+preprocessed_input = preprocess_input(x)# 要预处理的数据
+```
+
+#### 2.1.3.2.VGG19()
+
+VGG19的预训练模型
+
+```python
+from keras.applications.vgg19 import VGG19
+model = VGG19(include_top,# 是否包含全连接的输出层
+              weights,# 权重，可以是随机初始化，也可以加载'imagenet'的权重，或者自定权重的路径
+              input_tensor)# 输入层，需要使用keras.layers.Input()
+```
+
+### 2.1.4.xception
+
+#### 2.1.4.1.Xception()
 
 Xception的预训练模型
 
@@ -62,7 +84,28 @@ model = Xception(include_top,# 是否包含全连接的输出层
 
 ## 2.2.backend
 
-### 2.2.1.ones_like()
+### 2.2.1.cast()
+
+转换张量的类型
+
+```python
+from keras.backend import cast
+tensor = cast(x,# 张量
+              dtype)# 转换后的类型
+```
+
+### 2.2.2.clip()
+
+将变量的值裁切到某个区间（类似标准化）
+
+```python
+from keras.backend import clip
+tensor = clip(x,# 张量
+              min_value,# 最小值
+              max_value)# 最大值
+```
+
+### 2.2.3.ones_like()
 
 创建一个全1的张量
 
@@ -71,7 +114,16 @@ from keras.backend import ones_like
 tensor = ones_like(x)# 张量
 ```
 
-### 2.2.2.zeros_like()
+### 2.2.4.shape()
+
+返回张量的形状
+
+```python
+from keras.backend import shape
+shape = shape(x)# 张量
+```
+
+### 2.2.5.zeros_like()
 
 创建一个全0的张量
 
@@ -256,11 +308,20 @@ layer = Reshape(target_shape)# 整数元组，目标尺寸
 
 ### 2.6.1.BinaryCrossentropy()
 
-计算真实标签和预测值标签的的交叉熵损失
+计算真实标签和预测值标签的的交叉熵损失（二分类）
 
 ```python
 from keras.losses import BinaryCrossentropy
 cross_entropy = BinaryCrossentropy(from_logits)# 是否将y_pred解释为张量
+```
+
+### 2.6.2.SparseCategoricalCrossentropy()
+
+计算真实标签和预测值标签的的交叉熵损失（多分类）
+
+```python
+from keras.losses import SparseCategoricalCrossentropy
+cross_entropy = SparseCategoricalCrossentropy(from_logits)# 是否将y_pred解释为张量
 ```
 
 ## 2.7.models
@@ -300,7 +361,8 @@ model = load_model(filepath)# 文件路径，可以是saved model或者h5py
 将模型保存为SavedModel或者HDF5文件
 
 ```python
-model.save(filepath)# 保存路径
+model.save(filepath,# 保存路径
+           save_format)# 保存格式，默认是h5，可选tf
 ```
 
 ### 2.7.2.Sequential()
@@ -1028,7 +1090,17 @@ dataset = tf.data.Dataset.range(3)
 dataset_shuffle = dataset.shuffle(buffer_size=3)# 数据集元素的数量
 ```
 
-## 6.2.GradientTape()
+## 6.2.einsum()
+
+爱因斯坦求和约定，返回根据等式定义的张量
+
+```python
+from tensorflow import einsum
+result = einsum(equation,# 规则等式 乘号用',' 等号用'->'
+                *inputs)# 待求和的张量
+```
+
+## 6.3.GradientTape()
 
 创建一个梯度带，可用于自动求导
 
@@ -1038,7 +1110,7 @@ with tf.GradientTape() as tape:
 		# 在tf.GradientTape()的上下文管理器内的计算都将被用于求导
 ```
 
-### 6.2.1.gradient()
+### 6.3.1.gradient()
 
 在梯度带内计算导数
 
@@ -1046,7 +1118,51 @@ with tf.GradientTape() as tape:
 		grad = tape.gradient(target, sources)# 计算target关于sources的导数
 ```
 
-## 6.4.ones_like()
+## 6.4.image
+
+### 6.4.1.convert_image_dtype()
+
+转换图片的数据类型，并根据实际缩放
+
+```python
+import tensorflow as tf
+img_tensor = tf.image.convert_image_dtype(image,# 图片的张量 
+                                          dtype)# 转换后的张量类型
+```
+
+### 6.4.2.decode_image()
+
+将BMP、GIF、JPEG或PNG的编码字节流转换为张量
+
+```python
+import tensorflow as tf
+img_tensor = tf.image.decode_image(contents,# 图片的编码字符流
+                                   channels,# 色彩通道数
+                                   dtype)# 转换后的张量类型
+```
+
+### 6.4.3.resize()
+
+按照指定方法调整图片的大小
+
+```python
+import tensorflow as tf
+img_tensor = tf.image.resize(images,# 输入图片
+                     				 size)# 调整后的尺寸
+```
+
+## 6.5.io
+
+### 6.5.1.read_file()
+
+读入文件
+
+```python
+import tensorflow as tf
+img = tf.io.read_file(filename)# 文件的路径，返回图片的编码字符流
+```
+
+## 6.6.ones_like()
 
 创建一个全1的张量
 
@@ -1055,9 +1171,9 @@ import tensorflow as tf
 tensor = tf.ones_like(input)# 张量
 ```
 
-## 6.5.random
+## 6.7.random
 
-### 6.5.1.normal()
+### 6.7.1.normal()
 
 生成一个正态分布的张量
 
@@ -1066,7 +1182,7 @@ import tensorflow as tf
 tensor = tf.random.normal(shape)# 张量的形状
 ```
 
-## 6.6.zeros_like()
+## 6.8.zeros_like()
 
 创建一个全0的张量
 
