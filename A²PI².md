@@ -21,9 +21,22 @@ keras在tensorflow r1.x和r2.1以及plaidml中版本均是2.2.4；除了模型�
 
 ## 2.1.applications
 
-### 2.1.1.inception_v3
+### 2.1.1.inception_resnet_v2
 
-#### 2.1.1.1.InceptionV3()
+#### 2.1.1.1.InceptionResNetV2()
+
+InceptionResNetV2的预训练模型
+
+```python
+from keras.applications.inception_resnet_v2 import InceptionResNetV2
+model = InceptionResNetV2(include_top,# 是否包含全连接的输出层
+                          weights,# 权重，可以是随机初始化，也可以加载'imagenet'的权重，或者自定权重的路径
+                          input_tensor)# 输入层，需要使用keras.layers.Input()
+```
+
+### 2.1.2.inception_v3
+
+#### 2.1.2.1.InceptionV3()
 
 InceptionV3的预训练模型
 
@@ -34,9 +47,22 @@ model = InceptionV3(include_top,# 是否包含全连接的输出层
                     input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.2.resnet50
+### 2.1.3.resnet_v2
 
-#### 2.1.2.1.ResNet50()
+#### 2.1.3.1.ResNet152V2()
+
+ResNet152V2的预训练模型
+
+```python
+from keras.applications.resnet_v2 import ResNet152V2
+model = ResNet152V2(include_top,# 是否包含全连接的输出层
+                    weights,# 权重，可以是随机初始化，也可以加载'imagenet'的权重，或者自定权重的路径
+                    input_tensor)# 输入层，需要使用keras.layers.Input()
+```
+
+### 2.1.4.resnet50
+
+#### 2.1.4.1.ResNet50()
 
 ResNet50的预训练模型
 
@@ -47,9 +73,9 @@ model = ResNet50(include_top,# 是否包含全连接的输出层
                  input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.3.vgg19
+### 2.1.5.vgg19
 
-#### 2.1.3.1.preprocess_input()
+#### 2.1.5.1.preprocess_input()
 
 对数据进行预处理
 
@@ -58,7 +84,7 @@ from tensorflow.keras.applications.vgg19 import preprocess_input
 preprocessed_input = preprocess_input(x)# 要预处理的数据
 ```
 
-#### 2.1.3.2.VGG19()
+#### 2.1.5.2.VGG19()
 
 VGG19的预训练模型
 
@@ -69,9 +95,9 @@ model = VGG19(include_top,# 是否包含全连接的输出层
               input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.4.xception
+### 2.1.6.xception
 
-#### 2.1.4.1.Xception()
+#### 2.1.6.1.Xception()
 
 Xception的预训练模型
 
@@ -408,7 +434,7 @@ model.evaluate(x,# 训练数据
 以给定批次训练模型
 
 ```python
-history = model.fit(x,# 训练数据
+history = model.fit(x,# 训练数据，包括数据生成器，比如ImageDataGenerator()，使用生成器，不需要参数y
           y,# 标签
           batch_size,# 整数，批次大小，默认32
           epochs,# 整数，轮数
@@ -492,20 +518,39 @@ data_generator = ImageDataGenerator(rotation_range,# 整数，随机旋转度数
                                     horizontal_flip)# 布尔值，水平随机翻转                 
 ```
 
-##### 2.9.1.1.1.flow_from_directory()
+##### 2.9.1.1.1.flow_from_dataframe()
 
-从给定路径读入数据并增强
+从给定的dataframe标签读入数据并增强
+
+```python
+data_generator.flow_from_dataframe(dataframe,# dataframe标签
+                                   directory,# 图片文件路径
+                                   x_col,# dataframe中文件路径列
+                                   y_col,# dataframe中文件标签列
+                                   target_size,# 元组，调整后大小
+                                   interpolation,# 插值，调整尺寸 'nearest''bilinear''bicubic'
+                                   class_mode,# 返回标签数组类型，默认'categorical'
+                                   classes,# 标签名列表，如果为None，则自动根据y_col生成
+                                   shuffle,# 布尔值，打乱顺序
+                                   batch_size,# 整数，批次大小，默认32
+                                   validate_filenames)# 验证文件是否有效，默认True
+```
+
+##### 2.9.1.1.2.flow_from_directory()
+
+从给定路径读入数据并增强（要求每个类别必须单独一个文件夹）
 
 ```python
 data_generator.flow_from_directory(directory,# 路径
                                    target_size,# 元组，调整后大小
+                                   classes,# 标签名列表，如果为None，则自动生成
                                    class_mode,# 返回标签数组类型，默认'categorical'
                                    batch_size,# 整数，批次大小，默认32
                                    shuffle,# 布尔值，打乱顺序
                                    interpolation)# 插值，调整尺寸 'nearest''bilinear''bicubic'
 ```
 
-###### 2.9.1.1.1.1.class_indices
+###### 2.9.1.1.2.1.class_indices
 
 返回训练数据的索引
 
@@ -535,6 +580,20 @@ img = image.load_img(path,# 路径
 from keras.utils import multi_gpu_model
 parallel_model = multi_gpu_model(model,# 模型
                                  gpus)# 整数（大于等于2），并行GPU数量
+```
+
+### 2.10.2.plot_model()
+
+保存keras模型成图片
+
+```python
+from keras.utils import plot_model
+plot_model(model,# 模型
+           to_file,# 保存路径
+           show_shapes,# 是否显示每层的shape
+           show_layer_names,# 是否显示每层的名称
+           rankdir,# 绘图方向，垂直'TB'水平'LR'
+           dpi)# 每英寸点数
 ```
 
 # 3.PIL
@@ -1057,11 +1116,34 @@ with tf.variable_scope(name_or_scope):# 字符串，作用域
 
 # 6.tensorflow r2.x
 
-## 6.1.data
+## 6.1.config
 
-### 6.1.1.Datasets
+### 6.1.1.experimental
 
-#### 6.1.1.1.batch()
+#### 6.1.1.1.list_physical_devices()
+
+返回主机运行时的可见的物理设备列表
+
+```python
+import tensorflow as tf
+devices_list = tf.config.experimental.list_physical_devices(device_type)# 设备类型，可选CPU或GPU
+```
+
+#### 6.1.1.2.set_memory_growth()
+
+设置物理设备的内存的按需增长
+
+```python
+import tensorflow as tf
+tf.config.experimental.set_memory_growth(device,# 物理设备
+                                         enable)# 是否运行内存按需增长  
+```
+
+## 6.2.data
+
+### 6.2.1.Datasets
+
+#### 6.2.1.1.batch()
 
 给数据集划分批次
 
@@ -1071,7 +1153,7 @@ dataset = tf.data.Dataset.range(6)
 dataset_shuffle = dataset.batch(batch_size=3)# 批次的大小
 ```
 
-#### 6.1.1.2.from_tensor_slices()
+#### 6.2.1.2.from_tensor_slices()
 
 返回一个数据集对象
 
@@ -1080,7 +1162,7 @@ import tensorflow as tf
 dataset = tf.data.Dataset.from_tensor_slices(tensor)# 张量，必须有相同的第一维
 ```
 
-#### 6.1.1.3.shuffle()
+#### 6.2.1.3.shuffle()
 
 随机打乱数据集对象的元素
 
@@ -1090,7 +1172,7 @@ dataset = tf.data.Dataset.range(3)
 dataset_shuffle = dataset.shuffle(buffer_size=3)# 数据集元素的数量
 ```
 
-## 6.2.einsum()
+## 6.3.einsum()
 
 爱因斯坦求和约定，返回根据等式定义的张量
 
@@ -1100,7 +1182,7 @@ result = einsum(equation,# 规则等式 乘号用',' 等号用'->'
                 *inputs)# 待求和的张量
 ```
 
-## 6.3.GradientTape()
+## 6.4.GradientTape()
 
 创建一个梯度带，可用于自动求导
 
@@ -1110,7 +1192,7 @@ with tf.GradientTape() as tape:
 		# 在tf.GradientTape()的上下文管理器内的计算都将被用于求导
 ```
 
-### 6.3.1.gradient()
+### 6.4.1.gradient()
 
 在梯度带内计算导数
 
@@ -1118,9 +1200,9 @@ with tf.GradientTape() as tape:
 		grad = tape.gradient(target, sources)# 计算target关于sources的导数
 ```
 
-## 6.4.image
+## 6.5.image
 
-### 6.4.1.convert_image_dtype()
+### 6.5.1.convert_image_dtype()
 
 转换图片的数据类型，并根据实际缩放
 
@@ -1130,7 +1212,7 @@ img_tensor = tf.image.convert_image_dtype(image,# 图片的张量
                                           dtype)# 转换后的张量类型
 ```
 
-### 6.4.2.decode_image()
+### 6.5.2.decode_image()
 
 将BMP、GIF、JPEG或PNG的编码字节流转换为张量
 
@@ -1141,7 +1223,7 @@ img_tensor = tf.image.decode_image(contents,# 图片的编码字符流
                                    dtype)# 转换后的张量类型
 ```
 
-### 6.4.3.resize()
+### 6.5.3.resize()
 
 按照指定方法调整图片的大小
 
@@ -1151,9 +1233,9 @@ img_tensor = tf.image.resize(images,# 输入图片
                      				 size)# 调整后的尺寸
 ```
 
-## 6.5.io
+## 6.6.io
 
-### 6.5.1.read_file()
+### 6.6.1.read_file()
 
 读入文件
 
@@ -1162,7 +1244,7 @@ import tensorflow as tf
 img = tf.io.read_file(filename)# 文件的路径，返回图片的编码字符流
 ```
 
-## 6.6.ones_like()
+## 6.7.ones_like()
 
 创建一个全1的张量
 
@@ -1171,9 +1253,9 @@ import tensorflow as tf
 tensor = tf.ones_like(input)# 张量
 ```
 
-## 6.7.random
+## 6.8.random
 
-### 6.7.1.normal()
+### 6.8.1.normal()
 
 生成一个正态分布的张量
 
@@ -1182,7 +1264,7 @@ import tensorflow as tf
 tensor = tf.random.normal(shape)# 张量的形状
 ```
 
-## 6.8.zeros_like()
+## 6.9.zeros_like()
 
 创建一个全0的张量
 
@@ -1674,7 +1756,15 @@ df = {'index': [0, 1, 2], 'value': [1, 2, 3]}
 df = pd.DataFrame(df)
 ```
 
-### 10.1.1.replace()
+### 10.1.1.astype()
+
+转换DataFrame到指定类型
+
+```python
+df['value'] = df['value'].astype(dtype)# 转换后的数据类型
+```
+
+### 10.1.2.replace()
 
 新值替换旧值
 
