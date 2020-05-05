@@ -1277,7 +1277,13 @@ tensor = tf.zeros_like(input)# 张量
 
 ## 7.1.KerasLayer()
 
+将一个SavedModel模型修饰成keras的一个层
 
+```python
+import tensorflow_hub as hub
+efficient_layer = hub.KerasLayer(handle,# tensorflow_hub模型的路径
+                                 trainable)# 是否可训练
+```
 
 # 8.tensorflow.js@0.x
 
