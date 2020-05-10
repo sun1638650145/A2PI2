@@ -131,7 +131,17 @@ tensor = clip(x,# 张量
               max_value)# 最大值
 ```
 
-### 2.2.3.ones_like()
+### 2.2.3.expand_dims()
+
+在指定处给tensor增加一个维度
+
+```python
+from keras.backend import expand_dims
+tensor_new = expand_dims(x,# 张量 
+                         axis)# 增加的维度的位置
+```
+
+### 2.2.4.ones_like()
 
 创建一个全1的张量
 
@@ -140,7 +150,7 @@ from keras.backend import ones_like
 tensor = ones_like(x)# 张量
 ```
 
-### 2.2.4.shape()
+### 2.2.5.shape()
 
 返回张量的形状
 
@@ -149,7 +159,7 @@ from keras.backend import shape
 shape = shape(x)# 张量
 ```
 
-### 2.2.5.zeros_like()
+### 2.2.6.zeros_like()
 
 创建一个全0的张量
 
@@ -207,7 +217,16 @@ from keras.layers import BatchNormalization
 layer = BatchNormalization()
 ```
 
-### 2.5.3.Concatenate()
+### 2.5.3.Bidirectional()
+
+RNN的双向封装器
+
+```python
+from keras.layers import Bidirectional
+layers = Bidirectional(layer)# 循环层实例
+```
+
+### 2.5.4.Concatenate()
 
 连接输入的层
 
@@ -220,7 +239,7 @@ _Merge 张量（层）列表
 """
 ```
 
-### 2.5.4.Conv1D()
+### 2.5.5.Conv1D()
 
 1D卷积层（例如时序卷积）
 
@@ -237,7 +256,7 @@ layer = Conv1D(filters,# 整数，卷积核的数量
                bias_initializer)# 偏置项初始化
 ```
 
-### 2.5.5.Conv2D()
+### 2.5.6.Conv2D()
 
 2D卷积层（例如时序卷积）
 
@@ -250,7 +269,7 @@ layer = Conv2D(filters,# 整数，卷积核的数量
                input_shape)# 元组，第一层需要指定输入
 ```
 
-### 2.5.6.Conv2DTranspose()
+### 2.5.7.Conv2DTranspose()
 
 转置卷积层 (有时被成为反卷积)，将具有卷积输出尺寸的东西 转换为具有卷积输入尺寸的东西
 
@@ -263,7 +282,7 @@ layer = Conv2DTranspose(filters,# 整数，输出空间的维度
                     		use_bias)# 布尔值 是否使用偏置
 ```
 
-### 2.5.7.Dense()
+### 2.5.8.Dense()
 
 全连接层
 
@@ -274,7 +293,7 @@ layer = Dense(units,# 整数，神经元数量
               input_shape)# 元组，第一层需要指定输入
 ```
 
-### 2.5.8.Dropout()
+### 2.5.9.Dropout()
 
 在训练阶段按照比例随机丢弃神经元
 
@@ -283,7 +302,7 @@ from keras.layers import Dropout
 layer = Dropout(rate)# 丢弃率
 ```
 
-### 2.5.9.Flatten()
+### 2.5.10.Flatten()
 
 将输入展平，不影响批次大小
 
@@ -292,16 +311,27 @@ from keras.layers import Flatten
 layer = Flatten()
 ```
 
-### 2.5.10.Input()
+### 2.5.11.LSTM()
+
+长短时记忆网络层
+
+```python
+from keras.layers import LSTM
+layer = LSTM(units,# 整数，神经元数量
+             return_sequences)# 布尔值，是否返回整个序列
+```
+
+### 2.5.12.Input()
 
 输入层
 
 ```python
 from keras.layers import Input
-input_tensor = Input(shape)# 整数，形状元组
+input_tensor = Input(shape,# 整数，形状元组
+                     dtype)# 期望数据类型
 ```
 
-### 2.5.11.LeakyReLU()
+### 2.5.13.LeakyReLU()
 
 带泄漏的 ReLU层
 
@@ -310,7 +340,7 @@ from keras.layers import LeakyReLU
 layer = LeakyReLU(alpha)# 负斜率系数，默认为0.3
 ```
 
-### 2.5.12.MaxPooling1D()
+### 2.5.14.MaxPooling1D()
 
 对时序数据进行最大池化
 
@@ -321,7 +351,7 @@ layer = MaxPooling1D(pool_size,# 整数，池化核数量
                      padding)# 'same''valid''causal'，是否使用全零填充
 ```
 
-### 2.5.13.Reshape()
+### 2.5.15.Reshape()
 
 将输入重新调整为特定的尺寸
 
@@ -596,6 +626,16 @@ plot_model(model,# 模型
            dpi)# 每英寸点数
 ```
 
+### 2.10.3.to_categorical()
+
+将种类的标签向量转换为独热编码
+
+```python
+from keras.utils import to_categorical
+y_one_hot = to_categorical(y,# 要转换的标签向量
+                           num_classes)# 类的总数
+```
+
 # 3.PIL
 
 ## 3.1.Image
@@ -725,6 +765,30 @@ dot_data = export_graphviz(decision_tree,# 决策树
                            out_file,#生成dot文件 默认为None（返回str）
                            feature_names,# 属性名称
                            class_names)# 分类名称
+```
+
+## 4.5.utils
+
+### 4.5.1.multiclass
+
+#### 4.5.1.1.type_of_target()
+
+返回确定目标的数据类型
+
+```python
+from sklearn.utils.multiclass import type_of_target
+y = [0.1, 0.2, 0.3]
+result = type_of_target(y)# array-like 待检查的数据 
+"""
+返回的数据类型包括
+'continuous'
+'continuous-multioutput'
+'binary'
+'multiclass'
+'multiclass-multioutput'
+'multilabel-indicator'
+'unknown'
+"""
 ```
 
 # 5.tensorflow r1.x
@@ -1573,31 +1637,130 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 
 # 9.matplotlib
 
-## 9.1.pyplot
+## 9.1.axes
 
-### 9.1.1.plot()
+### 9.1.1.annotate()
+
+使用文本“text”注释点“xy”
+
+```python
+ax.annotate(text,# 注释的文本内容
+            xy,# 被注释点的坐标
+            xytext,# 注释文本的坐标
+            xycoords,# 被注释点放置参考的坐标轴位置
+            textcoords,# 注释文本放置参考的坐标轴位置，默认与xycroods相同
+            arrowprops,# 绘制位置xy和xytext之间箭头的样式
+            size,# xy文本字号
+            verticalalignment,# xy垂直对齐方式
+            horizontalalignment,# xy水平对齐方式
+            bbox)# 在文本周围绘制框
+```
+
+### 9.1.2.set_xticks()
+
+设置X轴的刻度
+
+```python
+ax.set_xticks(ticks)# 列表 X轴刻度位置列表
+```
+
+### 9.1.3.set_yticks()
+
+设置Y轴的刻度
+
+```python
+ax.set_yticks(ticks)# 列表 Y轴刻度位置列表
+```
+
+###  9.1.4.spines
+
+设置figure的坐标轴
+
+```python
+ax.spines['left']# 可选的有 'right''top''bottom'
+```
+
+#### 9.1.4.1.set_color()
+
+设置坐标轴的颜色
+
+```python
+ax.spines['left'].set_color(color)# 颜色
+```
+
+### 9.1.5.text()
+
+在指定位置添加文本
+
+```python
+ax.text(x,# 标量 放置的X坐标
+        y,# 标量 放置的Y坐标
+        s,# 放置的文本
+        fontdict)# 字典，放置文本的字号，默认值由rc参数确定
+```
+
+## 9.2.pyplot
+
+### 9.2.2.plot()
 
 绘制函数
 
 ```python
-import matplotlib
-matplotlib.pyplot.plot(x,# 自变量的值
-                       y)# 因变量的值
+import matplotlib.pyplot as plt
+plt.plot(x,# 自变量的值
+         y)# 因变量的值
 ```
 
-### 9.1.2.scatter()
+### 9.2.3.rcParams
+
+pyplot使用的rc配置文件
+
+```python
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = 'Arial Unicode MS'# 改变字体
+```
+
+### 9.2.4.scatter()
 
 绘制散点图
 
 ```python
-import matplotlib
-matplotlib.pyplot.scatter(x,# X轴数据
-                          y)# Y轴数据
+import matplotlib.pyplot as plt
+plt.scatter(x,# X轴数据
+            y)# Y轴数据
 ```
 
-### 9.1.3.show()
+### 9.2.5.show()
 
 显示图像
+
+```python
+import matplotlib.pyplot as plt
+plt.show()
+```
+
+### 9.2.6.subplots()
+
+创建一个图和一组子图，返回一个figure对象和axes对象（数组）
+
+```python
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+```
+
+### 9.2.7.subplots_adjust()
+
+调整子图布局
+
+```python
+import matplotlib.pyplot as plt
+plt.subplots_adjust(left,# 左侧 
+                    bottom,# 底部
+                    right,# 右侧
+                    top,# 顶部
+                    wspace,# 子图之间的宽度
+                    hspace)# 子图之间的高度
+```
 
 # 10.numpy
 
@@ -1678,7 +1841,16 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 10.8.mat()
+## 10.8.log2()
+
+求log以2为的底数的值
+
+```python
+import numpy as np
+value = np.log2(x)
+```
+
+## 10.9.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -1688,7 +1860,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 10.9.matmul()
+## 10.10.matmul()
 
 矩阵乘法
 
@@ -1699,7 +1871,7 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 10.10.mean()
+## 10.11.mean()
 
 按照指定的维度计算算术平均值
 
@@ -1709,7 +1881,16 @@ np.mean(a,# 待计算均值的列表、矩阵
 				axis)# 维度
 ```
 
-## 10.11.transpose()
+计算成立条件的百分比
+
+```python
+import numpy as np
+a = np.asarray([1, 2, 3])
+b = np.asarray([1, 2, 4])
+result = np.mean(a == b)
+```
+
+## 10.12.transpose()
 
 对矩阵进行转置
 
@@ -1719,9 +1900,9 @@ a = [[1, 2], [3, 4]]
 a_t = np.transpose(a)
 ```
 
-## 10.12.random
+## 10.13.random
 
-### 10.12.1.normal()
+### 10.13.1.normal()
 
 生成一个正态分布的数组
 
@@ -1730,7 +1911,7 @@ import numpy as np
 a = np.random.normal(size=[2,3])# 形状
 ```
 
-## 10.13.reshape()
+## 10.14.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -1744,7 +1925,17 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 10.14.split()
+## 10.15.sort()
+
+按照升序进行排序
+
+```python
+import numpy as np
+a = [2, 3, 7, 8, 1]
+new_a = np.sort(a)
+```
+
+## 10.16.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -1756,6 +1947,17 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
+## 10.17.sum()
+
+按照给定的维度求和
+
+```python
+import numpy as np
+a = [1, 2, 3]
+sum = np.sum(a,# 待计算均值的列表、矩阵
+             axis)# 维度
+```
+
 # 11.pandas
 
 ## 11.1.DataFrame()
@@ -1765,7 +1967,9 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
 ```python
 import pandas as pd
 df = {'index': [0, 1, 2], 'value': [1, 2, 3]}
-df = pd.DataFrame(df)
+df = pd.DataFrame(df,
+                  index, # 指定索引的列表
+                  columns)# 指定行的列表
 ```
 
 ### 11.1.1.astype()
@@ -1776,7 +1980,32 @@ df = pd.DataFrame(df)
 df['value'] = df['value'].astype(dtype)# 转换后的数据类型
 ```
 
-### 11.1.2.replace()
+### 11.1.2.drop()
+
+从行或列删除指定的标签
+
+```python
+df.drop(labels,# 要删除的列标签或者行号
+        axis)# 0或'index' 1或'columns'
+```
+
+### 11.1.3.iloc
+
+基于整数的行索引（下标）取数据
+
+```python
+df.iloc[0]# 取出第0行的数据
+```
+
+### 11.1.4.loc
+
+基于标签取数据（没有名称时，和iloc一样按照索引）
+
+```python
+df.loc[0]# 取出第0行的数据
+```
+
+### 11.1.5.replace()
 
 新值替换旧值
 
@@ -1787,7 +2016,36 @@ df.replace(to_replace,# 旧值
 df.replace(dict)# 可以是字典的键为旧值，值为新值，进行替换
 ```
 
-## 11.2.read_csv()
+### 11.1.6.reset_index()
+
+重置DataFrame的索引为从0递增的整数索引
+
+```python
+import pandas as pd
+df = pd.DataFrame([(0, 1), (1, 2), (2, 3)], index=[1, 3, 5])
+df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据列
+               inplace)# 布尔值，默认False，是否修改源文件
+```
+
+### 11.1.7.shape
+
+返回DataFrame维数的元组
+
+```python
+shape = df.shape
+```
+
+## 11.2.group_by()
+
+按照给定的值进行分组
+
+```python
+import pandas as pd
+df = pd.DataFrame([('a', 1), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['c1', 'c2'])
+df1 = pd.DataFrame(df.groupby('c2'))
+```
+
+## 11.3.read_csv()
 
 读取csv文件，返回一个DataFrame对象
 
@@ -1798,9 +2056,26 @@ df = pd.read_csv(filepath_or_buffer,# 文件或者缓冲区路径
                  index_col)# 指定索引列 ，默认是None
 ```
 
-## 11.3.Series()
+## 11.4.Series()
 
-### 11.3.1.values()
+将其他数据格式转换为Series
+
+```python
+import pandas as pd
+sr = pd.Series([1, 2, 3])
+```
+
+### 11.4.1.tolist()
+
+返回Series值的列表
+
+```python
+sr.tolist()
+# 或
+pd.Series.tolist(sr)
+```
+
+### 11.4.2.values()
 
 将DataFrame的值转换为ndarry
 
@@ -1811,7 +2086,7 @@ df = pd.DataFrame(df)
 array = df['index'].values
 ```
 
-## 11.4.to_csv()
+## 11.5.to_csv()
 
 将DataFrame生成csv文件
 
@@ -1821,6 +2096,24 @@ df.to_csv(path_or_buf,# 保存的文件和路径
           header,# 列名，默认是True
           index,# 索引，默认是True
           encoding)# 编码方式，默认是‘utf-8’
+```
+
+## 11.6.unique()
+
+去除重复元素（不进行排序）
+
+```python
+import pandas as pd
+pd.unique(values)# 一维array-like
+```
+
+## 11.7.value_counts()
+
+计算非空值出现的次数
+
+```python
+import pnadas as pd
+pd.value_counts(values)# 1维array-like
 ```
 
 # 12.pydot
