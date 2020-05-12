@@ -1,4 +1,4 @@
-# A²PI² version2
+# <center>A²PI² version2</center>
 
 第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正,
 
@@ -660,9 +660,20 @@ new_image = image.resize(size)# 有宽度和高度的二元组
 
 # 4.sklearn
 
-## 4.1.linear_model
+## 4.1.datasets
 
-### 4.1.1.LogisticRegression()
+### 4.1.1.load_iris()
+
+加载并返回iris数据集
+
+```python
+from sklearn import datasets
+iris = datasets.load_iris()
+```
+
+## 4.2.linear_model
+
+### 4.2.1.LogisticRegression()
 
 构建一个对数几率回归模型
 
@@ -671,7 +682,7 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-#### 4.1.1.1.fit()
+#### 4.2.1.1.fit()
 
 以给定数据训练模型
 
@@ -681,7 +692,7 @@ model.fit(X,# 训练数据
           sample_weight)# 数组，类别权重，默认为None
 ```
 
-#### 4.1.1.2.predict()
+#### 4.2.1.2.predict()
 
 生成预测结果
 
@@ -689,43 +700,43 @@ model.fit(X,# 训练数据
 model.predict(X)# 测试数据
 ```
 
-## 4.2.metrics
+## 4.3.metrics
 
-### 4.2.1.accuracy_score()
+### 4.3.1.accuracy_score()
 
 计算准确率
 
 ```python
-import sklearn
-sklearn.metrics.accuracy_score(y_true,# 真实标签
-                               y_pred,# 预测结果
-                               sample_weight)# 数组，类别权重，默认为None
+from sklearn.metrics import accuracy_score
+accuracy_score(y_true,# 真实标签
+               y_pred,# 预测结果
+               sample_weight)# 数组，类别权重，默认为None
 ```
 
-## 4.3.model_selection
+## 4.4.model_selection
 
-### 4.3.1.cross_val_predict()
+### 4.4.1.cross_val_predict()
 
 使用交叉验证法验证
 
 ```python
-import sklearn
-sklearn.model_selection.cross_val_predict(estimator,# 训练的模型对象
-                                          X,# 训练数据
-                                          y,# 标签
-                                          cv)# 整数，划分数，默认为3
+from sklearn.model_selection import cross_val_predict
+cross_val_predict(estimator,# 训练的模型对象
+                  X,# 训练数据
+                  y,# 标签
+                  cv)# 整数，划分数，默认为3
 ```
 
-### 4.3.2.LeaveOneOut()
+### 4.4.2.LeaveOneOut()
 
 使用留一法验证
 
 ```python
-import sklearn
-LOO = sklearn.model_selection.LeaveOneOut() # 返回一个BaseCrossValidator对象
+from sklearn.model_selection import LeaveOneOut
+LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 ```
 
-#### 4.3.2.1.split()
+#### 4.4.2.1.split()
 
 按照具体BaseCrossValidator对象将数据划分为训练和测试集
 
@@ -733,9 +744,20 @@ LOO = sklearn.model_selection.LeaveOneOut() # 返回一个BaseCrossValidator对�
 LOO.split(X)# 训练数据
 ```
 
-## 4.4.tree
+### 4.4.3.train_test_split()
 
-### 4.4.1.DecisionTreeClassifier()
+将原始数据随机拆分为训练和测试子集
+
+```python
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(X,# 原始数据
+                                                    y,# 标签
+                                                    test_size,# 浮点数 测试集大小 默认为0.25
+                                                    random_state)# 随机划分数据 默认None
+```
+## 4.5.tree
+
+### 4.5.1.DecisionTreeClassifier()
 
 生成一个分类决策树实例
 
@@ -746,7 +768,7 @@ tree = DecisionTreeClassifier(criterion,# 划分条件 'gini''entropy'
 															# 随机状态 默认是None（通过np.random自动生成），也可以赋一个整数
 ```
 
-#### 4.4.1.1.fit()
+#### 4.5.1.1.fit()
 
 以给定数据训练模型
 
@@ -755,7 +777,7 @@ tree.fit(X,# 训练数据
          y)# 标签
 ```
 
-### 4.4.2.export_graphviz()
+### 4.5.2.export_graphviz()
 
 以dot文件导出决策树
 
@@ -767,11 +789,11 @@ dot_data = export_graphviz(decision_tree,# 决策树
                            class_names)# 分类名称
 ```
 
-## 4.5.utils
+## 4.6.utils
 
-### 4.5.1.multiclass
+### 4.6.1.multiclass
 
-#### 4.5.1.1.type_of_target()
+#### 4.6.1.1.type_of_target()
 
 返回确定目标的数据类型
 
