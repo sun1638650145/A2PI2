@@ -1,8 +1,6 @@
 # <center>A²PI² version2</center>
 
-第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正,
-
-文档主要是Python描述，涉及小部分JavaScript语言
+第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正,文档主要是Python描述，涉及小部分JavaScript语言
 
 # 1.imageio
 
@@ -787,6 +785,15 @@ dot_data = export_graphviz(decision_tree,# 决策树
                            out_file,#生成dot文件 默认为None（返回str）
                            feature_names,# 属性名称
                            class_names)# 分类名称
+```
+
+### 4.5.3.plot_tree()
+
+绘制决策树（使用matplotlib展示）
+
+```python
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+plot_tree(tree)
 ```
 
 ## 4.6.utils
