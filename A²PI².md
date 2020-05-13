@@ -793,7 +793,7 @@ dot_data = export_graphviz(decision_tree,# 决策树
 
 ```python
 from sklearn.tree import DecisionTreeClassifier, plot_tree
-plot_tree(tree)
+plot_tree(decision_tree)# 要绘制的决策树
 ```
 
 ## 4.6.utils
