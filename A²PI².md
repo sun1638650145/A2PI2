@@ -742,7 +742,27 @@ LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 LOO.split(X)# 训练数据
 ```
 
-### 4.4.3.train_test_split()
+### 4.4.3.StratifiedKFold()
+
+生成一个K折交叉验证器
+
+```python
+from sklearn.model_selection import StratifiedKFold
+k_fold = StratifiedKFold(n_splits,# 折数 默认是5
+                         shuffle,# 是否打乱样本
+                         random_state)# 随机状态
+```
+
+#### 4.4.3.1.split()
+
+将数据划分成训练集和测试集，并生成索引
+
+```python
+k_fold.split(x,# 训练数据
+             y)# 标签（注意不能传入独热编码的标签）
+```
+
+### 4.4.4.train_test_split()
 
 将原始数据随机拆分为训练和测试子集
 
