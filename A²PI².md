@@ -2,9 +2,60 @@
 
 第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正,文档主要是Python描述，涉及小部分JavaScript语言
 
-# 1.imageio
+# 1.catboost
 
-## 1.1.imread()
+## 1.1.CatBoostClassifier()
+
+catboost分类器
+
+```python
+from catboost import CatBoostClassifier
+model = CatBoostClassifier(iterations,# 迭代次数
+                           learning_rate,# 学习率
+                           depth,# 树的深度
+                           loss_function,# 损失函数 'Logloss'|'CrossEntropy'
+                           task_type)# 用于训练的硬件 'CPU'|'GPU'
+```
+
+### 1.1.1.fit()
+
+训练模型
+
+```python
+model.fit(X,# 训练数据
+          y,# 标签
+          text_features,# 指定训练数据的索引列
+          eval_set,# 验证集元组，用于早停
+          verbose)# 是否显示显示模式
+```
+
+### 1.1.2.feature_importances_
+
+特征的重要度
+
+```python
+importances = model.feature_importances_
+```
+
+### 1.1.3.feature_name_
+
+特征的名称
+
+```python
+names = model.feature_names_
+```
+
+### 1.1.4.predict()
+
+生成预测结果
+
+```python
+model.predict(data)# 测试数据
+```
+
+# 2.imageio
+
+## 2.1.imread()
 
 读取图片并返回一个numpy数组
 
@@ -13,15 +64,15 @@ import imageio
 image = imageio.imread(uri)# 文件对象或http地址，图片的路径
 ```
 
-# 2.keras
+# 3.keras
 
 keras在tensorflow r1.x和r2.1以及plaidml中版本均是2.2.4；除了模型初始化时的初始化器不同，不能混合续训，但是代码完全兼容，且可以混用执行预测和部署
 
-## 2.1.applications
+## 3.1.applications
 
-### 2.1.1.inception_resnet_v2
+### 3.1.1.inception_resnet_v2
 
-#### 2.1.1.1.InceptionResNetV2()
+#### 3.1.1.1.InceptionResNetV2()
 
 InceptionResNetV2的预训练模型
 
@@ -32,9 +83,9 @@ model = InceptionResNetV2(include_top,# 是否包含全连接的输出层
                           input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.2.inception_v3
+### 3.1.2.inception_v3
 
-#### 2.1.2.1.InceptionV3()
+#### 3.1.2.1.InceptionV3()
 
 InceptionV3的预训练模型
 
@@ -45,9 +96,9 @@ model = InceptionV3(include_top,# 是否包含全连接的输出层
                     input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.3.resnet_v2
+### 3.1.3.resnet_v2
 
-#### 2.1.3.1.ResNet152V2()
+#### 3.1.3.1.ResNet152V2()
 
 ResNet152V2的预训练模型
 
@@ -58,9 +109,9 @@ model = ResNet152V2(include_top,# 是否包含全连接的输出层
                     input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.4.resnet50
+### 3.1.4.resnet50
 
-#### 2.1.4.1.ResNet50()
+#### 3.1.4.1.ResNet50()
 
 ResNet50的预训练模型
 
@@ -71,9 +122,9 @@ model = ResNet50(include_top,# 是否包含全连接的输出层
                  input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.5.vgg19
+### 3.1.5.vgg19
 
-#### 2.1.5.1.preprocess_input()
+#### 3.1.5.1.preprocess_input()
 
 对数据进行预处理
 
@@ -82,7 +133,7 @@ from tensorflow.keras.applications.vgg19 import preprocess_input
 preprocessed_input = preprocess_input(x)# 要预处理的数据
 ```
 
-#### 2.1.5.2.VGG19()
+#### 3.1.5.2.VGG19()
 
 VGG19的预训练模型
 
@@ -93,9 +144,9 @@ model = VGG19(include_top,# 是否包含全连接的输出层
               input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 2.1.6.xception
+### 3.1.6.xception
 
-#### 2.1.6.1.Xception()
+#### 3.1.6.1.Xception()
 
 Xception的预训练模型
 
@@ -106,9 +157,9 @@ model = Xception(include_top,# 是否包含全连接的输出层
                  input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-## 2.2.backend
+## 3.2.backend
 
-### 2.2.1.cast()
+### 3.2.1.cast()
 
 转换张量的类型
 
@@ -118,7 +169,7 @@ tensor = cast(x,# 张量
               dtype)# 转换后的类型
 ```
 
-### 2.2.2.clip()
+### 3.2.2.clip()
 
 将变量的值裁切到某个区间（类似标准化）
 
@@ -129,7 +180,7 @@ tensor = clip(x,# 张量
               max_value)# 最大值
 ```
 
-### 2.2.3.expand_dims()
+### 3.2.3.expand_dims()
 
 在指定处给tensor增加一个维度
 
@@ -139,7 +190,7 @@ tensor_new = expand_dims(x,# 张量
                          axis)# 增加的维度的位置
 ```
 
-### 2.2.4.ones_like()
+### 3.2.4.ones_like()
 
 创建一个全1的张量
 
@@ -148,7 +199,7 @@ from keras.backend import ones_like
 tensor = ones_like(x)# 张量
 ```
 
-### 2.2.5.shape()
+### 3.2.5.shape()
 
 返回张量的形状
 
@@ -157,7 +208,7 @@ from keras.backend import shape
 shape = shape(x)# 张量
 ```
 
-### 2.2.6.zeros_like()
+### 3.2.6.zeros_like()
 
 创建一个全0的张量
 
@@ -166,9 +217,9 @@ from keras.backend import zeros_like
 tensor = zeros_like(x)# 张量
 ```
 
-## 2.3.callbacks
+## 3.3.callbacks
 
-### 2.3.1.ModelCheckpoint()
+### 3.3.1.ModelCheckpoint()
 
 保存模型（主要是断点）
 
@@ -178,13 +229,13 @@ callbacks = [ModelCheckpoint(filepath,# 模型保存的路径
                              period)]# 保存间隔
 ```
 
-## 2.4.datasets
+## 3.4.datasets
 
-### 2.4.1.mnist
+### 3.4.1.mnist
 
 keras自带的数据集之一
 
-#### 2.4.1.1.load_data()
+#### 3.4.1.1.load_data()
 
 加载mnist数据集
 
@@ -193,11 +244,11 @@ from keras import mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 ```
 
-## 2.5.layers
+## 3.5.layers
 
 keras提供Model（函数式API）和Sequential（普通API），如果函数名相同则不赘述
 
-### 2.5.1.Add()
+### 3.5.1.Add()
 
 将多个层通过矩阵加法合并
 
@@ -206,7 +257,7 @@ from keras.layers import Add
 layer = Add()(_Merge)# 相同形状的张量（层）列表
 ```
 
-### 2.5.2.BatchNormalization()
+### 3.5.2.BatchNormalization()
 
 批量标准化层
 
@@ -215,7 +266,7 @@ from keras.layers import BatchNormalization
 layer = BatchNormalization()
 ```
 
-### 2.5.3.Bidirectional()
+### 3.5.3.Bidirectional()
 
 RNN的双向封装器
 
@@ -224,7 +275,7 @@ from keras.layers import Bidirectional
 layers = Bidirectional(layer)# 循环层实例
 ```
 
-### 2.5.4.Concatenate()
+### 3.5.4.Concatenate()
 
 连接输入的层
 
@@ -237,7 +288,7 @@ _Merge 张量（层）列表
 """
 ```
 
-### 2.5.5.Conv1D()
+### 3.5.5.Conv1D()
 
 1D卷积层（例如时序卷积）
 
@@ -254,7 +305,7 @@ layer = Conv1D(filters,# 整数，卷积核的数量
                bias_initializer)# 偏置项初始化
 ```
 
-### 2.5.6.Conv2D()
+### 3.5.6.Conv2D()
 
 2D卷积层（例如时序卷积）
 
@@ -267,7 +318,7 @@ layer = Conv2D(filters,# 整数，卷积核的数量
                input_shape)# 元组，第一层需要指定输入
 ```
 
-### 2.5.7.Conv2DTranspose()
+### 3.5.7.Conv2DTranspose()
 
 转置卷积层 (有时被成为反卷积)，将具有卷积输出尺寸的东西 转换为具有卷积输入尺寸的东西
 
@@ -280,7 +331,7 @@ layer = Conv2DTranspose(filters,# 整数，输出空间的维度
                     		use_bias)# 布尔值 是否使用偏置
 ```
 
-### 2.5.8.Dense()
+### 3.5.8.Dense()
 
 全连接层
 
@@ -291,7 +342,7 @@ layer = Dense(units,# 整数，神经元数量
               input_shape)# 元组，第一层需要指定输入
 ```
 
-### 2.5.9.Dropout()
+### 3.5.9.Dropout()
 
 在训练阶段按照比例随机丢弃神经元
 
@@ -300,7 +351,7 @@ from keras.layers import Dropout
 layer = Dropout(rate)# 丢弃率
 ```
 
-### 2.5.10.Flatten()
+### 3.5.10.Flatten()
 
 将输入展平，不影响批次大小
 
@@ -309,7 +360,7 @@ from keras.layers import Flatten
 layer = Flatten()
 ```
 
-### 2.5.11.LSTM()
+### 3.5.11.LSTM()
 
 长短时记忆网络层
 
@@ -319,7 +370,7 @@ layer = LSTM(units,# 整数，神经元数量
              return_sequences)# 布尔值，是否返回整个序列
 ```
 
-### 2.5.12.Input()
+### 3.5.12.Input()
 
 输入层
 
@@ -329,7 +380,7 @@ input_tensor = Input(shape,# 整数，形状元组
                      dtype)# 期望数据类型
 ```
 
-### 2.5.13.LeakyReLU()
+### 3.5.13.LeakyReLU()
 
 带泄漏的 ReLU层
 
@@ -338,7 +389,7 @@ from keras.layers import LeakyReLU
 layer = LeakyReLU(alpha)# 负斜率系数，默认为0.3
 ```
 
-### 2.5.14.MaxPooling1D()
+### 3.5.14.MaxPooling1D()
 
 对时序数据进行最大池化
 
@@ -349,7 +400,7 @@ layer = MaxPooling1D(pool_size,# 整数，池化核数量
                      padding)# 'same''valid''causal'，是否使用全零填充
 ```
 
-### 2.5.15.Reshape()
+### 3.5.15.Reshape()
 
 将输入重新调整为特定的尺寸
 
@@ -358,9 +409,9 @@ from keras.layers import Reshape
 layer = Reshape(target_shape)# 整数元组，目标尺寸
 ```
 
-## 2.6.losses
+## 3.6.losses
 
-### 2.6.1.BinaryCrossentropy()
+### 3.6.1.BinaryCrossentropy()
 
 计算真实标签和预测值标签的的交叉熵损失（二分类）
 
@@ -369,7 +420,7 @@ from keras.losses import BinaryCrossentropy
 cross_entropy = BinaryCrossentropy(from_logits)# 是否将y_pred解释为张量
 ```
 
-### 2.6.2.SparseCategoricalCrossentropy()
+### 3.6.2.SparseCategoricalCrossentropy()
 
 计算真实标签和预测值标签的的交叉熵损失（多分类）
 
@@ -378,9 +429,9 @@ from keras.losses import SparseCategoricalCrossentropy
 cross_entropy = SparseCategoricalCrossentropy(from_logits)# 是否将y_pred解释为张量
 ```
 
-## 2.7.models
+## 3.7.models
 
-### 2.7.1.Model()
+### 3.7.1.Model()
 
 keras自定义模型对象
 
@@ -390,7 +441,7 @@ model = Model(inputs,# 输入层
               outputs)# 输出层
 ```
 
-#### 2.7.1.1.fit_generator()
+#### 3.7.1.1.fit_generator()
 
 生成批次训练数据，按批训练数据
 
@@ -401,7 +452,7 @@ model.fit_generator(generator,# 数据生成器，比如ImageDataGenerator()
                     verbose)# 日志显示模式 0=安静模型 1=进度条 2每轮显示
 ```
 
-#### 2.7.1.2.load_model()
+#### 3.7.1.2.load_model()
 
 加载模型
 
@@ -410,7 +461,7 @@ from keras.models import load_model
 model = load_model(filepath)# 文件路径，可以是saved model或者h5py
 ```
 
-#### 2.7.1.3.save()
+#### 3.7.1.3.save()
 
 将模型保存为SavedModel或者HDF5文件
 
@@ -419,7 +470,7 @@ model.save(filepath,# 保存路径
            save_format)# 保存格式，默认是h5，可选tf
 ```
 
-### 2.7.2.Sequential()
+### 3.7.2.Sequential()
 
 构建一个线性堆叠的网络模型
 
@@ -428,7 +479,7 @@ from keras.models import Sequential
 model = Sequential()
 ```
 
-#### 2.7.2.1.add() 
+#### 3.7.2.1.add() 
 
 将一个具体的单层神经网络加入模型
 
@@ -436,7 +487,7 @@ model = Sequential()
 model.add(layer)
 ```
 
-#### 2.7.2.2.compile()
+#### 3.7.2.2.compile()
 
 用于配置训练模型
 
@@ -446,7 +497,7 @@ model.compile(optimizer,# 优化器
               metrics)# 评估标准['accuracy']
 ```
 
-#### 2.7.2.3.evaluate()
+#### 3.7.2.3.evaluate()
 
 在测试模式下返回损失值和准确率
 
@@ -457,7 +508,7 @@ model.evaluate(x,# 训练数据
                verbose)# 日志显示模式 0=安静模型 1=进度条 2每轮显示
 ```
 
-#### 2.7.2.4.fit()
+#### 3.7.2.4.fit()
 
 以给定批次训练模型
 
@@ -473,7 +524,7 @@ history = model.fit(x,# 训练数据，包括数据生成器，比如ImageDataGe
           shuffle)# 布尔值，打乱数据
 ```
 
-#### 2.7.2.5.load_weights()
+#### 3.7.2.5.load_weights()
 
 加载所有的神经网络层的参数
 
@@ -481,7 +532,7 @@ history = model.fit(x,# 训练数据，包括数据生成器，比如ImageDataGe
 model.load_weights(filepath)# 检查点文件路径
 ```
 
-#### 2.7.2.6.predict()
+#### 3.7.2.6.predict()
 
 生成预测结果
 
@@ -491,7 +542,7 @@ model.predict(x,# 测试数据
               verbose)# 日志显示模式 0=安静模型 1=进度条
 ```
 
-#### 2.7.2.7.output_shape()
+#### 3.7.2.7.output_shape()
 
 返回模型的输出层形状
 
@@ -499,7 +550,7 @@ model.predict(x,# 测试数据
 print(model.output_shape())
 ```
 
-#### 2.7.2.8.summary()
+#### 3.7.2.8.summary()
 
 查看模型的各层参数
 
@@ -507,9 +558,9 @@ print(model.output_shape())
 model.summary()
 ```
 
-## 2.8.optimizers
+## 3.8.optimizers
 
-### 2.8.1.Adam()
+### 3.8.1.Adam()
 
 Adam优化器
 
@@ -518,7 +569,7 @@ from keras.optimizers import Adam
 optimizer = Adam(lr)# 学习率
 ```
 
-### 2.8.2.apply_gradients()
+### 3.8.2.apply_gradients()
 
 将梯度带计算出的梯度赋给优化器
 
@@ -526,11 +577,11 @@ optimizer = Adam(lr)# 学习率
 optimizer.apply_gradients(grads_and_vars)# 对应梯度和变量组成的列表
 ```
 
-## 2.9.preprocessing
+## 3.9.preprocessing
 
-### 2.9.1.image
+### 3.9.1.image
 
-#### 2.9.1.1.ImageDataGenerator()
+#### 3.9.1.1.ImageDataGenerator()
 
 对图片数据进行实时的数据增强类
 
@@ -546,7 +597,7 @@ data_generator = ImageDataGenerator(rotation_range,# 整数，随机旋转度数
                                     horizontal_flip)# 布尔值，水平随机翻转                 
 ```
 
-##### 2.9.1.1.1.flow_from_dataframe()
+##### 3.9.1.1.1.flow_from_dataframe()
 
 从给定的dataframe标签读入数据并增强
 
@@ -564,7 +615,7 @@ data_generator.flow_from_dataframe(dataframe,# dataframe标签
                                    validate_filenames)# 验证文件是否有效，默认True
 ```
 
-##### 2.9.1.1.2.flow_from_directory()
+##### 3.9.1.1.2.flow_from_directory()
 
 从给定路径读入数据并增强（要求每个类别必须单独一个文件夹）
 
@@ -578,7 +629,7 @@ data_generator.flow_from_directory(directory,# 路径
                                    interpolation)# 插值，调整尺寸 'nearest''bilinear''bicubic'
 ```
 
-###### 2.9.1.1.2.1.class_indices
+###### 3.9.1.1.2.1.class_indices
 
 返回训练数据的索引
 
@@ -588,7 +639,7 @@ batches = ImageDataGenerator().flow_from_directory()
 print(bathes.class_indices)
 ```
 
-#### 2.9.1.2.load_image()
+#### 3.9.1.2.load_image()
 
 按照PIL的格式加载图像
 
@@ -598,9 +649,9 @@ img = image.load_img(path,# 路径
                      target_size)# 元组，调整后大小
 ```
 
-## 2.10.utils
+## 3.10.utils
 
-### 2.10.1.multi_gpu_model()
+### 3.10.1.multi_gpu_model()
 
 多GPU并行训练模型
 
@@ -610,7 +661,7 @@ parallel_model = multi_gpu_model(model,# 模型
                                  gpus)# 整数（大于等于2），并行GPU数量
 ```
 
-### 2.10.2.plot_model()
+### 3.10.2.plot_model()
 
 保存keras模型成图片
 
@@ -624,7 +675,7 @@ plot_model(model,# 模型
            dpi)# 每英寸点数
 ```
 
-### 2.10.3.to_categorical()
+### 3.10.3.to_categorical()
 
 将种类的标签向量转换为独热编码
 
@@ -634,11 +685,11 @@ y_one_hot = to_categorical(y,# 要转换的标签向量
                            num_classes)# 类的总数
 ```
 
-# 3.lightgbm
+# 4.lightgbm
 
 注意macOS下需要先安装libomp
 
-## 3.1.LGBMClassifier()
+## 4.1.LGBMClassifier()
 
 LGBM分类器
 
@@ -647,7 +698,7 @@ from lightgbm import LGBMClassifier
 model = LGBMClassifier(n_estimators)# 树的数量，默认100
 ```
 
-### 3.1.1.fit()
+### 4.1.1.fit()
 
 训练模型
 
@@ -657,7 +708,7 @@ model.fit(X,# 训练数据
           eval_set)# 元组对列表，评估集，输出loss
 ```
 
-### 3.1.2.predict()
+### 4.1.2.predict()
 
 生成预测结果
 
@@ -665,11 +716,11 @@ model.fit(X,# 训练数据
 ans = model.predict(X)# 测试数据 
 ```
 
-# 4.PIL
+# 5.PIL
 
-## 4.1.Image
+## 5.1.Image
 
-### 4.1.1.fromarray()
+### 5.1.1.fromarray()
 
 从输入的图片返回一个数组
 
@@ -678,7 +729,7 @@ from PIL import Image
 array = Image.fromarray(obj)# 图片对象
 ```
 
-### 4.1.2.resize()
+### 5.1.2.resize()
 
 返回调整大小后的图像的副本
 
@@ -687,11 +738,11 @@ from PIL import Image
 new_image = image.resize(size)# 有宽度和高度的二元组
 ```
 
-# 5.sklearn
+# 6.sklearn
 
-## 5.1.datasets
+## 6.1.datasets
 
-### 5.1.1.load_iris()
+### 6.1.1.load_iris()
 
 加载并返回iris数据集
 
@@ -700,9 +751,9 @@ from sklearn import datasets
 iris = datasets.load_iris()
 ```
 
-## 5.2.linear_model
+## 6.2.linear_model
 
-### 5.2.1.LogisticRegression()
+### 6.2.1.LogisticRegression()
 
 构建一个对数几率回归模型
 
@@ -711,7 +762,7 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-#### 5.2.1.1.fit()
+#### 6.2.1.1.fit()
 
 以给定数据训练模型
 
@@ -721,7 +772,7 @@ model.fit(X,# 训练数据
           sample_weight)# 数组，类别权重，默认为None
 ```
 
-#### 5.2.1.2.predict()
+#### 6.2.1.2.predict()
 
 生成预测结果
 
@@ -729,9 +780,9 @@ model.fit(X,# 训练数据
 model.predict(X)# 测试数据
 ```
 
-## 5.3.metrics
+## 6.3.metrics
 
-### 5.3.1.accuracy_score()
+### 6.3.1.accuracy_score()
 
 计算准确率
 
@@ -742,9 +793,9 @@ accuracy_score(y_true,# 真实标签
                sample_weight)# 数组，类别权重，默认为None
 ```
 
-## 5.4.model_selection
+## 6.4.model_selection
 
-### 5.4.1.cross_val_predict()
+### 6.4.1.cross_val_predict()
 
 使用交叉验证法验证
 
@@ -756,7 +807,7 @@ cross_val_predict(estimator,# 训练的模型对象
                   cv)# 整数，划分数，默认为3
 ```
 
-### 5.4.2.LeaveOneOut()
+### 6.4.2.LeaveOneOut()
 
 使用留一法验证
 
@@ -765,7 +816,7 @@ from sklearn.model_selection import LeaveOneOut
 LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 ```
 
-#### 5.4.2.1.split()
+#### 6.4.2.1.split()
 
 按照具体BaseCrossValidator对象将数据划分为训练和测试集
 
@@ -773,7 +824,7 @@ LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 LOO.split(X)# 训练数据
 ```
 
-### 5.4.3.StratifiedKFold()
+### 6.4.3.StratifiedKFold()
 
 生成一个K折交叉验证器
 
@@ -784,7 +835,7 @@ k_fold = StratifiedKFold(n_splits,# 折数 默认是5
                          random_state)# 随机状态
 ```
 
-#### 5.4.3.1.split()
+#### 6.4.3.1.split()
 
 将数据划分成训练集和测试集，并生成索引
 
@@ -793,7 +844,7 @@ k_fold.split(x,# 训练数据
              y)# 标签（注意不能传入独热编码的标签）
 ```
 
-### 5.4.4.train_test_split()
+### 6.4.4.train_test_split()
 
 将原始数据随机拆分为训练和测试子集
 
@@ -804,9 +855,9 @@ x_train, x_test, y_train, y_test = train_test_split(X,# 原始数据
                                                     test_size,# 浮点数 测试集大小 默认为0.25
                                                     random_state)# 随机划分数据 默认None
 ```
-## 5.5.preprocessing
+## 6.5.preprocessing
 
-### 5.5.1.MinMaxScaler()
+### 6.5.1.MinMaxScaler()
 
 根据给定最大最小值缩放数据
 
@@ -815,7 +866,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()# 实例化一个缩放器
 ```
 
-#### 5.5.1.1.fit_transform()
+#### 6.5.1.1.fit_transform()
 
 转化数据
 
@@ -823,9 +874,9 @@ scaler = MinMaxScaler()# 实例化一个缩放器
 data = scaler.fit_transform(X)# 要转换的数据
 ```
 
-## 5.6.tree
+## 6.6.tree
 
-### 5.6.1.DecisionTreeClassifier()
+### 6.6.1.DecisionTreeClassifier()
 
 生成一个分类决策树实例
 
@@ -836,7 +887,7 @@ tree = DecisionTreeClassifier(criterion,# 划分条件 'gini''entropy'
 															# 随机状态 默认是None（通过np.random自动生成），也可以赋一个整数
 ```
 
-#### 5.6.1.1.fit()
+#### 6.6.1.1.fit()
 
 以给定数据训练模型
 
@@ -845,7 +896,7 @@ tree.fit(X,# 训练数据
          y)# 标签
 ```
 
-### 5.6.2.export_graphviz()
+### 6.6.2.export_graphviz()
 
 以dot文件导出决策树
 
@@ -857,7 +908,7 @@ dot_data = export_graphviz(decision_tree,# 决策树
                            class_names)# 分类名称
 ```
 
-### 5.6.3.plot_tree()
+### 6.6.3.plot_tree()
 
 绘制决策树（使用matplotlib展示）
 
@@ -866,11 +917,11 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 plot_tree(decision_tree)# 要绘制的决策树
 ```
 
-## 5.7.utils
+## 6.7.utils
 
-### 5.7.1.multiclass
+### 6.7.1.multiclass
 
-#### 5.7.1.1.type_of_target()
+#### 6.7.1.1.type_of_target()
 
 返回确定目标的数据类型
 
@@ -890,11 +941,11 @@ result = type_of_target(y)# array-like 待检查的数据
 """
 ```
 
-# 6.tensorflow r1.x
+# 7.tensorflow r1.x
 
 tensorflow r1.x将逐步停止支持，可能只有为了支持tensorflow.js@0.x会用到
 
-## 6.1.concats()
+## 7.1.concats()
 
 按某个维度连接多个张量
 
@@ -908,7 +959,7 @@ value待合并的张量，axis按某个维度合并，name张量的名字
 """
 ```
 
-## 6.2.ConfigProto()
+## 7.2.ConfigProto()
 
 用于配置会话的选项
 
@@ -917,9 +968,9 @@ import tensorflow as tf
 tf.ConfigProto(gpu_option)# 配置显存
 ```
 
-## 6.3.gfile
+## 7.3.gfile
 
-### 6.3.1.FastGFile()
+### 7.3.1.FastGFile()
 
 没有线程锁的文件I/O封装器
 
@@ -929,7 +980,7 @@ fp = tf.gfile.FastGfile(name,# 保存名称
                         mode)# 模式，默认'r'
 ```
 
-## 6.4.global_variables()
+## 7.4.global_variables()
 
 返回默认会话中所有的全局变量
 
@@ -938,7 +989,7 @@ import tensorflow as tf
 var = tf.global_variables()
 ```
 
-## 6.5.global_variables_initializer()
+## 7.5.global_variables_initializer()
 
 初始化全局的变量
 
@@ -947,7 +998,7 @@ import tensorflow as tf
 init = tf.global_variables_initializer()
 ```
 
-## 6.6.GPUOptions()
+## 7.6.GPUOptions()
 
 使用GPU时对显存使用的控制选项
 
@@ -956,7 +1007,7 @@ import tensorflow as tf
 gpu_options = tf.GPUOptions(allow_growth)# 布尔值，设置为True时，显存按需分配（tensorflow默认是占用全部显存）
 ```
 
-## 6.7.GraphDef()
+## 7.7.GraphDef()
 
 tensorflow的信息协议
 
@@ -965,7 +1016,7 @@ import tensorflow as tf
 graph_def = tf.GraphDef()
 ```
 
-### 6.7.1.ParseFromString()
+### 7.7.1.ParseFromString()
 
 将序列化的数据转换成GraphDef
 
@@ -973,7 +1024,7 @@ graph_def = tf.GraphDef()
 graph_def.ParseFromString(serialized)# 序列化数据，数据流 
 ```
 
-## 6.8.import_graph_def()
+## 7.8.import_graph_def()
 
 将GraphDef实例导入默认的Graph计算图
 
@@ -984,9 +1035,9 @@ tensor = tf.import_graph_def(graph_def,# graph_def实例
                      				 return_elements)# 字符串列表，输出张量的名称
 ```
 
-## 6.9.nn
+## 7.9.nn
 
-### 6.9.1.avg_pool()
+### 7.9.1.avg_pool()
 
 均值池化层
 
@@ -1000,7 +1051,7 @@ tf.nn.avg_pool(value,# 输入张量
                name)# 名称
 ```
 
-### 6.9.2.dropout()
+### 7.9.2.dropout()
 
 在训练阶段按照比例随机丢弃神经元
 
@@ -1011,7 +1062,7 @@ tf.nn.dropout(x,# 输入张量
 	      name)# 整数
 ```
 
-### 6.9.3.lrn()
+### 7.9.3.lrn()
 
 局部响应归一化层(Local Response Normalization)
 $$
@@ -1031,7 +1082,7 @@ tf.nn.lrn(input,# 输入张量
           name)# 名称
 ```
 
-### 6.9.4.max_pool()
+### 7.9.4.max_pool()
 
 最大池化层
 
@@ -1045,7 +1096,7 @@ tf.nn.max_pool(value,# 输入张量
                name)# 名称
 ```
 
-### 6.9.5.softmax()
+### 7.9.5.softmax()
 
 softmax激活函数
 
@@ -1054,7 +1105,7 @@ import tensorflow as tf
 tf.nn.softmax(logits)# 输入张量（非空）
 ```
 
-## 6.10.placeholder()
+## 7.10.placeholder()
 
 添加一个占位符
 
@@ -1065,13 +1116,13 @@ x = tf.placeholder(dtype,# 自负床数据类型
                    name)# 名称
 ```
 
-## 6.11.python
+## 7.11.python
 
-### 6.11.1.framework
+### 7.11.1.framework
 
-#### 6.11.1.1.graph_util
+#### 7.11.1.1.graph_util
 
-##### 6.11.1.1.1.convert_variables_to_constants
+##### 7.11.1.1.1.convert_variables_to_constants
 
 将计算图中的变量转换为常量
 
@@ -1082,7 +1133,7 @@ output_graph = convert_variables_to_constants(sess,# 需要转换变量的会话
                                    						output_node_names)#字符串列表，输出层的名称
 ```
 
-###### 6.11.1.1.1.1.SerializeToString()
+###### 7.11.1.1.1.1.SerializeToString()
 
 将protobuf数据转换为二进制字符串
 
@@ -1091,11 +1142,11 @@ output_graph = convert_variables_to_constants(sess,# 需要转换变量的会话
 output_graph.SerializeToString()
 ```
 
-## 6.12.saved_model
+## 7.12.saved_model
 
-### 6.12.1.builder
+### 7.12.1.builder
 
-#### 6.12.1.1.SavedModelBuilder()
+#### 7.12.1.1.SavedModelBuilder()
 
 构建一个生成SavedModel的实例
 
@@ -1104,7 +1155,7 @@ from tensorflow.saved_model import builder
 builder = builder.SavedModelBuilder(export_dir)# SavedModel的保存路径
 ```
 
-##### 6.12.1.1.1.add_meta_graph_and_variables()
+##### 7.12.1.1.1.add_meta_graph_and_variables()
 
 添加图结构和变量信息
 
@@ -1114,7 +1165,7 @@ builder.add_meta_graph_and_variables(sess,# 会话
                                    	 signature_def_map)# 预测签名字典
 ```
 
-##### 6.12.1.1.2.save()
+##### 7.12.1.1.2.save()
 
 将SaveModel写入磁盘
 
@@ -1122,9 +1173,9 @@ builder.add_meta_graph_and_variables(sess,# 会话
 builder.save()
 ```
 
-### 6.12.2.loader
+### 7.12.2.loader
 
-#### 6.12.2.1.load()
+#### 7.12.2.1.load()
 
 从标签指定的SavedModel加载模型
 
@@ -1135,9 +1186,9 @@ tf.saved_model.loader.load(sess,# 模型还原到的会话
                            export_dir)# 待还原的SavedModel目录
 ```
 
-### 6.12.3.signature_def_utils
+### 7.12.3.signature_def_utils
 
-#### 6.12.3.1.predict_signature_def()
+#### 7.12.3.1.predict_signature_def()
 
 构建预测签名
 
@@ -1147,7 +1198,7 @@ signature = signatures_def_utils.predict_signature_def(inputs,# 字典，输入�
                                                        outputs)# 字典，输出变量
 ```
 
-### 6.12.4.simple_save()
+### 7.12.4.simple_save()
 
 使用简单方法构建SavedModel用于服务器
 
@@ -1159,7 +1210,7 @@ simple_save(session,# 会话
             outputs)# 字典，输出变量
 ```
 
-### 6.12.5.tag_constants
+### 7.12.5.tag_constants
 
 SaveModel的标签
 
@@ -1171,7 +1222,7 @@ tags = tag_constants.SERVING
 """
 ```
 
-## 6.13.Session()
+## 7.13.Session()
 
 生成一个tensorflow的会话
 
@@ -1180,7 +1231,7 @@ import tensorflow as tf
 sess = tf.Session(config)# 使用ConfigProto配置会话
 ```
 
-### 6.13.1.close()
+### 7.13.1.close()
 
 关闭当前会话
 
@@ -1188,9 +1239,9 @@ sess = tf.Session(config)# 使用ConfigProto配置会话
 sess.close()
 ```
 
-### 6.13.2.graph
+### 7.13.2.graph
 
-#### 6.13.2.1.get_tensor_by_name()
+#### 7.13.2.1.get_tensor_by_name()
 
 根据名称返回张量，可以使用多个线程同时调用
 
@@ -1198,7 +1249,7 @@ sess.close()
 sess.graph.get_tensor_by_name(name)# 张量的名称
 ```
 
-### 6.13.3.run()
+### 7.13.3.run()
 
 运行传入会话的操作，返回结果张量
 
@@ -1207,7 +1258,7 @@ sess.run(fetches,# 待计算的操作 'Operation''Tensor'
          feed_dict# 输入的值，默认为None
 ```
 
-## 6.14.split()
+## 7.14.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -1220,9 +1271,9 @@ value需要拆分的张量，num_or_size_splits要拆分的数量，axis按某�
 """
 ```
 
-## 6.15.train
+## 7.15.train
 
-### 6.15.1.AdamOptimizer()
+### 7.15.1.AdamOptimizer()
 
 Adam优化器
 
@@ -1231,7 +1282,7 @@ import tensorflow as tf
 optimizer = tf.train.AdamOptimizer(learning_rate)# 学习率
 ```
 
-### 6.15.2.GradientDescentOptimizer()
+### 7.15.2.GradientDescentOptimizer()
 
 梯度下降优化器
 
@@ -1240,7 +1291,7 @@ import tensorflow as tf
 optimizer = tf.train.GradientDescentOptimizer(learning_rate)# 学习率
 ```
 
-### 6.15.3.latest_checkpoint()
+### 7.15.3.latest_checkpoint()
 
 查找最近的保存点文件
 
@@ -1249,7 +1300,7 @@ import tensorflow as tf
 checkpoint = tf.train.latest_checkpoint(checkpoint_dir)# 保存点路径
 ```
 
-### 6.15.4.Saver()
+### 7.15.4.Saver()
 
 生成用于保存和还原计算图的实例
 
@@ -1259,7 +1310,7 @@ saver = tf.train.Saver(var_list)
 # 将被保存和恢复的变量列表或者变量字典，默认为None（保存全部） 
 ```
 
-#### 6.15.4.1.restore()
+#### 7.15.4.1.restore()
 
 恢复保存的变量
 
@@ -1268,7 +1319,7 @@ saver.restore(sess,# 会话，eager模式为None
               save_path)# 检查点文件的路径
 ```
 
-## 6.16.variable_scope()
+## 7.16.variable_scope()
 
 用于定义变量操作的上下文管理器
 
@@ -1277,15 +1328,15 @@ import tensorflow as tf
 with tf.variable_scope(name_or_scope):# 字符串，作用域
 ```
 
-# 7.tensorflow r2.x
+# 8.tensorflow r2.x
 
 注意r2.0/1和r2.2有部分模型不兼容，但是语法完全兼容
 
-## 7.1.config
+## 8.1.config
 
-### 7.1.1.experimental
+### 8.1.1.experimental
 
-#### 7.1.1.1.list_physical_devices()
+#### 8.1.1.1.list_physical_devices()
 
 返回主机运行时的可见的物理设备列表
 
@@ -1294,7 +1345,7 @@ import tensorflow as tf
 devices_list = tf.config.experimental.list_physical_devices(device_type)# 设备类型，可选CPU或GPU
 ```
 
-#### 7.1.1.2.set_memory_growth()
+#### 8.1.1.2.set_memory_growth()
 
 设置物理设备的内存的按需增长
 
@@ -1304,11 +1355,20 @@ tf.config.experimental.set_memory_growth(device,# 物理设备
                                          enable)# 是否运行内存按需增长  
 ```
 
-## 7.2.data
+## 8.2.constant()
 
-### 7.2.1.Datasets
+将输入转换为tensorflow的常张量
 
-#### 7.2.1.1.batch()
+```python
+import tensorflow as tf
+tensor = tf.constant(values)# 要转换的数据
+```
+
+## 8.3.data
+
+### 8.3.1.Datasets
+
+#### 8.3.1.1.batch()
 
 给数据集划分批次
 
@@ -1318,7 +1378,7 @@ dataset = tf.data.Dataset.range(6)
 dataset_shuffle = dataset.batch(batch_size=3)# 批次的大小
 ```
 
-#### 7.2.1.2.from_tensor_slices()
+#### 8.3.1.2.from_tensor_slices()
 
 返回一个数据集对象
 
@@ -1327,7 +1387,7 @@ import tensorflow as tf
 dataset = tf.data.Dataset.from_tensor_slices(tensor)# 张量，必须有相同的第一维
 ```
 
-#### 7.2.1.3.shuffle()
+#### 8.3.1.3.shuffle()
 
 随机打乱数据集对象的元素
 
@@ -1337,7 +1397,7 @@ dataset = tf.data.Dataset.range(3)
 dataset_shuffle = dataset.shuffle(buffer_size=3)# 数据集元素的数量
 ```
 
-## 7.3.einsum()
+## 8.4.einsum()
 
 爱因斯坦求和约定，返回根据等式定义的张量
 
@@ -1347,7 +1407,7 @@ result = einsum(equation,# 规则等式 乘号用',' 等号用'->'
                 *inputs)# 待求和的张量
 ```
 
-## 7.4.GradientTape()
+## 8.5.GradientTape()
 
 创建一个梯度带，可用于自动求导
 
@@ -1357,7 +1417,7 @@ with tf.GradientTape() as tape:
 		# 在tf.GradientTape()的上下文管理器内的计算都将被用于求导
 ```
 
-### 7.4.1.gradient()
+### 8.5.1.gradient()
 
 在梯度带内计算导数
 
@@ -1365,9 +1425,9 @@ with tf.GradientTape() as tape:
 		grad = tape.gradient(target, sources)# 计算target关于sources的导数
 ```
 
-## 7.5.image
+## 8.6.image
 
-### 7.5.1.convert_image_dtype()
+### 8.6.1.convert_image_dtype()
 
 转换图片的数据类型，并根据实际缩放
 
@@ -1377,7 +1437,7 @@ img_tensor = tf.image.convert_image_dtype(image,# 图片的张量
                                           dtype)# 转换后的张量类型
 ```
 
-### 7.5.2.decode_image()
+### 8.6.2.decode_image()
 
 将BMP、GIF、JPEG或PNG的编码字节流转换为张量
 
@@ -1388,7 +1448,7 @@ img_tensor = tf.image.decode_image(contents,# 图片的编码字符流
                                    dtype)# 转换后的张量类型
 ```
 
-### 7.5.3.resize()
+### 8.6.3.resize()
 
 按照指定方法调整图片的大小
 
@@ -1398,9 +1458,9 @@ img_tensor = tf.image.resize(images,# 输入图片
                      				 size)# 调整后的尺寸
 ```
 
-## 7.6.io
+## 8.7.io
 
-### 7.6.1.read_file()
+### 8.7.1.read_file()
 
 读入文件
 
@@ -1409,7 +1469,7 @@ import tensorflow as tf
 img = tf.io.read_file(filename)# 文件的路径，返回图片的编码字符流
 ```
 
-## 7.7.ones_like()
+## 8.8.ones_like()
 
 创建一个全1的张量
 
@@ -1418,9 +1478,9 @@ import tensorflow as tf
 tensor = tf.ones_like(input)# 张量
 ```
 
-## 7.8.random
+## 8.9.random
 
-### 7.8.1.normal()
+### 8.9.1.normal()
 
 生成一个正态分布的张量
 
@@ -1429,7 +1489,7 @@ import tensorflow as tf
 tensor = tf.random.normal(shape)# 张量的形状
 ```
 
-## 7.9.zeros_like()
+## 8.10.zeros_like()
 
 创建一个全0的张量
 
@@ -1438,23 +1498,35 @@ import tensorflow as tf
 tensor = tf.zeros_like(input)# 张量
 ```
 
-# 8.tensorflow_hub 0.8.0
+# 9.tensorflow_hub 0.8.0
 
-## 8.1.KerasLayer()
+## 9.1.KerasLayer()
 
 将一个SavedModel模型修饰成keras的一个层
 
 ```python
 import tensorflow_hub as hub
-efficient_layer = hub.KerasLayer(handle,# tensorflow_hub模型的路径
-                                 trainable)# 是否可训练
+layer = hub.KerasLayer(handle,# tensorflow_hub模型的路径
+                       trainable,# 是否可训练
+                       output_shape,# 输出的形状，没有输出形状的才可以使用 
+                       input_shape,# 输入的形状
+                       dtype)# 限制输入的数据类型
 ```
 
-# 9.tensorflow.js@0.x
+## 9.2.load()
+
+加载SavedModel模型
+
+```python
+import tensorflow_hub as hub
+model = hub.load(handle)# tensorflow_hub模型的路径
+```
+
+# 10.tensorflow.js@0.x
 
 tensorflow.js@0.x版本必须和tensorflow r1.x生成的SavedModel模型配套，不兼容tensorflow r2.x
 
-## 9.1.dispose()
+## 10.1.dispose()
 
 手动释放显存，推荐使用tf.tidy()
 
@@ -1464,7 +1536,7 @@ const t = tf.tensor([1, 2]);
 t.dispose();
 ```
 
-## 9.2.fromPixels()
+## 10.2.fromPixels()
 
 从一张图像创建一个三维张量
 
@@ -1477,9 +1549,9 @@ numChannels 输入图像的通道数（可选）
 */
 ```
 
-## 9.3.image
+## 10.3.image
 
-### 9.3.1.resizeBilinear()
+### 10.3.1.resizeBilinear()
 
 使用双线性法改变图片的尺寸
 
@@ -1493,9 +1565,9 @@ alignCorners 布尔值，对齐角落（可选）
 */
 ```
 
-## 9.4.layers
+## 10.4.layers
 
-### 9.4.1.dense()
+### 10.4.1.dense()
 
 全连接层
 
@@ -1508,7 +1580,7 @@ inputShape 此参数只在模型第一层使用
 */
 ```
 
-## 9.5.loadFrozenModel()
+## 10.5.loadFrozenModel()
 
 通过url加载固化的模型（异步执行）
 
@@ -1522,7 +1594,7 @@ weightsManifestUrl json权重的url（可选）
 */
 ```
 
-## 9.6.scalar()
+## 10.6.scalar()
 
 创建一个标量（tf.tensor()可替代）
 
@@ -1535,7 +1607,7 @@ dtype 数据类型（可选） 'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-## 9.7.sequential()
+## 10.7.sequential()
 
 构建一个线性堆叠的网络模型，模型拓扑是简单的层“堆栈”，没有分支或跳过。
 
@@ -1544,7 +1616,7 @@ import * as tf from '@tensorflow/tfjs';
 const model = tf.sequential(tf.layers.dense({}));
 ```
 
-### 9.7.1.add()
+### 10.7.1.add()
 
 将一个具体的单层神经网络加入模型
 
@@ -1553,7 +1625,7 @@ const model = tf.sequential(tf.layers.dense({}));
 model.add(tf.layers.dense({units, activation, inputShape}));
 ```
 
-### 9.7.2.compile()
+### 10.7.2.compile()
 
 用于配置训练模型
 
@@ -1561,7 +1633,7 @@ model.add(tf.layers.dense({units, activation, inputShape}));
 model.compile(args);// args 配置参数包括optimizer、loss、metrics
 ```
 
-### 9.7.3.fit()
+### 10.7.3.fit()
 
 以给定批次训练模型
 
@@ -1579,7 +1651,7 @@ args(可选) batchSize 批次大小，默认32
 */
 ```
 
-### 9.7.4.predict()
+### 10.7.4.predict()
 
 生成预测结果
 
@@ -1587,7 +1659,7 @@ args(可选) batchSize 批次大小，默认32
 model.predict(x);// 测试数据，需要是张量或者张量数组
 ```
 
-### 9.7.5.summary()
+### 10.7.5.summary()
 
 查看模型的各层参数
 
@@ -1595,7 +1667,7 @@ model.predict(x);// 测试数据，需要是张量或者张量数组
 model.summary();
 ```
 
-## 9.8.ones()
+## 10.8.ones()
 
 创建一个元素值全为一的张量
 
@@ -1608,7 +1680,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-## 9.9.tensor()
+## 10.9.tensor()
 
 创建一个张量，注意张量的值一经创建不可改变
 
@@ -1622,7 +1694,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-### 9.9.1.dataSync()
+### 10.9.1.dataSync()
 
 同步数据，此时阻塞线程直到同步完成
 
@@ -1630,7 +1702,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 const new_t = t.dataSync();
 ```
 
-### 9.9.2.expandDims()
+### 10.9.2.expandDims()
 
 增加张量的维度
 
@@ -1638,7 +1710,7 @@ const new_t = t.dataSync();
 t.expandDims(axis);// 维度（可选）
 ```
 
-### 9.9.3.toFloat()
+### 10.9.3.toFloat()
 
 将张量的数据类型转换为float32
 
@@ -1646,7 +1718,7 @@ t.expandDims(axis);// 维度（可选）
 t.toFloat();
 ```
 
-## 9.10.tensor1d()
+## 10.10.tensor1d()
 
 创建一个一维张量（tf.tensor()可替代）
 
@@ -1659,7 +1731,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-## 9.11.tensor2d()
+## 10.11.tensor2d()
 
 创建一个二维张量（tf.tensor()可替代）
 
@@ -1672,7 +1744,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-## 9.12.tidy()
+## 10.12.tidy()
 
 执行传入的函数后，自动清除除返回值以外的系统分配的所有的中间张量，防止内存泄露
 
@@ -1681,9 +1753,9 @@ import * as tf from '@tensorflow/tfjs';
 const result = tf.tidy(fn);// 传入一个箭头函数
 ```
 
-## 9.13.train
+## 10.13.train
 
-### 9.13.1adam()
+### 10.13.1adam()
 
 Adam优化器
 
@@ -1692,7 +1764,7 @@ import * as tf from '@tensorflow/tfjs';
 optimizer = tf.train.adam(learningRate);// 学习率
 ```
 
-## 9.14.variable()
+## 10.14.variable()
 
 创建一个变量
 
@@ -1707,7 +1779,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-### 9.14.1.assign()
+### 10.14.1.assign()
 
 给变量赋予新值
 
@@ -1715,7 +1787,7 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 v.assign(newValue);//newValue 新值，必须是一个tf.Tensor
 ```
 
-### 9.14.2.print()
+### 10.14.2.print()
 
 输出变量的值在控制台
 
@@ -1723,7 +1795,7 @@ v.assign(newValue);//newValue 新值，必须是一个tf.Tensor
 v.print();
 ```
 
-## 9.15.zeros()
+## 10.15.zeros()
 
 创建一个元素值全为零的张量
 
@@ -1736,11 +1808,11 @@ dtype 数据类型（可选）'float32'|'int32'|'bool'|'complex64'|'string'
 */
 ```
 
-# 10.matplotlib
+# 11.matplotlib
 
-## 10.1.axes
+## 11.1.axes
 
-### 10.1.1.annotate()
+### 11.1.1.annotate()
 
 使用文本“text”注释点“xy”
 
@@ -1757,7 +1829,7 @@ ax.annotate(text,# 注释的文本内容
             bbox)# 在文本周围绘制框
 ```
 
-### 10.1.2.set_xticks()
+### 11.1.2.set_xticks()
 
 设置X轴的刻度
 
@@ -1765,7 +1837,7 @@ ax.annotate(text,# 注释的文本内容
 ax.set_xticks(ticks)# 列表 X轴刻度位置列表
 ```
 
-### 10.1.3.set_yticks()
+### 11.1.3.set_yticks()
 
 设置Y轴的刻度
 
@@ -1773,7 +1845,7 @@ ax.set_xticks(ticks)# 列表 X轴刻度位置列表
 ax.set_yticks(ticks)# 列表 Y轴刻度位置列表
 ```
 
-###  10.1.4.spines
+###  11.1.4.spines
 
 设置figure的坐标轴
 
@@ -1781,7 +1853,7 @@ ax.set_yticks(ticks)# 列表 Y轴刻度位置列表
 ax.spines['left']# 可选的有 'right''top''bottom'
 ```
 
-#### 10.1.4.1.set_color()
+#### 11.1.4.1.set_color()
 
 设置坐标轴的颜色
 
@@ -1789,7 +1861,7 @@ ax.spines['left']# 可选的有 'right''top''bottom'
 ax.spines['left'].set_color(color)# 颜色
 ```
 
-### 10.1.5.text()
+### 11.1.5.text()
 
 在指定位置添加文本
 
@@ -1800,9 +1872,47 @@ ax.text(x,# 标量 放置的X坐标
         fontdict)# 字典，放置文本的字号，默认值由rc参数确定
 ```
 
-## 10.2.pyplot
+## 11.2.pyplot
 
-### 10.2.2.plot()
+### 11.2.1.barh()
+
+绘制水平的条形图
+
+```python
+import matplotlib.pyplot as plt
+plt.barh(y,# y轴名称 
+         width,# x轴名称
+         height)# 线条的宽度
+```
+
+### 11.2.2.figure()
+
+生成一个画布
+
+```python
+import matplotlib.pyplot as plt
+plt.figure(figsize)# 画布宽和高组成的元组
+```
+
+### 11.2.3.imread()
+
+读入图像
+
+```python
+import matplotlib.pyplot as plt
+img = plt.imread(fname)# 图片的路径
+```
+
+### 11.2.4.imshow()
+
+在画布上显示
+
+```python
+import matplotlib.pyplot as plt
+plt.imshow(X)# 要显示的图片
+```
+
+### 11.2.5.plot()
 
 绘制函数
 
@@ -1812,7 +1922,7 @@ plt.plot(x,# 自变量的值
          y)# 因变量的值
 ```
 
-### 10.2.3.rcParams
+### 11.2.6.rcParams
 
 pyplot使用的rc配置文件
 
@@ -1821,7 +1931,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'# 改变字体
 ```
 
-### 9.2.4.scatter()
+### 11.2.7.scatter()
 
 绘制散点图
 
@@ -1831,7 +1941,7 @@ plt.scatter(x,# X轴数据
             y)# Y轴数据
 ```
 
-### 10.2.5.show()
+### 11.2.8.show()
 
 显示图像
 
@@ -1840,7 +1950,7 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 10.2.6.subplots()
+### 11.2.9.subplots()
 
 创建一个图和一组子图，返回一个figure对象和axes对象（数组）
 
@@ -1849,7 +1959,7 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots()
 ```
 
-### 10.2.7.subplots_adjust()
+### 11.2.10.subplots_adjust()
 
 调整子图布局
 
@@ -1863,9 +1973,9 @@ plt.subplots_adjust(left,# 左侧
                     hspace)# 子图之间的高度
 ```
 
-# 11.numpy
+# 12.numpy
 
-## 11.1.argmax()
+## 12.1.argmax()
 
 返回最大值的索引
 
@@ -1875,7 +1985,7 @@ a = [1, 2, 3]
 max = np.argmax(a)# 输入可以是lists, tuples, ndarrays
 ```
 
-## 11.2.asarray()
+## 12.2.asarray()
 
 将输入转化为ndarray
 
@@ -1886,7 +1996,7 @@ a = np.asarray(a,# 输入可以是lists, tuples, ndarrays
                dtype)# 数据类型，可选
 ```
 
-## 11.3.astype()
+## 12.3.astype()
 
 强制转换成新的数据类型
 
@@ -1896,7 +2006,7 @@ a = [1.0, 2.0]
 new_a = a.astype(dtype)# 数据类型
 ```
 
-## 11.4.expand_dims()
+## 12.4.expand_dims()
 
 增加ndarray的维度
 
@@ -1907,9 +2017,9 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
                    axis)# 维度
 ```
 
-## 11.5.linalg
+## 12.5.linalg
 
-### 11.5.1.norm()
+### 12.5.1.norm()
 
 计算矩阵或者向量范数
 
@@ -1920,7 +2030,7 @@ norm = np.linalg.norm(x,# 输入矩阵或向量，维数必须是1-D或2-D
                       ord)# 范数选项，默认None，计算2范数
 ```
 
-## 11.6.linspace()
+## 12.6.linspace()
 
 生成一个等差数列
 
@@ -1931,7 +2041,7 @@ a = np.linspace(start,# 序列的起始值
                 num)# 生成样本数，默认50
 ```
 
-## 11.7.load()
+## 12.7.load()
 
 从npy或者npz文件中加载数组
 
@@ -1942,7 +2052,7 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 11.8.log2()
+## 12.8.log2()
 
 求log以2为的底数的值
 
@@ -1951,7 +2061,7 @@ import numpy as np
 value = np.log2(x)
 ```
 
-## 11.9.mat()
+## 12.9.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -1961,7 +2071,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 11.10.matmul()
+## 12.10.matmul()
 
 矩阵乘法
 
@@ -1972,7 +2082,7 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 11.11.mean()
+## 12.11.mean()
 
 按照指定的维度计算算术平均值
 
@@ -1991,7 +2101,7 @@ b = np.asarray([1, 2, 4])
 result = np.mean(a == b)
 ```
 
-## 11.12.transpose()
+## 12.12.transpose()
 
 对矩阵进行转置
 
@@ -2001,9 +2111,9 @@ a = [[1, 2], [3, 4]]
 a_t = np.transpose(a)
 ```
 
-## 11.13.random
+## 12.13.random
 
-### 11.13.1.normal()
+### 12.13.1.normal()
 
 生成一个正态分布的数组
 
@@ -2012,7 +2122,7 @@ import numpy as np
 a = np.random.normal(size=[2,3])# 形状
 ```
 
-## 11.14.reshape()
+## 12.14.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -2026,7 +2136,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 11.15.sort()
+## 12.15.sort()
 
 按照升序进行排序
 
@@ -2036,7 +2146,7 @@ a = [2, 3, 7, 8, 1]
 new_a = np.sort(a)
 ```
 
-## 11.16.split()
+## 12.16.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -2048,7 +2158,7 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
-## 11.17.std()
+## 12.17.std()
 
 按照给定的维度求标准差
 
@@ -2058,7 +2168,7 @@ a = [1, 2, 3]
 std = np.std(a)# 待计算均值的列表、矩阵
 ```
 
-## 11.18.sum()
+## 12.18.sum()
 
 按照给定的维度求和
 
@@ -2069,7 +2179,7 @@ sum = np.sum(a,# 待计算均值的列表、矩阵
              axis)# 维度
 ```
 
-## 11.19.zeros()
+## 12.19.zeros()
 
 生成一个全0数组
 
@@ -2079,9 +2189,9 @@ a = np.zeros(shape=[2, 3])# 形状
 print(a)
 ```
 
-# 12.pandas
+# 13.pandas
 
-## 12.1.DataFrame()
+## 13.1.DataFrame()
 
 将其他数据格式转换为DataFrame
 
@@ -2093,7 +2203,7 @@ df = pd.DataFrame(df,
                   columns)# 指定行的列表
 ```
 
-### 12.1.1.astype()
+### 13.1.1.astype()
 
 转换DataFrame到指定类型
 
@@ -2101,7 +2211,7 @@ df = pd.DataFrame(df,
 df['value'] = df['value'].astype(dtype)# 转换后的数据类型
 ```
 
-### 12.1.2.drop()
+### 13.1.2.drop()
 
 从行或列删除指定的标签
 
@@ -2110,7 +2220,7 @@ df.drop(labels,# 要删除的列标签或者行号
         axis)# 0或'index' 1或'columns'
 ```
 
-### 12.1.3.iloc
+### 13.1.3.iloc
 
 基于整数的行索引（下标）取数据
 
@@ -2118,7 +2228,7 @@ df.drop(labels,# 要删除的列标签或者行号
 df.iloc[0]# 取出第0行的数据
 ```
 
-### 12.1.4.loc
+### 13.1.4.loc
 
 基于标签取数据（没有名称时，和iloc一样按照索引）
 
@@ -2126,7 +2236,7 @@ df.iloc[0]# 取出第0行的数据
 df.loc[0]# 取出第0行的数据
 ```
 
-### 12.1.5.replace()
+### 13.1.5.replace()
 
 新值替换旧值
 
@@ -2137,7 +2247,7 @@ df.replace(to_replace,# 旧值
 df.replace(dict)# 可以是字典的键为旧值，值为新值，进行替换
 ```
 
-### 12.1.6.reset_index()
+### 13.1.6.reset_index()
 
 重置DataFrame的索引为从0递增的整数索引
 
@@ -2148,7 +2258,7 @@ df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据�
                inplace)# 布尔值，默认False，是否修改源文件
 ```
 
-### 12.1.7.shape
+### 13.1.7.shape
 
 返回DataFrame维数的元组
 
@@ -2156,7 +2266,7 @@ df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据�
 shape = df.shape
 ```
 
-## 12.2.group_by()
+## 13.2.group_by()
 
 按照给定的值进行分组
 
@@ -2166,7 +2276,7 @@ df = pd.DataFrame([('a', 1), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['
 df1 = pd.DataFrame(df.groupby('c2'))
 ```
 
-## 12.3.read_csv()
+## 13.3.read_csv()
 
 读取csv文件，返回一个DataFrame对象
 
@@ -2177,7 +2287,7 @@ df = pd.read_csv(filepath_or_buffer,# 文件或者缓冲区路径
                  index_col)# 指定索引列 ，默认是None
 ```
 
-## 12.4.Series()
+## 13.4.Series()
 
 将其他数据格式转换为Series
 
@@ -2186,7 +2296,7 @@ import pandas as pd
 sr = pd.Series([1, 2, 3])
 ```
 
-### 12.4.1.tolist()
+### 13.4.1.tolist()
 
 返回Series值的列表
 
@@ -2196,7 +2306,7 @@ sr.tolist()
 pd.Series.tolist(sr)
 ```
 
-### 12.4.2.values()
+### 13.4.2.values()
 
 将DataFrame的值转换为ndarry
 
@@ -2207,7 +2317,7 @@ df = pd.DataFrame(df)
 array = df['index'].values
 ```
 
-## 12.5.to_csv()
+## 13.5.to_csv()
 
 将DataFrame生成csv文件
 
@@ -2219,7 +2329,7 @@ df.to_csv(path_or_buf,# 保存的文件和路径
           encoding)# 编码方式，默认是‘utf-8’
 ```
 
-## 12.6.unique()
+## 13.6.unique()
 
 去除重复元素（不进行排序）
 
@@ -2228,7 +2338,7 @@ import pandas as pd
 pd.unique(values)# 一维array-like
 ```
 
-## 12.7.value_counts()
+## 13.7.value_counts()
 
 计算非空值出现的次数
 
@@ -2237,9 +2347,9 @@ import pnadas as pd
 pd.value_counts(values)# 1维array-like
 ```
 
-# 13.pydot
+# 14.pydot
 
-## 13.1.graph_from_dot_data()
+## 14.1.graph_from_dot_data()
 
 从dot字符串中加载图像
 
@@ -2248,7 +2358,7 @@ import pydot
 graph = pydot.graph_from_dot_data(s)# dot字符串，返回一个list
 ```
 
-## 13.2.graph_from_dot_file()
+## 14.2.graph_from_dot_file()
 
 从dot文件中加载图像
 
@@ -2257,9 +2367,9 @@ import pydot
 graph = pydot.graph_from_dot_data(path)# dot文件路径，返回一个list
 ```
 
-## 13.3.Dot
+## 14.3.Dot
 
-### 13.3.1.write_png()
+### 14.3.1.write_png()
 
 生成png图像
 
