@@ -653,7 +653,18 @@ data_generator = ImageDataGenerator(rotation_range,# 整数，随机旋转度数
                                     horizontal_flip)# 布尔值，水平随机翻转                 
 ```
 
-##### 4.9.1.1.1.flow_from_dataframe()
+##### 4.9.1.1.1.flow()
+
+从给定的数据和标签进行增强
+
+```python
+data_generator.flow(x,# 输入数据 
+                    y,# 标签
+                    batch_size,# 整数，批次大小，默认32
+                    shuffle)# 布尔值，打乱顺序
+```
+
+##### 4.9.1.1.2.flow_from_dataframe()
 
 从给定的dataframe标签读入数据并增强
 
@@ -671,7 +682,7 @@ data_generator.flow_from_dataframe(dataframe,# dataframe标签
                                    validate_filenames)# 验证文件是否有效，默认True
 ```
 
-##### 4.9.1.1.2.flow_from_directory()
+##### 4.9.1.1.3.flow_from_directory()
 
 从给定路径读入数据并增强（要求每个类别必须单独一个文件夹）
 
@@ -695,7 +706,16 @@ batches = ImageDataGenerator().flow_from_directory()
 print(bathes.class_indices)
 ```
 
-#### 4.9.1.2.load_image()
+#### 4.9.1.2.img_to_array()
+
+将图像转换为Numpy数组
+
+```python
+from keras.preprocessing.image import img_to_array
+arr = img_to_array(img)# 要转换的图像
+```
+
+#### 4.9.1.3.load_image()
 
 按照PIL的格式加载图像
 
@@ -928,6 +948,31 @@ scaler = MinMaxScaler()# 实例化一个缩放器
 
 ```python
 data = scaler.fit_transform(X)# 要转换的数据
+```
+
+### 7.5.2.MultiLabelBinarizer()
+
+多标签二值化器
+
+```python
+from sklearn.preprocessing import MultiLabelBinarizer
+mlb = MultiLabelBinarizer()# 实例化一个多标签二值化器
+```
+
+#### 7.5.2.1.classes_
+
+标签的原始数组
+
+```python
+mlb.classes_
+```
+
+#### 7.5.2.2.fit_transform()
+
+转化数据
+
+```python
+label = mlb.fit_transform(y)# 要转换的数据
 ```
 
 ## 7.6.tree
@@ -2071,7 +2116,20 @@ a = [1.0, 2.0]
 new_a = a.astype(dtype)# 数据类型
 ```
 
-## 13.4.expand_dims()
+## 13.4.concatenate()
+
+按照指定维度合并多个数组
+
+```python
+import numpy as np
+arr1 = [[1], [1], [1]]
+arr2 = [[2], [2], [2]]
+arr3 = [[3], [3], [3]]
+arr = np.concatenate((arr1, arr2, arr3),# 要合并的数组
+                     axis=1)# 合并的维度
+```
+
+## 13.5.expand_dims()
 
 增加ndarray的维度
 
@@ -2082,9 +2140,9 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
                    axis)# 维度
 ```
 
-## 13.5.linalg
+## 13.6.linalg
 
-### 13.5.1.norm()
+### 13.6.1.norm()
 
 计算矩阵或者向量范数
 
@@ -2095,7 +2153,7 @@ norm = np.linalg.norm(x,# 输入矩阵或向量，维数必须是1-D或2-D
                       ord)# 范数选项，默认None，计算2范数
 ```
 
-## 13.6.linspace()
+## 13.7.linspace()
 
 生成一个等差数列
 
@@ -2106,7 +2164,7 @@ a = np.linspace(start,# 序列的起始值
                 num)# 生成样本数，默认50
 ```
 
-## 13.7.load()
+## 13.8.load()
 
 从npy或者npz文件中加载数组
 
@@ -2117,7 +2175,7 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 13.8.log2()
+## 13.9.log2()
 
 求log以2为的底数的值
 
@@ -2126,7 +2184,7 @@ import numpy as np
 value = np.log2(x)
 ```
 
-## 13.9.mat()
+## 13.10.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -2136,7 +2194,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 13.10.matmul()
+## 13.11.matmul()
 
 矩阵乘法
 
@@ -2147,7 +2205,7 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 13.11.mean()
+## 13.12.mean()
 
 按照指定的维度计算算术平均值
 
@@ -2166,7 +2224,7 @@ b = np.asarray([1, 2, 4])
 result = np.mean(a == b)
 ```
 
-## 13.12.transpose()
+## 13.13.transpose()
 
 对矩阵进行转置
 
@@ -2180,9 +2238,9 @@ m = np.asarray([[[1, 2, 3], [4, 5, 6]]])
 m_t = m.transpose(1, 0, 2)
 ```
 
-## 13.13.random
+## 13.14.random
 
-### 13.13.1.normal()
+### 13.14.1.normal()
 
 生成一个正态分布的数组
 
@@ -2191,7 +2249,7 @@ import numpy as np
 a = np.random.normal(size=[2,3])# 形状
 ```
 
-## 13.14.reshape()
+## 13.15.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -2205,7 +2263,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 13.15.sort()
+## 13.16.sort()
 
 按照升序进行排序
 
@@ -2215,7 +2273,7 @@ a = [2, 3, 7, 8, 1]
 new_a = np.sort(a)
 ```
 
-## 13.16.split()
+## 13.17.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -2227,7 +2285,7 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
-## 13.17.std()
+## 13.18.std()
 
 按照给定的维度求标准差
 
@@ -2237,7 +2295,7 @@ a = [1, 2, 3]
 std = np.std(a)# 待计算均值的列表、矩阵
 ```
 
-## 13.18.sum()
+## 13.19.sum()
 
 按照给定的维度求和
 
@@ -2248,7 +2306,7 @@ sum = np.sum(a,# 待计算均值的列表、矩阵
              axis)# 维度
 ```
 
-## 13.19.zeros()
+## 13.20.zeros()
 
 生成一个全0数组
 
@@ -2260,7 +2318,20 @@ print(a)
 
 # 14.pandas
 
-## 14.1.DataFrame()
+## 14.1.concat()
+
+按照指定维度合并多个pandas对象
+
+```python
+import pandas as pd
+df1 = pd.DataFrame([1, 2, 3])
+df2 = pd.DataFrame([1, 2, 3])
+df3 = pd.DataFrame([1, 2, 3])
+df = pd.concat([df1, df2, df3], # 待合并的pandas对象
+               axis=1)# 合并的维度 
+```
+
+## 14.2.DataFrame()
 
 将其他数据格式转换为DataFrame
 
@@ -2272,7 +2343,7 @@ df = pd.DataFrame(df,
                   columns)# 指定行的列表
 ```
 
-### 14.1.1.astype()
+### 14.2.1.astype()
 
 转换DataFrame到指定类型
 
@@ -2280,7 +2351,7 @@ df = pd.DataFrame(df,
 df['value'] = df['value'].astype(dtype)# 转换后的数据类型
 ```
 
-### 14.1.2.drop()
+### 14.2.2.drop()
 
 从行或列删除指定的标签
 
@@ -2289,7 +2360,7 @@ df.drop(labels,# 要删除的列标签或者行号
         axis)# 0或'index' 1或'columns'
 ```
 
-### 14.1.3.iloc
+### 14.2.3.iloc
 
 基于整数的行索引（下标）取数据
 
@@ -2297,7 +2368,7 @@ df.drop(labels,# 要删除的列标签或者行号
 df.iloc[0]# 取出第0行的数据
 ```
 
-### 14.1.4.loc
+### 14.2.4.loc
 
 基于标签取数据（没有名称时，和iloc一样按照索引）
 
@@ -2305,7 +2376,7 @@ df.iloc[0]# 取出第0行的数据
 df.loc[0]# 取出第0行的数据
 ```
 
-### 14.1.5.replace()
+### 14.2.5.replace()
 
 新值替换旧值
 
@@ -2316,7 +2387,7 @@ df.replace(to_replace,# 旧值
 df.replace(dict)# 可以是字典的键为旧值，值为新值，进行替换
 ```
 
-### 14.1.6.reset_index()
+### 14.2.6.reset_index()
 
 重置DataFrame的索引为从0递增的整数索引
 
@@ -2327,7 +2398,7 @@ df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据�
                inplace)# 布尔值，默认False，是否修改源文件
 ```
 
-### 14.1.7.shape
+### 14.2.7.shape
 
 返回DataFrame维数的元组
 
@@ -2335,7 +2406,17 @@ df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据�
 shape = df.shape
 ```
 
-## 14.2.group_by()
+## 14.3.fillna()
+
+填充NA和NAN值
+
+```python
+import pandas as pd
+df = pd.DataFrame([('a',), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['c1', 'c2'])
+df['c2'] = df['c2'].fillna(value=123)# 填充的值
+```
+
+## 14.4.group_by()
 
 按照给定的值进行分组
 
@@ -2345,7 +2426,7 @@ df = pd.DataFrame([('a', 1), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['
 df1 = pd.DataFrame(df.groupby('c2'))
 ```
 
-## 14.3.read_csv()
+## 14.5.read_csv()
 
 读取csv文件，返回一个DataFrame对象
 
@@ -2356,7 +2437,7 @@ df = pd.read_csv(filepath_or_buffer,# 文件或者缓冲区路径
                  index_col)# 指定索引列 ，默认是None
 ```
 
-## 14.4.Series()
+## 14.6.Series()
 
 将其他数据格式转换为Series
 
@@ -2365,7 +2446,17 @@ import pandas as pd
 sr = pd.Series([1, 2, 3])
 ```
 
-### 14.4.1.tolist()
+### 14.6.1.mode()
+
+返回众数
+
+```python
+import pandas as pd
+sr = pd.Series([1, 2, 2, 2, 3])
+sr.mode()
+```
+
+### 14.6.2.tolist()
 
 返回Series值的列表
 
@@ -2375,7 +2466,7 @@ sr.tolist()
 pd.Series.tolist(sr)
 ```
 
-### 14.4.2.values()
+### 14.6.3.values()
 
 将DataFrame的值转换为ndarry
 
@@ -2386,7 +2477,7 @@ df = pd.DataFrame(df)
 array = df['index'].values
 ```
 
-## 14.5.to_csv()
+## 14.7.to_csv()
 
 将DataFrame生成csv文件
 
@@ -2398,7 +2489,7 @@ df.to_csv(path_or_buf,# 保存的文件和路径
           encoding)# 编码方式，默认是‘utf-8’
 ```
 
-## 14.6.unique()
+## 14.8.unique()
 
 去除重复元素（不进行排序）
 
@@ -2407,7 +2498,7 @@ import pandas as pd
 pd.unique(values)# 一维array-like
 ```
 
-## 14.7.value_counts()
+## 14.9.value_counts()
 
 计算非空值出现的次数
 
