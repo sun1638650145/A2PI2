@@ -1930,7 +1930,53 @@ ax.annotate(text,# 注释的文本内容
             bbox)# 在文本周围绘制框
 ```
 
-### 12.1.2.set_xticks()
+### 12.1.2.grid()
+
+设置网格线
+
+```python
+ax.grid(axis,# 字符串，x轴、y轴或者都画 'x', 'y', 'both'
+        linestyle)
+"""
+	网格线的格式'-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
+"""
+```
+
+### 12.1.3.legend()
+
+防止图例
+
+```python
+ax.legend(loc)# 放置的位置
+```
+
+### 12.1.4.patch
+
+#### 12.1.4.1.set_alpha()
+
+设置背景的透明度alpha值
+
+```python
+ax.patch.set_alpha(alpha)# 浮点数
+```
+
+#### 12.1.4.2.set_facecolor()
+
+设置背景的颜色
+
+```python
+ax.patch.set_facecolor(color)
+```
+
+### 12.1.5.set_xlabel()
+
+设置X轴的标签
+
+```python
+ax.set_xlabel(xlabel)# 字符串 X轴的标签
+```
+
+### 12.1.6.set_xticks()
 
 设置X轴的刻度
 
@@ -1938,7 +1984,7 @@ ax.annotate(text,# 注释的文本内容
 ax.set_xticks(ticks)# 列表 X轴刻度位置列表
 ```
 
-### 12.1.3.set_yticks()
+### 12.1.7.set_yticks()
 
 设置Y轴的刻度
 
@@ -1946,7 +1992,7 @@ ax.set_xticks(ticks)# 列表 X轴刻度位置列表
 ax.set_yticks(ticks)# 列表 Y轴刻度位置列表
 ```
 
-###  12.1.4.spines
+###  12.1.8.spines
 
 设置figure的坐标轴
 
@@ -1954,7 +2000,7 @@ ax.set_yticks(ticks)# 列表 Y轴刻度位置列表
 ax.spines['left']# 可选的有 'right''top''bottom'
 ```
 
-#### 12.1.4.1.set_color()
+#### 12.1.8.1.set_color()
 
 设置坐标轴的颜色
 
@@ -1962,7 +2008,7 @@ ax.spines['left']# 可选的有 'right''top''bottom'
 ax.spines['left'].set_color(color)# 颜色
 ```
 
-### 12.1.5.text()
+### 12.1.9.text()
 
 在指定位置添加文本
 
@@ -2116,7 +2162,17 @@ a = [1.0, 2.0]
 new_a = a.astype(dtype)# 数据类型
 ```
 
-## 13.4.concatenate()
+## 13.4.ceil()
+
+向上取整
+
+```python
+import numpy as np
+x = 0.4
+a = np.ceil(x)
+```
+
+## 13.5.concatenate()
 
 按照指定维度合并多个数组
 
@@ -2129,7 +2185,27 @@ arr = np.concatenate((arr1, arr2, arr3),# 要合并的数组
                      axis=1)# 合并的维度
 ```
 
-## 13.5.expand_dims()
+## 13.6.equal()
+
+逐个判断数组元素的一致性
+
+```python
+import numpy as np
+x1 = [1, 2, 3]
+x2 = [1, 2, 2]
+result = np.equal(x1, x2)
+```
+
+## 13.7.exp()
+
+计算指数值
+
+```python
+import numpy as np
+a = np.exp(x=1)
+```
+
+## 13.8.expand_dims()
 
 增加ndarray的维度
 
@@ -2140,9 +2216,9 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
                    axis)# 维度
 ```
 
-## 13.6.linalg
+## 13.9.linalg
 
-### 13.6.1.norm()
+### 13.9.1.norm()
 
 计算矩阵或者向量范数
 
@@ -2153,7 +2229,7 @@ norm = np.linalg.norm(x,# 输入矩阵或向量，维数必须是1-D或2-D
                       ord)# 范数选项，默认None，计算2范数
 ```
 
-## 13.7.linspace()
+## 13.10.linspace()
 
 生成一个等差数列
 
@@ -2164,7 +2240,7 @@ a = np.linspace(start,# 序列的起始值
                 num)# 生成样本数，默认50
 ```
 
-## 13.8.load()
+## 13.11.load()
 
 从npy或者npz文件中加载数组
 
@@ -2175,7 +2251,16 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 13.9.log2()
+## 13.12.log()
+
+求log以e为的底数的值
+
+```python
+import numpy as np
+value = np.log(x)
+```
+
+## 13.13.log2()
 
 求log以2为的底数的值
 
@@ -2184,7 +2269,7 @@ import numpy as np
 value = np.log2(x)
 ```
 
-## 13.10.mat()
+## 13.14.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -2194,7 +2279,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 13.11.matmul()
+## 13.15.matmul()
 
 矩阵乘法
 
@@ -2205,7 +2290,28 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 13.12.mean()
+## 13.16.max()
+
+返回最大值
+
+```python
+import numpy as np
+list = [1, 2, 3, 4]
+ans = np.max(a=list)
+```
+
+## 13.17.maximum()
+
+数组逐个元素取最大值
+
+```python
+import numpy as np
+x1 = [2, 3, 4]
+x2 = [1, 5, 2]
+ans = np.maximum(x1, x2)
+```
+
+## 13.18.mean()
 
 按照指定的维度计算算术平均值
 
@@ -2224,7 +2330,25 @@ b = np.asarray([1, 2, 4])
 result = np.mean(a == b)
 ```
 
-## 13.13.transpose()
+## 13.19.ones()
+
+生成一个全1数组
+
+```python
+import numpy as np
+a = np.ones(shape=[2, 3])# 形状
+```
+
+## 13.20.power()
+
+求x1的x2次方
+
+```python
+import numpy as np
+ans = np.power(x1=2, x2=3)
+```
+
+## 13.21.transpose()
 
 对矩阵进行转置
 
@@ -2238,18 +2362,46 @@ m = np.asarray([[[1, 2, 3], [4, 5, 6]]])
 m_t = m.transpose(1, 0, 2)
 ```
 
-## 13.14.random
+## 13.22.random
 
-### 13.14.1.normal()
+### 13.22.1.normal()
 
 生成一个正态分布的数组
 
 ```python
 import numpy as np
-a = np.random.normal(size=[2,3])# 形状
+arr = np.random.normal(size=[2,3])# 形状
 ```
 
-## 13.15.reshape()
+### 13.22.2.randint()
+
+在给定范围生成一个随机整数
+
+```python
+import numpy as np
+num = np.random.randint(low=1,# 下限
+                        high=10)# 上限
+```
+
+### 13.22.3.randn()
+
+生成一个给定维度符合正态分布的随机数数组
+
+```python
+import numpy as np
+arr = np.random.randn(10)
+```
+
+### 13.22.4.seed()
+
+设置随机数生成器的随机种子
+
+```python
+import numpy as np
+np.random.seed(seed)# 随机种子
+```
+
+## 13.23.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -2263,7 +2415,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 13.16.sort()
+## 13.24.sort()
 
 按照升序进行排序
 
@@ -2273,7 +2425,7 @@ a = [2, 3, 7, 8, 1]
 new_a = np.sort(a)
 ```
 
-## 13.17.split()
+## 13.25.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -2285,7 +2437,26 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
-## 13.18.std()
+## 13.26.sqrt()
+
+计算平方根
+
+```python
+import numpy as np
+a = np.sqrt(x)# 待计算的值
+```
+
+## 13.27.squeeze()
+
+去除数组中维度为1的维度
+
+```python
+import numpy as np
+a = [[1, 2]]
+a = np.squeeze(a)
+```
+
+## 13.28.std()
 
 按照给定的维度求标准差
 
@@ -2295,7 +2466,7 @@ a = [1, 2, 3]
 std = np.std(a)# 待计算均值的列表、矩阵
 ```
 
-## 13.19.sum()
+## 13.29.sum()
 
 按照给定的维度求和
 
@@ -2303,17 +2474,17 @@ std = np.std(a)# 待计算均值的列表、矩阵
 import numpy as np
 a = [1, 2, 3]
 sum = np.sum(a,# 待计算均值的列表、矩阵
-             axis)# 维度
+             axis,# 维度
+             keepdims)# 保持原有的维度
 ```
 
-## 13.20.zeros()
+## 13.30.zeros()
 
 生成一个全0数组
 
 ```python
 import numpy as np
 a = np.zeros(shape=[2, 3])# 形状
-print(a)
 ```
 
 # 14.pandas
@@ -2416,7 +2587,18 @@ df = pd.DataFrame([('a',), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['c1
 df['c2'] = df['c2'].fillna(value=123)# 填充的值
 ```
 
-## 14.4.group_by()
+## 14.4.get_dummies()
+
+将离散的类别变量转换成dummy编码的变量
+
+```python
+import pandas as pd
+s = list('abca')
+s = pd.Series(s)
+s = pd.get_dummies(data=s)
+```
+
+## 14.5.group_by()
 
 按照给定的值进行分组
 
@@ -2426,7 +2608,7 @@ df = pd.DataFrame([('a', 1), ('b', 1), ('c', 3), ('a', 1), ('b', 1)], columns=['
 df1 = pd.DataFrame(df.groupby('c2'))
 ```
 
-## 14.5.read_csv()
+## 14.6.read_csv()
 
 读取csv文件，返回一个DataFrame对象
 
@@ -2437,7 +2619,7 @@ df = pd.read_csv(filepath_or_buffer,# 文件或者缓冲区路径
                  index_col)# 指定索引列 ，默认是None
 ```
 
-## 14.6.Series()
+## 14.7.Series()
 
 将其他数据格式转换为Series
 
@@ -2446,7 +2628,7 @@ import pandas as pd
 sr = pd.Series([1, 2, 3])
 ```
 
-### 14.6.1.mode()
+### 14.7.1.mode()
 
 返回众数
 
@@ -2456,7 +2638,7 @@ sr = pd.Series([1, 2, 2, 2, 3])
 sr.mode()
 ```
 
-### 14.6.2.tolist()
+### 14.7.2.tolist()
 
 返回Series值的列表
 
@@ -2466,7 +2648,7 @@ sr.tolist()
 pd.Series.tolist(sr)
 ```
 
-### 14.6.3.values()
+### 14.7.3.values()
 
 将DataFrame的值转换为ndarry
 
@@ -2477,7 +2659,7 @@ df = pd.DataFrame(df)
 array = df['index'].values
 ```
 
-## 14.7.to_csv()
+## 14.8.to_csv()
 
 将DataFrame生成csv文件
 
@@ -2489,7 +2671,7 @@ df.to_csv(path_or_buf,# 保存的文件和路径
           encoding)# 编码方式，默认是‘utf-8’
 ```
 
-## 14.8.unique()
+## 14.9.unique()
 
 去除重复元素（不进行排序）
 
@@ -2498,7 +2680,7 @@ import pandas as pd
 pd.unique(values)# 一维array-like
 ```
 
-## 14.9.value_counts()
+## 14.10.value_counts()
 
 计算非空值出现的次数
 
