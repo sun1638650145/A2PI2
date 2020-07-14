@@ -2348,23 +2348,9 @@ import numpy as np
 ans = np.power(x1=2, x2=3)
 ```
 
-## 13.21.transpose()
+## 13.21.random
 
-对矩阵进行转置
-
-```python
-import numpy as np
-"""用法一"""
-a = [[1, 2], [3, 4]]
-a_t = np.transpose(a)
-"""用法二 改变张量"""
-m = np.asarray([[[1, 2, 3], [4, 5, 6]]])
-m_t = m.transpose(1, 0, 2)
-```
-
-## 13.22.random
-
-### 13.22.1.normal()
+### 13.21.1.normal()
 
 生成一个正态分布的数组
 
@@ -2373,7 +2359,7 @@ import numpy as np
 arr = np.random.normal(size=[2,3])# 形状
 ```
 
-### 13.22.2.randint()
+### 13.21.2.randint()
 
 在给定范围生成一个随机整数
 
@@ -2383,7 +2369,7 @@ num = np.random.randint(low=1,# 下限
                         high=10)# 上限
 ```
 
-### 13.22.3.randn()
+### 13.21.3.randn()
 
 生成一个给定维度符合正态分布的随机数数组
 
@@ -2392,7 +2378,7 @@ import numpy as np
 arr = np.random.randn(10)
 ```
 
-### 13.22.4.seed()
+### 13.21.4.seed()
 
 设置随机数生成器的随机种子
 
@@ -2401,7 +2387,7 @@ import numpy as np
 np.random.seed(seed)# 随机种子
 ```
 
-## 13.23.reshape()
+## 13.22.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -2415,7 +2401,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 13.24.sort()
+## 13.23.sort()
 
 按照升序进行排序
 
@@ -2425,7 +2411,7 @@ a = [2, 3, 7, 8, 1]
 new_a = np.sort(a)
 ```
 
-## 13.25.split()
+## 13.24.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -2437,7 +2423,7 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
-## 13.26.sqrt()
+## 13.25.sqrt()
 
 计算平方根
 
@@ -2446,7 +2432,7 @@ import numpy as np
 a = np.sqrt(x)# 待计算的值
 ```
 
-## 13.27.squeeze()
+## 13.26.squeeze()
 
 去除数组中维度为1的维度
 
@@ -2456,7 +2442,7 @@ a = [[1, 2]]
 a = np.squeeze(a)
 ```
 
-## 13.28.std()
+## 13.27.std()
 
 按照给定的维度求标准差
 
@@ -2466,7 +2452,7 @@ a = [1, 2, 3]
 std = np.std(a)# 待计算均值的列表、矩阵
 ```
 
-## 13.29.sum()
+## 13.28.sum()
 
 按照给定的维度求和
 
@@ -2478,7 +2464,32 @@ sum = np.sum(a,# 待计算均值的列表、矩阵
              keepdims)# 保持原有的维度
 ```
 
-## 13.30.zeros()
+## 13.29.transpose()
+
+对矩阵进行转置
+
+```python
+import numpy as np
+"""用法一"""
+a = [[1, 2], [3, 4]]
+a_t = np.transpose(a)
+"""用法二 改变张量"""
+m = np.asarray([[[1, 2, 3], [4, 5, 6]]])
+m_t = m.transpose(1, 0, 2)
+```
+
+## 13.30.var()
+
+按照指定的维度计算方差
+
+```python
+import numpy as np
+a = [1, 2, 3]
+v = np.var(a,# 待计算均值的列表、矩阵
+           axis=0)# 维度
+```
+
+## 13.31.zeros()
 
 生成一个全0数组
 
