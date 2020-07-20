@@ -1,6 +1,6 @@
 # <center>A²PI² version2</center>
 
-第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正,文档主要是Python描述，涉及小部分JavaScript语言
+第一版的文档的格式有些混乱，尤其是keras引用的地方，现在做修正，文档主要是Python描述，涉及小部分JavaScript语言
 
 # 1.catboost
 
@@ -26,7 +26,7 @@ model.fit(X,# 训练数据
           y,# 标签
           text_features,# 指定训练数据的索引列
           eval_set,# 验证集元组，用于早停
-          verbose)# 是否显示显示模式
+          verbose)# 是否显示日志模式
 ```
 
 ### 1.1.2.feature_importances_
@@ -827,9 +827,68 @@ from sklearn import datasets
 iris = datasets.load_iris()
 ```
 
-## 7.2.linear_model
+## 7.2.ensemble
 
-### 7.2.1.LogisticRegression()
+### 7.2.1.AdaBoostClassifier()
+
+实例化一个AdaBoost分类器
+
+```python
+from sklearn.ensemble import AdaBoostClassifier
+model = AdaBoostClassifier(n_estimators,# 估算器的最大数量
+                           learning_rate)# 学习率
+```
+
+### 7.2.2.RandomForestClassifier()
+
+实例化一个随机森林分类器
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators,# 估算器的最大数量
+                               max_depth)# 最大深度
+```
+
+### 7.2.3.VotingClassifier()
+
+实例化一个投票分类器
+
+```python
+from sklearn.ensemble import VotingClassifier
+model = VotingClassifier(estimators,#	估计器元组列表 格式形如(str，estimato)
+                         voting,# 投票方式
+                         weights)# 估计器权重列表
+```
+
+#### 7.2.3.1.fit()
+
+以给定数据训练模型
+
+```python
+model.fit(X,# 训练数据 
+          y)# 标签
+```
+
+#### 7.2.3.2.predict()
+
+生成预测结果
+
+```python
+model.predict(X)# 测试数据
+```
+
+#### 7.2.3.3.score()
+
+计算平均准确率
+
+```python
+acc = model.score(X,# 训练数据 
+                  y)# 标签
+```
+
+## 7.3.linear_model
+
+### 7.3.1.LogisticRegression()
 
 构建一个对数几率回归模型
 
@@ -838,7 +897,7 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-#### 7.2.1.1.fit()
+#### 7.3.1.1.fit()
 
 以给定数据训练模型
 
@@ -848,7 +907,7 @@ model.fit(X,# 训练数据
           sample_weight)# 数组，类别权重，默认为None
 ```
 
-#### 7.2.1.2.predict()
+#### 7.3.1.2.predict()
 
 生成预测结果
 
@@ -856,9 +915,9 @@ model.fit(X,# 训练数据
 model.predict(X)# 测试数据
 ```
 
-## 7.3.metrics
+## 7.4.metrics
 
-### 7.3.1.accuracy_score()
+### 7.4.1.accuracy_score()
 
 计算准确率
 
@@ -869,9 +928,9 @@ accuracy_score(y_true,# 真实标签
                sample_weight)# 数组，类别权重，默认为None
 ```
 
-## 7.4.model_selection
+## 7.5.model_selection
 
-### 7.4.1.cross_val_predict()
+### 7.5.1.cross_val_predict()
 
 使用交叉验证法验证
 
@@ -883,7 +942,7 @@ cross_val_predict(estimator,# 训练的模型对象
                   cv)# 整数，划分数，默认为3
 ```
 
-### 7.4.2.LeaveOneOut()
+### 7.5.2.LeaveOneOut()
 
 使用留一法验证
 
@@ -892,7 +951,7 @@ from sklearn.model_selection import LeaveOneOut
 LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 ```
 
-#### 7.4.2.1.split()
+#### 7.5.2.1.split()
 
 按照具体BaseCrossValidator对象将数据划分为训练和测试集
 
@@ -900,7 +959,7 @@ LOO = LeaveOneOut() # 返回一个BaseCrossValidator对象
 LOO.split(X)# 训练数据
 ```
 
-### 7.4.3.StratifiedKFold()
+### 7.5.3.StratifiedKFold()
 
 生成一个K折交叉验证器
 
@@ -911,7 +970,7 @@ k_fold = StratifiedKFold(n_splits,# 折数 默认是5
                          random_state)# 随机状态
 ```
 
-#### 7.4.3.1.split()
+#### 7.5.3.1.split()
 
 将数据划分成训练集和测试集，并生成索引
 
@@ -920,7 +979,7 @@ k_fold.split(x,# 训练数据
              y)# 标签（注意不能传入独热编码的标签）
 ```
 
-### 7.4.4.train_test_split()
+### 7.5.4.train_test_split()
 
 将原始数据随机拆分为训练和测试子集
 
@@ -931,9 +990,9 @@ x_train, x_test, y_train, y_test = train_test_split(X,# 原始数据
                                                     test_size,# 浮点数 测试集大小 默认为0.25
                                                     random_state)# 随机划分数据 默认None
 ```
-## 7.5.preprocessing
+## 7.6.preprocessing
 
-### 7.5.1.MinMaxScaler()
+### 7.6.1.MinMaxScaler()
 
 根据给定最大最小值缩放数据
 
@@ -942,7 +1001,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()# 实例化一个缩放器
 ```
 
-#### 7.5.1.1.fit_transform()
+#### 7.6.1.1.fit_transform()
 
 转化数据
 
@@ -950,7 +1009,7 @@ scaler = MinMaxScaler()# 实例化一个缩放器
 data = scaler.fit_transform(X)# 要转换的数据
 ```
 
-### 7.5.2.MultiLabelBinarizer()
+### 7.6.2.MultiLabelBinarizer()
 
 多标签二值化器
 
@@ -959,7 +1018,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()# 实例化一个多标签二值化器
 ```
 
-#### 7.5.2.1.classes_
+#### 7.6.2.1.classes_
 
 标签的原始数组
 
@@ -967,7 +1026,7 @@ mlb = MultiLabelBinarizer()# 实例化一个多标签二值化器
 mlb.classes_
 ```
 
-#### 7.5.2.2.fit_transform()
+#### 7.6.2.2.fit_transform()
 
 转化数据
 
@@ -975,9 +1034,23 @@ mlb.classes_
 label = mlb.fit_transform(y)# 要转换的数据
 ```
 
-## 7.6.tree
+## 7.7.svm
 
-### 7.6.1.DecisionTreeClassifier()
+### 7.7.1.SVC()
+
+实例化一个支持向量分类器
+
+```python
+from sklearn.svm import SVC
+model = SVC(C,# 正则化参数 
+            kernel,# 核函数
+						probability,# 是否启用概率估计
+            class_weight)# 类别权重 
+```
+
+## 7.8.tree
+
+### 7.8.1.DecisionTreeClassifier()
 
 生成一个分类决策树实例
 
@@ -988,7 +1061,7 @@ tree = DecisionTreeClassifier(criterion,# 划分条件 'gini''entropy'
 															# 随机状态 默认是None（通过np.random自动生成），也可以赋一个整数
 ```
 
-#### 7.6.1.1.fit()
+#### 7.8.1.1.fit()
 
 以给定数据训练模型
 
@@ -997,7 +1070,7 @@ tree.fit(X,# 训练数据
          y)# 标签
 ```
 
-### 7.6.2.export_graphviz()
+### 7.8.2.export_graphviz()
 
 以dot文件导出决策树
 
@@ -1009,7 +1082,7 @@ dot_data = export_graphviz(decision_tree,# 决策树
                            class_names)# 分类名称
 ```
 
-### 7.6.3.plot_tree()
+### 7.8.3.plot_tree()
 
 绘制决策树（使用matplotlib展示）
 
@@ -1018,11 +1091,11 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 plot_tree(decision_tree)# 要绘制的决策树
 ```
 
-## 7.7.utils
+## 7.9.utils
 
-### 7.7.1.multiclass
+### 7.9.1.multiclass
 
-#### 7.7.1.1.type_of_target()
+#### 7.9.1.1.type_of_target()
 
 返回确定目标的数据类型
 
@@ -2369,7 +2442,16 @@ num = np.random.randint(low=1,# 下限
                         high=10)# 上限
 ```
 
-### 13.21.3.randn()
+### 13.21.3.rand()
+
+生成一个给定维度的随机数数组
+
+```python
+import numpy as np
+arr = np.random.rand(10)
+```
+
+### 13.21.4.randn()
 
 生成一个给定维度符合正态分布的随机数数组
 
@@ -2378,7 +2460,7 @@ import numpy as np
 arr = np.random.randn(10)
 ```
 
-### 13.21.4.seed()
+### 13.21.5.seed()
 
 设置随机数生成器的随机种子
 
@@ -2729,3 +2811,39 @@ graph = pydot.graph_from_dot_data(path)# dot文件路径，返回一个list
 ```python
 graph.write_png(path)# png图像的路径
 ```
+
+# 16.xgboost
+
+## 16.1.XGBClassifier()
+
+XGBoost分类器
+
+```python
+from xgboost import XGBClassifier
+model = XGBClassifier(n_estimators,# 树的数量
+                      max_depth,# 最大深度
+                      learning_rate,# 学习率
+                      subsample,# 随机采样的比例
+                      colsample_bytree)# 随机采样的列数的占比
+```
+
+### 16.1.1.fit()
+
+训练模型
+
+```python
+model.fit(X,# 训练数据
+          y,# 标签
+          eval_set,# 元组对列表，评估集，输出loss
+          eval_metric,# 评估指标
+          verbose)# 是否显示日志模式
+```
+
+### 16.1.2.predict()
+
+生成预测结果
+
+```python
+ans = model.predict(X)# 测试数据 
+```
+
