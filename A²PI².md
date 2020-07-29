@@ -242,7 +242,16 @@ from keras.backend import shape
 shape = shape(x)# 张量
 ```
 
-### 4.2.7.zeros_like()
+### 4.2.7.sigmoid()
+
+逐元素计算sigmoid的值
+
+```python
+from keras.backend import sigmoid
+tensor = sigmoid(x)# 张量
+```
+
+### 4.2.8.zeros_like()
 
 创建一个全0的张量
 
@@ -376,7 +385,16 @@ layer = Dense(units,# 整数，神经元数量
               input_shape)# 元组，第一层需要指定输入
 ```
 
-### 4.5.9.Dropout()
+### 4.5.9.Dot()
+
+计算两个张量之间样本的点积
+
+```python
+from keras.layers import Dot
+layer = Dot(axes)# 计算点积的轴
+```
+
+### 4.5.10.Dropout()
 
 在训练阶段按照比例随机丢弃神经元
 
@@ -385,7 +403,19 @@ from keras.layers import Dropout
 layer = Dropout(rate)# 丢弃率
 ```
 
-### 4.5.10.Flatten()
+### 4.5.11.Embedding()
+
+嵌入层，只能用作模型的第一层
+
+```python
+from keras.layers import Embedding
+layer = Embedding(input_dim,# 输入词的维度
+               		output_dim,# 嵌入矩阵的维度
+                  embeddings_initializer,# 嵌入矩阵的初始化器
+                  embeddings_regularizer)# 嵌入矩阵的正则化器
+```
+
+### 4.5.12.Flatten()
 
 将输入展平，不影响批次大小
 
@@ -394,7 +424,7 @@ from keras.layers import Flatten
 layer = Flatten()
 ```
 
-### 4.5.11.GRU()
+### 4.5.13.GRU()
 
 门限循环单元网络层
 
@@ -404,7 +434,7 @@ layer = GRU(units,# 整数，神经元数量
             return_sequences)# 布尔值，是否返回整个序列
 ```
 
-### 4.5.12.Lambda()
+### 4.5.14.Lambda()
 
 将任意表达式封装为Layer对象
 
@@ -415,7 +445,7 @@ layer = Lambda(function,# 要封装的函数
                name)# 层的名称
 ```
 
-### 4.5.13.LeakyReLU()
+### 4.5.15.LeakyReLU()
 
 带泄漏的 ReLU层
 
@@ -424,7 +454,7 @@ from keras.layers import LeakyReLU
 layer = LeakyReLU(alpha)# 负斜率系数，默认为0.3
 ```
 
-### 4.5.14.LSTM()
+### 4.5.16.LSTM()
 
 长短时记忆网络层
 
@@ -434,7 +464,7 @@ layer = LSTM(units,# 整数，神经元数量
              return_sequences)# 布尔值，是否返回整个序列
 ```
 
-### 4.5.15.Input()
+### 4.5.17.Input()
 
 输入层
 
@@ -445,7 +475,7 @@ input_tensor = Input(shape,# 整数，形状元组
                      dtype)# 期望数据类型
 ```
 
-### 4.5.16.MaxPooling1D()
+### 4.5.18.MaxPooling1D()
 
 对时序数据进行最大池化
 
@@ -456,7 +486,7 @@ layer = MaxPooling1D(pool_size,# 整数，池化核数量
                      padding)# 'same''valid''causal'，是否使用全零填充
 ```
 
-### 4.5.17.Reshape()
+### 4.5.19.Reshape()
 
 将输入重新调整为特定的尺寸
 
@@ -487,7 +517,16 @@ cross_entropy = SparseCategoricalCrossentropy(from_logits)# 是否将y_pred解�
 
 ## 4.7.models
 
-### 4.7.1.Model()
+### 4.7.1.load_model()
+
+加载模型
+
+```python
+from keras.models import load_model
+model = load_model(filepath)# 文件路径，可以是saved model或者h5py
+```
+
+### 4.7.2.Model()
 
 keras自定义模型对象
 
@@ -497,7 +536,15 @@ model = Model(inputs,# 输入层
               outputs)# 输出层
 ```
 
-#### 4.7.1.1.fit_generator()
+#### 4.7.2.1.build()
+
+根据接收到的输入形状构建模型
+
+```python
+model.build(input_shape)# 输入的形状
+```
+
+#### 4.7.2.2.fit_generator()
 
 生成批次训练数据，按批训练数据
 
@@ -508,16 +555,7 @@ model.fit_generator(generator,# 数据生成器，比如ImageDataGenerator()
                     verbose)# 日志显示模式 0=安静模型 1=进度条 2每轮显示
 ```
 
-#### 4.7.1.2.load_model()
-
-加载模型
-
-```python
-from keras.models import load_model
-model = load_model(filepath)# 文件路径，可以是saved model或者h5py
-```
-
-#### 4.7.1.3.save()
+#### 4.7.2.3.save()
 
 将模型保存为SavedModel或者HDF5文件
 
@@ -526,7 +564,7 @@ model.save(filepath,# 保存路径
            save_format)# 保存格式，默认是h5，可选tf
 ```
 
-### 4.7.2.Sequential()
+### 4.7.3.Sequential()
 
 构建一个线性堆叠的网络模型
 
@@ -535,7 +573,7 @@ from keras.models import Sequential
 model = Sequential()
 ```
 
-#### 4.7.2.1.add() 
+#### 4.7.3.1.add() 
 
 将一个具体的单层神经网络加入模型
 
@@ -543,7 +581,7 @@ model = Sequential()
 model.add(layer)
 ```
 
-#### 4.7.2.2.compile()
+#### 4.7.3.2.compile()
 
 用于配置训练模型
 
@@ -553,7 +591,7 @@ model.compile(optimizer,# 优化器
               metrics)# 评估标准['accuracy']
 ```
 
-#### 4.7.2.3.evaluate()
+#### 4.7.3.3.evaluate()
 
 在测试模式下返回损失值和准确率
 
@@ -564,7 +602,7 @@ model.evaluate(x,# 训练数据
                verbose)# 日志显示模式 0=安静模型 1=进度条 2每轮显示
 ```
 
-#### 4.7.2.4.fit()
+#### 4.7.3.4.fit()
 
 以给定批次训练模型
 
@@ -580,7 +618,7 @@ history = model.fit(x,# 训练数据，包括数据生成器，比如ImageDataGe
           shuffle)# 布尔值，打乱数据
 ```
 
-#### 4.7.2.5.load_weights()
+#### 4.7.3.5.load_weights()
 
 加载所有的神经网络层的参数
 
@@ -588,7 +626,7 @@ history = model.fit(x,# 训练数据，包括数据生成器，比如ImageDataGe
 model.load_weights(filepath)# 检查点文件路径
 ```
 
-#### 4.7.2.6.predict()
+#### 4.7.3.6.predict()
 
 生成预测结果
 
@@ -598,7 +636,7 @@ model.predict(x,# 测试数据
               verbose)# 日志显示模式 0=安静模型 1=进度条
 ```
 
-#### 4.7.2.7.output_shape()
+#### 4.7.3.7.output_shape()
 
 返回模型的输出层形状
 
@@ -606,7 +644,7 @@ model.predict(x,# 测试数据
 print(model.output_shape())
 ```
 
-#### 4.7.2.8.summary()
+#### 4.7.3.8.summary()
 
 查看模型的各层参数
 
@@ -631,6 +669,15 @@ optimizer = Adam(lr)# 学习率
 
 ```python
 optimizer.apply_gradients(grads_and_vars)# 对应梯度和变量组成的列表
+```
+
+### 4.8.3.SGD()
+
+SGD优化器
+
+```python
+from keras.optimziers import SGD
+optimziers = SGD(lr)# 学习率
 ```
 
 ## 4.9.preprocessing
@@ -725,9 +772,31 @@ img = image.load_img(path,# 路径
                      target_size)# 元组，调整后大小
 ```
 
-## 4.10.utils
+## 4.10.regularizers
 
-### 4.10.1.multi_gpu_model()
+### 4.10.1.l2()
+
+创建一个l2正则化器
+
+```python
+from keras.regularizers import l2
+regularizer = l2(l)# l2正则化因子
+```
+
+## 4.11.utils
+
+### 4.11.1.get_file()
+
+从指定URL下载文件（如果指定位置(默认位置为~/.keras/datasets)没有）
+
+```python
+from keras.utils import get_file
+fpath = get_file(fname,# 文件名，如果是绝对路径就保存在绝对路径
+             		 origin,# 文件的URL
+                 extract)# 如果是tar或者zip文件是否解压
+```
+
+### 4.11.2.multi_gpu_model()
 
 多GPU并行训练模型
 
@@ -737,7 +806,7 @@ parallel_model = multi_gpu_model(model,# 模型
                                  gpus)# 整数（大于等于2），并行GPU数量
 ```
 
-### 4.10.2.plot_model()
+### 4.11.3.plot_model()
 
 保存keras模型成图片
 
@@ -751,7 +820,7 @@ plot_model(model,# 模型
            dpi)# 每英寸点数
 ```
 
-### 4.10.3.to_categorical()
+### 4.11.4.to_categorical()
 
 将种类的标签向量转换为独热编码
 
@@ -1663,7 +1732,18 @@ import tensorflow as tf
 tensor = tf.random.normal(shape)# 张量的形状
 ```
 
-## 9.10.zeros_like()
+## 9.10.tensordot()
+
+计算点积沿指定的轴
+
+```python
+import tensorflow as tf
+tensor = tensordot(a,# 张量a
+                   b,# 张量b
+                   axes)# 轴
+```
+
+## 9.11.zeros_like()
 
 创建一个全0的张量
 
@@ -2289,9 +2369,13 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
                    axis)# 维度
 ```
 
-## 13.9.linalg
+## 13.9.hstack()
 
-### 13.9.1.norm()
+
+
+## 13.10.linalg
+
+### 13.10.1.norm()
 
 计算矩阵或者向量范数
 
@@ -2302,7 +2386,7 @@ norm = np.linalg.norm(x,# 输入矩阵或向量，维数必须是1-D或2-D
                       ord)# 范数选项，默认None，计算2范数
 ```
 
-## 13.10.linspace()
+## 13.11.linspace()
 
 生成一个等差数列
 
@@ -2313,7 +2397,7 @@ a = np.linspace(start,# 序列的起始值
                 num)# 生成样本数，默认50
 ```
 
-## 13.11.load()
+## 13.12.load()
 
 从npy或者npz文件中加载数组
 
@@ -2324,7 +2408,7 @@ np.load(file,# 文件路径
         encoding)# 编码格式，默认ASCII
 ```
 
-## 13.12.log()
+## 13.13.log()
 
 求log以e为的底数的值
 
@@ -2333,7 +2417,7 @@ import numpy as np
 value = np.log(x)
 ```
 
-## 13.13.log2()
+## 13.14.log2()
 
 求log以2为的底数的值
 
@@ -2342,7 +2426,7 @@ import numpy as np
 value = np.log2(x)
 ```
 
-## 13.14.mat()
+## 13.15.mat()
 
 从列表或者数组生成一个矩阵对象
 
@@ -2352,7 +2436,7 @@ a = [[1, 2, 3]]
 a = np.mat(a)
 ```
 
-## 13.15.matmul()
+## 13.16.matmul()
 
 矩阵乘法
 
@@ -2363,7 +2447,7 @@ a2 = [[1], [2], [3]]
 a = np.matmul(a1, a2)
 ```
 
-## 13.16.max()
+## 13.17.max()
 
 返回最大值
 
@@ -2373,7 +2457,7 @@ list = [1, 2, 3, 4]
 ans = np.max(a=list)
 ```
 
-## 13.17.maximum()
+## 13.18.maximum()
 
 数组逐个元素取最大值
 
@@ -2384,7 +2468,7 @@ x2 = [1, 5, 2]
 ans = np.maximum(x1, x2)
 ```
 
-## 13.18.mean()
+## 13.19.mean()
 
 按照指定的维度计算算术平均值
 
@@ -2403,7 +2487,7 @@ b = np.asarray([1, 2, 4])
 result = np.mean(a == b)
 ```
 
-## 13.19.ones()
+## 13.20.ones()
 
 生成一个全1数组
 
@@ -2412,7 +2496,7 @@ import numpy as np
 a = np.ones(shape=[2, 3])# 形状
 ```
 
-## 13.20.power()
+## 13.21.power()
 
 求x1的x2次方
 
@@ -2421,9 +2505,9 @@ import numpy as np
 ans = np.power(x1=2, x2=3)
 ```
 
-## 13.21.random
+## 13.22.random
 
-### 13.21.1.normal()
+### 13.22.1.normal()
 
 生成一个正态分布的数组
 
@@ -2432,7 +2516,7 @@ import numpy as np
 arr = np.random.normal(size=[2,3])# 形状
 ```
 
-### 13.21.2.randint()
+### 13.22.2.randint()
 
 在给定范围生成一个随机整数
 
@@ -2442,7 +2526,7 @@ num = np.random.randint(low=1,# 下限
                         high=10)# 上限
 ```
 
-### 13.21.3.rand()
+### 13.22.3.rand()
 
 生成一个给定维度的随机数数组
 
@@ -2451,7 +2535,7 @@ import numpy as np
 arr = np.random.rand(10)
 ```
 
-### 13.21.4.randn()
+### 13.22.4.randn()
 
 生成一个给定维度符合正态分布的随机数数组
 
@@ -2460,7 +2544,7 @@ import numpy as np
 arr = np.random.randn(10)
 ```
 
-### 13.21.5.seed()
+### 13.22.5.seed()
 
 设置随机数生成器的随机种子
 
@@ -2469,7 +2553,7 @@ import numpy as np
 np.random.seed(seed)# 随机种子
 ```
 
-## 13.22.reshape()
+## 13.23.reshape()
 
 在不改变数据内容的情况下，改变数据形状
 
@@ -2483,7 +2567,7 @@ b = np.asarray(b)
 b = b.reshape((-1, 2, 1))# 第一个为-1，将按照后面的输入增加一个维度
 ```
 
-## 13.23.sort()
+## 13.24.sort()
 
 按照升序进行排序
 
@@ -2493,7 +2577,7 @@ a = [2, 3, 7, 8, 1]
 new_a = np.sort(a)
 ```
 
-## 13.24.split()
+## 13.25.split()
 
 将张量按某个维度拆分成多个张量
 
@@ -2505,7 +2589,7 @@ tensor_list = np.split(ary=tensor,# 需要拆分的张量
                        axis=1)# axis按某个维度拆分
 ```
 
-## 13.25.sqrt()
+## 13.26.sqrt()
 
 计算平方根
 
@@ -2514,7 +2598,7 @@ import numpy as np
 a = np.sqrt(x)# 待计算的值
 ```
 
-## 13.26.squeeze()
+## 13.27.squeeze()
 
 去除数组中维度为1的维度
 
@@ -2524,7 +2608,7 @@ a = [[1, 2]]
 a = np.squeeze(a)
 ```
 
-## 13.27.std()
+## 13.28.std()
 
 按照给定的维度求标准差
 
@@ -2534,7 +2618,7 @@ a = [1, 2, 3]
 std = np.std(a)# 待计算均值的列表、矩阵
 ```
 
-## 13.28.sum()
+## 13.29.sum()
 
 按照给定的维度求和
 
@@ -2546,7 +2630,7 @@ sum = np.sum(a,# 待计算均值的列表、矩阵
              keepdims)# 保持原有的维度
 ```
 
-## 13.29.transpose()
+## 13.30.transpose()
 
 对矩阵进行转置
 
@@ -2560,7 +2644,7 @@ m = np.asarray([[[1, 2, 3], [4, 5, 6]]])
 m_t = m.transpose(1, 0, 2)
 ```
 
-## 13.30.var()
+## 13.31.var()
 
 按照指定的维度计算方差
 
@@ -2571,7 +2655,7 @@ v = np.var(a,# 待计算均值的列表、矩阵
            axis=0)# 维度
 ```
 
-## 13.31.zeros()
+## 13.32.zeros()
 
 生成一个全0数组
 
@@ -2662,7 +2746,18 @@ df.reset_index(drop,# 布尔值，默认Fasle，是否保留原索引到数据�
                inplace)# 布尔值，默认False，是否修改源文件
 ```
 
-### 14.2.7.shape
+### 14.2.7.sample()
+
+随机采样指定个数的样本
+
+```python
+import pandas as pd
+df = pd.DataFrame([1, 2, 3, 4])
+new_df = df.sample(n,# 返回的个数
+                   frac)# 是否采样全部，不可与n同时使用
+```
+
+### 14.2.8.shape
 
 返回DataFrame维数的元组
 
@@ -2721,7 +2816,29 @@ import pandas as pd
 sr = pd.Series([1, 2, 3])
 ```
 
-### 14.7.1.mode()
+### 14.7.1.isin()
+
+检查值是否在Series里
+
+```python
+import pandas as pd
+sr = pd.Series([1, 2, 3])
+ans = sr.isin([1])
+```
+
+### 14.7.2.map()
+
+根据输入的关系映射值
+
+```python
+import numpy as np
+import pandas as pd
+df = pd.DataFrame([1, 2, 3, 4])
+vi = {value: index for index, value in enumerate(df[0])}
+df[1] = df[0].map(vi)
+```
+
+### 14.7.3.mode()
 
 返回众数
 
@@ -2731,7 +2848,7 @@ sr = pd.Series([1, 2, 2, 2, 3])
 sr.mode()
 ```
 
-### 14.7.2.tolist()
+### 14.7.4.tolist()
 
 返回Series值的列表
 
@@ -2741,7 +2858,7 @@ sr.tolist()
 pd.Series.tolist(sr)
 ```
 
-### 14.7.3.values()
+### 14.7.5.values()
 
 将DataFrame的值转换为ndarry
 
