@@ -92,9 +92,24 @@ keras在tensorflow r1.x和r2.1以及plaidml中版本均是2.2.4；除了模型�
 
 ## 4.1.applications
 
-### 4.1.1.inception_resnet_v2
+### 4.1.1.efficientnet
 
-#### 4.1.1.1.InceptionResNetV2()
+需要tensorflow的版本为r2.3
+
+#### 4.1.1.1.EfficientNetB0()
+
+EfficientNetB0的预训练模型
+
+```python
+from tensorflow.keras.applications.efficientnet import EfficientNetB0
+model = EfficientNetB0(include_top,# 是否包含全连接的输出层
+                       weights,# 权重，可以是随机初始化，也可以加载'imagenet'的权重，或者自定权重的路径
+                       input_tensor)# 输入层，需要使用keras.layers.Input()
+```
+
+### 4.1.2.inception_resnet_v2
+
+#### 4.1.2.1.InceptionResNetV2()
 
 InceptionResNetV2的预训练模型
 
@@ -105,9 +120,9 @@ model = InceptionResNetV2(include_top,# 是否包含全连接的输出层
                           input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 4.1.2.inception_v3
+### 4.1.3.inception_v3
 
-#### 4.1.2.1.InceptionV3()
+#### 4.1.3.1.InceptionV3()
 
 InceptionV3的预训练模型
 
@@ -118,9 +133,22 @@ model = InceptionV3(include_top,# 是否包含全连接的输出层
                     input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 4.1.3.resnet_v2
+### 4.1.4.mobilenet_v2
 
-#### 4.1.3.1.ResNet152V2()
+#### 4.1.4.1.MobileNetV2()
+
+MobileNetV2的预训练模型
+
+```python
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
+model = MobileNetV2(include_top,# 是否包含全连接的输出层
+                    weights,# 权重，可以是随机初始化，也可以加载'imagenet'的权重，或者自定权重的路径
+                    input_tensor)# 输入层，需要使用keras.layers.Input()
+```
+
+### 4.1.5.resnet_v2
+
+#### 4.1.5.1.ResNet152V2()
 
 ResNet152V2的预训练模型
 
@@ -131,9 +159,9 @@ model = ResNet152V2(include_top,# 是否包含全连接的输出层
                     input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 4.1.4.resnet50
+### 4.1.6.resnet50
 
-#### 4.1.4.1.ResNet50()
+#### 4.1.6.1.ResNet50()
 
 ResNet50的预训练模型
 
@@ -144,9 +172,9 @@ model = ResNet50(include_top,# 是否包含全连接的输出层
                  input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 4.1.5.vgg19
+### 4.1.7.vgg19
 
-#### 4.1.5.1.preprocess_input()
+#### 4.1.7.1.preprocess_input()
 
 对数据进行预处理
 
@@ -155,7 +183,7 @@ from tensorflow.keras.applications.vgg19 import preprocess_input
 preprocessed_input = preprocess_input(x)# 要预处理的数据
 ```
 
-#### 4.1.5.2.VGG19()
+#### 4.1.7.2.VGG19()
 
 VGG19的预训练模型
 
@@ -166,9 +194,9 @@ model = VGG19(include_top,# 是否包含全连接的输出层
               input_tensor)# 输入层，需要使用keras.layers.Input()
 ```
 
-### 4.1.6.xception
+### 4.1.8.xception
 
-#### 4.1.6.1.Xception()
+#### 4.1.8.1.Xception()
 
 Xception的预训练模型
 
@@ -268,8 +296,24 @@ tensor = zeros_like(x)# 张量
 
 ```python
 from keras.callbacks import ModelCheckpoint
-callbacks = [ModelCheckpoint(filepath,# 模型保存的路径
-                             period)]# 保存间隔
+CALLBACKS = [
+    ModelCheckpoint(filepath,  # 模型保存的路径
+                    monitor,  # 监控信息
+                    verbose,  # 是否显示
+                    period),  # 保存间隔
+]
+```
+
+### 4.3.2.TensorBoard()
+
+```python
+from keras.callbacks import TensorBoard
+CALLBACKS = [
+    TensorBoard(log_dir,  # 保存路径
+                histogram_freq,  # 绘制直方图
+                write_graph,  # 绘制图像
+                update_freq),  # 更新频率epoch还是batch
+]
 ```
 
 ## 4.4.datasets
@@ -506,9 +550,18 @@ from keras.losses import BinaryCrossentropy
 cross_entropy = BinaryCrossentropy(from_logits)# 是否将y_pred解释为张量
 ```
 
-### 4.6.2.SparseCategoricalCrossentropy()
+### 4.6.2.CategoricalCrossentropy()
 
-计算真实标签和预测值标签的的交叉熵损失（多分类）
+计算真实标签和预测值标签的的交叉熵损失（标签one-hot）
+
+```python
+from tensorflow.keras.losses import CategoricalCrossentropy
+cross_entropy = CategoricalCrossentropy(from_logits)# 是否将y_pred解释为张量
+```
+
+### 4.6.3.SparseCategoricalCrossentropy()
+
+计算真实标签和预测值标签的的交叉熵损失（标签整数）
 
 ```python
 from keras.losses import SparseCategoricalCrossentropy
@@ -2371,7 +2424,14 @@ a = np.expand_dims(a,# 输入可以是lists, tuples, ndarrays
 
 ## 13.9.hstack()
 
+按照水平顺序合成一个新的数组|numpy.ndarray
 
+```python
+import numpy as np
+arr1 = [[1, 2, 3, 4], [1, 2, 3, 4]]
+arr2 = [[5, 6], [5, 6]]
+a = np.hstack(tup=(arr1, arr2))  # 数组序列|array-like
+```
 
 ## 13.10.linalg
 
