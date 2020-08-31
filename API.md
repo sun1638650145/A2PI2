@@ -177,7 +177,42 @@ ax.annotate(s='annotate',  # 注释内容|str
 plt.show()
 ```
 
-### 5.1.2.grid()
+### 5.1.2.clabel()
+
+在等高线上显示高度
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+ax = plt.subplot()
+x = np.linspace(1, 9, 10)
+y = np.linspace(1, 9, 10)
+X, Y = np.meshgrid(x, y)
+cs = ax.contour(X, Y, X + Y, colors='orange', linewidths=1)
+ax.clabel(cs)
+plt.show()
+```
+
+### 5.1.2.contour()
+
+绘制等高线|matplotlib.contour.QuadContourSet
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+ax = plt.subplot()
+x = np.linspace(1, 9, 10)
+y = np.linspace(1, 9, 10)
+X, Y = np.meshgrid(x, y)
+cs = ax.contour(X,  # 横坐标|array-like
+                Y,  # 纵坐标|array-like
+                X + Y,  # 横纵坐标的关系公式|array-like(必须是2D的)
+                colors='orange',  # 等高线的颜色|str
+                linewidths=1)  # 等高线的宽度|int
+plt.show()
+```
+
+### 5.1.3.grid()
 
 绘制网格线
 
@@ -189,7 +224,7 @@ ax.grid(axis='x',  # 绘制的范围|str('both'|'x'|'y')|'both'|可选
 plt.show()
 ```
 
-### 5.1.3.legend()
+### 5.1.4.legend()
 
 放置图例
 
@@ -200,13 +235,13 @@ ax.legend(loc='center')  # 放置的位置|str('upper right'|'upper left'|'lower
 plt.show()
 ```
 
-### 5.1.4.patch
+### 5.1.5.patch
 
 | 版本 | 描述                                  | 注意 |
 | ---- | ------------------------------------- | ---- |
 | -    | patches是画布颜色和边框颜色的控制接口 |      |
 
-#### 5.1.4.1.set_alpha()
+#### 5.1.5.1.set_alpha()
 
 设置画布的透明度
 
@@ -214,7 +249,7 @@ plt.show()
 ax.patch.set_alpha(alpha)  # 透明度|float|None
 ```
 
-#### 5.1.4.2.set_facecolor()
+#### 5.1.5.2.set_facecolor()
 
 设置画布的颜色
 
@@ -226,7 +261,18 @@ ax.patch.set_facecolor(color='green')  # 颜色|str|None
 plt.show()
 ```
 
-### 5.1.5.set_xlabel()
+### 5.1.6.set_title()
+
+设置标题
+
+```python
+import matplotlib.pyplot as plt
+ax = plt.subplot()
+ax.set_title('this is title')
+plt.show()
+```
+
+### 5.1.7.set_xlabel()
 
 设置x轴的内容
 
@@ -234,7 +280,7 @@ plt.show()
 ax.set_xlabel(xlabel='this is x label')  # 内容|str
 ```
 
-### 5.1.6.set_xticks()
+### 5.1.8.set_xticks()
 
 设置x轴的刻度
 
@@ -242,7 +288,7 @@ ax.set_xlabel(xlabel='this is x label')  # 内容|str
 ax.set_xticks(ticks=[1, 2, 3, 4])  # 刻度|list(空列表就表示不显示刻度)
 ```
 
-### 5.1.7.set_yticks()
+### 5.1.9.set_yticks()
 
 设置y轴的刻度
 
@@ -250,13 +296,13 @@ ax.set_xticks(ticks=[1, 2, 3, 4])  # 刻度|list(空列表就表示不显示刻�
 ax.set_yticks(ticks=[])  # 刻度|list(空列表就表示不显示刻度)
 ```
 
-###  5.1.8.spines
+###  5.1.10.spines
 
 | 版本 | 描述                         | 注意 |
 | ---- | ---------------------------- | ---- |
 | -    | 画布的边框，包括上下左右四个 |      |
 
-#### 5.1.8.1.set_color()
+#### 5.1.10.1.set_color()
 
 设置画布的边框的颜色
 
@@ -264,7 +310,7 @@ ax.set_yticks(ticks=[])  # 刻度|list(空列表就表示不显示刻度)
 ax.spines['left'].set_color(c='red')  # 颜色|str
 ```
 
-### 5.1.9.text()
+### 5.1.11.text()
 
 给点添加文本|matplotlib.text.Text
 
@@ -358,7 +404,11 @@ import matplotlib.pyplot as plt
 x = [1, 2, 2, 3, 4, 5, 5.5, 6]
 y = [1, 3, 2, 3, 4, 5, 5, 6]
 plt.scatter(x,  # x坐标|scalar or array-like 形状必须是(n,)
-            y)  # y坐标|scalar or array-like 形状必须是(n,)
+            y,  # y坐标|scalar or array-like 形状必须是(n,)
+            s=150,  # 点的大小|int
+            c='red',  # 点的颜色|str
+            marker='o',  # 点的标记的形状|str
+            edgecolors='green')  # 标记的颜色|str
 plt.show()
 ```
 
@@ -371,7 +421,16 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 5.2.10.subplots()
+### 5.2.10.subplot()
+
+在当前画布上创建一个子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
+
+```python
+import matplotlib.pyplot as plt
+ax = plt.subplot()
+```
+
+### 5.2.11.subplots()
 
 创建一个画布和一组子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -380,7 +439,7 @@ import matplotlib.pyplot as plt
 figure, axesSubplot = plt.subplots()
 ```
 
-### 5.2.11.subplots_adjust()
+### 5.2.12.subplots_adjust()
 
 调整子图布局
 
@@ -400,7 +459,27 @@ plt.subplots_adjust(left=0.125,  # 子图左边框距离画布的距离|float|0.
 | ------ | -------------- | ---- |
 | 1.18.4 | python数值计算 |      |
 
-## 6.1.argmax()
+## 6.1.abs()
+
+逐元素计算绝对值|numpy.ndarray
+
+```python
+import numpy as np
+arr = [1, 2, -1, 3]
+x = np.abs(arr)  # 输入的数组|array-like
+```
+
+## 6.2.any()
+
+判断数组是否存在某个元素为True，如果有返回True，否则False|numpy.bool_
+
+```python
+import numpy as np
+arr = [1, 1, 1, 1]
+x = np.any(a=arr)  # 输入的数组|array-like
+```
+
+## 6.3.argmax()
 
 返回指定维度最大值的索引|numpy.int64
 
@@ -411,7 +490,7 @@ np.argmax(a=arr,  # 输入的数组|array_like
           axis=None)  # 筛选所沿的维度|int|None|可选 
 ```
 
-## 6.2.asarray()
+## 6.4.asarray()
 
 将输入转化为一个数组|numpy.ndarray
 
@@ -422,7 +501,7 @@ nd_arr = np.asarray(a=arr,  # 输入的数据|array-like
                     dtype=None)  # 元素的数据类型|data-type|None|可选
 ```
 
-## 6.3.ceil()
+## 6.5.ceil()
 
 逐元素进行向上取整|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -432,7 +511,7 @@ arr = [5.1, 4.9]
 np.ceil(arr)  # 输入数据|array_like
 ```
 
-## 6.4.concatenate()
+## 6.6.concatenate()
 
 按照指定维度合并多个数组|numpy.ndarray
 
@@ -445,7 +524,18 @@ np.concatenate([arr1, arr2, arr3],  # 要合并的数组|array-like
                axis=1)  # 沿指定维度合并|int|0|可选
 ```
 
-## 6.5.equal()
+## 6.7.dot()
+
+计算两个数组的点乘|numpy.ndarray
+
+```python
+import numpy as np
+arr1 = [[1, 2, 3]]
+arr2 = [[1], [2], [3]]
+np.dot(a=arr1, b=arr2)  # 输入的数组|array-like
+```
+
+## 6.8.equal()
 
 逐个元素判断是否一致|numpy.bool_(输入是数组时numpy.ndarray)
 
@@ -456,7 +546,7 @@ arr2 = [1, 2, 2]
 np.equal(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 6.6.exp()
+## 6.9.exp()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -466,7 +556,7 @@ arr = [1, 2, 3]
 np.exp(arr)  # 输入数据|array-like
 ```
 
-## 6.7.expand_dims()
+## 6.10.expand_dims()
 
 扩展数组的形状，增加维度|numpy.ndarray
 
@@ -477,7 +567,7 @@ a = np.expand_dims(a=a,  # 输入的数组|array-like
                    axis=0)  # 添加新维度的位置|int or tuple of ints
 ```
 
-## 6.8.hstack()
+## 6.11.hstack()
 
 按照水平顺序合成一个新的数组|numpy.ndarray
 
@@ -488,13 +578,13 @@ arr2 = [[5, 6], [5, 6]]
 a = np.hstack(tup=(arr1, arr2))  # 数组序列|array-like
 ```
 
-## 6.9.linalg
+## 6.12.linalg
 
 | 版本 | 描述                  | 注意 |
 | ---- | --------------------- | ---- |
 | -    | numpy的线性代数函数包 |      |
 
-### 6.9.1.norm()
+### 6.12.1.norm()
 
 计算范数|numpy.float64
 
@@ -505,7 +595,7 @@ np.linalg.norm(x=arr,  # 输入的矩阵或向量|array_like(维数必须是1维
                ord=1)  # 范数选项｜int or str(non-zero|int|inf|-inf|'fro'|'nuc')|None(计算2-范数)|可选
 ```
 
-## 6.10.linspace()
+## 6.13.linspace()
 
 生成指定间隔内的等差序列|numpy.ndarray
 
@@ -516,7 +606,7 @@ np.linspace(start=1,  # 序列的起始值|array_like
             num=10)  # 生成序列的样本的个数|int|50|可选
 ```
 
-## 6.11.load()
+## 6.14.load()
 
 从npy、npz、pickled文件加载数组或pickled对象|array or tuple or dict
 
@@ -527,7 +617,7 @@ np.load(file,  # 文件|file-like object or string or pathlib.Path
         encoding)  # 读取的编码方式|str|'ASCII'|可选
 ```
 
-## 6.12.log()
+## 6.15.log()
 
 逐元素计算自然对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -536,7 +626,7 @@ import numpy as np
 np.log(1)  # 输入数据|array_like
 ```
 
-## 6.13.log2()
+## 6.16.log2()
 
 逐元素计算以2为底对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -545,7 +635,7 @@ import numpy as np
 np.log2(1)  # 输入数据|array_like
 ```
 
-## 6.14.mat()
+## 6.17.mat()
 
 将输入转换为一个矩阵|numpy.matrix
 
@@ -556,7 +646,7 @@ matrix = np.mat(data=arr  # 输入数据|array-like
                 dtype=None)  # 生成矩阵元素的数据类型|data-type|None|可选
 ```
 
-## 6.15.matmul()
+## 6.18.matmul()
 
 两个数组的矩阵乘积|numpy.ndarray
 
@@ -567,7 +657,7 @@ arr2 = [[1], [2], [3]]
 np.matmul(arr1, arr2)  # 输入的数组|array-like（不能是标量）
 ```
 
-## 6.16.max()
+## 6.19.max()
 
 返回最大值或者沿着某一维度最大值|numpy.ndarray or scalar
 
@@ -578,7 +668,7 @@ np.max(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int|None|可选 
 ```
 
-## 6.17.maximum()
+## 6.20.maximum()
 
 返回数组逐个元素的最大值|numpy.ndarray
 
@@ -589,7 +679,7 @@ arr2 = [1, 5, 2]
 np.maximum(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 6.18.mean()
+## 6.21.mean()
 
 沿着指定维度计算均值|numpy.float64
 
@@ -600,7 +690,28 @@ np.mean(arr,  # 输入的数组|array-like
         axis=None)  # 所沿的维度|int or tuple of ints|None|可选 
 ```
 
-## 6.19.ones()
+## 6.22.meshgrid()
+
+生成一个坐标矩阵|list of numpy.ndarray
+
+```python
+import numpy as np
+x_crood = np.linspace(0, 4, 5)
+y_crood = np.linspace(0, 4, 5)
+vector_matrix = np.meshgrid(x_crood, y_crood)  # 坐标向量|array_like
+```
+
+## 6.23.nonzero()
+
+返回非零元素的索引|tuple
+
+```python
+import numpy as np
+arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
+np.nonzero(a=arr)  # 输入的数组|array-like
+```
+
+## 6.24.ones()
 
 创建一个指定为形状和类型的全一数组|numpy.ndarray
 
@@ -610,7 +721,7 @@ arr = np.ones(shape=[2, 3],  # 数组的形状|int or sequence of ints
               dtype=np.int8)  # 数组元素的数据类型|data-type|numpy.float64|可选
 ```
 
-## 6.20.power()
+## 6.25.power()
 
 逐个元素计算第一个元素的第二个元素次幂|scalar(输入是数组时numpy.ndarray)
 
@@ -619,13 +730,13 @@ import numpy as np
 x = np.power(2.1, 3.2)   # x1底数、x2指数|array_like
 ```
 
-## 6.21.random
+## 6.26.random
 
 | 版本 | 描述                    | 注意 |
 | ---- | ----------------------- | ---- |
 | -    | numpy的随机数生成函数包 |      |
 
-### 6.21.1.normal()
+### 6.26.1.normal()
 
 生成正态分布的样本|numpy.ndarray or scalar
 
@@ -634,7 +745,17 @@ import numpy as np
 arr = np.random.normal(size=[2, 3])  # 形状|int or tuple of ints|None(None则只返回一个数)|可选
 ```
 
-### 6.21.2.randint()
+### 6.26.2.permutation()
+
+随机置换序列|numpy.ndarray
+
+```python
+import numpy as np
+arr = [1, 2, 3, 4]
+arr = np.random.permutation(arr)  # 输入的数组|array-like
+```
+
+### 6.26.3.randint()
 
 从给定区间[low, high)生成随机整数|int or numpy.ndarray
 
@@ -644,7 +765,7 @@ np.random.randint(low=1,  # 下界|int or array-like of ints
                   high=10)  # 上界|int or array-like of ints|None(如果high为None则返回区间[0, low))|可选
 ```
 
-### 6.21.3.rand()
+### 6.26.4.rand()
 
 生成一个指定形状的随机数数组|float or numpy.ndarray
 
@@ -653,7 +774,7 @@ import numpy as np
 arr = np.random.rand(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 6.21.4.randn()
+### 6.26.5.randn()
 
 生成一个指定形状的标准正态分布的随机数数组|float or numpy.ndarray
 
@@ -662,7 +783,7 @@ import numpy as np
 arr = np.random.randn(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 6.21.5.seed()
+### 6.26.6.seed()
 
 设置随机数生成器的随机种子
 
@@ -671,7 +792,17 @@ import numpy as np
 np.random.seed(seed)  # 随机种子|int|None|可选
 ```
 
-## 6.22.reshape()
+## 6.27.ravel()
+
+展平一个数组|numpy.ndarray
+
+```python
+import numpy as np
+arr = np.asarray([[1, 2], [3, 4]])
+np.ravel(a=arr)  # 输入的数组|array-like
+```
+
+## 6.28.reshape()
 
 返回一个具有相同数据的新形状的数组|numpy.ndarray
 
@@ -682,7 +813,7 @@ np.reshape(a=arr,  # 要改变形状的数组|array_like
            newshape=[2, 2])  # 新的形状|int or tuple of ints
 ```
 
-## 6.23.save()
+## 6.29.save()
 
 将数组转换为numpy保存进二进制的npy文件
 
@@ -694,7 +825,7 @@ np.save(file='arr.npy',  # 文件名|file or str or pathlib.Path
         allow_pickle=True)  # 允许使用pickle对象保存数组|bool|True|可选
 ```
 
-## 6.24.sort()
+## 6.30.sort()
 
 返回排序数组的副本|numpy.ndarray
 
@@ -704,7 +835,7 @@ arr = [1, 3, 2, 4]
 new_arr = np.sort(a=arr)  # 要排序的数组|array_like
 ```
 
-## 6.25.split()
+## 6.31.split()
 
 将一个数组拆分为多个|list of ndarrays
 
@@ -716,7 +847,7 @@ arr_list = np.split(ary=arr,  # 要拆分的数组|numpy.ndarray
                     axis=1)  # 沿某维度分割|int|0|可选
 ```
 
-## 6.26.sqrt()
+## 6.32.sqrt()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -726,7 +857,7 @@ arr = [1, 2, 3]
 np.sqrt(arr)  # 输入数据|array_like
 ```
 
-## 6.27.squeeze()
+## 6.33.squeeze()
 
 删除数组中维度为一的维度|numpy.ndarray
 
@@ -736,7 +867,7 @@ arr = [[1, 2, 3]]
 np.squeeze(arr)  # 输入数据|array_like
 ```
 
-## 6.28.std()
+## 6.34.std()
 
 沿指定维度计算标准差|numpy.float64
 
@@ -747,7 +878,7 @@ np.std(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 6.29.sum()
+## 6.35.sum()
 
 沿指定维度求和|numpy.ndarray
 
@@ -758,7 +889,7 @@ np.sum(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 6.30.transpose()
+## 6.36.transpose()
 
 对数组进行转置|numpy.ndarray
 
@@ -777,7 +908,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 arr.T
 ```
 
-## 6.31.var()
+## 6.37.var()
 
 沿指定维度方差|numpy.ndarray
 
@@ -788,7 +919,7 @@ np.var(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-##6.32.zeros()
+##6.38.zeros()
 
 创建一个指定为形状和类型的全零数组|numpy.ndarray
 
@@ -1388,6 +1519,16 @@ model = SVC(C,  # 正则化系数|float|1.0
             kernel,  # 核函数|str|'rbf'('linear', 'poly', 'rbf', 'sigmoid', 'precomputed')
             probability,  # 是否启用概率估计|bool|false
             class_weight)  # 类别权重|dict or 'balanced'|None
+```
+
+### 10.7.2.SVR()
+
+实例化一个支持向量回归
+
+```python
+from sklearn.svm import SVR
+model = SVR(C,  # 正则化系数|float|1.0
+            kernel)  # 核函数|str|'rbf'('linear', 'poly', 'rbf', 'sigmoid', 'precomputed')
 ```
 
 ## 10.8.tree
