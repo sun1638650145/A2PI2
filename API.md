@@ -6,7 +6,7 @@
 * 移除TensorFLow r1.x 
 * Python格式规范化
   1. 类或函数功能|有无返回值
-  2. 每个参数将按照意义|数据类型|默认值(枚举)|是否为可选参数
+  2. 每个参数将按照意义|数据类型{枚举, ...}|默认值|是否为可选参数
 * JavaSrcipt格式规范化
   1. 类或函数功能|有无返回值
   2. //参数:意义(数据类型)|是否可省略;参数:意义(数据类型)|是否可省略;......
@@ -25,11 +25,14 @@
 
 ```python
 from catboost import CatBoostClassifier
-model = CatBoostClassifier(iterations,  # 迭代次数|int|500
-                           learning_rate,  # 学习率|float|0.03
-                           depth,  # 树的深度|int|6
-                           loss_function,  # 损失函数|string or object|'Logloss'('Logloss'|'CrossEntropy')
-                           task_type)  # 用于训练模型的硬件|string|None('CPU'|'GPU')
+model = CatBoostClassifier(iterations=100,  # 迭代次数|int|500
+                           learning_rate=1e-1,  # 学习率|float|0.03
+                           depth=10,  # 树的深度|int|6
+                           l2_leaf_reg=3,  # 损失函数使用L2正则化|float|3
+                           loss_function='Logloss',  # 损失函数|{'Logloss', 'CrossEntropy'} or object|'Logloss'
+                           od_type='Iter',  # 过拟合检查|{'IncToDec', 'Iter'}|'IncToDec'
+                           random_seed=16,  # 随机种子|int|None
+                           cat_features=None)  # 分类的索引列|list or numpy.ndarray|None 
 ```
 
 ### 1.1.1.fit()
@@ -479,7 +482,17 @@ arr = [1, 1, 1, 1]
 x = np.any(a=arr)  # 输入的数组|array-like
 ```
 
-## 6.3.argmax()
+## 6.3.arange()
+
+返回指定范围的数组|numpy.ndarray
+
+```python
+import numpy as np
+arr = np.arange(start=2,  # 开始的值|number
+                stop=10)  # 结束的值|number
+```
+
+## 6.4.argmax()
 
 返回指定维度最大值的索引|numpy.int64
 
@@ -490,7 +503,7 @@ np.argmax(a=arr,  # 输入的数组|array_like
           axis=None)  # 筛选所沿的维度|int|None|可选 
 ```
 
-## 6.4.asarray()
+## 6.5.asarray()
 
 将输入转化为一个数组|numpy.ndarray
 
@@ -501,7 +514,7 @@ nd_arr = np.asarray(a=arr,  # 输入的数据|array-like
                     dtype=None)  # 元素的数据类型|data-type|None|可选
 ```
 
-## 6.5.ceil()
+## 6.6.ceil()
 
 逐元素进行向上取整|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -511,7 +524,7 @@ arr = [5.1, 4.9]
 np.ceil(arr)  # 输入数据|array_like
 ```
 
-## 6.6.concatenate()
+## 6.7.concatenate()
 
 按照指定维度合并多个数组|numpy.ndarray
 
@@ -524,7 +537,7 @@ np.concatenate([arr1, arr2, arr3],  # 要合并的数组|array-like
                axis=1)  # 沿指定维度合并|int|0|可选
 ```
 
-## 6.7.dot()
+## 6.8.dot()
 
 计算两个数组的点乘|numpy.ndarray
 
@@ -535,7 +548,7 @@ arr2 = [[1], [2], [3]]
 np.dot(a=arr1, b=arr2)  # 输入的数组|array-like
 ```
 
-## 6.8.equal()
+## 6.9.equal()
 
 逐个元素判断是否一致|numpy.bool_(输入是数组时numpy.ndarray)
 
@@ -546,7 +559,7 @@ arr2 = [1, 2, 2]
 np.equal(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 6.9.exp()
+## 6.10.exp()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -556,7 +569,7 @@ arr = [1, 2, 3]
 np.exp(arr)  # 输入数据|array-like
 ```
 
-## 6.10.expand_dims()
+## 6.11.expand_dims()
 
 扩展数组的形状，增加维度|numpy.ndarray
 
@@ -567,7 +580,7 @@ a = np.expand_dims(a=a,  # 输入的数组|array-like
                    axis=0)  # 添加新维度的位置|int or tuple of ints
 ```
 
-## 6.11.eye()
+## 6.12.eye()
 
 生成一个单位阵|numpy.ndarray
 
@@ -576,7 +589,7 @@ import numpy as np
 matrix = np.eye(N=3)  # 矩阵的行数|int
 ```
 
-## 6.12.hstack()
+## 6.13.hstack()
 
 按照水平顺序合成一个新的数组|numpy.ndarray
 
@@ -587,13 +600,13 @@ arr2 = [[5, 6], [5, 6]]
 a = np.hstack(tup=(arr1, arr2))  # 数组序列|array-like
 ```
 
-## 6.13.linalg
+## 6.14.linalg
 
 | 版本 | 描述                  | 注意 |
 | ---- | --------------------- | ---- |
 | -    | numpy的线性代数函数包 |      |
 
-### 6.13.1.inv()
+### 6.14.1.inv()
 
 计算矩阵的逆|numpy.ndarray
 
@@ -604,7 +617,7 @@ arr = [[1, 2],
 matrix = np.linalg.inv(a=arr)  # 输入的矩阵|array_like
 ```
 
-### 6.13.2.norm()
+### 6.14.2.norm()
 
 计算范数|numpy.float64
 
@@ -615,7 +628,7 @@ np.linalg.norm(x=arr,  # 输入的矩阵或向量|array_like(维数必须是1维
                ord=1)  # 范数选项｜int or str(non-zero|int|inf|-inf|'fro'|'nuc')|None(计算2-范数)|可选
 ```
 
-## 6.14.linspace()
+## 6.15.linspace()
 
 生成指定间隔内的等差序列|numpy.ndarray
 
@@ -626,7 +639,7 @@ np.linspace(start=1,  # 序列的起始值|array_like
             num=10)  # 生成序列的样本的个数|int|50|可选
 ```
 
-## 6.15.load()
+## 6.16.load()
 
 从npy、npz、pickled文件加载数组或pickled对象|array or tuple or dict
 
@@ -637,7 +650,7 @@ np.load(file,  # 文件|file-like object or string or pathlib.Path
         encoding)  # 读取的编码方式|str|'ASCII'|可选
 ```
 
-## 6.16.log()
+## 6.17.log()
 
 逐元素计算自然对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -646,7 +659,7 @@ import numpy as np
 np.log(1)  # 输入数据|array_like
 ```
 
-## 6.17.log2()
+## 6.18.log2()
 
 逐元素计算以2为底对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -655,7 +668,7 @@ import numpy as np
 np.log2(1)  # 输入数据|array_like
 ```
 
-## 6.18.mat()
+## 6.19.mat()
 
 将输入转换为一个矩阵|numpy.matrix
 
@@ -666,7 +679,7 @@ matrix = np.mat(data=arr  # 输入数据|array-like
                 dtype=None)  # 生成矩阵元素的数据类型|data-type|None|可选
 ```
 
-## 6.19.matmul()
+## 6.20.matmul()
 
 两个数组的矩阵乘积|numpy.ndarray
 
@@ -677,7 +690,7 @@ arr2 = [[1], [2], [3]]
 np.matmul(arr1, arr2)  # 输入的数组|array-like（不能是标量）
 ```
 
-## 6.20.max()
+## 6.21.max()
 
 返回最大值或者沿着某一维度最大值|numpy.ndarray or scalar
 
@@ -688,7 +701,7 @@ np.max(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int|None|可选 
 ```
 
-## 6.21.maximum()
+## 6.22.maximum()
 
 返回数组逐个元素的最大值|numpy.ndarray
 
@@ -699,7 +712,7 @@ arr2 = [1, 5, 2]
 np.maximum(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 6.22.mean()
+## 6.23.mean()
 
 沿着指定维度计算均值|numpy.float64
 
@@ -710,7 +723,7 @@ np.mean(arr,  # 输入的数组|array-like
         axis=None)  # 所沿的维度|int or tuple of ints|None|可选 
 ```
 
-## 6.23.meshgrid()
+## 6.24.meshgrid()
 
 生成一个坐标矩阵|list of numpy.ndarray
 
@@ -721,7 +734,7 @@ y_crood = np.linspace(0, 4, 5)
 vector_matrix = np.meshgrid(x_crood, y_crood)  # 坐标向量|array_like
 ```
 
-## 6.24.nonzero()
+## 6.25.nonzero()
 
 返回非零元素的索引|tuple
 
@@ -731,7 +744,7 @@ arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
 np.nonzero(a=arr)  # 输入的数组|array-like
 ```
 
-## 6.25.ones()
+## 6.26.ones()
 
 创建一个指定为形状和类型的全一数组|numpy.ndarray
 
@@ -741,7 +754,7 @@ arr = np.ones(shape=[2, 3],  # 数组的形状|int or sequence of ints
               dtype=np.int8)  # 数组元素的数据类型|data-type|numpy.float64|可选
 ```
 
-## 6.26.power()
+## 6.27.power()
 
 逐个元素计算第一个元素的第二个元素次幂|scalar(输入是数组时numpy.ndarray)
 
@@ -750,13 +763,13 @@ import numpy as np
 x = np.power(2.1, 3.2)   # x1底数、x2指数|array_like
 ```
 
-## 6.27.random
+## 6.28.random
 
 | 版本 | 描述                    | 注意 |
 | ---- | ----------------------- | ---- |
 | -    | numpy的随机数生成函数包 |      |
 
-### 6.27.1.normal()
+### 6.28.1.normal()
 
 生成正态分布的样本|numpy.ndarray or scalar
 
@@ -765,7 +778,7 @@ import numpy as np
 arr = np.random.normal(size=[2, 3])  # 形状|int or tuple of ints|None(None则只返回一个数)|可选
 ```
 
-### 6.27.2.permutation()
+### 6.28.2.permutation()
 
 随机置换序列|numpy.ndarray
 
@@ -775,7 +788,7 @@ arr = [1, 2, 3, 4]
 arr = np.random.permutation(arr)  # 输入的数组|array-like
 ```
 
-### 6.27.3.randint()
+### 6.28.3.randint()
 
 从给定区间[low, high)生成随机整数|int or numpy.ndarray
 
@@ -785,7 +798,7 @@ np.random.randint(low=1,  # 下界|int or array-like of ints
                   high=10)  # 上界|int or array-like of ints|None(如果high为None则返回区间[0, low))|可选
 ```
 
-### 6.27.4.rand()
+### 6.28.4.rand()
 
 生成一个指定形状的随机数数组|float or numpy.ndarray
 
@@ -794,7 +807,7 @@ import numpy as np
 arr = np.random.rand(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 6.27.5.randn()
+### 6.28.5.randn()
 
 生成一个指定形状的标准正态分布的随机数数组|float or numpy.ndarray
 
@@ -803,7 +816,7 @@ import numpy as np
 arr = np.random.randn(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 6.27.6.seed()
+### 6.28.6.seed()
 
 设置随机数生成器的随机种子
 
@@ -812,7 +825,7 @@ import numpy as np
 np.random.seed(seed)  # 随机种子|int|None|可选
 ```
 
-## 6.28.ravel()
+## 6.29.ravel()
 
 展平一个数组|numpy.ndarray
 
@@ -822,7 +835,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 np.ravel(a=arr)  # 输入的数组|array-like
 ```
 
-## 6.29.reshape()
+## 6.30.reshape()
 
 返回一个具有相同数据的新形状的数组|numpy.ndarray
 
@@ -833,7 +846,7 @@ np.reshape(a=arr,  # 要改变形状的数组|array_like
            newshape=[2, 2])  # 新的形状|int or tuple of ints
 ```
 
-## 6.30.save()
+## 6.31.save()
 
 将数组转换为numpy保存进二进制的npy文件
 
@@ -845,7 +858,7 @@ np.save(file='arr.npy',  # 文件名|file or str or pathlib.Path
         allow_pickle=True)  # 允许使用pickle对象保存数组|bool|True|可选
 ```
 
-## 6.31.sort()
+## 6.32.sort()
 
 返回排序数组的副本|numpy.ndarray
 
@@ -855,7 +868,7 @@ arr = [1, 3, 2, 4]
 new_arr = np.sort(a=arr)  # 要排序的数组|array_like
 ```
 
-## 6.32.split()
+## 6.33.split()
 
 将一个数组拆分为多个|list of ndarrays
 
@@ -867,7 +880,7 @@ arr_list = np.split(ary=arr,  # 要拆分的数组|numpy.ndarray
                     axis=1)  # 沿某维度分割|int|0|可选
 ```
 
-## 6.33.sqrt()
+## 6.34.sqrt()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -877,7 +890,7 @@ arr = [1, 2, 3]
 np.sqrt(arr)  # 输入数据|array_like
 ```
 
-## 6.34.squeeze()
+## 6.35.squeeze()
 
 删除数组中维度为一的维度|numpy.ndarray
 
@@ -887,7 +900,7 @@ arr = [[1, 2, 3]]
 np.squeeze(arr)  # 输入数据|array_like
 ```
 
-## 6.35.std()
+## 6.36.std()
 
 沿指定维度计算标准差|numpy.float64
 
@@ -898,7 +911,7 @@ np.std(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 6.36.sum()
+## 6.37.sum()
 
 沿指定维度求和|numpy.ndarray
 
@@ -909,7 +922,7 @@ np.sum(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 6.37.transpose()
+## 6.38.transpose()
 
 对数组进行转置|numpy.ndarray
 
@@ -928,7 +941,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 arr.T
 ```
 
-## 6.38.var()
+## 6.39.var()
 
 沿指定维度方差|numpy.ndarray
 
@@ -939,7 +952,7 @@ np.var(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-##6.39.zeros()
+##6.40.zeros()
 
 创建一个指定为形状和类型的全零数组|numpy.ndarray
 
@@ -991,7 +1004,30 @@ df = df.drop(labels=1,  # 希望删除的行或者列|single label or list-like
              axis=0)  # 删除行或者列|{0/'index', 1/'columns'}|0
 ```
 
-### 7.2.2.iloc[]
+### 7.2.2.drop_duplicates()
+
+ 删除重复的行|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+df = pd.DataFrame({'key': [0, 1, 2, 1], 'values': ['a', 'b', 'a', 'b']})
+df.drop_duplicates(subset=None,  # 仅选子列进行删除|None
+                   keep='first',  # 保留重复项的位置|{'first', 'last', False}('first'保留第一次出现的, 'last'保留最后一次出现的, False全部删除)|'first'
+                   inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
+```
+
+### 7.2.3.fillna()
+
+填充缺失值|pandas.core.frame.DataFrame or None
+
+```python
+import pandas as pd
+df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'value': [1, 2, None, 4]})
+df.fillna(value=10,  # 填充进的值
+          inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
+```
+
+### 7.2.4.iloc[]
 
 按照行号取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1001,7 +1037,7 @@ df = pd.DataFrame([[1, 4], [2, 5], [3, 6]])
 new_df = df.iloc[0:2]  # 要提取的数据|int or array of int or slice object with ints
 ```
 
-### 7.2.3.loc[]
+### 7.2.5.loc[]
 
 按照行名称取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1012,7 +1048,33 @@ df = pd.DataFrame(df_map, index=['a', 'b', 'c'])
 new_df = df.loc['a':'b']  # 要提取的数据|label or array of label or slice object with labels(没有名称的时候就是iloc函数)
 ```
 
-### 7.2.4.replace()
+### 7.2.6.median()
+
+获取中位数|pandas.core.series.Series
+
+```python
+import pandas as pd
+df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'value': [1, 2, 3, 4]})
+df.median()
+```
+
+### 7.2.7.merge()
+
+将两列进行合并|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+df1 = pd.DataFrame({'index': [0, 1, 2], 'values': ['a', 'b', 'a']})
+df2 = pd.DataFrame({'values': ['a', 'b'], 'numbers': [1, 2]})
+df = pd.merge(left=df1,  # 参与合并左侧的数据|DataFrame
+              right=df2,  # 参与合并右侧的数据|DataFrame
+              how='inner',  # 合并方式|{'inner', 'outer', 'left' 'right'}(交集, 并集, 左连接, 右连接)|'inner'
+              left_on='values',  # 左侧数据的参考项|label or list, or array-like
+              right_on='values',  # 右侧数据的参考项|label or list, or array-like
+              sort=True)  # 是否排序|bool|True
+```
+
+### 7.2.8.replace()
 
 替换DataFrame中的值|pandas.core.frame.DataFrame or None
 
@@ -1024,7 +1086,7 @@ new_df = df.replace(to_replace=1,  # 被替换的值|scalar or dict or list or s
                     inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 7.2.5.reset_index()
+### 7.2.9.reset_index()
 
 重置DataFrame的索引为从零开始的整数索引|pandas.core.frame.DataFrame or None
 
@@ -1036,7 +1098,7 @@ new_df = df.reset_index(drop=True,  # 是否丢弃原来的索引|bool|False
                         inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 7.2.6.sample()
+### 7.2.10.sample()
 
 随机采样指定个数的样本|pandas.core.frame.DataFrame
 
@@ -1079,19 +1141,40 @@ group = df.groupby(by='c2')  # 分组依据(列名)|str(name of columns)
 print(group.groups)
 ```
 
-## 7.6.read_csv()
+## 7.6.isnull()
+
+查找缺失值|pandas.core.series.Series
+
+```python
+import pandas as pd
+sr = pd.Series([1, 2, None, 4])
+sr.isnull()
+```
+
+## 7.7.notnull()
+
+查找非缺失值|pandas.core.series.Series
+
+```python
+import pandas as pd
+sr = pd.Series([1, 2, None, 4])
+sr.notnull()
+```
+
+## 7.8.read_csv()
 
 读取csv文件|DataFrame or TextParser
 
 ```python
 import pandas as pd
 new_df = pd.read_csv(filepath_or_buffer,  # 文件名|str or file handle|None
+                     sep=',',  # 字段分隔符|str|','|可选
                      header=0,  # 列名所在的行|int or str|0|可选
-                     index_col=None,  # 行名所在的列|int or str|None |可选
-                     sep=',')  # 字段分隔符|str|','|可选
+                     index_col=None,  # 行名所在的列|int or str|None|可选
+                     encoding=None)  # 编码方式|str|None|可选
 ```
 
-## 7.7.Series()
+## 7.9.Series()
 
 实例化一个Series对象(一维)|pandas.core.series.Series
 
@@ -1100,7 +1183,7 @@ import pandas as pd
 sr = pd.Series(data=[1, 2, 3, 4])  # 输入的数据|ndarray or Iterable or dict(数据必须是相同数据类型)
 ```
 
-### 7.7.1.isin()
+### 7.9.1.isin()
 
 检查某个值是否在Series中|pandas.core.series.Series
 
@@ -1110,7 +1193,7 @@ sr = pd.Series(data=[1, 2, 3, 4])
 bool_list = sr.isin(values=[4])  # 检查的值|set or list-like
 ```
 
-### 7.7.2.map()
+### 7.9.2.map()
 
 使用输入的关系字典进行映射|pandas.core.series.Series
 
@@ -1121,7 +1204,7 @@ map_dict = {1: 'a', 2: 'b'}
 new_sr = df[0].map(map_dict)  # 映射关系|dict
 ```
 
-### 7.7.3.mode()
+### 7.9.3.mode()
 
 返回数据的众数|pandas.core.series.Series
 
@@ -1131,7 +1214,7 @@ sr = pd.Series([1, 2, 2, 2, 3])
 m = sr.mode()
 ```
 
-### 7.7.4.tolist()
+### 7.9.4.tolist()
 
 返回Series值组成的列表|list
 
@@ -1141,7 +1224,7 @@ sr = pd.Series([1, 2, 2, 2, 3])
 l = pd.Series.tolist(sr)
 ```
 
-## 7.8.to_csv()
+## 7.10.to_csv()
 
 将DataFrame保存进csv文件
 
@@ -1155,7 +1238,7 @@ df.to_csv(path_or_buf='./df.csv',  # 文件名|str or file handle|None
           encoding='utf-8')  # 编码方式|str|'utf-8'|可选
 ```
 
-## 7.9.unique()
+## 7.11.unique()
 
 返回唯一值组成的数组|numpy.ndarray
 
@@ -1165,7 +1248,7 @@ sr = pd.Series([1, 2, 2, 2, 3])
 arr = pd.unique(values=sr)  # 输入的数据|1d array-like
 ```
 
-## 7.10.values
+## 7.12.values
 
 返回Series或者DataFrame的值组成的数组|numpy.ndarray or ndarray-like
 
@@ -1175,7 +1258,7 @@ df = pd.DataFrame([1, 2, 3])
 arr = df.values
 ```
 
-## 7.11.value_counts()
+## 7.13.value_counts()
 
 统计非空数值的出现次数|pandas.core.series.Series
 
@@ -1315,7 +1398,18 @@ model = RandomForestClassifier(n_estimators=100,  # 决策树的最大数量|int
                                max_depth=None)  # 决策树的最大深度|int|None
 ```
 
-### 10.2.3.VotingClassifier()
+### 10.2.3.RandomForestRegressor()
+
+实例化一个随机森林回归
+
+```python
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(n_estimators=100,  # 决策树的最大数量|int|100
+                              n_jobs=4,  # 并行数量|int|None|可选
+                              verbose=1)  # # 日志模式|int|0|可选
+```
+
+### 10.2.4.VotingClassifier()
 
 实例化一个投票分类器
 
@@ -1326,7 +1420,7 @@ model = VotingClassifier(estimators,  # 基学习器列表|list of (str, estimat
                          weights)  # 基学习器的权重|array-like of shape (n_classifiers,)|None
 ```
 
-#### 10.2.3.1.fit()
+#### 10.2.4.1.fit()
 
 训练投票分类器|self
 
@@ -1335,7 +1429,7 @@ model.fit(X,  # 特征数据|{array-like, sparse matrix} of shape (n_samples, n_
           y)  # 标签|array-like of shape (n_samples,)
 ```
 
-#### 10.2.3.2.predict()
+#### 10.2.4.2.predict()
 
 进行预测|numpy.ndarray
 
@@ -1343,7 +1437,7 @@ model.fit(X,  # 特征数据|{array-like, sparse matrix} of shape (n_samples, n_
 result = model.predict(X)  # 用于预测的数据|{array-like, sparse matrix} of shape (n_samples, n_features)
 ```
 
-#### 10.2.3.3.score()
+#### 10.2.4.3.score()
 
 计算验证集的平均准确率|float
 
@@ -1475,7 +1569,27 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,  # 需要划分的数�
 | ---- | --------------------------------------------------- | ---- |
 | -    | sklearn的数据预处理模块(缩放、居中、归一化、二值化) | -    |
 
-### 10.6.1.MinMaxScaler()
+### 10.6.1.LabelEncoder()
+
+实例化一个标签编码器
+
+```python
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+```
+
+#### 10.6.1.1.fit_transform()
+
+转换标签数据|array-like
+
+```python
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+y = ['a', 'a', 'b', 'c']
+y = le.fit_transform(y=y)  # 需要转换的标签|array-like
+```
+
+### 10.6.2.MinMaxScaler()
 
 实例化一个MinMax缩放器
 
@@ -1484,7 +1598,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 ```
 
-#### 10.6.1.1.fit_transform()
+#### 10.6.2.1.fit_transform()
 
 转换数据|numpy.ndarray
 
@@ -1495,7 +1609,7 @@ X = [[1, 1], [2, 2], [3, 2], [4, 3], [5, 3]]
 data = scaler.fit_transform(X=X)  # 需要转换的数据|{array-like, sparse matrix, dataframe} of shape (n_samples, n_features)
 ```
 
-### 10.6.2.MultiLabelBinarizer()
+### 10.6.3.MultiLabelBinarizer()
 
 实例化一个多标签二值化转换器
 
@@ -1504,7 +1618,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()
 ```
 
-#### 10.6.2.1.classes_
+#### 10.6.3.1.classes_
 
 原始的标签|numpy.ndarray
 
