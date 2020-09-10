@@ -1808,7 +1808,24 @@ print(list(dataset.as_numpy_iterator()))
 print(list(dataset_shuffle.as_numpy_iterator()))
 ```
 
-## 11.4.einsum()
+## 11.4.distribute
+
+| 版本 | 描述           | 注意                                       |
+| ---- | -------------- | ------------------------------------------ |
+| -    | 用于分布式训练 | tf.keras.utils.keras.multi_gpu_model被移除 |
+
+### 11.4.1.MirroredStrategy()
+
+实例化一个镜像策略(用于在单台主机上使用多个GPU设备进行训练)
+
+```python
+import tensorflow as tf
+strategy = tf.distribute.MirroredStrategy()
+    with strategy.scope():
+    		# 模型构建代码
+```
+
+## 11.5.einsum()
 
 爱因斯坦求和约定|tensorflow.python.framework.ops.EagerTensor
 
@@ -1821,7 +1838,7 @@ result = tf.einsum('ij,jk->ik',  # 描述公式|str
                    a, b)  # 输入的张量|tf.Tensor or numpy.ndarray
 ```
 
-## 11.5.GradientTape()
+## 11.6.GradientTape()
 
 实例化一个梯度带
 
@@ -1830,7 +1847,7 @@ import tensorflow as tf
 tape = tf.GradientTape()
 ```
 
-### 11.5.1.gradient()
+### 11.6.1.gradient()
 
 计算梯度|tensorflow.python.framework.ops.EagerTensor
 
@@ -1842,13 +1859,13 @@ with tf.GradientTape() as tape:
 grad = tape.gradient(target=y, sources=x)  # 计算target关于sources的梯度|a list or nested structure of Tensors or Variables
 ```
 
-## 11.6.image
+## 11.7.image
 
 | 版本 | 描述                 | 注意 |
 | ---- | -------------------- | ---- |
 | -    | 图像处理和编解码操作 | -    |
 
-### 11.6.1.convert_image_dtype()
+### 11.7.1.convert_image_dtype()
 
 改变图片的数据类型|tensorflow.python.framework.ops.EagerTensor
 
@@ -1860,7 +1877,7 @@ img = tf.image.convert_image_dtype(image=img,  # 图片|array-like
                                    dtype=tf.int8)  # 转换后的数据类型|tensorflow.python.framework.dtypes.DType
 ```
 
-### 11.6.2.decode_image()
+### 11.7.2.decode_image()
 
 转换BMP、GIF、JPEG或PNG图像为张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -1871,7 +1888,7 @@ tensor = tf.image.decode_image(contents,  # 图片的字节流|0-D str
                                dtype)  # 转换后的数据类型|tensorflow.python.framework.dtypes.DType
 ```
 
-### 11.6.3.resize()
+### 11.7.3.resize()
 
 改变图片的大小|tensorflow.python.framework.ops.EagerTensor
 
@@ -1881,9 +1898,9 @@ tensor = tf.image.resize(images,  # 输入的图片|4-D Tensor of shape [batch, 
                          size)  # 改变后的大小｜int([new_height, new_width])
 ```
 
-## 11.7.io
+## 11.8.io
 
-### 11.7.1.read_file()
+### 11.8.1.read_file()
 
 读入文件|str
 
@@ -1892,21 +1909,21 @@ import tensorflow as tf
 img = tf.io.read_file(filename)  # 文件路径|str
 ```
 
-## 11.8.keras
+## 11.9.keras
 
 | 版本  | 描述                        | 注意                                    |
 | ----- | --------------------------- | --------------------------------------- |
 | 2.4.0 | TensorFlow的高阶机器学习API | Keras移除了多后端支持，推荐使用tf.keras |
 
-### 11.8.1.applications
+### 11.9.1.applications
 
 | 版本 | 描述                             | 注意                           |
 | ---- | -------------------------------- | ------------------------------ |
 | -    | 提供带有预训练权重的深度学习模型 | 默认保存路径是~/.keras/models/ |
 
-#### 11.8.1.1.efficientnet
+#### 11.9.1.1.efficientnet
 
-##### 11.8.1.1.1.EfficientNetB0()
+##### 11.9.1.1.1.EfficientNetB0()
 
 EfficientNetB0的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1918,7 +1935,7 @@ model = EfficientNetB0(include_top=False,  # 是否包含全连接输出层|bool
                        input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-##### 11.8.1.1.2.EfficientNetB4()
+##### 11.9.1.1.2.EfficientNetB4()
 
 EfficientNetB4的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1930,7 +1947,7 @@ model = EfficientNetB4(include_top=False,  # 是否包含全连接输出层|bool
                        input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-##### 11.8.1.1.3.EfficientNetB7()
+##### 11.9.1.1.3.EfficientNetB7()
 
 EfficientNetB7的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1942,9 +1959,18 @@ model = EfficientNetB7(include_top=False,  # 是否包含全连接输出层|bool
                        input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.2.inception_resnet_v2
+##### 11.9.1.1.4.preprocess_input()
 
-##### 11.8.1.2.1.InceptionResNetV2()
+对一个批次的数据进行ImageNet格式的预处理|Preprocessed tensor or numpy.ndarray
+
+```python
+from tensorflow.keras.applications.efficientnet import preprocess_input
+input = preprocess_input(x)  # 要处理的数据|Tensor or numpy.ndarray
+```
+
+#### 11.9.1.2.inception_resnet_v2
+
+##### 11.9.1.2.1.InceptionResNetV2()
 
 InceptionResNetV2的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1956,9 +1982,9 @@ model = InceptionResNetV2(include_top=False,  # 是否包含全连接输出层|b
                           input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.3.inception_v3
+#### 11.9.1.3.inception_v3
 
-##### 11.8.1.3.1.InceptionV3()
+##### 11.9.1.3.1.InceptionV3()
 
 InceptionV3的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1970,9 +1996,9 @@ model = InceptionV3(include_top=False,  # 是否包含全连接输出层|bool|Tr
                     input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.4.mobilenet_v2
+#### 11.9.1.4.mobilenet_v2
 
-##### 11.8.1.4.1.MobileNetV2()
+##### 11.9.1.4.1.MobileNetV2()
 
 MobileNetV2的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -1984,9 +2010,9 @@ model = MobileNetV2(include_top=False,  # 是否包含全连接输出层|bool|Tr
                     input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.5.resnet50
+#### 11.9.1.5.resnet50
 
-##### 11.8.1.5.1.ResNet50()
+##### 11.9.1.5.1.ResNet50()
 
 ```python
 from tensorflow.keras.applications.resnet50 import ResNet50
@@ -1996,9 +2022,9 @@ model = ResNet50(include_top=False,  # 是否包含全连接输出层|bool|True
                  input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.6.resnet_v2
+#### 11.9.1.6.resnet_v2
 
-##### 11.8.1.6.1.ResNet152V2()
+##### 11.9.1.6.1.ResNet152V2()
 
 ResNet152V2的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -2010,9 +2036,9 @@ model = ResNet152V2(include_top=False,  # 是否包含全连接输出层|bool|Tr
                     input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.7.vgg19
+#### 11.9.1.7.vgg19
 
-##### 11.8.1.7.1.preprocess_input()
+##### 11.9.1.7.1.preprocess_input()
 
 对一个批次的数据进行ImageNet格式的预处理|Preprocessed tensor or numpy.ndarray
 
@@ -2021,7 +2047,7 @@ from tensorflow.keras.applications.vgg19 import preprocess_input
 input = preprocess_input(x)  # 要处理的数据|Tensor or numpy.ndarray
 ```
 
-##### 11.8.1.7.2.VGG19()
+##### 11.9.1.7.2.VGG19()
 
 VGG19的预训练模型|tensorflow.python.keras.engine.functional.Functional
 
@@ -2033,9 +2059,9 @@ model = VGG19(include_top=False,  # 是否包含全连接输出层|bool|True
               input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-#### 11.8.1.8.xception
+#### 11.9.1.8.xception
 
-##### 11.8.1.8.1.Xception()
+##### 11.9.1.8.1.Xception()
 
 ```python
 from tensorflow.keras.applications.xception import Xception
@@ -2045,13 +2071,13 @@ model = Xception(include_top=False,  # 是否包含全连接输出层|bool|True
                  input_tensor=Input(shape=[224, 224, 3]))  # 输入层|tensorflow.python.framework.ops.Tensor(layers.Input())
 ```
 
-###  11.8.2.backend
+###  11.9.2.backend
 
 | 版本 | 描述        | 注意 |
 | ---- | ----------- | ---- |
 | -    | 后端函数API |      |
 
-#### 11.8.2.1.cast()
+#### 11.9.2.1.cast()
 
 转换张量的数据类型|tensorflow.python.framework.ops.EagerTensor
 
@@ -2061,7 +2087,7 @@ tensor = cast(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
               dtype='float16')  # 转换后的数据类型|str('float16', 'float32', or 'float64')
 ```
 
-#### 11.8.2.2.clip()
+#### 11.9.2.2.clip()
 
 逐元素进行裁切到满足条件的范围|tensorflow.python.framework.ops.EagerTensor
 
@@ -2072,7 +2098,7 @@ tensor = clip(x=[1, 2, 3, 4, 5],  # 输入的张量|tf.Tensor or array-like
               max_value=4)  # 最大值|float, integer or tensor
 ```
 
-#### 11.8.2.3.ctc_batch_cost()
+#### 11.9.2.3.ctc_batch_cost()
 
 在每个批次上计算ctc损失|tensorflow.python.framework.ops.EagerTensor(形状是(samples,1))
 
@@ -2084,7 +2110,7 @@ tensor = ctc_batch_cost(y_true,  # 真实的标签|tensor(samples, max_string_le
                         label_length)  # 真实的长度|tensor(samples, 1)
 ```
 
-#### 11.8.2.4.expand_dims()
+#### 11.9.2.4.expand_dims()
 
 扩展张量的维度|tensorflow.python.framework.ops.EagerTensor
 
@@ -2094,7 +2120,7 @@ tensor = expand_dims(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
                      axis=0)  # 添加新维度的位置|int
 ```
 
-#### 11.8.2.5.ones_like()
+#### 11.9.2.5.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2103,7 +2129,7 @@ from tensorflow.keras.backend import ones_like
 tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-#### 11.8.2.6.shape()
+#### 11.9.2.6.shape()
 
 返回张量的形状|tensorflow.python.framework.ops.EagerTensor
 
@@ -2113,7 +2139,7 @@ tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])
 tensor_shape = shape(x=tensor)  # 输入的张量|tensor
 ```
 
-#### 11.8.2.7.sigmoid()
+#### 11.9.2.7.sigmoid()
 
 逐元素计算sigmoid函数的值|tensorflow.python.framework.ops.EagerTensor
 
@@ -2122,7 +2148,7 @@ from tensorflow.keras.backend import sigmoid
 tensor = sigmoid(x=[1., 2., 3., 4., 5.])  # 输入的张量|tensor
 ```
 
-#### 11.8.2.8.zeros_like()
+#### 11.9.2.8.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2131,13 +2157,13 @@ from tensorflow.keras.backend import zeros_like
 tensor = zeros_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-### 11.8.3.callbacks
+### 11.9.3.callbacks
 
 | 版本 | 描述                                  | 注意 |
 | ---- | ------------------------------------- | ---- |
 | -    | 回调函数API，用于查看模型的状态和统计 |      |
 
-#### 11.8.3.1.EarlyStopping()
+#### 11.9.3.1.EarlyStopping()
 
 实例化一个EarlyStopping，用以提前停止训练防止过拟合
 
@@ -2151,7 +2177,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 11.8.3.2.ModelCheckpoint()
+#### 11.9.3.2.ModelCheckpoint()
 
 实例化一个ModelCheckpoint，用以某种频率保存模型或模型的权重
 
@@ -2165,7 +2191,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 11.8.3.3.TensorBoard()
+#### 11.9.3.3.TensorBoard()
 
 实例化一个TensorBoard，可视化训练信息
 
@@ -2179,15 +2205,15 @@ CALLBACKS = [
 ]
 ```
 
-### 11.8.4.datasets
+### 11.9.4.datasets
 
 | 版本 | 描述           | 注意                                                         |
 | ---- | -------------- | ------------------------------------------------------------ |
 | -    | 入门常用数据集 | 目前有boston_housing, cifar10, cifar100, fashion_mnist, imdb, mnist and reuters数据集 |
 
-#### 11.8.4.mnist
+#### 11.9.4.mnist
 
-#### 11.8.4.1.load_data()
+#### 11.9.4.1.load_data()
 
 加载mnist数据集|Tuple of Numpy arrays: (x_train, y_train), (x_test, y_test)
 
@@ -2196,13 +2222,13 @@ from tensorflow.keras.datasets import mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 ```
 
-### 11.8.5.layers
+### 11.9.5.layers
 
 | 版本 | 描述      | 注意                                     |
 | ---- | --------- | ---------------------------------------- |
 | -    | 网络层API | 可以使用Functional API或者Sequential模型 |
 
-#### 11.8.5.1.Add()
+#### 11.9.5.1.Add()
 
 实例化一个矩阵加法层，将layer相加
 
@@ -2211,7 +2237,7 @@ from tensorflow.keras.layers import Add
 layer = Add(_Merge)  # 相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor
 ```
 
-#### 11.8.5.2.BatchNormalization()
+#### 11.9.5.2.BatchNormalization()
 
 实例化一个批标准化层
 
@@ -2220,7 +2246,7 @@ from tensorflow.keras.layers import BatchNormalization
 layer = BatchNormalization()
 ```
 
-#### 11.8.5.3.Bidirectional()
+#### 11.9.5.3.Bidirectional()
 
 实例化一个循环神经网络层的双向封装器
 
@@ -2230,7 +2256,7 @@ layer = GRU(units=256, return_sequences=True)
 layer = Bidirectional(layer=layer)  # 网络层|keras.layers.RNN, keras.layers.LSTM or keras.layers.GRU
 ```
 
-#### 11.8.5.4.Concatenate()
+#### 11.9.5.4.Concatenate()
 
 实例化一个合并层
 
@@ -2239,7 +2265,7 @@ from tensorflow.keras.layers import Concatenate
 layer = Concatenate(axis=0)(_Merge)  # 连接的维度(相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor)|int|-1
 ```
 
-#### 11.8.5.5.Conv1D()
+#### 11.9.5.5.Conv1D()
 
 实例化一个一维卷积层
 
@@ -2256,7 +2282,7 @@ layer = Conv1D(filters,  # 卷积核的数量|int
                bias_initializer)  # 偏置初始化|str|'zeros'
 ```
 
-#### 11.8.5.6.Conv2D()
+#### 11.9.5.6.Conv2D()
 
 实例化一个二维卷积层
 
@@ -2269,7 +2295,7 @@ layer = Conv2D(filters,  # 卷积核的数量|int
                input_shape)  # 如果是模型的第一层，需指定输入的形状|tuple of int
 ```
 
-#### 11.8.5.7.Conv2DTranspose()
+#### 11.9.5.7.Conv2DTranspose()
 
 实例化一个二维转置卷积层
 
@@ -2282,7 +2308,7 @@ layer = Conv2DTranspose(filters,  # 卷积核的数量|int
                         use_bias)  # 是否使用偏置|bool|True
 ```
 
-#### 11.8.5.8.Dense()
+#### 11.9.5.8.Dense()
 
 实例化一个全连接层
 
@@ -2293,7 +2319,7 @@ layer = Dense(units,  # 神经元的数量|int
               input_shape)  # 如果是模型的第一层，需指定输入的形状|tuple of int
 ```
 
-#### 11.8.5.9.Dot()
+#### 11.9.5.9.Dot()
 
 实例化一个点积层
 
@@ -2302,7 +2328,7 @@ from tensorflow.keras.layers import Dot
 layer = Dot(axes=1)(_Merge)# 点积的维度(相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor)|int|-1
 ```
 
-#### 11.8.5.10.Dropout()
+#### 11.9.5.10.Dropout()
 
 实例化一个Dropout层(在训练阶段随机抑制部分神经元)
 
@@ -2311,7 +2337,7 @@ from tensorflow.keras.layers import Dropout
 layer = Dropout(rate=0.5)  # 丢弃比例|float
 ```
 
-#### 11.8.5.11.Embedding()
+#### 11.9.5.11.Embedding()
 
 实例化一个嵌入层(只能作为模型的第一层)
 
@@ -2323,7 +2349,7 @@ layer = Embedding(input_dim,  # 输入的维度|int(最大值加一)
                   embeddings_regularizer,)  # 嵌入矩阵正则化器|str or tensorflow.keras.regularizers|None
 ```
 
-#### 11.8.5.12.Flatten()
+#### 11.9.5.12.Flatten()
 
 实例化一个展平层(不影响批次)
 
@@ -2332,7 +2358,7 @@ from tensorflow.keras.layers import Flatten
 layer = Flatten()
 ```
 
-#### 11.8.5.13.GRU()
+#### 11.9.5.13.GRU()
 
 实例化一个门控循环网络层
 
@@ -2342,7 +2368,7 @@ layer = GRU(units=256,  # 神经元的数量|int
             return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
 ```
 
-#### 11.8.5.14.Input()
+#### 11.9.5.14.Input()
 
 实例化一个输入层
 
@@ -2353,7 +2379,7 @@ layer = Input(shape=(224, 224, 3),  # 形状|tuple
               dtype='int32')  # 期望的数据类型|str|None
 ```
 
-#### 11.8.5.15.Lambda()
+#### 11.9.5.15.Lambda()
 
 实例化一个Lambda层(将任意函数封装成网络层)
 
@@ -2364,7 +2390,7 @@ layer = Lambda(function=lambda x: x*x,  # 要封装的函数
                name='Square-Layer')  # 层名称|str|None
 ```
 
-#### 11.8.5.16.LeakyReLU()
+#### 11.9.5.16.LeakyReLU()
 
 实例化一个带侧漏的RelU层
 
@@ -2373,7 +2399,7 @@ from tensorflow.keras.layers import LeakyReLU
 layer = LeakyReLU(alpha=0.3)  # 负斜率系数(侧漏率)|float|0.3
 ```
 
-#### 11.8.5.17.LSTM()
+#### 11.9.5.17.LSTM()
 
 实例化一个长短时记忆网络层
 
@@ -2383,7 +2409,7 @@ layer = LSTM(units=256,  # 神经元的数量|int
              return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
 ```
 
-#### 11.8.5.18.MaxPooling1D()
+#### 11.9.5.18.MaxPooling1D()
 
 实例化一个一维最大池化层
 
@@ -2394,7 +2420,7 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 11.8.5.19.Reshape()
+#### 11.9.5.19.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
@@ -2403,13 +2429,13 @@ from tensorflow.keras.layers import Reshape
 layer = Reshape(target_shape)  # 目标形状|tuple
 ```
 
-### 11.8.6.losses
+### 11.9.6.losses
 
 | 版本 | 描述        | 注意 |
 | ---- | ----------- | ---- |
 | -    | 损失函数API |      |
 
-#### 11.8.6.1.BinaryCrossentropy()
+#### 11.9.6.1.BinaryCrossentropy()
 
 实例化二分类交叉熵损失函数
 
@@ -2418,7 +2444,7 @@ from tensorflow.keras.losses import BinaryCrossentropy
 loss = BinaryCrossentropy(from_logits=True)  # 是否将y_pred解释为张量|bool|False(True的话有更高的稳定性)
 ```
 
-#### 11.8.6.2.CategoricalCrossentropy()
+#### 11.9.6.2.CategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数(标签是one-hot编码)
 
@@ -2427,7 +2453,7 @@ from tensorflow.keras.losses import CategoricalCrossentropy
 loss = CategoricalCrossentropy(from_logits=True)  # 是否将y_pred解释为张量|bool|False(True的话有更高的稳定性)
 ```
 
-#### 11.8.6.3.SparseCategoricalCrossentropy()
+#### 11.9.6.3.SparseCategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数
 
@@ -2436,13 +2462,13 @@ from tensorflow.keras.losses import SparseCategoricalCrossentropy
 loss = SparseCategoricalCrossentropy(from_logits=True)  # 是否将y_pred解释为张量|bool|False(True的话有更高的稳定性)
 ```
 
-### 11.8.7.models
+### 11.9.7.models
 
 | 版本 | 描述          | 注意                                                         |
 | ---- | ------------- | ------------------------------------------------------------ |
 | -    | 构建Keras模型 | Keras支持两种模型Sequential和Model(Functional API)， 模型的类方法基本一致，相同的统一写在Model里 |
 
-#### 11.8.7.1.load_model()
+#### 11.9.7.1.load_model()
 
 加载模型|Keras model
 
@@ -2451,7 +2477,7 @@ from tensorflow.keras.models import load_model
 model = load_model(filepath='model.h5')  # 文件路径|str or pathlib.Path
 ```
 
-#### 11.8.7.2.Model()
+#### 11.9.7.2.Model()
 
 实例化一个Model类对象(Functional API)
 
@@ -2461,7 +2487,7 @@ model = Model(inputs,  # 输入层|keras.Input or list of keras.Input
               outputs)  # 输出层|keras.layers
 ```
 
-##### 11.8.7.2.1.build()
+##### 11.9.7.2.1.build()
 
 根据输入的形状构建模型
 
@@ -2469,7 +2495,7 @@ model = Model(inputs,  # 输入层|keras.Input or list of keras.Input
 model.build(input_shape)  # 输入的形状|tuple, TensorShape, or list of shapes
 ```
 
-##### 11.8.7.2.2.compile()
+##### 11.9.7.2.2.compile()
 
 配置模型训练的参数
 
@@ -2479,7 +2505,7 @@ model.compile(optimizer='rmsprop',  # 优化器|str or keras.optimizers|'rmsprop
               metrics=None)  # 评估指标列表|list of metrics or keras.metrics.Metric|None 
 ```
 
-##### 11.8.7.2.3.evaluate()
+##### 11.9.7.2.3.evaluate()
 
 在测试模式下计算损失和准确率
 
@@ -2490,7 +2516,7 @@ model.evaluate(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor
                verbose=1)  # 日志模式|int(0, 1)|1
 ```
 
-##### 11.8.7.2.4.fit()
+##### 11.9.7.2.4.fit()
 
 训练模型|History.history
 
@@ -2503,11 +2529,12 @@ model.fit(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor, or 
           callbacks=None,  # 回调函数|list of callbacks|None
           validation_split=0.,  # 验证数据划分|float|0.
           validation_data=None,  # 验证数据|tuple (x_val, y_val) or datasets|None
+          initial_epoch=0,  # 初始化训练轮数(多用于续训)|int|0
           shuffle=True,  # 是否打乱|bool|True
           steps_per_epoch=None)  # 每轮的总步数(样本数/批次大小)|int|None
 ```
 
-##### 11.8.7.2.5.fit_generator()
+##### 11.9.7.2.5.fit_generator()
 
 训练模型(fit()也支持了生成器推荐使用fit())
 
@@ -2521,7 +2548,7 @@ model.fit_generator(generator,  # 特征数据|generator or keras.utils.Sequence
                     shuffle=True)  # 是否打乱|bool|True
 ```
 
-##### 11.8.7.2.6.load_weights()
+##### 11.9.7.2.6.load_weights()
 
 加载模型的权重
 
@@ -2529,7 +2556,7 @@ model.fit_generator(generator,  # 特征数据|generator or keras.utils.Sequence
 model.load_weights(filepath)  # 文件路径|str or pathlib.Path
 ```
 
-##### 11.8.7.2.7.predict()
+##### 11.9.7.2.7.predict()
 
 进行预测|numpy.ndarray
 
@@ -2539,7 +2566,7 @@ model.predict(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor,
               verbose=0)  # 日志模式|int(0, 1, 2详细)|0
 ```
 
-##### 11.8.7.2.8.output_shape
+##### 11.9.7.2.8.output_shape
 
 返回输出层的形状
 
@@ -2547,7 +2574,7 @@ model.predict(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor,
 print(model.output_shape)
 ```
 
-##### 11.8.7.2.9.save()
+##### 11.9.7.2.9.save()
 
 保存模型
 
@@ -2556,7 +2583,7 @@ model.save(filepath,  # 文件路径|str or pathlib.Path
            save_format=None)  # 保存格式|str('tf' or 'h5')|tf
 ```
 
-##### 11.8.7.2.10.summary()
+##### 11.9.7.2.10.summary()
 
 输出的模型摘要
 
@@ -2564,7 +2591,7 @@ model.save(filepath,  # 文件路径|str or pathlib.Path
 model.summary()
 ```
 
-#### 11.8.7.3.Sequential()
+#### 11.9.7.3.Sequential()
 
 实例化一个Sequential类对象
 
@@ -2573,7 +2600,7 @@ from tensorflow.keras.models import Sequential
 model = Sequential()
 ```
 
-##### 11.8.7.3.1.add()
+##### 11.9.7.3.1.add()
 
 添加一个layer实例到Sequential栈顶
 
@@ -2586,13 +2613,13 @@ model.add(Dense(units=128, activation='relu'))
 model.add(Dense(units=2, activation='sigmoid'))
 ```
 
-### 11.8.8.optimizers
+### 11.9.8.optimizers
 
 | 版本 | 描述      | 注意 |
 | ---- | --------- | ---- |
 | -    | 优化器API |      |
 
-#### 11.8.8.1.Adam()
+#### 11.9.8.1.Adam()
 
 实例化一个Adam优化器
 
@@ -2601,7 +2628,7 @@ from tensorflow.keras.optimizers import Adam
 optimziers = Adam(learning_rate)  # 学习率|float|0.001
 ```
 
-#### 11.8.8.2.apply_gradients()
+#### 11.9.8.2.apply_gradients()
 
 将梯度带计算出来的值赋值给优化器
 
@@ -2611,7 +2638,7 @@ optimziers = Adam(learning_rate=1e-4)
 Adam.apply_gradients(grads_and_vars=zip(grads, vars))  # 梯度和变量|List of (gradient, variable) pairs
 ```
 
-#### 11.8.8.3.SGD()
+#### 11.9.8.3.SGD()
 
 实例化一个随机梯度下降优化器
 
@@ -2620,15 +2647,15 @@ from tensorflow.keras.optimizers import SGD
 optimziers = SGD(learning_rate)  # 学习率|float|0.01
 ```
 
-### 11.8.9.preprocessing
+### 11.9.9.preprocessing
 
 | 版本 | 描述               | 注意                     |
 | ---- | ------------------ | ------------------------ |
 | -    | Keras数据预处理API | 可以处理序列、文本、图像 |
 
-#### 11.8.9.1.image
+#### 11.9.9.1.image
 
-##### 11.8.9.1.1.ImageDataGenerator()
+##### 11.9.9.1.1.ImageDataGenerator()
 
 实例化一个ImageDataGenerator(对图片数据进行实时数据增强，并返回generator)
 
@@ -2645,7 +2672,7 @@ generator = ImageDataGenerator(rotation_range=0,  # 旋转度数|int|0
                                vertical_flip=False)  # 垂直翻转|bool|False
 ```
 
-###### 11.8.9.1.1.1.class_indices
+###### 11.9.9.1.1.1.class_indices
 
 类名称和类索引的映射字典|dict
 
@@ -2654,7 +2681,7 @@ generator.flow_from_dataframe().class_indices
 generator.flow_from_directory().class_indices
 ```
 
-###### 11.8.9.1.1.2.flow()
+###### 11.9.9.1.1.2.flow()
 
 给定数据和标签进行增强|yield
 
@@ -2665,7 +2692,7 @@ generator.flow(x,  # 输入数据|numpy.array of rank 4 or a tuple
                shuffle=True)  # 是否打乱|bool|True
 ```
 
-###### 11.8.9.1.1.3.flow_from_dataframe()
+###### 11.9.9.1.1.3.flow_from_dataframe()
 
 给定数据和标签(从dataframe内读入)进行增强|yield
 
@@ -2683,7 +2710,7 @@ generator.flow_from_dataframe(dataframe,  # 文件信息图表|pandas.DataFrame
                               validate_filenames=True)  # 检查文件的可靠性|bool|True
 ```
 
-###### 11.8.9.1.1.4.flow_from_directory()
+###### 11.9.9.1.1.4.flow_from_directory()
 
 给定数据和标签(每一个类别是一个单独的文件夹)进行增强|yield
 
@@ -2697,7 +2724,7 @@ generator.flow_from_directory(directory,  # 文件夹|str or path
                               interpolation='nearest')  # 插值方式|str{'nearest', 'bilinear' and 'bicubic'}|'nearest'
 ```
 
-##### 11.8.9.1.2.img_to_array()
+##### 11.9.9.1.2.img_to_array()
 
 将PIL图像转换为numpy数组|numpy.ndarray
 
@@ -2706,7 +2733,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 array = img_to_array(img)  # 输入的图像|PIL图像
 ```
 
-##### 11.8.9.1.3.load_image()
+##### 11.9.9.1.3.load_image()
 
 加载PIL图像|PIL图像
 
@@ -2716,13 +2743,13 @@ img = load_img(path,  # 文件路径|str or pathlib.Path
                target_size=None)  # 读取图片的大小|tuple of int|None
 ```
 
-### 11.8.10.regularizers
+### 11.9.10.regularizers
 
 | 版本 | 描述        | 注意 |
 | ---- | ----------- | ---- |
 | -    | 正则化器API |      |
 
-#### 11.8.10.1.l2()
+#### 11.9.10.1.l2()
 
 实例化一个L2正则化器
 
@@ -2731,13 +2758,13 @@ from tensorflow.keras.regularizers import l2
 regularizer = l2(l2=0.01)  # L2正则化因子|float|0.01
 ```
 
-### 11.8.11.utils
+### 11.9.11.utils
 
 | 版本 | 描述    | 注意 |
 | ---- | ------- | ---- |
 | -    | 工具API |      |
 
-#### 11.8.11.1.get_file()
+#### 11.9.11.1.get_file()
 
 从指定URL下载文件|Path to the downloaded file
 
@@ -2748,17 +2775,7 @@ file = get_file(fname,  # 文件名|str
                 extract)  # tar和zip文件是否解压|bool|False
 ```
 
-#### 11.8.11.2.multi_gpu_model()
-
-单机多GPU并行训练|Keras model
-
-```python
-from tensorflow.keras.utils import multi_gpu_model
-model = multi_gpu_model(model,  # 要并行的模型|Keras model
-                        gpus)  # 并行的GPU数量|int(要大于等于2)
-```
-
-#### 11.8.11.3.plot_model()
+#### 11.9.11.2.plot_model()
 
 绘制模型的网络图
 
@@ -2772,7 +2789,7 @@ plot_model(model,  # 模型|keras model
            dpi=96)  # dpi值|int|96
 ```
 
-#### 11.8.11.4.to_categorical()
+#### 11.9.11.3.to_categorical()
 
 将标签的离散编码转换为one-hot编码|numpy.ndarray
 
@@ -2783,7 +2800,7 @@ y = to_categorical(y=y,  # 输入的标签|array-like of int
                    num_classes=5)  # 类别总数|int|None
 ```
 
-## 11.9.ones_like()
+## 11.10.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2792,9 +2809,9 @@ import tensorflow as tf
 tensor = tf.ones_like(input=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-## 11.10.random
+## 11.11.random
 
-### 11.10.1.normal()
+### 11.11.1.normal()
 
 生成一个标准正态分布的张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2803,7 +2820,7 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # 形状|1-D integer Tensor or Python array
 ```
 
-## 11.11.tensordot()
+## 11.12.tensordot()
 
 计算沿指定维度的点积|tensorflow.python.framework.ops.EagerTensor
 
@@ -2814,7 +2831,7 @@ tensor = tf.tensordot(a=[[1], [2]],  # 张量|array-like
                       axes=1)  # 维度|scalar N or list or int32 Tensor of shape [2, k]
 ```
 
-## 11.12.zeros_like()
+## 11.13.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
