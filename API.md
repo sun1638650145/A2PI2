@@ -180,7 +180,18 @@ ax.annotate(s='annotate',  # 注释内容|str
 plt.show()
 ```
 
-### 5.1.2.clabel()
+### 5.1.2.axis()
+
+坐标轴的设置选项
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+ax = plt.subplot()
+ax.axis('off')
+```
+
+### 5.1.3.clabel()
 
 在等高线上显示高度
 
@@ -196,7 +207,7 @@ ax.clabel(cs)
 plt.show()
 ```
 
-### 5.1.2.contour()
+### 5.1.4.contour()
 
 绘制等高线|matplotlib.contour.QuadContourSet
 
@@ -215,7 +226,7 @@ cs = ax.contour(X,  # 横坐标|array-like
 plt.show()
 ```
 
-### 5.1.3.grid()
+### 5.1.5.grid()
 
 绘制网格线
 
@@ -227,7 +238,7 @@ ax.grid(axis='x',  # 绘制的范围|str('both'|'x'|'y')|'both'|可选
 plt.show()
 ```
 
-### 5.1.4.legend()
+### 5.1.6.legend()
 
 放置图例
 
@@ -238,13 +249,13 @@ ax.legend(loc='center')  # 放置的位置|str('upper right'|'upper left'|'lower
 plt.show()
 ```
 
-### 5.1.5.patch
+### 5.1.7.patch
 
 | 版本 | 描述                                  | 注意 |
 | ---- | ------------------------------------- | ---- |
 | -    | patches是画布颜色和边框颜色的控制接口 |      |
 
-#### 5.1.5.1.set_alpha()
+#### 5.1.7.1.set_alpha()
 
 设置画布的透明度
 
@@ -252,7 +263,7 @@ plt.show()
 ax.patch.set_alpha(alpha)  # 透明度|float|None
 ```
 
-#### 5.1.5.2.set_facecolor()
+#### 5.1.7.2.set_facecolor()
 
 设置画布的颜色
 
@@ -264,7 +275,7 @@ ax.patch.set_facecolor(color='green')  # 颜色|str|None
 plt.show()
 ```
 
-### 5.1.6.set_title()
+### 5.1.8.set_title()
 
 设置标题
 
@@ -275,7 +286,7 @@ ax.set_title('this is title')
 plt.show()
 ```
 
-### 5.1.7.set_xlabel()
+### 5.1.9.set_xlabel()
 
 设置x轴的内容
 
@@ -283,7 +294,7 @@ plt.show()
 ax.set_xlabel(xlabel='this is x label')  # 内容|str
 ```
 
-### 5.1.8.set_xticks()
+### 5.1.10.set_xticks()
 
 设置x轴的刻度
 
@@ -291,7 +302,7 @@ ax.set_xlabel(xlabel='this is x label')  # 内容|str
 ax.set_xticks(ticks=[1, 2, 3, 4])  # 刻度|list(空列表就表示不显示刻度)
 ```
 
-### 5.1.9.set_yticks()
+### 5.1.11.set_yticks()
 
 设置y轴的刻度
 
@@ -299,13 +310,13 @@ ax.set_xticks(ticks=[1, 2, 3, 4])  # 刻度|list(空列表就表示不显示刻�
 ax.set_yticks(ticks=[])  # 刻度|list(空列表就表示不显示刻度)
 ```
 
-###  5.1.10.spines
+###  5.1.12.spines
 
 | 版本 | 描述                         | 注意 |
 | ---- | ---------------------------- | ---- |
 | -    | 画布的边框，包括上下左右四个 |      |
 
-#### 5.1.10.1.set_color()
+#### 5.1.12.1.set_color()
 
 设置画布的边框的颜色
 
@@ -313,7 +324,7 @@ ax.set_yticks(ticks=[])  # 刻度|list(空列表就表示不显示刻度)
 ax.spines['left'].set_color(c='red')  # 颜色|str
 ```
 
-### 5.1.11.text()
+### 5.1.13.text()
 
 给点添加文本|matplotlib.text.Text
 
@@ -368,7 +379,8 @@ image = plt.imread(fname)  # 要加载的文件的路径|str or file-like
 
 ```python
 import matplotlib.pyplot as plt
-plt.imshow(X)  # 希望显示的图像数据|array-like or PIL image
+plt.imshow(X,  # 希望显示的图像数据|array-like or PIL image
+           cmap)  # 显示的色彩|str 
 ```
 
 ### 5.2.5.plot()
@@ -439,7 +451,9 @@ ax = plt.subplot()
 
 ```python
 import matplotlib.pyplot as plt
-figure, axesSubplot = plt.subplots()
+figure, axesSubplot = plt.subplots(nrows=4,  # 列子图数量|int|1
+                                   ncols=4,  # 行子图数量|int|1
+                                   figsize=(10, 5))  # 画布的大小|tuple of int
 ```
 
 ### 5.2.12.subplots_adjust()
@@ -1786,7 +1800,18 @@ dataset = dataset.batch(batch_size=3)  # 批次大小|A tf.int64 scalar, int
 print(list(dataset.as_numpy_iterator()))
 ```
 
-#### 11.3.1.2.from_tensor_slices()
+#### 11.3.1.2.experimental
+
+##### 11.3.1.2.1.AUTOTUNE
+
+CPU自动调整常数
+
+```python
+import tensorflow as tf
+tf.data.experimental.AUTOTUNE
+```
+
+#### 11.3.1.3.from_tensor_slices()
 
 创建一个元素是张量切片的数据集|tensorflow.python.data.ops.dataset_ops.TensorSliceDataset
 
@@ -1796,7 +1821,33 @@ dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2], [3, 4], [5, 6]))  
 print(list(dataset.as_numpy_iterator()))
 ```
 
-#### 11.3.1.3.shuffle()
+#### 11.3.1.4.map()
+
+对数据集的每一个元素应用map_func进行处理，并返回一个新的数据集
+
+|tensorflow.python.data.ops.dataset_ops.MapDataset or tensorflow.python.data.ops.dataset_ops.ParallelMapDataset
+
+```python
+import tensorflow as tf
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2, 3], [4, 5, 6]))
+def map_func(x, y): return x+1, y-2
+dataset = dataset.map(map_func=map_func,  # 处理函数|function or lambda
+                      num_parallel_calls=tf.data.experimental.AUTOTUNE)  # 并行处理的数量|int|None|可选
+print(list(dataset.as_numpy_iterator()))
+```
+
+#### 11.3.1.5.prefetch()
+
+对数据集的读取进行预加载|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
+
+```python
+import tensorflow as tf
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2, 3], [4, 5, 6]))
+dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)  # 缓冲区大小|int
+print(list(dataset.as_numpy_iterator()))
+```
+
+#### 11.3.1.6.shuffle()
 
 随机打乱数据集|tensorflow.python.data.ops.dataset_ops.ShuffleDataset
 
@@ -1806,6 +1857,16 @@ dataset = tf.data.Dataset.range(5)
 dataset_shuffle = dataset.shuffle(buffer_size=5)  # 采样的范围|A tf.int64 scalar, int
 print(list(dataset.as_numpy_iterator()))
 print(list(dataset_shuffle.as_numpy_iterator()))
+```
+
+#### 11.3.1.7.take()
+
+从dataset中取出指定个数的数据创建新的数据集|tensorflow.python.data.ops.dataset_ops.TakeDataset
+
+```python
+import tensorflow as tf
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2, 3], [4, 5, 6]))
+sample = dataset.take(count=1)  # 取出的个数|int
 ```
 
 ## 11.4.distribute
@@ -1886,6 +1947,26 @@ import tensorflow as tf
 tensor = tf.image.decode_image(contents,  # 图片的字节流|0-D str
                                channels,  # 转换后的色彩通道数|int|0|可选
                                dtype)  # 转换后的数据类型|tensorflow.python.framework.dtypes.DType
+```
+
+### 11.7.3.decode_jpeg()
+
+转换JPEG图像为张量|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+tensor = tf.image.decode_jpeg(contents,  # 图片的字节流|0-D str
+                              channels)  # 转换后的色彩通道数|int|0|可选
+```
+
+### 11.7.4.decode_png()
+
+转换PNG图像为张量|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+tensor = tf.image.decode_png(contents,  # 图片的字节流|0-D str
+                             channels)  # 转换后的色彩通道数|int|0|可选
 ```
 
 ### 11.7.3.resize()
@@ -2110,7 +2191,18 @@ tensor = ctc_batch_cost(y_true,  # 真实的标签|tensor(samples, max_string_le
                         label_length)  # 真实的长度|tensor(samples, 1)
 ```
 
-#### 11.9.2.4.expand_dims()
+#### 11.9.2.4.ctc_decode()
+
+解码softmax的输出|tuple of tensorflow.python.framework.ops.EagerTensor解码元素列表和解码序列的对数概率
+
+```python
+from tensorflow.keras.backend import ctc_decode
+t = ctc_decode(y_pred,  # 模型的预测值|tensor(samples, time_steps, num_categories)
+               input_length,  # 样本序列的长度|tensor(samples,) 每个样本值是字典总数
+               greedy)  # 执行更快的搜索路径|bool|True
+```
+
+#### 11.9.2.5.expand_dims()
 
 扩展张量的维度|tensorflow.python.framework.ops.EagerTensor
 
@@ -2120,7 +2212,7 @@ tensor = expand_dims(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
                      axis=0)  # 添加新维度的位置|int
 ```
 
-#### 11.9.2.5.ones_like()
+#### 11.9.2.6.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2129,7 +2221,7 @@ from tensorflow.keras.backend import ones_like
 tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-#### 11.9.2.6.shape()
+#### 11.9.2.7.shape()
 
 返回张量的形状|tensorflow.python.framework.ops.EagerTensor
 
@@ -2139,7 +2231,7 @@ tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])
 tensor_shape = shape(x=tensor)  # 输入的张量|tensor
 ```
 
-#### 11.9.2.7.sigmoid()
+#### 11.9.2.8.sigmoid()
 
 逐元素计算sigmoid函数的值|tensorflow.python.framework.ops.EagerTensor
 
@@ -2148,7 +2240,7 @@ from tensorflow.keras.backend import sigmoid
 tensor = sigmoid(x=[1., 2., 3., 4., 5.])  # 输入的张量|tensor
 ```
 
-#### 11.9.2.8.zeros_like()
+#### 11.9.2.9.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2173,7 +2265,8 @@ CALLBACKS = [
     EarlyStopping(monitor='val_accuracy',  # 监控的信息|str｜'val_loss'
                   min_delta=1e-4,  # 最小变化量|float|0
                   patience=5,  # 监测容忍轮数(数据有小幅度波动可以跳过，验证频率也一定是1)|int|0
-                  verbose=1)  # 日志模式|int(0, 1)|0
+                  verbose=1,  # 日志模式|int(0, 1)|0
+                  restore_best_weights=True)  # 恢复最佳状态的权重保存|bool|False(保存最后一步)
 ]
 ```
 
@@ -2349,7 +2442,38 @@ layer = Embedding(input_dim,  # 输入的维度|int(最大值加一)
                   embeddings_regularizer,)  # 嵌入矩阵正则化器|str or tensorflow.keras.regularizers|None
 ```
 
-#### 11.9.5.12.Flatten()
+#### 11.9.5.12.experimental
+
+##### 11.9.5.12.1.preprocessing
+
+###### 11.9.5.12.1.1.get_vocabulary()
+
+获取词汇表|list
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+char_to_num = StringLookup(mask_token=None,
+                           num_oov_indices=0,
+                           vocabulary=['a', 'b', 'c', 'd'],
+                           invert=False)
+vocab = char_to_num.get_vocabulary()
+```
+
+###### 11.9.5.12.1.1.StringLookup()
+
+实例化一个StringLookup(将词汇表映射到整数索引)
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+vocab = ['a', 'b', 'c', 'd', 'a']
+char_to_num = StringLookup(mask_token=None,  # 词汇表的最大大小|int|None(表示没有限制)
+                           num_oov_indices=0,  # 超出词汇表的数量的标记|int|1
+                           vocabulary=['a', 'b', 'c', 'd'],  # 词汇表|list
+                           invert=False)  # 反转|bool|False(如果是True将整数映射回词汇表)
+tensor = char_to_num(vocab)
+```
+
+#### 11.9.5.13.Flatten()
 
 实例化一个展平层(不影响批次)
 
@@ -2358,7 +2482,7 @@ from tensorflow.keras.layers import Flatten
 layer = Flatten()
 ```
 
-#### 11.9.5.13.GRU()
+#### 11.9.5.14.GRU()
 
 实例化一个门控循环网络层
 
@@ -2368,7 +2492,7 @@ layer = GRU(units=256,  # 神经元的数量|int
             return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
 ```
 
-#### 11.9.5.14.Input()
+#### 11.9.5.15.Input()
 
 实例化一个输入层
 
@@ -2379,7 +2503,7 @@ layer = Input(shape=(224, 224, 3),  # 形状|tuple
               dtype='int32')  # 期望的数据类型|str|None
 ```
 
-#### 11.9.5.15.Lambda()
+#### 11.9.5.16.Lambda()
 
 实例化一个Lambda层(将任意函数封装成网络层)
 
@@ -2390,7 +2514,23 @@ layer = Lambda(function=lambda x: x*x,  # 要封装的函数
                name='Square-Layer')  # 层名称|str|None
 ```
 
-#### 11.9.5.16.LeakyReLU()
+#### 11.9.5.17.Layer()
+
+Keras所有的层都继承于此(实现必要方法就可以自定义层)
+
+```python
+from tensorflow.keras.layers import Layer
+class MyLayer(Layer):
+    def __init__(self, **kwargs):
+        super(MyLayer, self).__init__(**kwargs)
+        # 初始化代码
+
+    def call(self, inputs):
+      	# 处理代码 
+        return outputs
+```
+
+#### 11.9.5.18.LeakyReLU()
 
 实例化一个带侧漏的RelU层
 
@@ -2399,17 +2539,18 @@ from tensorflow.keras.layers import LeakyReLU
 layer = LeakyReLU(alpha=0.3)  # 负斜率系数(侧漏率)|float|0.3
 ```
 
-#### 11.9.5.17.LSTM()
+#### 11.9.5.19.LSTM()
 
 实例化一个长短时记忆网络层
 
 ```python
 from tensorflow.keras.layers import LSTM
 layer = LSTM(units=256,  # 神经元的数量|int
-             return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
+             return_sequences=True,  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
+             dropout=0.1)  # 随机丢弃率|float|0.
 ```
 
-#### 11.9.5.18.MaxPooling1D()
+#### 11.9.5.20.MaxPooling1D()
 
 实例化一个一维最大池化层
 
@@ -2420,7 +2561,7 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 11.9.5.19.Reshape()
+#### 11.9.5.21.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
@@ -2800,7 +2941,17 @@ y = to_categorical(y=y,  # 输入的标签|array-like of int
                    num_classes=5)  # 类别总数|int|None
 ```
 
-## 11.10.ones_like()
+## 11.10.ones()
+
+创建一个全一的张量|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+tensor = tf.ones(shape=(3, 2), # 输入的张量|array-like
+                 dtype='int64') # 元素的数据类型|str|dtypes.float32
+```
+
+## 11.11.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2809,9 +2960,9 @@ import tensorflow as tf
 tensor = tf.ones_like(input=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-## 11.11.random
+## 11.12.random
 
-### 11.11.1.normal()
+### 11.12.1.normal()
 
 生成一个标准正态分布的张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2820,7 +2971,34 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # 形状|1-D integer Tensor or Python array
 ```
 
-## 11.12.tensordot()
+## 11.13.strings
+
+| 版本 | 描述           | 注意 |
+| ---- | -------------- | ---- |
+| -    | 字符串操作模块 | -    |
+
+### 11.13.1.reduce_join()
+
+将所有的字符连接成一个字符串|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+input = ['1', 'a', '2', 'b']
+x = tf.strings.reduce_join(inputs=input)  # 输入的字符|array-like
+```
+
+### 11.13.2.unicode_split()
+
+将输入的字符串的每一个字符转换成Unicode编码的bytes|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+string = 'cat'
+tensor = tf.strings.unicode_split(input=string,  # 输入字符串|str
+                                  input_encoding='UTF-8')  # 输入字符串的编码|str
+```
+
+## 11.14.tensordot()
 
 计算沿指定维度的点积|tensorflow.python.framework.ops.EagerTensor
 
@@ -2831,7 +3009,18 @@ tensor = tf.tensordot(a=[[1], [2]],  # 张量|array-like
                       axes=1)  # 维度|scalar N or list or int32 Tensor of shape [2, k]
 ```
 
-## 11.13.zeros_like()
+## 11.15.transpose()
+
+对张量进行转置|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+tensor = [[[1, 2, 3], [4, 5, 6]]]
+tensor = tf.transpose(a=tensor,  # 输入的数组|array-like
+                      perm=[1, 0, 2])  # 轴的排列顺序|list of ints|None|可选
+```
+
+## 11.16.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
