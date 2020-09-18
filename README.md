@@ -10,8 +10,6 @@
      pip install classicML
      ```
 
-* 参考代码 comming soon
-
 * 由于作者本人错误的之前上传一堆打包的pdf文件导致项目很大
 
   1. 您如果只想看文档，请直接下载releases中的PDF，每次提交都会更新
@@ -24,3 +22,7 @@
 
 * 欢迎交流
 
+## A²PI²代码🌰
+
+1. [使用Keras构建CRNN](https://github.com/sun1638650145/CRNN)
+2. coming soon
