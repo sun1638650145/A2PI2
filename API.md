@@ -185,7 +185,6 @@ plt.show()
 坐标轴的设置选项
 
 ```python
-import numpy as np
 import matplotlib.pyplot as plt
 ax = plt.subplot()
 ax.axis('off')
@@ -340,7 +339,16 @@ ax.text(x=0.5,  # 注释点的x坐标|float|0
 | ---- | ------------------------------------------------------------ | ---- |
 | -    | pyplot是matplotlib的state-based接口， 主要用于简单的交互式绘图和程序化绘图 |      |
 
-### 5.2.1.barh()
+### 5.2.1.axis()
+
+坐标轴的设置选项
+
+```python
+import matplotlib.pyplot as plt
+plt.axis([xmin, xmax, ymin, ymax])
+```
+
+### 5.2.2.barh()
 
 在水平方向绘制条形图
 
@@ -355,7 +363,7 @@ plt.barh(y,  # 条形图的y轴坐标|array-like|
 plt.show()
 ```
 
-### 5.2.2.figure()
+### 5.2.3.figure()
 
 创建一个画布|matplotlib.figure.Figure
 
@@ -364,7 +372,7 @@ import matplotlib.pyplot as plt
 figure = plt.figure(figsize)  # 画布的大小|(float, float)|(6.4, 4.8)|可选
 ```
 
-### 5.2.3.imread()
+### 5.2.4.imread()
 
 加载指定路径的图片|numpy.ndarray
 
@@ -373,7 +381,7 @@ import matplotlib.pyplot as plt
 image = plt.imread(fname)  # 要加载的文件的路径|str or file-like
 ```
 
-### 5.2.4.imshow()
+### 5.2.5.imshow()
 
 将图片数组在画布上显示|matplotlib.image.AxesImage
 
@@ -383,7 +391,7 @@ plt.imshow(X,  # 希望显示的图像数据|array-like or PIL image
            cmap)  # 显示的色彩|str 
 ```
 
-### 5.2.5.plot()
+### 5.2.6.plot()
 
 绘制函数图像|list
 
@@ -392,7 +400,7 @@ import matplotlib.pyplot as plt
 plt.plot(*args)  # 函数的变量｜string or number且第一维度必须相同｜(x, y)
 ```
 
-### 5.2.6.rcParams
+### 5.2.7.rcParams
 
 实例化一个matplotlib的rc文件实例|matplotlib.RcParams
 
@@ -401,7 +409,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 5.2.7.savefig()
+### 5.2.8.savefig()
 
 保存当前的画布
 
@@ -410,7 +418,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # 要保存的文件的路径|str or PathLike or file-like object A path, or a Python file-like object
 ```
 
-### 5.2.8.scatter()
+### 5.2.9.scatter()
 
 绘制散点图|matplotlib.collections.PathCollection
 
@@ -427,7 +435,7 @@ plt.scatter(x,  # x坐标|scalar or array-like 形状必须是(n,)
 plt.show()
 ```
 
-### 5.2.9.show()
+### 5.2.10.show()
 
 显示所有的画布
 
@@ -436,7 +444,7 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 5.2.10.subplot()
+### 5.2.11.subplot()
 
 在当前画布上创建一个子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -445,7 +453,7 @@ import matplotlib.pyplot as plt
 ax = plt.subplot()
 ```
 
-### 5.2.11.subplots()
+### 5.2.12.subplots()
 
 创建一个画布和一组子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -456,7 +464,7 @@ figure, axesSubplot = plt.subplots(nrows=4,  # 列子图数量|int|1
                                    figsize=(10, 5))  # 画布的大小|tuple of int
 ```
 
-### 5.2.12.subplots_adjust()
+### 5.2.13.subplots_adjust()
 
 调整子图布局
 
@@ -468,6 +476,24 @@ plt.subplots_adjust(left=0.125,  # 子图左边框距离画布的距离|float|0.
                     top,  # 子图上边框距离画布的距离|float|0.9
                     wspace,  # 两张子图之间的左右间隔|float|0.2
                     hspace)  # 两张子图之间的上下间隔|float|0.2
+```
+
+### 5.2.14.xlabel()
+
+设置x轴的内容
+
+```python
+import matplotlib.pyplot as plt
+plt.xlabel(xlabel='x')
+```
+
+### 5.2.15.ylabel()
+
+设置y轴的内容
+
+```python
+import matplotlib.pyplot as plt
+plt.ylabel(ylabel='y')
 ```
 
 # 6.numpy
