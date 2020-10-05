@@ -3308,8 +3308,12 @@ from xgboost import XGBClassifier
 model = XGBClassifier(max_depth,  # 基学习器(梯度提升树)的最大深度|int|None|可选
                       learning_rate,  # 学习率|float|None|可选
                       n_estimators,  # 梯度提升树的数量(相当于学习轮数)|int|100
+                      objective,  # 使用的损失函数|str|'reg:squarederror'
+                      booster,  # 使用的基学习器|str('gbtree', 'gblinear', 'dart')|None|可选
+                      n_jobs,  # 并行数量|int|None|可选
                       subsample,  # 随机采样率|float|None|可选
-                      colsample_bytree)   # 构造每棵树，属性随机采样率|float|None|可选
+                      colsample_bytree,  # 构造每棵树，属性随机采样率|float|None|可选
+                      random_state)  # 随机状态|int|None|可选
 ```
 
 ### 14.1.1.fit()
