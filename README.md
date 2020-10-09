@@ -4,7 +4,7 @@
 
 * ML.md 机器学习理论 开始增加贝叶斯的内容
 
-  * 如果您希望实践这些理论，有没有那么强的编程能力可考虑本人的配套框架[classicML](https://github.com/sun1638650145/classicML)
+  * 如果您希望实践这些理论，却没有那么强的编程能力可考虑本人的配套框架[classicML](https://github.com/sun1638650145/classicML)
 
      ```shell
      pip install classicML
