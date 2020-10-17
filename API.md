@@ -1,6 +1,6 @@
-# <center>A²PI²-API version2.2</center>
+# <center>A²PI²-API version2.1.1</center>
 
-* 2.2版本增加CPP库
+* 2.1.1版本增加CPP库
 * Python格式规范化
   1. 类或函数功能|有无返回值
   2. 每个参数将按照意义|数据类型{枚举, ...}|默认值|是否为可选参数
