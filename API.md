@@ -102,7 +102,23 @@ image = cv2.resize(src,  # 原始的输入图像|numpy.ndarray
 | ----- | ----------------- | ------------------ |
 | 3.3.7 | CPP线性代数模版库 | 可直接使用brew安装 |
 
-## 3.1.Map<>
+## 3.1.ArrayXd
+
+实例化一个动态一维数组(双精度)
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::ArrayXd arr(4);
+    arr << 1, 2, 3, 4;
+    std::cout << arr << std::endl;
+    return 0;
+}
+```
+
+## 3.2.Map<>
 
 映射到现有矩阵或者向量
 
@@ -123,7 +139,7 @@ int main() {
 }
 ```
 
-## 3.2.Matrix<>
+## 3.3.Matrix<>
 
 实例化一个已知矩阵
 
@@ -140,7 +156,7 @@ int main() {
 }
 ```
 
-## 3.3.MatrixXd
+## 3.4.MatrixXd
 
 实例化一个动态矩阵(双精度)
 
@@ -157,7 +173,7 @@ int main() {
 }
 ```
 
-### 3.3.1.cols()
+### 3.4.1.cols()
 
 获取矩阵的列数
 
@@ -174,7 +190,7 @@ int main() {
 }
 ```
 
-### 3.3.2.data()
+### 3.4.2.data()
 
 返回矩阵或向量的首地址的指针
 
@@ -191,7 +207,7 @@ int main() {
 }
 ```
 
-### 3.3.3.inverse()
+### 3.4.3.inverse()
 
 计算矩阵的逆
 
@@ -208,7 +224,7 @@ int main() {
 }
 ```
 
-### 3.3.4.row()
+### 3.4.4.row()
 
 访问矩阵的指定行元素
 
@@ -226,7 +242,7 @@ int main() {
 }
 ```
 
-### 3.3.5.rows()
+### 3.4.5.rows()
 
 获取矩阵的行数
 
@@ -243,7 +259,7 @@ int main() {
 }
 ```
 
-### 3.3.6.size()
+### 3.4.6.size()
 
 获取矩阵的元素总数
 
@@ -260,7 +276,7 @@ int main() {
 }
 ```
 
-### 3.3.7.transpose()
+### 3.4.7.transpose()
 
 对矩阵进行转置
 
@@ -273,6 +289,38 @@ int main() {
     mat0 << 1, 2, 3, 4, 5, 6;
     Eigen::MatrixXd mat1 = mat0;
     std::cout << mat1.transpose() << std::endl;
+    return 0;
+}
+```
+
+## 3.5.RowVectorXd
+
+实例化一个行向量(双精度)
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::RowVectorXd vec(4);
+    vec << 1, 2, 3, 4;
+    std::cout << vec << std::endl;
+    return 0;
+}
+```
+
+## 3.6.VectorXd
+
+实例化一个列向量(双精度)
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::VectorXd vec(4);
+    vec << 1, 2, 3, 4;
+    std::cout << vec << std::endl;
     return 0;
 }
 ```
@@ -543,7 +591,22 @@ plt.barh(y,  # 条形图的y轴坐标|array-like|
 plt.show()
 ```
 
-### 6.2.3.figure()
+### 6.2.3.clabel()
+
+在等高线上显示高度
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(1, 9, 10)
+y = np.linspace(1, 9, 10)
+X, Y = np.meshgrid(x, y)
+cs = plt.contour(X, Y, X + Y, colors='orange', linewidths=1)
+plt.clabel(cs)
+plt.show()
+```
+
+### 6.2.4.figure()
 
 创建一个画布|matplotlib.figure.Figure
 
@@ -552,7 +615,7 @@ import matplotlib.pyplot as plt
 figure = plt.figure(figsize)  # 画布的大小|(float, float)|(6.4, 4.8)|可选
 ```
 
-### 6.2.4.imread()
+### 6.2.5.imread()
 
 加载指定路径的图片|numpy.ndarray
 
@@ -561,7 +624,7 @@ import matplotlib.pyplot as plt
 image = plt.imread(fname)  # 要加载的文件的路径|str or file-like
 ```
 
-### 6.2.5.imshow()
+### 6.2.6.imshow()
 
 将图片数组在画布上显示|matplotlib.image.AxesImage
 
@@ -571,7 +634,7 @@ plt.imshow(X,  # 希望显示的图像数据|array-like or PIL image
            cmap)  # 显示的色彩|str 
 ```
 
-### 6.2.6.plot()
+### 6.2.7.plot()
 
 绘制函数图像|list
 
@@ -580,7 +643,7 @@ import matplotlib.pyplot as plt
 plt.plot(*args)  # 函数的变量｜string or number且第一维度必须相同｜(x, y)
 ```
 
-### 6.2.7.rcParams
+### 6.2.8.rcParams
 
 实例化一个matplotlib的rc文件实例|matplotlib.RcParams
 
@@ -589,7 +652,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 6.2.8.savefig()
+### 6.2.9.savefig()
 
 保存当前的画布
 
@@ -598,7 +661,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # 要保存的文件的路径|str or PathLike or file-like object A path, or a Python file-like object
 ```
 
-### 6.2.9.scatter()
+### 6.2.10.scatter()
 
 绘制散点图|matplotlib.collections.PathCollection
 
@@ -615,7 +678,7 @@ plt.scatter(x,  # x坐标|scalar or array-like 形状必须是(n,)
 plt.show()
 ```
 
-### 6.2.10.show()
+### 6.2.11.show()
 
 显示所有的画布
 
@@ -624,7 +687,7 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 6.2.11.subplot()
+### 6.2.12.subplot()
 
 在当前画布上创建一个子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -633,7 +696,7 @@ import matplotlib.pyplot as plt
 ax = plt.subplot()
 ```
 
-### 6.2.12.subplots()
+### 6.2.13.subplots()
 
 创建一个画布和一组子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -644,7 +707,7 @@ figure, axesSubplot = plt.subplots(nrows=4,  # 列子图数量|int|1
                                    figsize=(10, 5))  # 画布的大小|tuple of int
 ```
 
-### 6.2.13.subplots_adjust()
+### 6.2.14.subplots_adjust()
 
 调整子图布局
 
@@ -658,7 +721,17 @@ plt.subplots_adjust(left=0.125,  # 子图左边框距离画布的距离|float|0.
                     hspace)  # 两张子图之间的上下间隔|float|0.2
 ```
 
-### 6.2.14.xlabel()
+### 6.2.15.title()
+
+设置标题
+
+```python
+import matplotlib.pyplot as plt
+plt.title(label='this is title')  # 标题|str
+plt.show()
+```
+
+### 6.2.16.xlabel()
 
 设置x轴的内容
 
@@ -667,7 +740,7 @@ import matplotlib.pyplot as plt
 plt.xlabel(xlabel='x')
 ```
 
-### 6.2.15.ylabel()
+### 6.2.17.ylabel()
 
 设置y轴的内容
 
