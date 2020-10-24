@@ -309,6 +309,23 @@ int main() {
 }
 ```
 
+### 3.5.1.size()
+
+获取行向量的元素总数
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::RowVectorXd vec(4);
+    vec << 1, 2, 3, 4;
+    std::cout << vec.size() << std::endl;
+    return 0;
+}
+
+```
+
 ## 3.6.VectorXd
 
 实例化一个列向量(双精度)
