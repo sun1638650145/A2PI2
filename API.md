@@ -1147,7 +1147,28 @@ import numpy as np
 arr = np.random.randn(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 7.30.6.seed()
+### 7.30.6.RandomState()
+
+实例化一个伪随机数生成器|RandomState(MT19937)
+
+```python
+import numpy as np
+rs = np.random.RandomState(seed=2020)  # 随机种子|int|None|可选
+```
+
+#### 7.30.6.1.shuffle()
+
+随机打乱数据
+
+```python
+import numpy as np
+rs = np.random.RandomState(seed=2020)
+arr = [1, 2, 3, 4]
+rs.shuffle(arr)
+print(arr)
+```
+
+### 7.30.7.seed()
 
 设置随机数生成器的随机种子
 
@@ -2982,7 +3003,25 @@ from tensorflow.keras.layers import Flatten
 layer = Flatten()
 ```
 
-#### 13.9.5.15.GRU()
+#### 13.9.5.15.GlobalAveragePooling1D()
+
+实例化一个全局一维平均池化层
+
+```python
+from tensorflow.keras.layers import GlobalAveragePooling1D
+layer = GlobalAveragePooling1D()
+```
+
+#### 13.9.5.16.GlobalMaxPooling1D()
+
+实例化一个全局一维最大池化层
+
+```python
+from tensorflow.keras.layers import GlobalMaxPooling1D
+layer = GlobalMaxPooling1D()
+```
+
+#### 13.9.5.17.GRU()
 
 实例化一个门控循环网络层
 
@@ -2992,7 +3031,7 @@ layer = GRU(units=256,  # 神经元的数量|int
             return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
 ```
 
-#### 13.9.5.16.Input()
+#### 13.9.5.18.Input()
 
 实例化一个输入层
 
@@ -3003,7 +3042,7 @@ layer = Input(shape=(224, 224, 3),  # 形状|tuple
               dtype='int32')  # 期望的数据类型|str|None
 ```
 
-#### 13.9.5.17.Lambda()
+#### 13.9.5.19.Lambda()
 
 实例化一个Lambda层(将任意函数封装成网络层)
 
@@ -3014,7 +3053,7 @@ layer = Lambda(function=lambda x: x*x,  # 要封装的函数
                name='Square-Layer')  # 层名称|str|None
 ```
 
-#### 13.9.5.18.Layer()
+#### 13.9.5.20.Layer()
 
 Keras所有的层都继承于此(实现必要方法就可以自定义层)
 
@@ -3030,7 +3069,7 @@ class MyLayer(Layer):
         return outputs
 ```
 
-#### 13.9.5.19.LeakyReLU()
+#### 13.9.5.21.LeakyReLU()
 
 实例化一个带侧漏的RelU层
 
@@ -3039,7 +3078,7 @@ from tensorflow.keras.layers import LeakyReLU
 layer = LeakyReLU(alpha=0.3)  # 负斜率系数(侧漏率)|float|0.3
 ```
 
-#### 13.9.5.20.LSTM()
+#### 13.9.5.22.LSTM()
 
 实例化一个长短时记忆网络层
 
@@ -3050,7 +3089,7 @@ layer = LSTM(units=256,  # 神经元的数量|int
              dropout=0.1)  # 随机丢弃率|float|0.
 ```
 
-#### 13.9.5.21.MaxPooling1D()
+#### 13.9.5.23.MaxPooling1D()
 
 实例化一个一维最大池化层
 
@@ -3061,7 +3100,7 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 13.9.5.22.Reshape()
+#### 13.9.5.24.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
@@ -3103,13 +3142,28 @@ from tensorflow.keras.losses import SparseCategoricalCrossentropy
 loss = SparseCategoricalCrossentropy(from_logits=True)  # 是否将y_pred解释为张量|bool|False(True的话有更高的稳定性)
 ```
 
-### 13.9.7.models
+### 13.9.7.metrics
+
+| 版本 | 描述        | 注意 |
+| ---- | ----------- | ---- |
+| -    | 评估函数API |      |
+
+#### 13.9.7.1.MAE()
+
+平均绝对误差评估函数|mean_absolute_error
+
+```python
+from tensorflow.keras.metrics import MAE
+mae = MAE
+```
+
+### 13.9.8.models
 
 | 版本 | 描述          | 注意                                                         |
 | ---- | ------------- | ------------------------------------------------------------ |
 | -    | 构建Keras模型 | Keras支持两种模型Sequential和Model(Functional API)， 模型的类方法基本一致，相同的统一写在Model里 |
 
-#### 13.9.7.1.load_model()
+#### 13.9.8.1.load_model()
 
 加载模型|Keras model
 
@@ -3118,7 +3172,7 @@ from tensorflow.keras.models import load_model
 model = load_model(filepath='model.h5')  # 文件路径|str or pathlib.Path
 ```
 
-#### 13.9.7.2.Model()
+#### 13.9.8.2.Model()
 
 实例化一个Model类对象(Functional API)
 
@@ -3128,7 +3182,7 @@ model = Model(inputs,  # 输入层|keras.Input or list of keras.Input
               outputs)  # 输出层|keras.layers
 ```
 
-##### 13.9.7.2.1.build()
+##### 13.9.8.2.1.build()
 
 根据输入的形状构建模型
 
@@ -3136,7 +3190,7 @@ model = Model(inputs,  # 输入层|keras.Input or list of keras.Input
 model.build(input_shape)  # 输入的形状|tuple, TensorShape, or list of shapes
 ```
 
-##### 13.9.7.2.2.compile()
+##### 13.9.8.2.2.compile()
 
 配置模型训练的参数
 
@@ -3146,7 +3200,7 @@ model.compile(optimizer='rmsprop',  # 优化器|str or keras.optimizers|'rmsprop
               metrics=None)  # 评估指标列表|list of metrics or keras.metrics.Metric|None 
 ```
 
-##### 13.9.7.2.3.evaluate()
+##### 13.9.8.2.3.evaluate()
 
 在测试模式下计算损失和准确率
 
@@ -3157,7 +3211,7 @@ model.evaluate(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor
                verbose=1)  # 日志模式|int(0, 1)|1
 ```
 
-##### 13.9.7.2.4.fit()
+##### 13.9.8.2.4.fit()
 
 训练模型|History.history
 
@@ -3175,7 +3229,7 @@ model.fit(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor, or 
           steps_per_epoch=None)  # 每轮的总步数(样本数/批次大小)|int|None
 ```
 
-##### 13.9.7.2.5.fit_generator()
+##### 13.9.8.2.5.fit_generator()
 
 训练模型(fit()也支持了生成器推荐使用fit())
 
@@ -3189,7 +3243,7 @@ model.fit_generator(generator,  # 特征数据|generator or keras.utils.Sequence
                     shuffle=True)  # 是否打乱|bool|True
 ```
 
-##### 13.9.7.2.6.load_weights()
+##### 13.9.8.2.6.load_weights()
 
 加载模型的权重
 
@@ -3197,7 +3251,7 @@ model.fit_generator(generator,  # 特征数据|generator or keras.utils.Sequence
 model.load_weights(filepath)  # 文件路径|str or pathlib.Path
 ```
 
-##### 13.9.7.2.7.predict()
+##### 13.9.8.2.7.predict()
 
 进行预测|numpy.ndarray
 
@@ -3207,7 +3261,7 @@ model.predict(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor,
               verbose=0)  # 日志模式|int(0, 1, 2详细)|0
 ```
 
-##### 13.9.7.2.8.output_shape
+##### 13.9.8.2.8.output_shape
 
 返回输出层的形状
 
@@ -3215,7 +3269,7 @@ model.predict(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor,
 print(model.output_shape)
 ```
 
-##### 13.9.7.2.9.save()
+##### 13.9.8.2.9.save()
 
 保存模型
 
@@ -3224,7 +3278,7 @@ model.save(filepath,  # 文件路径|str or pathlib.Path
            save_format=None)  # 保存格式|str('tf' or 'h5')|tf
 ```
 
-##### 13.9.7.2.10.summary()
+##### 13.9.8.2.10.summary()
 
 输出的模型摘要
 
@@ -3232,7 +3286,7 @@ model.save(filepath,  # 文件路径|str or pathlib.Path
 model.summary()
 ```
 
-#### 13.9.7.3.Sequential()
+#### 13.9.8.3.Sequential()
 
 实例化一个Sequential类对象
 
@@ -3241,7 +3295,7 @@ from tensorflow.keras.models import Sequential
 model = Sequential()
 ```
 
-##### 13.9.7.3.1.add()
+##### 13.9.8.3.1.add()
 
 添加一个layer实例到Sequential栈顶
 
@@ -3254,13 +3308,13 @@ model.add(Dense(units=128, activation='relu'))
 model.add(Dense(units=2, activation='sigmoid'))
 ```
 
-### 13.9.8.optimizers
+### 13.9.9.optimizers
 
 | 版本 | 描述      | 注意 |
 | ---- | --------- | ---- |
 | -    | 优化器API |      |
 
-#### 13.9.8.1.Adam()
+#### 13.9.9.1.Adam()
 
 实例化一个Adam优化器
 
@@ -3269,7 +3323,7 @@ from tensorflow.keras.optimizers import Adam
 optimziers = Adam(learning_rate)  # 学习率|float|0.001
 ```
 
-#### 13.9.8.2.apply_gradients()
+#### 13.9.9.2.apply_gradients()
 
 将梯度带计算出来的值赋值给优化器
 
@@ -3279,7 +3333,7 @@ optimziers = Adam(learning_rate=1e-4)
 Adam.apply_gradients(grads_and_vars=zip(grads, vars))  # 梯度和变量|List of (gradient, variable) pairs
 ```
 
-#### 13.9.8.3.SGD()
+#### 13.9.9.3.SGD()
 
 实例化一个随机梯度下降优化器
 
@@ -3288,15 +3342,15 @@ from tensorflow.keras.optimizers import SGD
 optimziers = SGD(learning_rate)  # 学习率|float|0.01
 ```
 
-### 13.9.9.preprocessing
+### 13.9.10.preprocessing
 
 | 版本 | 描述               | 注意                     |
 | ---- | ------------------ | ------------------------ |
 | -    | Keras数据预处理API | 可以处理序列、文本、图像 |
 
-#### 13.9.9.1.image
+#### 13.9.10.1.image
 
-##### 13.9.9.1.1.ImageDataGenerator()
+##### 13.9.10.1.1.ImageDataGenerator()
 
 实例化一个ImageDataGenerator(对图片数据进行实时数据增强，并返回generator)
 
@@ -3313,7 +3367,7 @@ generator = ImageDataGenerator(rotation_range=0,  # 旋转度数|int|0
                                vertical_flip=False)  # 垂直翻转|bool|False
 ```
 
-###### 13.9.9.1.1.1.class_indices
+###### 13.9.10.1.1.1.class_indices
 
 类名称和类索引的映射字典|dict
 
@@ -3322,7 +3376,7 @@ generator.flow_from_dataframe().class_indices
 generator.flow_from_directory().class_indices
 ```
 
-###### 13.9.9.1.1.2.flow()
+###### 13.9.10.1.1.2.flow()
 
 给定数据和标签进行增强|yield
 
@@ -3333,7 +3387,7 @@ generator.flow(x,  # 输入数据|numpy.array of rank 4 or a tuple
                shuffle=True)  # 是否打乱|bool|True
 ```
 
-###### 13.9.9.1.1.3.flow_from_dataframe()
+###### 13.9.10.1.1.3.flow_from_dataframe()
 
 给定数据和标签(从dataframe内读入)进行增强|yield
 
@@ -3351,7 +3405,7 @@ generator.flow_from_dataframe(dataframe,  # 文件信息图表|pandas.DataFrame
                               validate_filenames=True)  # 检查文件的可靠性|bool|True
 ```
 
-###### 13.9.9.1.1.4.flow_from_directory()
+###### 13.9.10.1.1.4.flow_from_directory()
 
 给定数据和标签(每一个类别是一个单独的文件夹)进行增强|yield
 
@@ -3365,7 +3419,7 @@ generator.flow_from_directory(directory,  # 文件夹|str or path
                               interpolation='nearest')  # 插值方式|str{'nearest', 'bilinear' and 'bicubic'}|'nearest'
 ```
 
-##### 13.9.9.1.2.img_to_array()
+##### 13.9.10.1.2.img_to_array()
 
 将PIL图像转换为numpy数组|numpy.ndarray
 
@@ -3374,7 +3428,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 array = img_to_array(img)  # 输入的图像|PIL图像
 ```
 
-##### 13.9.9.1.3.load_image()
+##### 13.9.10.1.3.load_image()
 
 加载PIL图像|PIL图像
 
@@ -3384,13 +3438,13 @@ img = load_img(path,  # 文件路径|str or pathlib.Path
                target_size=None)  # 读取图片的大小|tuple of int|None
 ```
 
-### 13.9.10.regularizers
+### 13.9.11.regularizers
 
 | 版本 | 描述        | 注意 |
 | ---- | ----------- | ---- |
 | -    | 正则化器API |      |
 
-#### 13.9.10.1.l2()
+#### 13.9.11.1.l2()
 
 实例化一个L2正则化器
 
@@ -3399,13 +3453,13 @@ from tensorflow.keras.regularizers import l2
 regularizer = l2(l2=0.01)  # L2正则化因子|float|0.01
 ```
 
-### 13.9.11.utils
+### 13.9.12.utils
 
 | 版本 | 描述    | 注意 |
 | ---- | ------- | ---- |
 | -    | 工具API |      |
 
-#### 13.9.11.1.get_file()
+#### 13.9.12.1.get_file()
 
 从指定URL下载文件|Path to the downloaded file
 
@@ -3416,7 +3470,7 @@ file = get_file(fname,  # 文件名|str
                 extract)  # tar和zip文件是否解压|bool|False
 ```
 
-#### 13.9.11.2.plot_model()
+#### 13.9.12.2.plot_model()
 
 绘制模型的网络图
 
@@ -3430,7 +3484,28 @@ plot_model(model,  # 模型|keras model
            dpi=96)  # dpi值|int|96
 ```
 
-#### 13.9.11.3.to_categorical()
+#### 13.9.12.3.Sequence()
+
+实现数据序列(必须实现\_\_getitem\_\_, \_\_len\_\_)
+
+```python
+from tensorflow.keras.utils import Sequence
+class DataSequence(Sequence):
+    def __init__(self, **kwargs):
+        super(DataSequence, self).__init__(**kwargs)
+        self.on_epoch_end()
+        
+    def __getitem__(self, item):
+        """获取一个批次数据."""
+
+    def __len__(self):
+        """批次总数量."""
+
+    def on_epoch_end(self):
+        """每轮结束后对数据集进行某种操作."""
+```
+
+#### 13.9.12.4.to_categorical()
 
 将标签的离散编码转换为one-hot编码|numpy.ndarray
 
@@ -3705,13 +3780,61 @@ from tensorflow_hub import load
 model = load(handle)  # 模型的路径|str
 ```
 
-# 16.xgboost
+# 16.transformers
+
+| 版本  | 描述                                                | 注意 |
+| ----- | --------------------------------------------------- | ---- |
+| 3.4.0 | 基于Pytorch或者TensorFlow 2上最先进的自然语言处理库 |      |
+
+## 16.1.BertTokenizer
+
+### 16.1.1.\_\_call\_\_()
+
+为模型标记一个或者多个序列序列数据|input_ids, (token_type_ids, attention_mask)需要设置返回为真
+
+```python
+from transformers import BertTokenizer
+tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',
+                                          do_lower_case=True)
+encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list of list
+                    add_special_tokens=True,  # 是否使用特殊标记器|bool|True|可选
+                    padding=True,  # 是否填充到最大长度|bool|False|可选
+                    truncation=True,  # 是否截断到最大长度|bool|False|可选
+                    max_length=128,  # 填充和截断的最大长度(XLNet没有最大长度, 此参数将被禁用)|int|可选
+                    return_tensors='tf',  # 返回张量|{'tf', 'pt', 'np'}|list of int|可选
+                    return_token_type_ids=True,  # 是否返回令牌ID|bool|可选
+                    return_attention_mask=True)  # 是否返回注意力掩码|bool|可选
+```
+
+### 16.1.2.from_pretrained()
+
+实例化一个Bert的预训练标记器|transformers.tokenization_bert.BertTokenizer
+
+```python
+from transformers import BertTokenizer
+tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # 预训练的名称或位置|str
+                                          do_lower_case=True)  # 转换为小写字母|bool|可选
+```
+
+## 16.2.TFBertModel
+
+### 16.2.1.from_pretrained()
+
+从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_bert.TFBertModel
+
+```python
+from transformers import TFBertModel
+model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # 预训练的名称或位置|str
+                                    trainable=True)  # 能否训练|bool|可选
+```
+
+# 17.xgboost
 
 | 版本  | 描述       | 注意                |
 | ----- | ---------- | ------------------- |
 | 1.1.1 | 梯度提升树 | 可直接在sklearn使用 |
 
-## 16.1.XGBClassifier()
+## 17.1.XGBClassifier()
 
 实例化一个XGBoost分类器
 
@@ -3728,7 +3851,7 @@ model = XGBClassifier(max_depth,  # 基学习器(梯度提升树)的最大深度
                       random_state)  # 随机状态|int|None|可选
 ```
 
-### 16.1.1.fit()
+### 17.1.1.fit()
 
 训练XGBoost分类器|self
 
@@ -3740,7 +3863,7 @@ model.fit(X,  # 特征数据|array-like
           verbose)  # 日志模式|bool|True
 ```
 
-### 16.1.2.predict()
+### 17.1.2.predict()
 
 进行预测|numpy.ndarray
 
@@ -3748,4 +3871,3 @@ model.fit(X,  # 特征数据|array-like
 result = model.predict(data)  
 # 用于预测的数据|array_like
 ```
-
