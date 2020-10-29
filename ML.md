@@ -2639,3 +2639,52 @@ $$
 
 * 若贝叶斯网中存在极端概率0或1，则不能保证马尔可夫链存在平稳分布，此时吉布斯采样会给出错误的估计结果
 
+## 7.6.EM算法
+
+* 之前的讨论是假设训练样本所有属性变量的值都已被观测到，即训练样本是完整的
+
+* 现实应用中往往会遇到不完整的训练样本
+
+* 未观测变量的学名是隐变量(latent variable)，令$\pmb{\text{X}}$表示已观测变量集，$\pmb{\text{Z}}$表示隐变量集，$\Theta$表示模型参数
+
+* 若预对$\Theta$做极大似然估计，则应最大化对数似然
+  $$
+  LL(\Theta|\pmb{\text{X}},\pmb{\text{Z}})=\ln P(\pmb{\text{X}},\pmb{\text{Z}}|\Theta)
+  $$
+  然而由于$\pmb{\text{Z}}$是隐变量，上式无法直接求解，此时可通过对$\pmb{\text{Z}}$计算期望，来最大化已观测数据的对数边际似然(marginal likelihood)
+  $$
+  LL(\Theta|\pmb{\text{X}})=\ln P(\pmb{\text{X}}|\Theta)=\ln\sum_{\pmb{\text{Z}}}P(\pmb{\text{X}},\pmb{\text{Z}}|\Theta)
+  $$
+
+* 
+
+* EM(Expectation-Maximization)期望最大化算法是常用的估计参数隐变量的利器，它是一种迭代式的方法，其基本思想是：若参数$\Theta$已知，则可根据训练数据推断出最优隐变量$\pmb{\text{Z}}$的值(E步)；反之，若$\pmb{\text{Z}}$的值已知，则可对参数$\Theta$做极大似然估计(M步)
+
+  * 以初始化值$\Theta^0$为起点，对数据的对数边际似然，可迭代执行以下步骤直至收敛
+    1. 基于$\Theta^t$推断隐变量$\pmb{\text{Z}}$的期望，记为$\pmb{\text{Z}}^t$
+    2. 基于已观测变量$\pmb{\text{X}}$和$\pmb{\text{Z}}^t$对参数$\Theta$做极大似然估计，记为$\Theta^{t+1}$
+
+  这就是EM算法的原型
+
+  * 若不是取$\pmb{\text{Z}}$的期望，而是基于$\Theta^t$计算隐变量$\pmb{\text{Z}}$的概率分布$P(\pmb{\text{Z}}|\pmb{\text{X}},\Theta^t)$，则EM算法的两个步骤是：
+
+    1. $\pmb{\text{E}}$步(Expextation)：以当前参数$\Theta^t$推断隐变量分布$P(\pmb{\text{Z}}|\pmb{\text{X}},\Theta^t)$，并计算对数似然$LL(\Theta|\pmb{\text{X}},\pmb{\text{Z}})$关于$\pmb{\text{Z}}$的期望
+       $$
+       Q(\Theta|\Theta^t)=\mathbb{E}_{\pmb{\text{Z}}|\pmb{\text{X}},\Theta^t}LL(\Theta|\pmb{\text{X}},\pmb{\text{Z}})
+       $$
+
+    2. $\pmb{\text{M}}$步(Maximization)：寻找参数最大化期望似然，即
+       $$
+       \Theta^{t+1}=\mathop{\arg\max}_\Theta Q(\Theta|\Theta^t)
+       $$
+
+* EM算法使用两个步骤交替计算：
+
+  1. 第一步是期望(E)步，利用当前估计的参数值来计算似然的期望值
+  2. 第二步是最大化(M)步，寻找能使E步产生的似然期望最大化的参数值
+  3. 然后，新得到的参数值重新被用于E步，······直至收敛到局部最优解
+
+* 隐变量估计问题可以通过梯度下降等优化算法求解，但由于求和的项数将随着隐变量的数目以指数级上升，会给梯度计算带来麻烦
+
+* EM算法则可看作一种非梯度优化方法
+

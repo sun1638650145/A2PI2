@@ -1313,7 +1313,7 @@ np.var(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-##7.43.zeros()
+## 7.43.zeros()
 
 创建一个指定为形状和类型的全零数组|numpy.ndarray
 
@@ -1388,7 +1388,17 @@ df.fillna(value=10,  # 填充进的值
           inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 8.2.4.iloc[]
+### 8.2.4.head()
+
+返回前n行数据|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+df = pd.DataFrame([1, 2, 3])
+print(df.head(n=1))  # 选择的行数|int|5
+```
+
+### 8.2.5.iloc[]
 
 按照行号取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1398,7 +1408,7 @@ df = pd.DataFrame([[1, 4], [2, 5], [3, 6]])
 new_df = df.iloc[0:2]  # 要提取的数据|int or array of int or slice object with ints
 ```
 
-### 8.2.5.loc[]
+### 8.2.6.loc[]
 
 按照行名称取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1409,7 +1419,7 @@ df = pd.DataFrame(df_map, index=['a', 'b', 'c'])
 new_df = df.loc['a':'b']  # 要提取的数据|label or array of label or slice object with labels(没有名称的时候就是iloc函数)
 ```
 
-### 8.2.6.median()
+### 8.2.7.median()
 
 获取中位数|pandas.core.series.Series
 
@@ -1419,7 +1429,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'value': [1, 2, 3, 4]})
 df.median()
 ```
 
-### 8.2.7.merge()
+### 8.2.8.merge()
 
 将两列进行合并|pandas.core.frame.DataFrame
 
@@ -1435,7 +1445,7 @@ df = pd.merge(left=df1,  # 参与合并左侧的数据|DataFrame
               sort=True)  # 是否排序|bool|True
 ```
 
-### 8.2.8.replace()
+### 8.2.9.replace()
 
 替换DataFrame中的值|pandas.core.frame.DataFrame or None
 
@@ -1447,7 +1457,7 @@ new_df = df.replace(to_replace=1,  # 被替换的值|scalar or dict or list or s
                     inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 8.2.9.reset_index()
+### 8.2.10.reset_index()
 
 重置DataFrame的索引为从零开始的整数索引|pandas.core.frame.DataFrame or None
 
@@ -1459,7 +1469,7 @@ new_df = df.reset_index(drop=True,  # 是否丢弃原来的索引|bool|False
                         inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 8.2.10.sample()
+### 8.2.11.sample()
 
 随机采样指定个数的样本|pandas.core.frame.DataFrame
 
@@ -2357,9 +2367,9 @@ sample = dataset.take(count=1)  # 取出的个数|int
 
 ## 13.4.distribute
 
-| 版本 | 描述           | 注意                                       |
-| ---- | -------------- | ------------------------------------------ |
-| -    | 用于分布式训练 | tf.keras.utils.keras.multi_gpu_model被移除 |
+| 版本 | 描述           | 注意                                 |
+| ---- | -------------- | ------------------------------------ |
+| -    | 用于分布式训练 | tf.keras.utils.multi_gpu_model被移除 |
 
 ### 13.4.1.MirroredStrategy()
 

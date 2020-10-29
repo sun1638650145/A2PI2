@@ -2,7 +2,7 @@
 
 * API.md 深度学习和机器学习框架的中文API 周更
 
-* ML.md 机器学习理论 开始增加贝叶斯的内容
+* ML.md 机器学习理论
 
   * 如果您希望实践这些理论，却没有那么强的编程能力可考虑本人的配套框架[classicML](https://github.com/sun1638650145/classicML)
 
@@ -25,4 +25,4 @@
 ## A²PI²代码🌰
 
 1. [使用Keras构建CRNN](https://github.com/sun1638650145/CRNN)
-2. coming soon
+2. 更多内容 coming soon
