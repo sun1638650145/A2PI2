@@ -2735,7 +2735,19 @@ tensor = expand_dims(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
                      axis=0)  # 添加新维度的位置|int
 ```
 
-#### 13.9.2.6.ones_like()
+#### 13.9.2.6.get_value()
+
+返回一个变量的值|值所对应的数据类型
+
+```python
+from tensorflow.keras.models import Model
+from tensorflow.keras.backend import get_value
+model = Model()
+model.compile(optimizer='adam')
+value = get_value(x=model.optimizer)
+```
+
+#### 13.9.2.7.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2744,7 +2756,17 @@ from tensorflow.keras.backend import ones_like
 tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-#### 13.9.2.7.shape()
+#### 13.9.2.8.set_value()
+
+设置一个变量的值(只能设置数值)
+
+```python
+from tensorflow.keras.backend import set_value
+set_value(x,  # 需要设置新值的变量
+          value)  # 设置的新值|numpy.ndarray(必须和原来形状一致)
+```
+
+#### 13.9.2.9.shape()
 
 返回张量的形状|tensorflow.python.framework.ops.EagerTensor
 
@@ -2754,7 +2776,7 @@ tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])
 tensor_shape = shape(x=tensor)  # 输入的张量|tensor
 ```
 
-#### 13.9.2.8.sigmoid()
+#### 13.9.2.10.sigmoid()
 
 逐元素计算sigmoid函数的值|tensorflow.python.framework.ops.EagerTensor
 
@@ -2763,7 +2785,7 @@ from tensorflow.keras.backend import sigmoid
 tensor = sigmoid(x=[1., 2., 3., 4., 5.])  # 输入的张量|tensor
 ```
 
-#### 13.9.2.9.zeros_like()
+#### 13.9.2.11.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2793,7 +2815,19 @@ CALLBACKS = [
 ]
 ```
 
-#### 13.9.3.2.ModelCheckpoint()
+#### 13.9.3.2.LearningRateScheduler()
+
+实例化一个LearningRateScheduler，对学习率进行定时改变
+
+```python
+from tensorflow.keras.callbacks import LearningRateScheduler
+CALLBACKS = [
+    LearningRateScheduler(schedule,  # 定时器函数|function(epoch轮数作为输入, 学习率作为输出.)|
+                          verbose=1)  # 日志模式|int(0, 1)|0
+]
+```
+
+#### 13.9.3.3.ModelCheckpoint()
 
 实例化一个ModelCheckpoint，用以某种频率保存模型或模型的权重
 
@@ -2807,7 +2841,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 13.9.3.3.ReduceLROnPlateau()
+#### 13.9.3.4.ReduceLROnPlateau()
 
 实例化一个ReduceLROnPlateau，当评估停止变化的时候，降低学习率
 
@@ -2823,7 +2857,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 13.9.3.4.TensorBoard()
+#### 13.9.3.5.TensorBoard()
 
 实例化一个TensorBoard，可视化训练信息
 
@@ -3253,7 +3287,10 @@ model.fit(x,  # 特征数据|numpy.array (or array-like), TensorFlow tensor, or 
           validation_data=None,  # 验证数据|tuple (x_val, y_val) or datasets|None
           initial_epoch=0,  # 初始化训练轮数(多用于续训)|int|0
           shuffle=True,  # 是否打乱|bool|True
-          steps_per_epoch=None)  # 每轮的总步数(样本数/批次大小)|int|None
+          class_weight=None,  # 类别的权重字典(只在训练时有效)|dict|None|可选
+          steps_per_epoch=None,  # 每轮的总步数(样本数/批次大小)|int|None
+          workers=1,  # 使用的线程数(仅用于tf.keras.utils.Sequence)|int|1
+          use_multiprocessing=False)  # 是否使用多线程(仅用于tf.keras.utils.Sequence)|bool|False
 ```
 
 ##### 13.9.8.2.5.fit_generator()
@@ -3813,9 +3850,39 @@ model = load(handle)  # 模型的路径|str
 | ----- | --------------------------------------------------- | ---- |
 | 3.4.0 | 基于Pytorch或者TensorFlow 2上最先进的自然语言处理库 |      |
 
-## 16.1.BertTokenizer
+## 16.1.AlbertTokenizer
 
 ### 16.1.1.\_\_call\_\_()
+
+为模型标记一个或者多个序列序列数据|input_ids, (token_type_ids, attention_mask)需要设置返回为真
+
+```python
+from transformers import AlbertTokenizer
+tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='albert-base-v1',
+                                            do_lower_case=True)
+encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list of list
+                    add_special_tokens=True,  # 是否使用特殊标记器|bool|True|可选
+                    padding=True,  # 是否填充到最大长度|bool|False|可选
+                    truncation=True,  # 是否截断到最大长度|bool|False|可选
+                    max_length=128,  # 填充和截断的最大长度(XLNet没有最大长度, 此参数将被禁用)|int|可选
+                    return_tensors='tf',  # 返回张量|{'tf', 'pt', 'np'}|list of int|可选
+                    return_token_type_ids=True,  # 是否返回令牌ID|bool|可选
+                    return_attention_mask=True)  # 是否返回注意力掩码|bool|可选
+```
+
+### 16.1.2.from_pretrained()
+
+实例化一个Albert的预训练标记器|transformers.tokenization_albert.AlbertTokenizer
+
+```python
+from transformers import AlbertTokenizer
+tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='albert-base-v1',  # 预训练的名称或位置|str
+                                            do_lower_case=True)  # 转换为小写字母|bool|可选
+```
+
+## 16.2.BertTokenizer
+
+### 16.2.1.\_\_call\_\_()
 
 为模型标记一个或者多个序列序列数据|input_ids, (token_type_ids, attention_mask)需要设置返回为真
 
@@ -3833,7 +3900,7 @@ encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list 
                     return_attention_mask=True)  # 是否返回注意力掩码|bool|可选
 ```
 
-### 16.1.2.from_pretrained()
+### 16.2.2.from_pretrained()
 
 实例化一个Bert的预训练标记器|transformers.tokenization_bert.BertTokenizer
 
@@ -3843,9 +3910,21 @@ tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-ba
                                           do_lower_case=True)  # 转换为小写字母|bool|可选
 ```
 
-## 16.2.TFBertModel
+## 16.3.TFAlbertModel
 
-### 16.2.1.from_pretrained()
+### 16.3.1.from_pretrained()
+
+从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_albert.TFAlbertModel
+
+```python
+from transformers import TFAlbertModel
+model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base-v1',  # 预训练的名称或位置|str
+                                      trainable=True)  # 能否训练|bool|可选
+```
+
+## 16.4.TFBertModel
+
+### 16.4.1.from_pretrained()
 
 从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_bert.TFBertModel
 
