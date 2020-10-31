@@ -3846,9 +3846,9 @@ model = load(handle)  # 模型的路径|str
 
 # 16.transformers
 
-| 版本  | 描述                                                | 注意 |
-| ----- | --------------------------------------------------- | ---- |
-| 3.4.0 | 基于Pytorch或者TensorFlow 2上最先进的自然语言处理库 |      |
+| 版本  | 描述                                                | 注意                                      |
+| ----- | --------------------------------------------------- | ----------------------------------------- |
+| 3.4.0 | 基于Pytorch或者TensorFlow 2上最先进的自然语言处理库 | 默认保存路径为~/.cache/torch/transformers |
 
 ## 16.1.AlbertTokenizer
 
@@ -3907,7 +3907,8 @@ encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list 
 ```python
 from transformers import BertTokenizer
 tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # 预训练的名称或位置|str
-                                          do_lower_case=True)  # 转换为小写字母|bool|可选
+                                          do_lower_case=True,  # 转换为小写字母|bool|可选
+                                          cache_dir=None)  # 缓存的目录|str|可选 
 ```
 
 ## 16.3.TFAlbertModel
@@ -3931,7 +3932,8 @@ model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base
 ```python
 from transformers import TFBertModel
 model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # 预训练的名称或位置|str
-                                    trainable=True)  # 能否训练|bool|可选
+                                    trainable=True,  # 能否训练|bool|可选
+                                    cache_dir=None)  # 缓存的目录|str|可选 
 ```
 
 # 17.xgboost
