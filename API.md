@@ -27,7 +27,7 @@ from catboost import CatBoostClassifier
 model = CatBoostClassifier(iterations=100,  # 迭代次数|int|500
                            learning_rate=1e-1,  # 学习率|float|0.03
                            depth=10,  # 树的深度|int|6
-                           l2_leaf_reg=3,  # 损失函数使用L2正则化|float|3
+                           l2_leaf_reg=3,  # 损失函数使用L2正则化|float|3.0
                            loss_function='Logloss',  # 损失函数|{'Logloss', 'CrossEntropy'} or object|'Logloss'
                            od_type='Iter',  # 过拟合检查|{'IncToDec', 'Iter'}|'IncToDec'
                            random_seed=16,  # 随机种子|int|None
@@ -68,6 +68,23 @@ model.feature_names_
 
 ```python
 result = model.predict(data)  # 用于预测的数据|catboost.Pool or list of features or list of lists or numpy.ndarray or pandas.DataFrame or pandas.Series or catboost.FeaturesData
+```
+
+## 1.2.CatBoostRegressor()
+
+实例化一个CatBoost回归器
+
+```python
+from catboost import CatBoostRegressor
+model = CatBoostRegressor(learning_rate=0.02,  # 学习率|float|0.03
+                          max_depth=5,  # 树的深度|int|6
+                          l2_leaf_reg=10,  # 损失函数使用L2正则化|float|3.0
+                          od_type='Iter',  # 过拟合检查|{'IncToDec', 'Iter'}|'IncToDec'
+                          od_wait=100,  # 在最佳的迭代次数之后继续训练的轮数|int|20
+                          colsample_bylevel=0.8,  # 随机子空间法,随机选择特征时,每次拆分选择使用的特征的百分比|float(0, 1]|1
+                          bagging_temperature=0.2,  # 使用贝叶斯为分配初始化的权重|float|1.0
+                          random_state=11,  # 随机种子|int|None
+                          allow_writing_files=False)  # 允许导出缓存文件|bool|True
 ```
 
 # 2.cv2
@@ -4162,7 +4179,7 @@ result = model.predict(data)
 # 用于预测的数据|array_like
 ```
 
-## 18.2.XGBRegressor
+## 18.2.XGBRegressor()
 
 实例化一个XGBoost回归器
 

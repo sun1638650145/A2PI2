@@ -2376,7 +2376,7 @@ $$
 
 * 为了降低贝叶斯公式中估计后验概率$P(c|\pmb{x})$的困难，朴素贝叶斯分类器采用了属性条件独立性假设，但在现实任务中这个往往假设很难成立
 
-* 于是，人们尝试对属性条件独立性假设进行一定程度的放松，由此产生了一类称为半朴素贝叶斯分类器(semi-naive Bayers classifiers)的学习方法
+* 于是，人们尝试对属性条件独立性假设进行一定程度的放松，由此产生了一类称为半朴素贝叶斯分类器(semi-naive Bayes classifiers)的学习方法
 
 * 半朴素贝叶斯分类器的基本思想
 
@@ -2394,7 +2394,7 @@ $$
 
   1. 最直接的做法是假设所有的属性都依赖于同一个属性，称为超父(super-parent)，通过交叉验证等模型选择方法来确定超父属性，由此形成了SPODE(super-parent ODE)方法
 
-  2. TAN(Tree Augmented naive Bayers)则是在最大带权生成树(maximum weighted spanning tree)算法的基础上，通过一下步骤将属性间依赖关系简约为树形结构
+  2. TAN(Tree Augmented naive Bayes)则是在最大带权生成树(maximum weighted spanning tree)算法的基础上，通过一下步骤将属性间依赖关系简约为树形结构
 
      * 计算任意两个属性之间的条件互信息(conditional mutual information)
        $$
