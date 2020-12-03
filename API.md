@@ -2890,7 +2890,16 @@ tensor = cast(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
               dtype='float16')  # 转换后的数据类型|str('float16', 'float32', or 'float64')
 ```
 
-#### 14.9.2.2.clip()
+#### 14.9.2.2.clear_session()
+
+销毁当前的计算图并创建一个新的计算图
+
+```python
+from tensorflow.keras.backend import clear_session
+clear_session()
+```
+
+#### 14.9.2.3.clip()
 
 逐元素进行裁切到满足条件的范围|tensorflow.python.framework.ops.EagerTensor
 
@@ -2901,7 +2910,7 @@ tensor = clip(x=[1, 2, 3, 4, 5],  # 输入的张量|tf.Tensor or array-like
               max_value=4)  # 最大值|float, integer or tensor
 ```
 
-#### 14.9.2.3.ctc_batch_cost()
+#### 14.9.2.4.ctc_batch_cost()
 
 在每个批次上计算ctc损失|tensorflow.python.framework.ops.EagerTensor(形状是(samples,1))
 
@@ -2913,7 +2922,7 @@ tensor = ctc_batch_cost(y_true,  # 真实的标签|tensor(samples, max_string_le
                         label_length)  # 真实的长度|tensor(samples, 1)
 ```
 
-#### 14.9.2.4.ctc_decode()
+#### 14.9.2.5.ctc_decode()
 
 解码softmax的输出|tuple of tensorflow.python.framework.ops.EagerTensor解码元素列表和解码序列的对数概率
 
@@ -2924,7 +2933,7 @@ t = ctc_decode(y_pred,  # 模型的预测值|tensor(samples, time_steps, num_cat
                greedy)  # 执行更快的搜索路径|bool|True
 ```
 
-#### 14.9.2.5.expand_dims()
+#### 14.9.2.6.expand_dims()
 
 扩展张量的维度|tensorflow.python.framework.ops.EagerTensor
 
@@ -2934,7 +2943,7 @@ tensor = expand_dims(x=[1, 2, 3],  # 输入的张量|tf.Tensor or array-like
                      axis=0)  # 添加新维度的位置|int
 ```
 
-#### 14.9.2.6.get_value()
+#### 14.9.2.7.get_value()
 
 返回一个变量的值|值所对应的数据类型
 
@@ -2946,7 +2955,7 @@ model.compile(optimizer='adam')
 value = get_value(x=model.optimizer)
 ```
 
-#### 14.9.2.7.ones_like()
+#### 14.9.2.8.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -2955,7 +2964,7 @@ from tensorflow.keras.backend import ones_like
 tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-#### 14.9.2.8.set_value()
+#### 14.9.2.9.set_value()
 
 设置一个变量的值(只能设置数值)
 
@@ -2965,7 +2974,7 @@ set_value(x,  # 需要设置新值的变量
           value)  # 设置的新值|numpy.ndarray(必须和原来形状一致)
 ```
 
-#### 14.9.2.9.shape()
+#### 14.9.2.10.shape()
 
 返回张量的形状|tensorflow.python.framework.ops.EagerTensor
 
@@ -2975,7 +2984,7 @@ tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])
 tensor_shape = shape(x=tensor)  # 输入的张量|tensor
 ```
 
-#### 14.9.2.10.sigmoid()
+#### 14.9.2.11.sigmoid()
 
 逐元素计算sigmoid函数的值|tensorflow.python.framework.ops.EagerTensor
 
@@ -2984,7 +2993,7 @@ from tensorflow.keras.backend import sigmoid
 tensor = sigmoid(x=[1., 2., 3., 4., 5.])  # 输入的张量|tensor
 ```
 
-#### 14.9.2.11.zeros_like()
+#### 14.9.2.12.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -3093,7 +3102,16 @@ from tensorflow.keras.datasets import mnist
 | ---- | --------- | ---------------------------------------- |
 | -    | 网络层API | 可以使用Functional API或者Sequential模型 |
 
-#### 14.9.5.1.Add()
+#### 14.9.5.1.Activation()
+
+实例化一个激活层
+
+```python
+from tensorflow.keras.layers import Activation
+layer = Activation(activation)  # 要使用的激活函数|str or tensorflow.keras.activations中的函数
+```
+
+#### 14.9.5.2.Add()
 
 实例化一个矩阵加法层，将layer相加
 
@@ -3102,7 +3120,7 @@ from tensorflow.keras.layers import Add
 layer = Add(_Merge)  # 相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor
 ```
 
-#### 14.9.5.2.AdditiveAttention()
+#### 14.9.5.3.AdditiveAttention()
 
 实例化一个Bahdanau注意力层
 
@@ -3111,7 +3129,7 @@ from tensorflow.keras.layers import AdditiveAttention
 layer = AdditiveAttention()
 ```
 
-#### 14.9.5.3.BatchNormalization()
+#### 14.9.5.4.BatchNormalization()
 
 实例化一个批标准化层
 
@@ -3120,7 +3138,7 @@ from tensorflow.keras.layers import BatchNormalization
 layer = BatchNormalization()
 ```
 
-#### 14.9.5.4.Bidirectional()
+#### 14.9.5.5.Bidirectional()
 
 实例化一个循环神经网络层的双向封装器
 
@@ -3130,7 +3148,7 @@ layer = GRU(units=256, return_sequences=True)
 layer = Bidirectional(layer=layer)  # 网络层|keras.layers.RNN, keras.layers.LSTM or keras.layers.GRU
 ```
 
-#### 14.9.5.5.Concatenate()
+#### 14.9.5.6.Concatenate()
 
 实例化一个合并层
 
@@ -3139,7 +3157,7 @@ from tensorflow.keras.layers import Concatenate
 layer = Concatenate(axis=0)(_Merge)  # 连接的维度(相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor)|int|-1
 ```
 
-#### 14.9.5.6.Conv1D()
+#### 14.9.5.7.Conv1D()
 
 实例化一个一维卷积层
 
@@ -3156,7 +3174,7 @@ layer = Conv1D(filters,  # 卷积核的数量|int
                bias_initializer)  # 偏置初始化|str|'zeros'
 ```
 
-#### 14.9.5.7.Conv2D()
+#### 14.9.5.8.Conv2D()
 
 实例化一个二维卷积层
 
@@ -3169,7 +3187,7 @@ layer = Conv2D(filters,  # 卷积核的数量|int
                input_shape)  # 如果是模型的第一层，需指定输入的形状|tuple of int
 ```
 
-#### 14.9.5.8.Conv2DTranspose()
+#### 14.9.5.9.Conv2DTranspose()
 
 实例化一个二维转置卷积层
 
@@ -3182,7 +3200,7 @@ layer = Conv2DTranspose(filters,  # 卷积核的数量|int
                         use_bias)  # 是否使用偏置|bool|True
 ```
 
-#### 14.9.5.9.Dense()
+#### 14.9.5.10.Dense()
 
 实例化一个全连接层
 
@@ -3193,7 +3211,7 @@ layer = Dense(units,  # 神经元的数量|int
               input_shape)  # 如果是模型的第一层，需指定输入的形状|tuple of int
 ```
 
-#### 14.9.5.10.Dot()
+#### 14.9.5.11.Dot()
 
 实例化一个点积层
 
@@ -3202,7 +3220,7 @@ from tensorflow.keras.layers import Dot
 layer = Dot(axes=1)(_Merge)# 点积的维度(相同形状的张量(层)列表|tensorflow.python.framework.ops.Tensor)|int|-1
 ```
 
-#### 14.9.5.11.Dropout()
+#### 14.9.5.12.Dropout()
 
 实例化一个Dropout层(在训练阶段随机抑制部分神经元)
 
@@ -3211,7 +3229,7 @@ from tensorflow.keras.layers import Dropout
 layer = Dropout(rate=0.5)  # 丢弃比例|float
 ```
 
-#### 14.9.5.12.Embedding()
+#### 14.9.5.13.Embedding()
 
 实例化一个嵌入层(只能作为模型的第一层)
 
@@ -3223,11 +3241,11 @@ layer = Embedding(input_dim,  # 输入的维度|int(最大值加一)
                   embeddings_regularizer,)  # 嵌入矩阵正则化器|str or tensorflow.keras.regularizers|None
 ```
 
-#### 14.9.5.13.experimental
+#### 14.9.5.14.experimental
 
-##### 14.9.5.13.1.preprocessing
+##### 14.9.5.14.1.preprocessing
 
-###### 14.9.5.13.1.1.get_vocabulary()
+###### 14.9.5.14.1.1.get_vocabulary()
 
 获取词汇表|list
 
@@ -3240,7 +3258,7 @@ char_to_num = StringLookup(mask_token=None,
 vocab = char_to_num.get_vocabulary()
 ```
 
-###### 14.9.5.13.1.1.StringLookup()
+###### 14.9.5.14.1.1.StringLookup()
 
 实例化一个StringLookup(将词汇表映射到整数索引)
 
@@ -3254,7 +3272,7 @@ char_to_num = StringLookup(mask_token=None,  # 词汇表的最大大小|int|None
 tensor = char_to_num(vocab)
 ```
 
-#### 14.9.5.14.Flatten()
+#### 14.9.5.15.Flatten()
 
 实例化一个展平层(不影响批次)
 
@@ -3263,7 +3281,7 @@ from tensorflow.keras.layers import Flatten
 layer = Flatten()
 ```
 
-#### 14.9.5.15.GlobalAveragePooling1D()
+#### 14.9.5.16.GlobalAveragePooling1D()
 
 实例化一个全局一维平均池化层
 
@@ -3272,7 +3290,7 @@ from tensorflow.keras.layers import GlobalAveragePooling1D
 layer = GlobalAveragePooling1D()
 ```
 
-#### 14.9.5.16.GlobalMaxPooling1D()
+#### 14.9.5.17.GlobalMaxPooling1D()
 
 实例化一个全局一维最大池化层
 
@@ -3281,7 +3299,7 @@ from tensorflow.keras.layers import GlobalMaxPooling1D
 layer = GlobalMaxPooling1D()
 ```
 
-#### 14.9.5.17.GRU()
+#### 14.9.5.18.GRU()
 
 实例化一个门控循环网络层
 
@@ -3291,7 +3309,7 @@ layer = GRU(units=256,  # 神经元的数量|int
             return_sequences=True)  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
 ```
 
-#### 14.9.5.18.Input()
+#### 14.9.5.19.Input()
 
 实例化一个输入层
 
@@ -3302,7 +3320,7 @@ layer = Input(shape=(224, 224, 3),  # 形状|tuple
               dtype='int32')  # 期望的数据类型|str|None
 ```
 
-#### 14.9.5.19.Lambda()
+#### 14.9.5.20.Lambda()
 
 实例化一个Lambda层(将任意函数封装成网络层)
 
@@ -3313,7 +3331,7 @@ layer = Lambda(function=lambda x: x*x,  # 要封装的函数
                name='Square-Layer')  # 层名称|str|None
 ```
 
-#### 14.9.5.20.Layer()
+#### 14.9.5.21.Layer()
 
 Keras所有的层都继承于此(实现必要方法就可以自定义层)
 
@@ -3329,7 +3347,7 @@ class MyLayer(Layer):
         return outputs
 ```
 
-#### 14.9.5.21.LeakyReLU()
+#### 14.9.5.22.LeakyReLU()
 
 实例化一个带侧漏的RelU层
 
@@ -3338,7 +3356,7 @@ from tensorflow.keras.layers import LeakyReLU
 layer = LeakyReLU(alpha=0.3)  # 负斜率系数(侧漏率)|float|0.3
 ```
 
-#### 14.9.5.22.LSTM()
+#### 14.9.5.23.LSTM()
 
 实例化一个长短时记忆网络层
 
@@ -3349,7 +3367,7 @@ layer = LSTM(units=256,  # 神经元的数量|int
              dropout=0.1)  # 随机丢弃率|float|0.
 ```
 
-#### 14.9.5.23.MaxPooling1D()
+#### 14.9.5.24.MaxPooling1D()
 
 实例化一个一维最大池化层
 
@@ -3360,7 +3378,7 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 14.9.5.24.Reshape()
+#### 14.9.5.25.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
@@ -4043,15 +4061,71 @@ from tensorflow_hub import load
 model = load(handle)  # 模型的路径|str
 ```
 
-# 17.transformers
+# 17.tokenizers
+
+| 版本  | 描述           | 注意 |
+| ----- | -------------- | ---- |
+| 0.9.2 | 自定义的标记器 |      |
+
+## 17.1.ByteLevelBPETokenizer()
+
+实例化一个字节级的BPE标记器
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+tokenizer = ByteLevelBPETokenizer(vocab='./vocab-roberta-base.json',  # 词汇表|str|None
+                                  merges='./merges-roberta-base.txt',  # token表|str|None
+                                  add_prefix_space=True,  # 是否使用特殊标记器|bool|True|可选
+                                  lowercase=True)  # 转换为小写字母|bool|可选
+```
+
+### 17.1.1.decode()
+
+解码给定的id列表|str
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+tokenizer = ByteLevelBPETokenizer(vocab='./roberta/vocab-roberta-base.json',
+                                  merges='./roberta/merges-roberta-base.txt',
+                                  add_prefix_space=True,
+                                  lowercase=True)
+raw_text = 'Hello Transformers!'
+encoder = tokenizer.encode(sequence=raw_text)
+text = tokenizer.decode(ids=encoder.ids)  # 要解码的id列表|list
+print(text)
+```
+
+### 17.1.2.encode()
+
+编码给定的序列和序列对|tokenizers.Encoding
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+tokenizer = ByteLevelBPETokenizer(vocab='./vocab-roberta-base.json',
+                                  merges='./merges-roberta-base.txt',
+                                  add_prefix_space=True,
+                                  lowercase=True)
+raw_text = 'Hello Transformers!'
+encoder = tokenizer.encode(sequence=raw_text)  # 输入序列|str
+```
+
+#### 17.1.2.1.ids
+
+编码后的id列表|list
+
+```python
+print(encoder.ids)
+```
+
+# 18.transformers
 
 | 版本  | 描述                                                | 注意                                      |
 | ----- | --------------------------------------------------- | ----------------------------------------- |
 | 3.4.0 | 基于Pytorch或者TensorFlow 2上最先进的自然语言处理库 | 默认保存路径为~/.cache/torch/transformers |
 
-## 17.1.AlbertTokenizer
+## 18.1.AlbertTokenizer
 
-### 17.1.1.\_\_call\_\_()
+### 18.1.1.\_\_call\_\_()
 
 为模型标记一个或者多个序列序列数据|input_ids, (token_type_ids, attention_mask)需要设置返回为真
 
@@ -4069,7 +4143,7 @@ encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list 
                     return_attention_mask=True)  # 是否返回注意力掩码|bool|可选
 ```
 
-### 17.1.2.from_pretrained()
+### 18.1.2.from_pretrained()
 
 实例化一个Albert的预训练标记器|transformers.tokenization_albert.AlbertTokenizer
 
@@ -4079,9 +4153,9 @@ tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='alber
                                             do_lower_case=True)  # 转换为小写字母|bool|可选
 ```
 
-## 17.2.BertTokenizer
+## 18.2.BertTokenizer
 
-### 17.2.1.\_\_call\_\_()
+### 18.2.1.\_\_call\_\_()
 
 为模型标记一个或者多个序列序列数据|input_ids, (token_type_ids, attention_mask)需要设置返回为真
 
@@ -4099,7 +4173,7 @@ encoder = tokenizer(text=x,  # 需要标记的文本|str or list of str or list 
                     return_attention_mask=True)  # 是否返回注意力掩码|bool|可选
 ```
 
-### 17.2.2.from_pretrained()
+### 18.2.2.from_pretrained()
 
 实例化一个Bert的预训练标记器|transformers.tokenization_bert.BertTokenizer
 
@@ -4110,9 +4184,20 @@ tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-ba
                                           cache_dir=None)  # 缓存的目录|str|可选 
 ```
 
-## 17.3.TFAlbertModel
+## 18.3.RobertaConfig
 
-### 17.3.1.from_pretrained()
+### 18.3.1.from_pretrained()
+
+从预训练模型配置中实例化PretrainedConfig|transformers.configuration_roberta.RobertaConfig
+
+```python
+from transformers import RobertaConfig
+config = RobertaConfig.from_pretrained(pretrained_model_name_or_path='roberta-base')  # 预训练的名称或位置|str
+```
+
+## 18.4.TFAlbertModel
+
+### 18.4.1.from_pretrained()
 
 从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_albert.TFAlbertModel
 
@@ -4122,9 +4207,9 @@ model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base
                                       trainable=True)  # 能否训练|bool|可选
 ```
 
-## 17.4.TFBertModel
+## 18.5.TFBertModel
 
-### 17.4.1.from_pretrained()
+### 18.5.1.from_pretrained()
 
 从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_bert.TFBertModel
 
@@ -4135,13 +4220,25 @@ model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-unc
                                     cache_dir=None)  # 缓存的目录|str|可选 
 ```
 
-# 18.xgboost
+## 18.6.TFRobertaModel
+
+### 18.6.1.from_pretrained()
+
+从预训练模型配置中实例化TF2的模型|transformers.modeling_tf_roberta.TFRobertaModel
+
+```python
+from transformers import TFRobertaModel
+model = TFRobertaModel.from_pretrained(pretrained_model_name_or_path='roberta-base',  # 预训练的名称或位置|str
+                                       config=RobertaConfig.from_pretrained('roberta-base'))  # 模型的配置类|transformers.PretrainedConfig
+```
+
+# 19.xgboost
 
 | 版本  | 描述       | 注意                |
 | ----- | ---------- | ------------------- |
 | 1.1.1 | 梯度提升树 | 可直接在sklearn使用 |
 
-## 18.1.XGBClassifier()
+## 19.1.XGBClassifier()
 
 实例化一个XGBoost分类器
 
@@ -4158,7 +4255,7 @@ model = XGBClassifier(max_depth,  # 基学习器(梯度提升树)的最大深度
                       random_state)  # 随机状态|int|None|可选
 ```
 
-### 18.1.1.fit()
+### 19.1.1.fit()
 
 训练XGBoost分类器|self
 
@@ -4170,7 +4267,7 @@ model.fit(X,  # 特征数据|array-like
           verbose)  # 日志模式|bool|True
 ```
 
-### 18.1.2.predict()
+### 19.1.2.predict()
 
 进行预测|numpy.ndarray
 
@@ -4179,7 +4276,7 @@ result = model.predict(data)
 # 用于预测的数据|array_like
 ```
 
-## 18.2.XGBRegressor()
+## 19.2.XGBRegressor()
 
 实例化一个XGBoost回归器
 
@@ -4195,7 +4292,7 @@ model = XGBRegressor(max_depth,  # 基学习器(梯度提升树)的最大深度|
                      random_state)  # 随机状态|int|None|可选
 ```
 
-### 18.2.1.fit()
+### 19.2.1.fit()
 
 训练XGBoost回归器|self
 
@@ -4208,7 +4305,7 @@ model.fit(X,  # 特征数据|array-like
           verbose)  # 日志模式|bool|True
 ```
 
-### 18.2.2.predict()
+### 19.2.2.predict()
 
 进行预测|numpy.ndarray
 
@@ -4217,7 +4314,7 @@ result = model.predict(data)
 # 用于预测的数据|array_like
 ```
 
-### 18.2.3.score()
+### 19.2.3.score()
 
 计算验证集的平均准确率|float
 
