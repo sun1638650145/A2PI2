@@ -2458,7 +2458,16 @@ tf.config.experimental.set_memory_growth(device,  # 物理设备|tensorflow.pyth
                                          enable)  # 是否启用内存增长|bool
 ```
 
-### 14.1.2.list_physical_devices()
+### 14.1.2.experimental_connect_to_cluster()
+
+连接到指定的集群
+
+```python
+import tensorflow as tf
+tf.config.experimental_connect_to_cluster(cluster_spec_or_resolver)  # 一个集群|
+```
+
+### 14.1.3.list_physical_devices()
 
 返回主机所有可见的物理设备|list
 
@@ -2570,15 +2579,37 @@ sample = dataset.take(count=1)  # 取出的个数|int
 | ---- | -------------- | ------------------------------------ |
 | -    | 用于分布式训练 | tf.keras.utils.multi_gpu_model被移除 |
 
-### 14.4.1.MirroredStrategy()
+### 14.4.1.cluster_resolver
+
+#### 14.4.1.1.TPUClusterResolver()
+
+实例化一个TPU集群解释器
+
+```python
+import tesnorflow as tf
+resolver = tf.distribute.cluster_resolver.TPUClusterResolver()
+```
+
+### 14.4.2.MirroredStrategy()
 
 实例化一个镜像策略(用于在单台主机上使用多个GPU设备进行训练)
 
 ```python
 import tensorflow as tf
 strategy = tf.distribute.MirroredStrategy()
-    with strategy.scope():
-    		# 模型构建代码
+with strategy.scope():
+    # 模型构建代码
+```
+
+### 14.4.3.TPUStrategy()
+
+实例化一个TPU或TPU Pods的策略
+
+```python
+import tensorflow as tf
+strategy = tf.distribute.TPUStrategy(tpu_cluster_resolver)  # TPU集群信息|tf.distribute.cluster_resolver.TPUClusterResolver|None
+with strategy.scope():
+    # 模型构建代码
 ```
 
 ## 14.5.einsum()
@@ -3865,7 +3896,20 @@ tensor = tf.tensordot(a=[[1], [2]],  # 张量|array-like
                       axes=1)  # 维度|scalar N or list or int32 Tensor of shape [2, k]
 ```
 
-## 14.15.transpose()
+## 14.15.tpu
+
+### 14.15.1.experimental
+
+#### 14.15.1.1.initialize_tpu_system()
+
+初始化TPU设备
+
+```python
+import tensorflow as tf
+tf.tpu.experimental.initialize_tpu_system(cluster_resolver=tpu)  # TPU集群信息|tf.distribute.cluster_resolver.TPUClusterResolver|None
+```
+
+## 14.16.transpose()
 
 对张量进行转置|tensorflow.python.framework.ops.EagerTensor
 
@@ -3876,7 +3920,7 @@ tensor = tf.transpose(a=tensor,  # 输入的数组|array-like
                       perm=[1, 0, 2])  # 轴的排列顺序|list of ints|None|可选
 ```
 
-## 14.16.zeros_like()
+## 14.17.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
