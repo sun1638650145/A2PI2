@@ -668,7 +668,26 @@ plt.imshow(X,  # 希望显示的图像数据|array-like or PIL image
            cmap)  # 显示的色彩|str 
 ```
 
-### 6.2.7.plot()
+### 6.2.7.pcolormesh()
+
+使用非规则的矩形创建网格背景图
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(1, 9, 10)
+y = np.linspace(1, 9, 10)
+X, Y = np.meshgrid(x, y)
+plt.pcolormesh(X,  # 横坐标|array-like
+               Y,  # 纵坐标|array-like
+               X + Y,  # 横纵坐标的关系公式|array-like(必须是2D的)
+               alpha=0.75,  # 透明度|float|None
+               cmap='GnBu',  # 配色方案|str|None
+               shading='nearest')  # 阴影|{'flat', 'nearest', 'gouraud', 'auto'}|'flat'|可选
+plt.show()
+```
+
+### 6.2.8.plot()
 
 绘制函数图像|list
 
@@ -677,7 +696,7 @@ import matplotlib.pyplot as plt
 plt.plot(*args)  # 函数的变量｜string or number且第一维度必须相同｜(x, y)
 ```
 
-### 6.2.8.rcParams
+### 6.2.9.rcParams
 
 实例化一个matplotlib的rc文件实例|matplotlib.RcParams
 
@@ -686,7 +705,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 6.2.9.savefig()
+### 6.2.10.savefig()
 
 保存当前的画布
 
@@ -695,7 +714,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # 要保存的文件的路径|str or PathLike or file-like object A path, or a Python file-like object
 ```
 
-### 6.2.10.scatter()
+### 6.2.11.scatter()
 
 绘制散点图|matplotlib.collections.PathCollection
 
@@ -712,7 +731,7 @@ plt.scatter(x,  # x坐标|scalar or array-like 形状必须是(n,)
 plt.show()
 ```
 
-### 6.2.11.show()
+### 6.2.12.show()
 
 显示所有的画布
 
@@ -721,7 +740,7 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 6.2.12.subplot()
+### 6.2.13.subplot()
 
 在当前画布上创建一个子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -730,7 +749,7 @@ import matplotlib.pyplot as plt
 ax = plt.subplot()
 ```
 
-### 6.2.13.subplots()
+### 6.2.14.subplots()
 
 创建一个画布和一组子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -741,7 +760,7 @@ figure, axesSubplot = plt.subplots(nrows=4,  # 列子图数量|int|1
                                    figsize=(10, 5))  # 画布的大小|tuple of int
 ```
 
-### 6.2.14.subplots_adjust()
+### 6.2.15.subplots_adjust()
 
 调整子图布局
 
@@ -755,7 +774,7 @@ plt.subplots_adjust(left=0.125,  # 子图左边框距离画布的距离|float|0.
                     hspace)  # 两张子图之间的上下间隔|float|0.2
 ```
 
-### 6.2.15.title()
+### 6.2.16.title()
 
 设置标题
 
@@ -765,7 +784,7 @@ plt.title(label='this is title')  # 标题|str
 plt.show()
 ```
 
-### 6.2.16.xlabel()
+### 6.2.17.xlabel()
 
 设置x轴的内容
 
@@ -774,7 +793,7 @@ import matplotlib.pyplot as plt
 plt.xlabel(xlabel='x')
 ```
 
-### 6.2.17.ylabel()
+### 6.2.18.ylabel()
 
 设置y轴的内容
 
@@ -2252,13 +2271,21 @@ kfold = StratifiedKFold(n_splits,  # 交叉验证的划分数|int|5
                         random_state)  # 随机状态|int or RandomState instance|None
 ```
 
-#### 13.5.5.1.split()
+#### 13.5.5.1.n_splits
+
+交叉验证的划分数|int
+
+```python
+kflod.n_splits
+```
+
+#### 13.5.5.2.split()
 
 划分数据|yield(train:numpy.ndarray, test:numpy.ndarray)
 
 ```python
 kfold.split(X,  # 特征数据|{array-like, sparse matrix} of shape (n_samples, n_features)
-          y)  # 标签|array-like of shape (n_samples,)|None
+            y)  # 标签|array-like of shape (n_samples,)|None
 ```
 
 ### 13.5.6.train_test_split()
