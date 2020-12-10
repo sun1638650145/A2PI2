@@ -25,4 +25,6 @@
 ## A²PI²代码🌰
 
 1. [使用Keras构建CRNN](https://github.com/sun1638650145/CRNN)
-2. 更多内容 coming soon
+2. [使用Keras和transformers实现文本提取类任务](https://github.com/sun1638650145/TextExtraction)
+3. 更多内容 coming soon
+
