@@ -9,6 +9,8 @@
      ```shell
      pip install classicML
      ```
+     
+  * 增加集成学习内容
 
 * 由于作者本人错误的之前上传一堆打包的pdf文件导致项目很大
 

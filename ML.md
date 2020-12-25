@@ -2688,3 +2688,136 @@ $$
 
 * EM算法则可看作一种非梯度优化方法
 
+# 第八章 集成学习
+
+## 8.1.个体与集成
+
+* 集成学习(ensemble learning)通过构建并结合多个学习器来完成学习任务，有时也被称为多分类器系统(multi-classifier system)、基于委员会的学习(committee-based learning)
+
+* 集成学习的一般结构：先产生一组个体学习器(individual learner)，再用某种策略将它们结合起来
+
+  1. 个体学习器通常由一个现有的学习算法从训练数据产生，例如$\text{C4.5}$决策树算法、$\text{BP}$神经网络算法等，此时集成中只包含同种类型的个体学习器，这样的集成是同质的(homogeneous). 
+  2. 同质集成中的个体学习器亦称集学习器(base learner)，相应的学习算法称为基学习算法(base learning algorithm)
+  3. 集成也可包含不同类型的个体学习器，例如同时包含决策树和神经网络，这样的集成是异质的(heterogeneous)
+  4. 异质集成中的个体学习器有不同的学习算法生成，这时就不再有基学习算法；相应的个体学习器常被称为组件学习器(component learner)或直接称为个体学习器
+
+* 集成学习通过将多个学习器进行结合，常可获得比单一学习器显著优越的泛化性能
+
+* 弱学习器(weak learner)常指泛化性能略优于随机猜测的学习器
+
+* 虽然从理论山来说使用弱学习器集成足以获得更好的性能，但在实践中出于种种考虑，例如希望使用较少的个体学习器，或是重用关于常见学习器的一些经验等，人们往往会使用比较强的学习器
+
+* 要获得好的集成，个体学习器应好而不同，即个体学习器要有一定的准确性，个体学习器至少不差于弱学习器，并且要有多样性(diversity)，即学习器间具有差异
+
+* 集成学习简单的分析，考虑二分类问题$y\in\{-1, +1\}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器$h_i$有
+  $$
+  P(h_i(\pmb{x})\neq f(\pmb{x}))=\epsilon
+  $$
+  假设集成通过简单投票法结合$T$个基分类器(假设$T$为奇数)，若有超过半数的基分类器正确，则集成分类就正确
+  $$
+  H(\pmb{x})=\text{sign}\bigg(\sum^T_{i=1}h_i(\pmb{x})\bigg)
+  $$
+  假设基分类器的错误率相互独立，则由$\text{Hoeffding}$不等式可知，集成的错误率为
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      P(h_i(\pmb{x})\neq f(\pmb{x}))&=\sum^{\lfloor T/2 \rfloor}_{k=0}\binom{T}{k}(1-\epsilon)^k\epsilon^{T-k}\\
+      &\leq \exp\bigg(-\frac{1}{2}T(1-2\epsilon)^2\bigg)\\
+  	\end{aligned}
+  \end{equation}
+  $$
+  上式显示出，随着集成中个体分类器数目$T$的增大，集成的错误率将指数级下降，最终趋向于零
+
+  > [集成学习分析](https://blog.csdn.net/y492235584/article/details/85265035)
+
+* 然而上面的分析有一个关键假设：基学习器的误差相互独立；在现实任务中，个体学习器是为解决同一个问题训练的，它们显然不相互独立
+
+* 准确率很高之后，要增加多样性就需牺牲准确性
+
+* 集成学习研究的核心是：如何产生并结合好而不同的个体学习器
+
+* 根据个体学习器生成方式，目前的集成学习方法可分为两类
+
+  1. 个体学习器间存在强依赖关系、必须串行生成的序列化方法，例如$\text{Boosting}$
+  2. 个体学习器间不存在强依赖关系、可同时生成的并行化方法，例如$\text{Bagging}$和随机森林$\text{Random Forest}$
+
+## 8.2.Boosting
+
+* Boosting是一族可将弱学习器提升为强学习器的算法
+
+* Boosting族算法的工作机制类似：先从初始训练集训练一个基学习器，再根据基学习器的表现对训练样本分步进行调整，使得先前的基学习器做错的训练样本在后续受到更多的关注，然后基于调整后的样本分布来训练下一个基学习器；如此重复进行，直至基学习器数目达到事先指定的值$T$，最终将这$T$个基学习器进行加权结合
+
+* Boosting族算法最著名的代表是AdaBoost
+
+* AdaBoost算法
+
+  ---
+
+  <b>输入</b>：训练集$D=\{(\pmb{x}_1, y_1), (\pmb{x}_2, y_2),..., (\pmb{x}_m, y_m)\}$;
+
+  ​			基学习算法$\mathfrak{L}$;
+
+  ​			训练轮数$T$.
+
+  <b>过程</b>：
+
+  1:$\mathcal{D}_1(\pmb{x})=1/m$.
+
+  2:<b>for</b> $t=1,2,...,T$ <b>do</b>
+
+  3:	$h_t=\mathfrak{L}(\mathcal{D}, \mathcal{D}_t)$;
+
+  4:	$\epsilon_t=P_{\pmb{x}～\mathcal{D}_t}(h_t(x)\ne f(\pmb{x}))$;
+
+  5:	<b>if</b>  $\epsilon_t>0.5$  <b>then break</b>
+
+  6:	$\alpha_t=\frac{1}{2}\ln\big(\frac{1-\epsilon_t}{\epsilon_t}\big)$;
+
+  7: 	$\mathcal{D}_{t+1}(\pmb{x})=\frac{\mathcal{D}_t(\pmb{x})}{Z_t}\times\big\{^{\exp(-\alpha_t),\ \  \text{if}\ h_t(\pmb{x})=f(\pmb{x})}_{\exp(\alpha_t),\ \ \ \ \text{if}\ h_t(\pmb{x})\ne f(\pmb{x})}$
+
+  ​						$=\frac{\mathcal{D}_t(\pmb{x})\exp(-\alpha_tf(\pmb{x})h_t(\pmb{x}))}{Z_t}$
+
+  8:<b>end for</b>
+
+  <b>输出</b>：$H(\pmb{x})=\text{sign}\Big(\sum^T_{t=1}\alpha_th_t(\pmb{x})\Big)$
+
+  ---
+
+  * 其中$y_i\in\{-1, +1\}$，$f$是真实函数
+  * 基于分布$\mathcal{D}_t$从数据集$D$中训练出分类器$h_t$
+  * $\epsilon_t$是$h_t$的误差
+  * $\alpha_t$是分类器$h_t$的权重
+  * $Z_t$是规范化因子，以确保$\mathcal{D}_{t+1}$是一个分布
+
+* AdaBoost算法有多种推导方式，比较容易理解的是居于加性模型(additive model)，即基学习器的线性组合
+  $$
+  H(\pmb{x})=\sum^T_{t=1}\alpha_t h_t(\pmb{x})
+  $$
+  来最小化指数损失函数(exponential loss function)
+  $$
+  \ell_{\exp}(H|\mathcal{D})=\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H(\pmb{x})}]
+  $$
+  若$H(\pmb{x})$能令指数损失函数最小化，则上式对$H(\pmb{x})$的偏导
+  $$
+  \frac{\partial\ell_{\exp(H|\mathcal{D})}}{\partial H(\pmb{x})}=-e^{-H(\pmb{x})}P(f(\pmb{x})=1|\pmb{x})+e^{H(\pmb{x})}P(f(\pmb{x})=-1|\pmb{x})
+  $$
+  令上式为零可解得
+  $$
+  H(\pmb{x})=\frac{1}{2}\ln\frac{P(f(\pmb{x})=1|\pmb{x})}{P(f(\pmb{x})=-1|\pmb{x})}
+  $$
+  因此，有
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      \text{sign}\big(H(\pmb{x})\big)&=\text{sign}\bigg(\frac{1}{2}\ln\frac{P(f(\pmb{x})=1|\pmb{x})}{P(f(\pmb{x})=-1|\pmb{x})}\bigg)\\
+      &=\begin{cases}
+      1,& P(f(\pmb{x})=1|\pmb{x})>P(f(\pmb{x})=-1|\pmb{x})\\
+      -1,& P(f(\pmb{x})=1|\pmb{x})<P(f(\pmb{x})=-1|\pmb{x}) \\
+      \end{cases}\\
+      &=\mathop{\arg\max}_{y\in\{-1,1\}}P(f(\pmb{x})=y|\pmb{x})
+  	\end{aligned}
+  \end{equation}
+  $$
+  这意味着$\text{sign}\big(H(\pmb{x})\big)$达到了贝叶斯最优错误
+
+* 若指数损失函数最小化，则分类错误率也将最小化；这说明指数损失函数是分类任务原本$0/1$损失函数的一致的(consistent)替代损失函数。由于它是连续可微函数，因此我们用它代替$0/1$损失函数作为优化目标
