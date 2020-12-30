@@ -2821,3 +2821,111 @@ $$
   这意味着$\text{sign}\big(H(\pmb{x})\big)$达到了贝叶斯最优错误
 
 * 若指数损失函数最小化，则分类错误率也将最小化；这说明指数损失函数是分类任务原本$0/1$损失函数的一致的(consistent)替代损失函数。由于它是连续可微函数，因此我们用它代替$0/1$损失函数作为优化目标
+
+* 在AdaBoost算法中，第一个基学习器$h_1$是通过直接将基学习算法用于初始数据分布而得；此后迭代地生成$h_t$和$\alpha_t$，当基分类器$h_t$基于分布$\mathcal{D}_t$产生后，该基分类器的权重$\alpha_t$应使得$\alpha_th_t$最小化指数损失函数
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      \ell_{\exp}(\alpha_th_t|\mathcal{D}_t)&=\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\Big[e^{-f(\pmb{x})\alpha_th_t(\pmb{x})}\Big]\\
+      &=\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\big[e^{-\alpha_t}\mathbb{I}(f(\pmb{x})=h_t(\pmb{x}))+e^{\alpha_t}\mathbb{I}(f(\pmb{x})\ne h_t(\pmb{x}))\big]\\
+      &=e^{-\alpha_t}P_{\pmb{x}～\mathcal{D}_t}(f(\pmb{x})=h_t(\pmb{x}))+e^{\alpha_t}P_{\pmb{x}～\mathcal{D}_t}(f(\pmb{x})\ne h_t(\pmb{x}))\\
+      &=e^{-\alpha_t}(1-\epsilon_t)+e^{\alpha_t}\epsilon_t
+  	\end{aligned}
+  \end{equation}
+  $$
+  其中$\epsilon_t=P_{\pmb{x}～\mathcal{D}_t}(f(\pmb{x})\ne h_t(\pmb{x}))$
+
+  考虑指数损失函数的导数
+  $$
+  \frac{\partial\ell_{\exp}(\alpha_th_t|\mathcal{D}_t)}{\partial \alpha_t}=-e^{-\alpha_t}(1-\epsilon_t)+e^{\alpha_t}\epsilon_t
+  $$
+  令上式为零可解得
+  $$
+  \alpha_t=\frac{1}{2}\ln\Big(\frac{1-\epsilon_t}{\epsilon_t}\Big)
+  $$
+  这恰是AdaBoost算法的分类器权重更新公式
+
+* AdaBoost算法在获得$H_{t-1}$之后样本分布将进行调整，使下一轮的基学习器$h_t$能纠正$H_{t_1}$的一些错误，理想的$h_t$能纠正$H_{t-1}$的全部错误，即最小化
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      \ell_{\exp}(H_{t-1}+h_t|\mathcal{D})&=\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\big[e^{-f(\pmb{x})(H_{t-1}(\pmb{x})+h_t(\pmb{x}))}\big]\\
+      &=\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\big[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}e^{-f(\pmb{x})h_t(\pmb{x})}\big]
+  	\end{aligned}
+  \end{equation}
+  $$
+  注意到$f^2(\pmb{x})=h^2_t(\pmb{x})=1$, 上式可使用$e^{-f(\pmb{x})h_t(\pmb{x})}$的泰勒展式近似为
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      \ell_{\exp}(H_{t-1}+h_t|\mathcal{D})
+      &=\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\bigg[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}\bigg(1-f(\pmb{x})h_t(\pmb{x})+\frac{f^2(\pmb{x})h^2_t(\pmb{x})}{2}\bigg)\bigg]\\
+      &\simeq\mathbb{E}_{\pmb{x}～\mathcal{D}_t}\bigg[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}\bigg(1-f(\pmb{x})h_t(\pmb{x})+\frac{1}{2}\bigg)\bigg]\\
+  	\end{aligned}
+  \end{equation}
+  $$
+  理想的基学习器
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      h_t(\pmb{x})
+      &=\mathop{\arg\min}_h\ell_{\exp}(H_{t-1}+h\ |\ \mathcal{D})\\
+      &=\mathop{\arg\min}_h\mathbb{E}_{\pmb{x}～\mathcal{D}}\bigg[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}\bigg(1-f(\pmb{x})h_t(\pmb{x})+\frac{1}{2}\bigg)\bigg]\\
+      &=\mathop{\arg\max}_h\mathbb{E}_{\pmb{x}～\mathcal{D}}\Big[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}f(\pmb{x})h_t(\pmb{x})\Big]\\
+      &=\mathop{\arg\max}_h\mathbb{E}_{\pmb{x}～\mathcal{D}}\Bigg[\frac{e^{-f(\pmb{x})H_{t-1}(\pmb{x})}}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}]}f(\pmb{x})h_t(\pmb{x})\Bigg]\\
+  	\end{aligned}
+  \end{equation}
+  $$
+  注意到$\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}]$是一个常数
+
+  令$\mathcal{D}_t$表示一个分布
+  $$
+  \mathcal{D}_t(\pmb{x})=\frac{\mathcal{D}(\pmb{x})e^{-f(\pmb{x})H_{t-1}(\pmb{x})}}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}]}
+  $$
+  根据数学期望的定义，这等价于令
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      h_t(\pmb{x})
+      &=\mathop{\arg\max}_h\mathbb{E}_{\pmb{x}～\mathcal{D}}\Bigg[\frac{e^{-f(\pmb{x})H_{t-1}(\pmb{x})}}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}]}f(\pmb{x})h(\pmb{x})\Bigg]\\
+      &=\mathop{\arg\max}_h\mathbb{E}_{\pmb{x}～\mathcal{D}_t}[f(\pmb{x})h(\pmb{x})]\\
+  	\end{aligned}
+  \end{equation}
+  $$
+  由$f(\pmb{x}),h(\pmb{x})\in\{-1, +1\}$，有
+  $$
+  f(\pmb{x})h(\pmb{x}) = 1 - 2\mathbb{I}(f(\pmb{x})\ne h(\pmb{x}))
+  $$
+  则理想的基学习器
+  $$
+  h_t(\pmb{x})=\mathop{\arg\min}_h[\mathbb{I}\big(f(\pmb{x})\ne h(\pmb{x})\big)]\\
+  $$
+  由此可见，理想的$h_t$将在分布$\mathcal{D}_t$下最小化分类误差
+
+  因此，弱分类器将基于分布$\mathcal{D}_t$来训练，且针对$\mathcal{D}_t$的分类误差应小于0.5，这一定程度上类似于残差逼近的思想，考虑到$\mathcal{D}_t$和$\mathcal{D}_{t+1}$的关系，有
+  $$
+  \begin{equation}
+  	\begin{aligned}
+      \mathcal{D}_{t+1}(\pmb{x})&
+      =\frac{\mathcal{D}(\pmb{x})e^{-f(\pmb{x})H_{t}(\pmb{x})}}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t}(\pmb{x})}]}\\
+      &=\frac{\mathcal{D}(\pmb{x})e^{-f(\pmb{x})H_{t-1}(\pmb{x})}e^{-f(\pmb{x})a_{t}h_t(\pmb{x})}}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t}(\pmb{x})}]}\\
+      &=\mathcal{D}_t(\pmb{x})·e^{-f(\pmb{x})a_{t}h_t(\pmb{x})}\frac{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t-1}(\pmb{x})}]}{\mathbb{E}_{\pmb{x}～\mathcal{D}}[e^{-f(\pmb{x})H_{t}(\pmb{x})}]}
+  	\end{aligned}
+  \end{equation}
+  $$
+  这就是AdaBoost算法的样本分布更新公式
+
+  > [更新准则推导](https://blog.csdn.net/BIT_666/article/details/80279844)
+
+* Boosting算法要求基学习器能对特定的数据分布进行学习
+
+  1. 这可通过重赋权法(re-weighting)实施，即在训练过程的每一轮中，根据样本分布为每个训练样本重新赋予一个权重
+  2. 对无法接受带权样本的基学习算法，则可通过重采样法(re-sampling)来处理，即在每一轮学习中，根据样本分布对训练重新进行采样，再用重采样而得的样本进行训练
+  3. 这两种做法没有显著的优劣差别
+
+* Boost ing算法在训练的每一轮都要检查当前生成的基学习器是否满足基本条件
+
+  1. 一旦条件不满足，则当前基学习器即被抛弃，且学习过程停止；在此种情形下，初始设置的学习轮数$T$也许还远未达到，可能导致最终集成中包含很少的基学习器而性能不见
+  2. 若采用重采样法，则可获得重启动机会以避免训练过早停止，即在抛弃不满足条件的当前基学习器之后，可根据当前分布重新对训练样本进行采样，在基于新的采样结果重新训练出基学习器，从而使得学习过程可以持续到预设的$T$轮完成
+
+* 从偏差-方差分解的角度看，Boosting主要关注降低偏差，因此Boosting能基于泛化性能相当弱的学习器构建出很强的集成

@@ -242,7 +242,29 @@ int main() {
 }
 ```
 
-### 3.4.4.row()
+### 3.4.4.maxCoeff()
+
+返回矩阵的最大值和位置
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::Matrix<double, 2, 3> mat0;
+    mat0 << 1, 2, 3, 4, 5, 6;
+  
+    // 用法一
+    std::cout << mat0.maxCoeff() << std::endl;
+    // 用法二
+    int row, col;
+    std::cout << mat0.maxCoeff(&row, &col) << std::endl;
+    std::cout << "row:" << row << " col:" << col << std::endl;
+    return 0;
+}
+```
+
+### 3.4.5.row()
 
 访问矩阵的指定行元素
 
@@ -260,7 +282,7 @@ int main() {
 }
 ```
 
-### 3.4.5.rows()
+### 3.4.6.rows()
 
 获取矩阵的行数
 
@@ -277,7 +299,7 @@ int main() {
 }
 ```
 
-### 3.4.6.size()
+### 3.4.7.size()
 
 获取矩阵的元素总数
 
@@ -294,7 +316,7 @@ int main() {
 }
 ```
 
-### 3.4.7.transpose()
+### 3.4.8.transpose()
 
 对矩阵进行转置
 
@@ -1908,7 +1930,7 @@ new_img = img.resize(size=(400, 400))  # 调整后图像的尺寸|2-tuple: (widt
 1. example.cc代码
 
 ```c++
-#include <pybind11/pybind11.h>
+#include "pybind11/pybind11.h"
 namespace py = pybind11;
 
 int add(int i, int j) {
@@ -1943,11 +1965,11 @@ c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 
 1. example.cc代码
 
 ```c++
-#include <pybind11/pybind11.h>
+#include "pybind11/pybind11.h"
 // 添加eigen.h的头文件
-#include <pybind11/eigen.h>
+#include "pybind11/eigen.h"
 
-#include <Eigen/LU>
+#include "Eigen/LU"
 namespace py = pybind11;
 
 Eigen::MatrixXd inv(const Eigen::MatrixXd &xs) {
@@ -1965,8 +1987,8 @@ PYBIND11_MODULE(example, m) {
 ```shell
 c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
  -I /path/to/eigen/3.3.7/include/eigen3 \
-  `python3 -m pybind11 --includes` \
-  example.cc -o example`python3-config --extension-suffix`
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
 ```
 
 ## 11.3.实现重载
@@ -1974,7 +1996,7 @@ c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
 1. sample.cc代码
 
 ```c++
-#include <pybind11/pybind11.h>
+#include "pybind11/pybind11.h"
 
 int add(int x, int y) {
     return x + y;
@@ -1995,6 +2017,191 @@ PYBIND11_MODULE(example, m) {
 
 ```shell
 c++ -O3 -Wall -shared -std=c++14 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+## 11.4.实现自定义的异常
+
+pybind11中仅提供了有限的CPP异常自动转换为Python异常，只有注册后Python解释器才能捕获
+
+1. sample.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+class CustomException : public std::exception {
+public:
+    const char * what() const noexcept override {
+        return "自定义异常";
+    }
+};
+
+// 测试函数直接抛出异常.
+void test() {
+    throw CustomException();
+}
+
+PYBIND11_MODULE(example, m) {
+    // 注册定义异常(最后一个参数可将异常在Python中继承Python具体的异常, 使之可被Python解释器以具体的Python异常捕获)
+    pybind11::register_exception<CustomException>(m, "PyCustomException", PyExc_BaseException);
+
+    m.def("test", &test);
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+ c++ -O3 -Wall -shared -std=c++14 -undefined dynamic_lookup \
+  -I /usr/local/Cellar/eigen/3.3.7/include/eigen3 \
+  `python3 -m pybind11 --includes` \
+  example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+
+try:
+    example.test()
+except BaseException:
+    print('成功捕获异常')
+```
+
+## 11.5.实现类
+
+这个例子将实现CPP类转换为Python类，访问函数和变量
+
+1. example.cc
+
+```c++
+#include <iostream>
+#include "pybind11/pybind11.h"
+
+class Animal {
+  public:
+    Animal() {
+        this->name = "animal";
+    }
+
+    void call() {
+        std::cout << "Ah!" << std::endl;
+    }
+
+public:
+    std::string name; // 私有变量不能转换到python下，只能通过设定def_readonly设置权限
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal")
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+ c++ -O3 -Wall -shared -std=c++14 -undefined dynamic_lookup \
+ -I /usr/local/Cellar/eigen/3.3.7/include/eigen3 \
+ `python3 -m pybind11 --includes` \
+example.cc -o example`python3-config --extension-suffix`
+```
+
+## 11.6.实现继承
+
+1. example.cc
+
+```c++
+#include <iostream>
+#include <utility>
+#include "pybind11/pybind11.h"
+
+class Animal {
+  public:
+    Animal() {
+        this->name = "animal";
+    }
+
+    void call() {
+        std::cout << "Ah!" << std::endl;
+    }
+
+  public:
+    std::string name;
+};
+
+class Cat: public Animal {
+  public:
+    Cat() {
+        this->name = "cat";
+    }
+
+    explicit Cat(std::string name) {
+        this->name = std::move(name);
+    }
+
+    void call() {
+        std::cout << "Meow~" << std::endl;
+    }
+};
+
+class Dog: public Animal {
+  public:
+    Dog() {
+        this->name = "dog";
+    }
+
+    void call() {
+        std::cout << "Wang~" << std::endl;
+    }
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal")
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
+
+    pybind11::class_<Cat, Animal>(m, "Cat")
+        .def(pybind11::init())
+        .def(pybind11::init<std::string>()) // pybind11不能自动实现重载函数, 必须显式声明出来.
+        .def("call", &Cat::call)
+        .def_readonly("name", &Cat::name);
+
+    pybind11::class_<Dog>(m, "Dog") // 不声明继承父类, 在Python中将被认定为直接继承的object.
+        .def(pybind11::init())
+        .def("call", &Dog::call)
+        .def_readonly("name", &Dog::name);
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+ c++ -O3 -Wall -shared -std=c++14 -undefined dynamic_lookup \
+ -I /usr/local/Cellar/eigen/3.3.7/include/eigen3 \
+ `python3 -m pybind11 --includes` \
+example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+
+animal = example.Animal()
+print(animal.name)
+animal.call()
+
+cat = example.Cat("Garfield")
+print(cat.name)
+cat.call()
+print(isinstance(cat, example.Animal))
+
+dog = example.Dog()
+print(isinstance(dog, example.Animal))
 ```
 
 # 12.pybind11
