@@ -1449,7 +1449,16 @@ np.var(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 8.45.zeros()
+## 8.45.void()
+
+创建一个numpy.void类型的对象
+
+```python
+import numpy as np
+o = np.void(b'abc')  # 输入的数据|bytes
+```
+
+## 8.46.zeros()
 
 创建一个指定为形状和类型的全零数组|numpy.ndarray
 
