@@ -338,7 +338,7 @@ int main() {
 }
 ```
 
-### 3.4.8.transpose()
+### 3.4.9.transpose()
 
 对矩阵进行转置
 
