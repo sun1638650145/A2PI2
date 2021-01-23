@@ -183,10 +183,16 @@ int main() {
 #include "Eigen/Dense"
 
 int main() {
+    // 用法一
     Eigen::Matrix<double, 2, 2> mat0;
     mat0 << 1, 2, 3, 4;
     Eigen::MatrixXd mat1 = mat0;
     std::cout << mat1 << std::endl;
+      
+    // 用法二
+    Eigen::MatrixXd mat2(2, 2);
+    mat2 << 5, 6, 7, 8;
+    std::cout << mat2 << std::endl;
     return 0;
 }
 ```
@@ -316,6 +322,22 @@ int main() {
 }
 ```
 
+### 3.4.8.sum()
+
+计算矩阵元素的和
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat0(2, 2);
+    mat0 << 5, 6, 7, 8;
+    std::cout << mat0.sum() << std::endl;
+    return 0;
+}
+```
+
 ### 3.4.8.transpose()
 
 对矩阵进行转置
@@ -363,7 +385,6 @@ int main() {
     std::cout << vec.size() << std::endl;
     return 0;
 }
-
 ```
 
 ## 3.6.VectorXd
