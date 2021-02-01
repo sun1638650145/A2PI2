@@ -136,7 +136,57 @@ int main() {
 }
 ```
 
-## 3.2.Map<>
+## 3.2.ArrayXXd
+
+实例化一个动态二维数组(双精度)
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::ArrayXXd arr(2, 2);
+    arr << 1, 2, 3, 4;
+    std::cout << arr << std::endl;
+    return 0;
+}
+```
+
+### 3.2.1.exp()
+
+逐元素计算e的幂次
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    Eigen::ArrayXXd arr = mat.array();
+    std::cout << arr.exp() << std::endl;
+    return 0;
+}
+```
+
+### 3.2.2.log()
+
+逐元素计算自然对数
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 2.718281, 7.38906, 20.0855, 54.5982;
+    Eigen::ArrayXXd arr = mat.array();
+    std::cout << arr.log() << std::endl;
+    return 0;
+}
+```
+
+## 3.3.Map<>
 
 映射到现有矩阵或者向量
 
@@ -157,7 +207,7 @@ int main() {
 }
 ```
 
-## 3.3.Matrix<>
+## 3.4.Matrix<>
 
 实例化一个已知矩阵
 
@@ -174,7 +224,7 @@ int main() {
 }
 ```
 
-## 3.4.MatrixXd
+## 3.5.MatrixXd
 
 实例化一个动态矩阵(双精度)
 
@@ -197,7 +247,39 @@ int main() {
 }
 ```
 
-### 3.4.1.cols()
+### 3.5.1.adjoint()
+
+获取矩阵的伴随(共轭转置)矩阵
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    std::cout << mat.adjoint() << std::endl;
+    return 0;
+}
+```
+
+### 3.5.2.array()
+
+将矩阵修饰成数组，便于执行元素的操作
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    std::cout << mat.array() << std::endl;
+    return 0;
+}
+```
+
+### 3.5.3.cols()
 
 获取矩阵的列数
 
@@ -214,7 +296,7 @@ int main() {
 }
 ```
 
-### 3.4.2.data()
+### 3.5.4.data()
 
 返回矩阵或向量的首地址的指针
 
@@ -231,7 +313,7 @@ int main() {
 }
 ```
 
-### 3.4.3.inverse()
+### 3.5.5.inverse()
 
 计算矩阵的逆
 
@@ -248,7 +330,7 @@ int main() {
 }
 ```
 
-### 3.4.4.maxCoeff()
+### 3.5.6.maxCoeff()
 
 返回矩阵的最大值和位置
 
@@ -270,7 +352,7 @@ int main() {
 }
 ```
 
-### 3.4.5.row()
+### 3.5.7.row()
 
 访问矩阵的指定行元素
 
@@ -288,7 +370,7 @@ int main() {
 }
 ```
 
-### 3.4.6.rows()
+### 3.5.8.rows()
 
 获取矩阵的行数
 
@@ -305,7 +387,7 @@ int main() {
 }
 ```
 
-### 3.4.7.size()
+### 3.5.9.size()
 
 获取矩阵的元素总数
 
@@ -322,7 +404,7 @@ int main() {
 }
 ```
 
-### 3.4.8.sum()
+### 3.5.10.sum()
 
 计算矩阵元素的和
 
@@ -338,7 +420,7 @@ int main() {
 }
 ```
 
-### 3.4.9.transpose()
+### 3.5.11.transpose()
 
 对矩阵进行转置
 
@@ -355,7 +437,7 @@ int main() {
 }
 ```
 
-## 3.5.RowVectorXd
+## 3.6.RowVectorXd
 
 实例化一个行向量(双精度)
 
@@ -371,7 +453,7 @@ int main() {
 }
 ```
 
-### 3.5.1.size()
+### 3.6.1.size()
 
 获取行向量的元素总数
 
@@ -387,7 +469,7 @@ int main() {
 }
 ```
 
-## 3.6.VectorXd
+## 3.7.VectorXd
 
 实例化一个列向量(双精度)
 
