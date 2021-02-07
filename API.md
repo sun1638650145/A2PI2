@@ -2031,6 +2031,26 @@ img = open(fp)
 new_img = img.resize(size=(400, 400))  # 调整后图像的尺寸|2-tuple: (width, height)
 ```
 
+## 10.2.ImageOps
+
+| 版本 | 描述            | 注意 |
+| ---- | --------------- | ---- |
+| -    | PIL标准图像操作 | -    |
+
+### 10.2.1.autocontrast
+
+最大化(标准化)图片对比度|PIL.Image.Image
+
+```python
+from PIL.Image import open
+from PIL.ImageOps import autocontrast
+
+image_path = './image.jpg'
+
+image = open(image_path)
+processed_image = autocontrast(image)
+```
+
 # 11.pybind11
 
 | 版本  | 描述                | 注意                                                         |
@@ -3708,7 +3728,7 @@ layer = Conv1D(filters,  # 卷积核的数量|int
 实例化一个二维卷积层
 
 ```python
-from tensorflow.keras.layers import Conv2D, Conv1D
+from tensorflow.keras.layers import Conv2D
 layer = Conv2D(filters,  # 卷积核的数量|int
                kernel_size,  # 卷积核的大小|int, tuple/list of 2 integers
                strides,  # 滑动步长|int, tuple/list of 2 integers|(1, 1)
@@ -3907,13 +3927,45 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 16.9.5.25.Reshape()
+#### 16.9.5.25.MaxPooling2D()
+
+实例化一个二维最大池化层
+
+```python
+from tensorflow.keras.layers import MaxPooling2D
+layer = MaxPooling1D(pool_size=2,  # 池化窗口|int or tuple of 2 int|(2,2)
+                     strides=None,  # 滑动步长|int or tuple of 2 int|None
+                     padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
+```
+
+#### 16.9.5.26.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
 ```python
 from tensorflow.keras.layers import Reshape
 layer = Reshape(target_shape)  # 目标形状|tuple
+```
+
+#### 16.9.5.27.SeparableConv2D()
+
+实例化深度方向的可分离二维卷积
+
+```python
+from tensorflow.keras.layers import SeparableConv2D
+layer = SeparableConv2D(filters,  # 卷积核的数量|int
+                        kernel_size,  # 卷积核的大小|int, tuple/list of 2 integers
+                        strides,  # 滑动步长|int, tuple/list of 2 integers|(1, 1)
+                        padding)  # 填充方式|str('valid' or 'same')|'valid'
+```
+
+#### 16.9.5.28.UpSampling2D()
+
+实例化二维上采样层
+
+```python
+from tensorflow.keras.layers import UpSampling2D
+layer = UpSampling2D(size)  # 上采样因子|int or tuple of 2 integers|2
 ```
 
 ### 16.9.6.losses
@@ -4160,7 +4212,16 @@ optimziers = SGD(learning_rate)  # 学习率|float|0.01
 
 #### 16.9.10.1.image
 
-##### 16.9.10.1.1.ImageDataGenerator()
+##### 16.9.10.1.1.array_to_img()
+
+将numpy数组转换为PIL图像|numpy.ndarray
+
+```python
+from tensorflow.keras.preprocessing.image import array_to_img
+image = array_to_img(x)  # 输入的数组|numpy.ndarray
+```
+
+##### 16.9.10.1.2.ImageDataGenerator()
 
 实例化一个ImageDataGenerator(对图片数据进行实时数据增强，并返回generator)
 
@@ -4177,7 +4238,7 @@ generator = ImageDataGenerator(rotation_range=0,  # 旋转度数|int|0
                                vertical_flip=False)  # 垂直翻转|bool|False
 ```
 
-###### 16.9.10.1.1.1.class_indices
+###### 16.9.10.1.2.1.class_indices
 
 类名称和类索引的映射字典|dict
 
@@ -4186,7 +4247,7 @@ generator.flow_from_dataframe().class_indices
 generator.flow_from_directory().class_indices
 ```
 
-###### 16.9.10.1.1.2.flow()
+###### 16.9.10.1.2.2.flow()
 
 给定数据和标签进行增强|yield
 
@@ -4197,7 +4258,7 @@ generator.flow(x,  # 输入数据|numpy.array of rank 4 or a tuple
                shuffle=True)  # 是否打乱|bool|True
 ```
 
-###### 16.9.10.1.1.3.flow_from_dataframe()
+###### 16.9.10.1.2.3.flow_from_dataframe()
 
 给定数据和标签(从dataframe内读入)进行增强|yield
 
@@ -4215,7 +4276,7 @@ generator.flow_from_dataframe(dataframe,  # 文件信息图表|pandas.DataFrame
                               validate_filenames=True)  # 检查文件的可靠性|bool|True
 ```
 
-###### 16.9.10.1.1.4.flow_from_directory()
+###### 16.9.10.1.2.4.flow_from_directory()
 
 给定数据和标签(每一个类别是一个单独的文件夹)进行增强|yield
 
@@ -4229,7 +4290,7 @@ generator.flow_from_directory(directory,  # 文件夹|str or path
                               interpolation='nearest')  # 插值方式|str{'nearest', 'bilinear' and 'bicubic'}|'nearest'
 ```
 
-##### 16.9.10.1.2.img_to_array()
+##### 16.9.10.1.4.img_to_array()
 
 将PIL图像转换为numpy数组|numpy.ndarray
 
