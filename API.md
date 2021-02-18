@@ -186,6 +186,40 @@ int main() {
 }
 ```
 
+### 3.2.3.pow()
+
+逐元素计算指定的幂次
+
+```python
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    Eigen::ArrayXXd arr = mat.array();
+    std::cout << arr.pow(2) << std::endl;
+    return 0;
+}
+```
+
+### 3.2.4.tanh()
+
+逐元素计算双曲正切
+
+```python
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    Eigen::ArrayXXd arr = mat.array();
+    std::cout << arr.tanh() << std::endl;
+    return 0;
+}
+```
+
 ## 3.3.Map<>
 
 映射到现有矩阵或者向量
@@ -387,7 +421,24 @@ int main() {
 }
 ```
 
-### 3.5.9.size()
+### 3.5.9.rowwise()
+
+对矩阵逐行进行操作
+
+```python
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::Matrix<double, 2, 3> mat0;
+    mat0 << 1, 2, 3, 4, 5, 6;
+    Eigen::MatrixXd mat1 = mat0;
+    std::cout << mat1.rowwise().sum() << std::endl;
+    return 0;
+}
+```
+
+### 3.5.10.size()
 
 获取矩阵的元素总数
 
@@ -404,7 +455,7 @@ int main() {
 }
 ```
 
-### 3.5.10.sum()
+### 3.5.11.sum()
 
 计算矩阵元素的和
 
@@ -420,7 +471,7 @@ int main() {
 }
 ```
 
-### 3.5.11.transpose()
+### 3.5.12.transpose()
 
 对矩阵进行转置
 
@@ -2334,6 +2385,36 @@ print(isinstance(cat, example.Animal))
 
 dog = example.Dog()
 print(isinstance(dog, example.Animal))
+```
+
+## 11.7.设置默认参数
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(int i, int j) {
+    return i + j;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", &add, pybind11::arg("i")=1, pybind11::arg("j")=1);  // 在pybind11::arg上直接添加默认参数.
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+ans = example.add()
+print(ans)
 ```
 
 # 12.pybind11
