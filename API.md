@@ -220,7 +220,82 @@ int main() {
 }
 ```
 
-## 3.3.Map<>
+## 3.3.BDCSVD<>
+
+对角分治奇异值分解.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(mat, Eigen::ComputeFullU|Eigen::ComputeFullV);
+    
+    return 0;
+}
+```
+
+### 3.3.1.matrixU()
+
+获取m阶酉矩阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(mat, Eigen::ComputeFullU|Eigen::ComputeFullV);
+    std::cout << svd.matrixU() << std::endl;
+    
+    return 0;
+}
+```
+
+### 3.3.2.matrixV()
+
+获取n阶酉矩阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(mat, Eigen::ComputeFullU|Eigen::ComputeFullV);
+    std::cout << svd.matrixV() << std::endl;
+    
+    return 0;
+}
+```
+
+### 3.3.3.singularValues()
+
+获取奇异值(按照降序排序).
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+    
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(mat, Eigen::ComputeFullU|Eigen::ComputeFullV);
+    std::cout << svd.singularValues() << std::endl;
+    
+    return 0;
+}
+```
+
+## 3.4.Map<>
 
 映射到现有矩阵或者向量
 
@@ -241,7 +316,7 @@ int main() {
 }
 ```
 
-## 3.4.Matrix<>
+## 3.5.Matrix<>
 
 实例化一个已知矩阵
 
@@ -258,7 +333,7 @@ int main() {
 }
 ```
 
-## 3.5.MatrixXd
+## 3.6.MatrixXd
 
 实例化一个动态矩阵(双精度)
 
@@ -281,7 +356,7 @@ int main() {
 }
 ```
 
-### 3.5.1.adjoint()
+### 3.6.1.adjoint()
 
 获取矩阵的伴随(共轭转置)矩阵
 
@@ -297,7 +372,7 @@ int main() {
 }
 ```
 
-### 3.5.2.array()
+### 3.6.2.array()
 
 将矩阵修饰成数组，便于执行元素的操作
 
@@ -313,7 +388,7 @@ int main() {
 }
 ```
 
-### 3.5.3.cols()
+### 3.6.3.cols()
 
 获取矩阵的列数
 
@@ -330,7 +405,7 @@ int main() {
 }
 ```
 
-### 3.5.4.data()
+### 3.6.4.data()
 
 返回矩阵或向量的首地址的指针
 
@@ -347,7 +422,7 @@ int main() {
 }
 ```
 
-### 3.5.5.inverse()
+### 3.6.5.inverse()
 
 计算矩阵的逆
 
@@ -364,7 +439,7 @@ int main() {
 }
 ```
 
-### 3.5.6.maxCoeff()
+### 3.6.6.maxCoeff()
 
 返回矩阵的最大值和位置
 
@@ -386,7 +461,7 @@ int main() {
 }
 ```
 
-### 3.5.7.row()
+### 3.6.7.row()
 
 访问矩阵的指定行元素
 
@@ -404,7 +479,7 @@ int main() {
 }
 ```
 
-### 3.5.8.rows()
+### 3.6.8.rows()
 
 获取矩阵的行数
 
@@ -421,7 +496,7 @@ int main() {
 }
 ```
 
-### 3.5.9.rowwise()
+### 3.6.9.rowwise()
 
 对矩阵逐行进行操作
 
@@ -438,7 +513,7 @@ int main() {
 }
 ```
 
-### 3.5.10.size()
+### 3.6.10.size()
 
 获取矩阵的元素总数
 
@@ -455,7 +530,7 @@ int main() {
 }
 ```
 
-### 3.5.11.sum()
+### 3.6.11.sum()
 
 计算矩阵元素的和
 
@@ -471,7 +546,7 @@ int main() {
 }
 ```
 
-### 3.5.12.transpose()
+### 3.6.12.transpose()
 
 对矩阵进行转置
 
@@ -488,7 +563,7 @@ int main() {
 }
 ```
 
-## 3.6.RowVectorXd
+## 3.7.RowVectorXd
 
 实例化一个行向量(双精度)
 
@@ -504,7 +579,7 @@ int main() {
 }
 ```
 
-### 3.6.1.size()
+### 3.7.1.size()
 
 获取行向量的元素总数
 
@@ -520,7 +595,7 @@ int main() {
 }
 ```
 
-## 3.7.VectorXd
+## 3.8.VectorXd
 
 实例化一个列向量(双精度)
 
@@ -532,6 +607,24 @@ int main() {
     Eigen::VectorXd vec(4);
     vec << 1, 2, 3, 4;
     std::cout << vec << std::endl;
+    return 0;
+}
+```
+
+### 3.8.1.asDiagonal()
+
+将特征向量转换对角阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::VectorXd vec(2);
+    vec << 1, 2;
+    Eigen::MatrixXd mat = vec.asDiagonal();
+    
+    std::cout << mat << std::endl;
     return 0;
 }
 ```
@@ -1148,7 +1241,17 @@ arr2 = [[3], [3], [3]]
 arr = np.c_[arr1, arr2]
 ```
 
-## 8.11.dot()
+## 8.11.diag()
+
+提取对角线的值, 或者构建对角阵.|numpy.ndarray
+
+```python
+import numpy as np
+arr = [1, 2, 3]
+x = np.diag(v=arr)  # array-like|输入的数组.
+```
+
+## 8.12.dot()
 
 计算两个数组的点乘|numpy.ndarray
 
@@ -1159,7 +1262,7 @@ arr2 = [[1], [2], [3]]
 np.dot(a=arr1, b=arr2)  # 输入的数组|array-like
 ```
 
-## 8.12.equal()
+## 8.13.equal()
 
 逐个元素判断是否一致|numpy.bool_(输入是数组时numpy.ndarray)
 
@@ -1170,7 +1273,7 @@ arr2 = [1, 2, 2]
 np.equal(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 8.13.exp()
+## 8.14.exp()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1180,7 +1283,7 @@ arr = [1, 2, 3]
 np.exp(arr)  # 输入数据|array-like
 ```
 
-## 8.14.expm1()
+## 8.15.expm1()
 
 逐元素计算e的幂次并减一|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1190,7 +1293,7 @@ arr = [1, 2, 3]
 np.expm1(arr)  # 输入数据|array-like
 ```
 
-## 8.15.expand_dims()
+## 8.16.expand_dims()
 
 扩展数组的形状，增加维度|numpy.ndarray
 
@@ -1201,7 +1304,7 @@ a = np.expand_dims(a=a,  # 输入的数组|array-like
                    axis=0)  # 添加新维度的位置|int or tuple of ints
 ```
 
-## 8.16.eye()
+## 8.17.eye()
 
 生成一个单位阵|numpy.ndarray
 
@@ -1210,7 +1313,7 @@ import numpy as np
 matrix = np.eye(N=3)  # 矩阵的行数|int
 ```
 
-## 8.17.hstack()
+## 8.18.hstack()
 
 按照水平顺序合成一个新的数组|numpy.ndarray
 
@@ -1221,13 +1324,13 @@ arr2 = [[5, 6], [5, 6]]
 a = np.hstack(tup=(arr1, arr2))  # 数组序列|array-like
 ```
 
-## 8.18.linalg
+## 8.19.linalg
 
 | 版本 | 描述                  | 注意 |
 | ---- | --------------------- | ---- |
 | -    | numpy的线性代数函数包 |      |
 
-### 8.18.1.inv()
+### 8.19.1.inv()
 
 计算矩阵的逆|numpy.ndarray
 
@@ -1238,7 +1341,7 @@ arr = [[1, 2],
 matrix = np.linalg.inv(a=arr)  # 输入的矩阵|array_like
 ```
 
-### 8.18.2.norm()
+### 8.19.2.norm()
 
 计算范数|numpy.float64
 
@@ -1249,7 +1352,17 @@ np.linalg.norm(x=arr,  # 输入的矩阵或向量|array_like(维数必须是1维
                ord=1)  # 范数选项｜int or str(non-zero|int|inf|-inf|'fro'|'nuc')|None(计算2-范数)|可选
 ```
 
-## 8.19.linspace()
+### 8.19.3.svd()
+
+奇异值分解.|numpy.ndarray
+
+```python
+import numpy as np
+arr = [[1, 2], [3, 4]]
+u, s, vh = np.linalg.svd(a=arr)  # array_like|输入的矩阵.
+```
+
+## 8.20.linspace()
 
 生成指定间隔内的等差序列|numpy.ndarray
 
@@ -1260,7 +1373,7 @@ np.linspace(start=1,  # 序列的起始值|array_like
             num=10)  # 生成序列的样本的个数|int|50|可选
 ```
 
-## 8.20.load()
+## 8.21.load()
 
 从npy、npz、pickled文件加载数组或pickled对象|array or tuple or dict
 
@@ -1271,7 +1384,7 @@ np.load(file,  # 文件|file-like object or string or pathlib.Path
         encoding)  # 读取的编码方式|str|'ASCII'|可选
 ```
 
-## 8.21.log()
+## 8.22.log()
 
 逐元素计算自然对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1280,7 +1393,7 @@ import numpy as np
 np.log(1)  # 输入数据|array_like
 ```
 
-## 8.22.log1p()
+## 8.23.log1p()
 
 逐元素计算本身加一的自然对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1289,7 +1402,7 @@ import numpy as np
 np.log1p(1)  # 输入数据|array_like
 ```
 
-## 8.23.log2()
+## 8.24.log2()
 
 逐元素计算以2为底对数|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1298,7 +1411,7 @@ import numpy as np
 np.log2(1)  # 输入数据|array_like
 ```
 
-## 8.24.mat()
+## 8.25.mat()
 
 将输入转换为一个矩阵|numpy.matrix
 
@@ -1309,7 +1422,7 @@ matrix = np.mat(data=arr  # 输入数据|array-like
                 dtype=None)  # 生成矩阵元素的数据类型|data-type|None|可选
 ```
 
-## 8.25.matmul()
+## 8.26.matmul()
 
 两个数组的矩阵乘积|numpy.ndarray
 
@@ -1320,7 +1433,7 @@ arr2 = [[1], [2], [3]]
 np.matmul(arr1, arr2)  # 输入的数组|array-like（不能是标量）
 ```
 
-## 8.26.max()
+## 8.27.max()
 
 返回最大值或者沿着某一维度最大值|numpy.ndarray or scalar
 
@@ -1331,7 +1444,7 @@ np.max(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int|None|可选 
 ```
 
-## 8.27.maximum()
+## 8.28.maximum()
 
 返回数组逐个元素的最大值|numpy.ndarray
 
@@ -1342,7 +1455,7 @@ arr2 = [1, 5, 2]
 np.maximum(arr1, arr2)  # 输入的数组|array-like
 ```
 
-## 8.28.mean()
+## 8.29.mean()
 
 沿着指定维度计算均值|numpy.float64
 
@@ -1353,7 +1466,7 @@ np.mean(arr,  # 输入的数组|array-like
         axis=None)  # 所沿的维度|int or tuple of ints|None|可选 
 ```
 
-## 8.29.meshgrid()
+## 8.30.meshgrid()
 
 生成一个坐标矩阵|list of numpy.ndarray
 
@@ -1364,7 +1477,7 @@ y_crood = np.linspace(0, 4, 5)
 vector_matrix = np.meshgrid(x_crood, y_crood)  # 坐标向量|array_like
 ```
 
-## 8.30.nonzero()
+## 8.31.nonzero()
 
 返回非零元素的索引|tuple
 
@@ -1374,7 +1487,7 @@ arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
 np.nonzero(a=arr)  # 输入的数组|array-like
 ```
 
-## 8.31.ones()
+## 8.32.ones()
 
 创建一个指定为形状和类型的全一数组|numpy.ndarray
 
@@ -1384,7 +1497,7 @@ arr = np.ones(shape=[2, 3],  # 数组的形状|int or sequence of ints
               dtype=np.int8)  # 数组元素的数据类型|data-type|numpy.float64|可选
 ```
 
-## 8.32.power()
+## 8.33.power()
 
 逐个元素计算第一个元素的第二个元素次幂|scalar(输入是数组时numpy.ndarray)
 
@@ -1393,13 +1506,13 @@ import numpy as np
 x = np.power(2.1, 3.2)   # x1底数、x2指数|array_like
 ```
 
-## 8.33.random
+## 8.34.random
 
 | 版本 | 描述                    | 注意 |
 | ---- | ----------------------- | ---- |
 | -    | numpy的随机数生成函数包 |      |
 
-### 8.33.1.normal()
+### 8.34.1.normal()
 
 生成正态分布的样本|numpy.ndarray or scalar
 
@@ -1408,7 +1521,7 @@ import numpy as np
 arr = np.random.normal(size=[2, 3])  # 形状|int or tuple of ints|None(None则只返回一个数)|可选
 ```
 
-### 8.33.2.permutation()
+### 8.34.2.permutation()
 
 随机置换序列|numpy.ndarray
 
@@ -1418,7 +1531,7 @@ arr = [1, 2, 3, 4]
 arr = np.random.permutation(arr)  # 输入的数组|array-like
 ```
 
-### 8.33.3.randint()
+### 8.34.3.randint()
 
 从给定区间[low, high)生成随机整数|int or numpy.ndarray
 
@@ -1428,7 +1541,7 @@ np.random.randint(low=1,  # 下界|int or array-like of ints
                   high=10)  # 上界|int or array-like of ints|None(如果high为None则返回区间[0, low))|可选
 ```
 
-### 8.33.4.rand()
+### 8.34.4.rand()
 
 生成一个指定形状的随机数数组|float or numpy.ndarray
 
@@ -1437,7 +1550,7 @@ import numpy as np
 arr = np.random.rand(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 8.33.5.randn()
+### 8.34.5.randn()
 
 生成一个指定形状的标准正态分布的随机数数组|float or numpy.ndarray
 
@@ -1446,7 +1559,7 @@ import numpy as np
 arr = np.random.randn(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 8.33.6.RandomState()
+### 8.34.6.RandomState()
 
 实例化一个伪随机数生成器|RandomState(MT19937)
 
@@ -1455,7 +1568,7 @@ import numpy as np
 rs = np.random.RandomState(seed=2020)  # 随机种子|int|None|可选
 ```
 
-#### 8.33.6.1.shuffle()
+#### 8.34.6.1.shuffle()
 
 随机打乱数据
 
@@ -1467,7 +1580,7 @@ rs.shuffle(arr)
 print(arr)
 ```
 
-### 8.33.7.seed()
+### 8.34.7.seed()
 
 设置随机数生成器的随机种子
 
@@ -1476,7 +1589,7 @@ import numpy as np
 np.random.seed(seed)  # 随机种子|int|None|可选
 ```
 
-## 8.34.ravel()
+## 8.35.ravel()
 
 展平一个数组|numpy.ndarray
 
@@ -1486,7 +1599,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 np.ravel(a=arr)  # 输入的数组|array-like
 ```
 
-## 8.35.reshape()
+## 8.36.reshape()
 
 返回一个具有相同数据的新形状的数组|numpy.ndarray
 
@@ -1497,7 +1610,7 @@ np.reshape(a=arr,  # 要改变形状的数组|array_like
            newshape=[2, 2])  # 新的形状|int or tuple of ints
 ```
 
-## 8.36.save()
+## 8.37.save()
 
 将数组转换为numpy保存进二进制的npy文件
 
@@ -1509,7 +1622,7 @@ np.save(file='arr.npy',  # 文件名|file or str or pathlib.Path
         allow_pickle=True)  # 允许使用pickle对象保存数组|bool|True|可选
 ```
 
-## 8.37.sort()
+## 8.38.sort()
 
 返回排序数组的副本|numpy.ndarray
 
@@ -1519,7 +1632,7 @@ arr = [1, 3, 2, 4]
 new_arr = np.sort(a=arr)  # 要排序的数组|array_like
 ```
 
-## 8.38.split()
+## 8.39.split()
 
 将一个数组拆分为多个|list of ndarrays
 
@@ -1531,7 +1644,7 @@ arr_list = np.split(ary=arr,  # 要拆分的数组|numpy.ndarray
                     axis=1)  # 沿某维度分割|int|0|可选
 ```
 
-## 8.39.sqrt()
+## 8.40.sqrt()
 
 逐元素计算e的幂次|numpy.float64(输入是数组时numpy.ndarray)
 
@@ -1541,7 +1654,7 @@ arr = [1, 2, 3]
 np.sqrt(arr)  # 输入数据|array_like
 ```
 
-## 8.40.squeeze()
+## 8.41.squeeze()
 
 删除数组中维度为一的维度|numpy.ndarray
 
@@ -1551,7 +1664,7 @@ arr = [[1, 2, 3]]
 np.squeeze(arr)  # 输入数据|array_like
 ```
 
-## 8.41.std()
+## 8.42.std()
 
 沿指定维度计算标准差|numpy.float64
 
@@ -1562,7 +1675,7 @@ np.std(a=arr,  # 输入的数组|array-like
        axis=None)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 8.42.sum()
+## 8.43.sum()
 
 沿指定维度求和|numpy.ndarray
 
@@ -1573,7 +1686,7 @@ np.sum(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 8.43.transpose()
+## 8.44.transpose()
 
 对数组进行转置|numpy.ndarray
 
@@ -1592,7 +1705,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 arr.T
 ```
 
-## 8.44.var()
+## 8.45.var()
 
 沿指定维度方差|numpy.ndarray
 
@@ -1603,7 +1716,7 @@ np.var(arr,  # 输入的数组|array-like
        axis=1)  # 所沿的维度|int or tuple of ints|None|可选
 ```
 
-## 8.45.void()
+## 8.46.void()
 
 创建一个numpy.void类型的对象
 
@@ -1612,7 +1725,7 @@ import numpy as np
 o = np.void(b'abc')  # 输入的数据|bytes
 ```
 
-## 8.46.zeros()
+## 8.47.zeros()
 
 创建一个指定为形状和类型的全零数组|numpy.ndarray
 
@@ -2415,6 +2528,71 @@ c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 
 import example
 ans = example.add()
 print(ans)
+```
+
+## 11.8.使用Python的print函数
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+void my_print(std::string text) {
+    pybind11::print(text);
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("my_print", &my_print);
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+example.my_print('Hello World!')
+```
+
+## 11.9.在Python侧使用alias
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+void my_print(std::string text) {
+    pybind11::print(text);
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("my_print", &my_print);
+
+    m.attr("m_print") = m.attr("my_print");
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+
+example.my_print('Hello World!')
+example.m_print('Hello World!')
+
+print(example.m_print)
+print(example.my_print)
 ```
 
 # 12.pybind11
