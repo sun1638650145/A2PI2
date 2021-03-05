@@ -4279,13 +4279,34 @@ layer = SeparableConv2D(filters,  # 卷积核的数量|int
                         padding)  # 填充方式|str('valid' or 'same')|'valid'
 ```
 
-#### 16.10.5.29.UpSampling2D()
+#### 16.10.5.29.TimeDistributed()
+
+实例化一个时间片封装器
+
+```python
+from tensorflow.keras.layers import Dense, TimeDistributed
+
+layer = Dense(32, activation='relu')
+layer = TimeDistributed(layer)
+```
+
+#### 16.10.5.30.UpSampling2D()
 
 实例化二维上采样层
 
 ```python
 from tensorflow.keras.layers import UpSampling2D
 layer = UpSampling2D(size)  # 上采样因子|int or tuple of 2 integers|2
+```
+
+#### 16.10.5.31.ZeroPadding2D()
+
+实例化一个二维输入的零填充层
+
+```python
+from tensorflow.keras.layers import ZeroPadding2D
+
+layer = ZeroPadding2D(padding=(2, 2))  # int or tuple of int|填充数.
 ```
 
 ### 16.10.6.losses
