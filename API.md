@@ -968,7 +968,20 @@ plt.clabel(cs)
 plt.show()
 ```
 
-### 7.2.4.figure()
+### 7.2.4.colorbar()
+
+获取色彩条.|matplotlib.colorbar.Colorbar
+
+```python
+import matplotlib.pyplot as plt
+
+arr = [[1, 2], [3, 4]]
+plt.matshow(A=arr)
+plt.colorbar()
+plt.show()
+```
+
+### 7.2.5.figure()
 
 创建一个画布|matplotlib.figure.Figure
 
@@ -977,7 +990,7 @@ import matplotlib.pyplot as plt
 figure = plt.figure(figsize)  # 画布的大小|(float, float)|(6.4, 4.8)|可选
 ```
 
-### 7.2.5.imread()
+### 7.2.6.imread()
 
 加载指定路径的图片|numpy.ndarray
 
@@ -986,7 +999,7 @@ import matplotlib.pyplot as plt
 image = plt.imread(fname)  # 要加载的文件的路径|str or file-like
 ```
 
-### 7.2.6.imshow()
+### 7.2.7.imshow()
 
 将图片数组在画布上显示|matplotlib.image.AxesImage
 
@@ -996,7 +1009,19 @@ plt.imshow(X,  # 希望显示的图像数据|array-like or PIL image
            cmap)  # 显示的色彩|str 
 ```
 
-### 7.2.7.pcolormesh()
+### 7.2.8.matshow()
+
+将矩阵绘制成图像.
+
+```python
+import matplotlib.pyplot as plt
+
+arr = [[1, 2], [3, 4]]
+plt.matshow(A=arr)
+plt.show()
+```
+
+### 7.2.9.pcolormesh()
 
 使用非规则的矩形创建网格背景图
 
@@ -1015,7 +1040,7 @@ plt.pcolormesh(X,  # 横坐标|array-like
 plt.show()
 ```
 
-### 7.2.8.plot()
+### 7.2.10.plot()
 
 绘制函数图像|list
 
@@ -1024,7 +1049,7 @@ import matplotlib.pyplot as plt
 plt.plot(*args)  # 函数的变量｜string or number且第一维度必须相同｜(x, y)
 ```
 
-### 7.2.9.rcParams
+### 7.2.11.rcParams
 
 实例化一个matplotlib的rc文件实例|matplotlib.RcParams
 
@@ -1033,7 +1058,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 7.2.10.savefig()
+### 7.2.12.savefig()
 
 保存当前的画布
 
@@ -1042,7 +1067,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # 要保存的文件的路径|str or PathLike or file-like object A path, or a Python file-like object
 ```
 
-### 7.2.11.scatter()
+### 7.2.13.scatter()
 
 绘制散点图|matplotlib.collections.PathCollection
 
@@ -1059,7 +1084,7 @@ plt.scatter(x,  # x坐标|scalar or array-like 形状必须是(n,)
 plt.show()
 ```
 
-### 7.2.12.show()
+### 7.2.14.show()
 
 显示所有的画布
 
@@ -1068,7 +1093,7 @@ import matplotlib.pyplot as plt
 plt.show()
 ```
 
-### 7.2.13.subplot()
+### 7.2.15.subplot()
 
 在当前画布上创建一个子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -1077,7 +1102,7 @@ import matplotlib.pyplot as plt
 ax = plt.subplot()
 ```
 
-### 7.2.14.subplots()
+### 7.2.16.subplots()
 
 创建一个画布和一组子图|matplotlib.figure.Figure和matplotlib.axes._subplots.AxesSubplot
 
@@ -1088,7 +1113,7 @@ figure, axesSubplot = plt.subplots(nrows=4,  # 列子图数量|int|1
                                    figsize=(10, 5))  # 画布的大小|tuple of int
 ```
 
-### 7.2.15.subplots_adjust()
+### 7.2.17.subplots_adjust()
 
 调整子图布局
 
@@ -1102,7 +1127,16 @@ plt.subplots_adjust(left=0.125,  # 子图左边框距离画布的距离|float|0.
                     hspace)  # 两张子图之间的上下间隔|float|0.2
 ```
 
-### 7.2.16.title()
+### 7.2.18.tight_layout()
+
+自动调整子图
+
+```python
+import matplotlib.pyplot as plt
+plt.tight_layout()
+```
+
+### 7.2.19.title()
 
 设置标题
 
@@ -1112,7 +1146,7 @@ plt.title(label='this is title')  # 标题|str
 plt.show()
 ```
 
-### 7.2.17.xlabel()
+### 7.2.20.xlabel()
 
 设置x轴的内容
 
@@ -1121,7 +1155,18 @@ import matplotlib.pyplot as plt
 plt.xlabel(xlabel='x')
 ```
 
-### 7.2.18.ylabel()
+### 7.2.21.xlim()
+
+设置x轴显示范围
+
+```python
+import matplotlib.pyplot as plt
+
+plt.xlim([1, 2])  # (int, int)|[左界, 右界].
+plt.show()
+```
+
+### 7.2.22.ylabel()
 
 设置y轴的内容
 
@@ -1777,7 +1822,18 @@ df = pd.DataFrame(data=df_map)
 print(df.columns)
 ```
 
-### 9.2.2.drop()
+### 9.2.2.corr()
+
+计算列的成对相关度.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame(data={'index': [0, 1, 2], 'values': [0.1, 0.2, 0.3]})
+correlation = df.corr()
+```
+
+### 9.2.3.drop()
 
 删除指定行或者列|pandas.core.frame.DataFrame
 
@@ -1788,7 +1844,7 @@ df = df.drop(labels=1,  # 希望删除的行或者列|single label or list-like
              axis=0)  # 删除行或者列|{0/'index', 1/'columns'}|0
 ```
 
-### 9.2.3.drop_duplicates()
+### 9.2.4.drop_duplicates()
 
  删除重复的行|pandas.core.frame.DataFrame
 
@@ -1800,7 +1856,7 @@ df.drop_duplicates(subset=None,  # 仅选子列进行删除|None
                    inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.4.fillna()
+### 9.2.5.fillna()
 
 填充缺失值|pandas.core.frame.DataFrame or None
 
@@ -1811,7 +1867,7 @@ df.fillna(value=10,  # 填充进的值
           inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.5.head()
+### 9.2.6.head()
 
 返回前n行数据|pandas.core.frame.DataFrame
 
@@ -1821,7 +1877,7 @@ df = pd.DataFrame([1, 2, 3])
 print(df.head(n=1))  # 选择的行数|int|5
 ```
 
-### 9.2.6.iloc[]
+### 9.2.7.iloc[]
 
 按照行号取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1831,7 +1887,7 @@ df = pd.DataFrame([[1, 4], [2, 5], [3, 6]])
 new_df = df.iloc[0:2]  # 要提取的数据|int or array of int or slice object with ints
 ```
 
-### 9.2.7.info()
+### 9.2.8.info()
 
 显示摘要信息(包括索引、非Non值计数、数据类型和内存占用)
 
@@ -1844,7 +1900,7 @@ df = pd.DataFrame(data=df_map,
 df.info()
 ```
 
-### 9.2.8.loc[]
+### 9.2.9.loc[]
 
 按照行名称取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1855,7 +1911,7 @@ df = pd.DataFrame(df_map, index=['a', 'b', 'c'])
 new_df = df.loc['a':'b']  # 要提取的数据|label or array of label or slice object with labels(没有名称的时候就是iloc函数)
 ```
 
-### 9.2.9.median()
+### 9.2.10.median()
 
 获取中位数|pandas.core.series.Series
 
@@ -1865,7 +1921,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'value': [1, 2, 3, 4]})
 df.median()
 ```
 
-### 9.2.10.merge()
+### 9.2.11.merge()
 
 将两列进行合并|pandas.core.frame.DataFrame
 
@@ -1881,7 +1937,7 @@ df = pd.merge(left=df1,  # 参与合并左侧的数据|DataFrame
               sort=True)  # 是否排序|bool|True
 ```
 
-### 9.2.11.replace()
+### 9.2.12.replace()
 
 替换DataFrame中的值|pandas.core.frame.DataFrame or None
 
@@ -1893,7 +1949,7 @@ new_df = df.replace(to_replace=1,  # 被替换的值|scalar or dict or list or s
                     inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.12.reset_index()
+### 9.2.13.reset_index()
 
 重置DataFrame的索引为从零开始的整数索引|pandas.core.frame.DataFrame or None
 
@@ -1905,7 +1961,7 @@ new_df = df.reset_index(drop=True,  # 是否丢弃原来的索引|bool|False
                         inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.13.sample()
+### 9.2.14.sample()
 
 随机采样指定个数的样本|pandas.core.frame.DataFrame
 
@@ -2089,7 +2145,20 @@ sr = pd.Series([1, 2, 2, 2, 3])
 m = sr.mode()
 ```
 
-### 9.10.5.tolist()
+### 9.10.5.plot()
+
+绘制图像
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sr = pd.Series([0, 1, 2])
+sr.plot()
+plt.show()
+```
+
+### 9.10.6.tolist()
 
 返回Series值组成的列表|list
 
@@ -4333,7 +4402,16 @@ from tensorflow.keras.losses import CategoricalCrossentropy
 loss = CategoricalCrossentropy(from_logits=True)  # 是否将y_pred解释为张量|bool|False(True的话有更高的稳定性)
 ```
 
-#### 16.10.6.3.SparseCategoricalCrossentropy()
+#### 16.10.6.3.MeanAbsoluteError()
+
+实例化平均绝对损失函数
+
+```python
+from tensorflow.keras.losses import MeanAbsoluteError
+loss = MeanAbsoluteError()
+```
+
+#### 16.10.6.4.SparseCategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数
 
@@ -4648,6 +4726,20 @@ array = img_to_array(img)  # 输入的图像|PIL图像
 from tensorflow.keras.preprocessing.image import load_img
 img = load_img(path,  # 文件路径|str or pathlib.Path
                target_size=None)  # 读取图片的大小|tuple of int|None
+```
+
+#### 16.10.10.2.timeseries_dataset_from_array()
+
+从数组中创建滑动窗口的时间序列数据集.|tensorflow.python.data.ops.dataset_ops.BatchDataset
+
+```python
+from tensorflow.keras.preprocessing import timeseries_dataset_from_array
+
+dataset = timeseries_dataset_from_array(data,  # numpy.ndarray or eager tensor|输入数据.
+                                        targets,  # numpy.ndarray or eager tensor|标签.
+                                        sequence_length,  # int|输出的序列长度.
+                                        sampling_rate=1,  # int|1|连续时间步之间的时间间隔.
+                                        batch_size=128)  # int|128|批次大小.
 ```
 
 ### 16.10.11.regularizers
