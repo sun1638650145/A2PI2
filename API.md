@@ -1557,7 +1557,19 @@ x = np.power(2.1, 3.2)   # x1底数、x2指数|array_like
 | ---- | ----------------------- | ---- |
 | -    | numpy的随机数生成函数包 |      |
 
-### 8.34.1.normal()
+### 8.34.1.multinomial()
+
+从多项分布中抽取样本.|numpy.ndarray
+
+```python
+import numpy as np
+
+sample = np.random.multinomial(n=1,  # int|实验次数.
+                               pvals=[1/2, 1/3, 1/6],  # sequence of floats|每个部分的概率, 要求概率和为1.
+                               size=1)  # int or tuple of ints(可选)|None|输出形状.
+```
+
+### 8.34.2.normal()
 
 生成正态分布的样本|numpy.ndarray or scalar
 
@@ -1566,7 +1578,7 @@ import numpy as np
 arr = np.random.normal(size=[2, 3])  # 形状|int or tuple of ints|None(None则只返回一个数)|可选
 ```
 
-### 8.34.2.permutation()
+### 8.34.3.permutation()
 
 随机置换序列|numpy.ndarray
 
@@ -1576,7 +1588,7 @@ arr = [1, 2, 3, 4]
 arr = np.random.permutation(arr)  # 输入的数组|array-like
 ```
 
-### 8.34.3.randint()
+### 8.34.4.randint()
 
 从给定区间[low, high)生成随机整数|int or numpy.ndarray
 
@@ -1586,7 +1598,7 @@ np.random.randint(low=1,  # 下界|int or array-like of ints
                   high=10)  # 上界|int or array-like of ints|None(如果high为None则返回区间[0, low))|可选
 ```
 
-### 8.34.4.rand()
+### 8.34.5.rand()
 
 生成一个指定形状的随机数数组|float or numpy.ndarray
 
@@ -1595,7 +1607,7 @@ import numpy as np
 arr = np.random.rand(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 8.34.5.randn()
+### 8.34.6.randn()
 
 生成一个指定形状的标准正态分布的随机数数组|float or numpy.ndarray
 
@@ -1604,7 +1616,7 @@ import numpy as np
 arr = np.random.randn(2, 3)  # 数组的维度|int|(如果形状不指定，仅返回一个随机的浮点数)|可选
 ```
 
-### 8.34.6.RandomState()
+### 8.34.7.RandomState()
 
 实例化一个伪随机数生成器|RandomState(MT19937)
 
@@ -1613,7 +1625,7 @@ import numpy as np
 rs = np.random.RandomState(seed=2020)  # 随机种子|int|None|可选
 ```
 
-#### 8.34.6.1.shuffle()
+#### 8.34.7.1.shuffle()
 
 随机打乱数据
 
@@ -1625,7 +1637,7 @@ rs.shuffle(arr)
 print(arr)
 ```
 
-### 8.34.7.seed()
+### 8.34.8.seed()
 
 设置随机数生成器的随机种子
 
@@ -3386,7 +3398,18 @@ dataset = dataset.map(map_func=map_func,  # 处理函数|function or lambda
 print(list(dataset.as_numpy_iterator()))
 ```
 
-#### 16.3.1.5.prefetch()
+#### 16.3.1.5.padded_batch()
+
+给数据集填充后划分批次.|tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2, 3], [4, 5, 6]))
+sample = dataset.padded_batch(batch_size=2)  # int|批次大小.
+```
+
+#### 16.3.1.6.prefetch()
 
 对数据集的读取进行预加载|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
 
@@ -3397,7 +3420,7 @@ dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)  # 缓冲�
 print(list(dataset.as_numpy_iterator()))
 ```
 
-#### 16.3.1.6.shuffle()
+#### 16.3.1.7.shuffle()
 
 随机打乱数据集|tensorflow.python.data.ops.dataset_ops.ShuffleDataset
 
@@ -3409,7 +3432,17 @@ print(list(dataset.as_numpy_iterator()))
 print(list(dataset_shuffle.as_numpy_iterator()))
 ```
 
-#### 16.3.1.7.take()
+#### 16.3.1.8.skip()
+
+从dataset中跳过指定个数的数据创建新的数据集.|tensorflow.python.data.ops.dataset_ops.SkipDataset
+
+```python
+import tensorflow as tf
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2, 3], [4, 5, 6]))
+sample = dataset.skip(count=1)  # int|跳过的个数.
+```
+
+#### 16.3.1.9.take()
 
 从dataset中取出指定个数的数据创建新的数据集|tensorflow.python.data.ops.dataset_ops.TakeDataset
 
@@ -4348,7 +4381,18 @@ layer = SeparableConv2D(filters,  # 卷积核的数量|int
                         padding)  # 填充方式|str('valid' or 'same')|'valid'
 ```
 
-#### 16.10.5.29.TimeDistributed()
+#### 16.10.5.29.SimpleRNN()
+
+实例化一个全连接循环神经网络层.
+
+```python
+from tensorflow.keras.layers import SimpleRNN
+layer = SimpleRNN(units=256,  # 神经元的数量|int
+                  return_sequences=True,  # 返回序列还是返回序列的最后一个输出|bool|False(返回序列的最后一个输出)
+                  dropout=0.1)  # 随机丢弃率|float|0.
+```
+
+#### 16.10.5.30.TimeDistributed()
 
 实例化一个时间片封装器
 
@@ -4359,7 +4403,7 @@ layer = Dense(32, activation='relu')
 layer = TimeDistributed(layer)
 ```
 
-#### 16.10.5.30.UpSampling2D()
+#### 16.10.5.31.UpSampling2D()
 
 实例化二维上采样层
 
@@ -4368,7 +4412,7 @@ from tensorflow.keras.layers import UpSampling2D
 layer = UpSampling2D(size)  # 上采样因子|int or tuple of 2 integers|2
 ```
 
-#### 16.10.5.31.ZeroPadding2D()
+#### 16.10.5.32.ZeroPadding2D()
 
 实例化一个二维输入的零填充层
 
@@ -4839,9 +4883,29 @@ import tensorflow as tf
 tensor = tf.ones_like(input=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-## 16.13.random
+## 16.13.py_function()
 
-### 16.13.1.normal()
+将python函数修饰成tensorflow的操作, 并在eager模式下运行.
+
+```python
+import tensorflow as tf
+
+def get_max(a, b):
+    if a > b:
+        return a
+    else:
+        return b
+
+a = tf.constant(value=6.0)
+b = tf.constant(value=5.0)
+max_value = tf.py_function(func=get_max,  # function|Python函数.
+                           inp=[a, b],  # list of Tensor|输入的张量.
+                           Tout=tf.float32)  # tuple of tensorflow.python.framework.dtypes.DType|返回的数据类型.
+```
+
+## 16.14.random
+
+### 16.14.1.normal()
 
 生成一个标准正态分布的张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -4850,13 +4914,13 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # 形状|1-D integer Tensor or Python array
 ```
 
-## 16.14.strings
+## 16.15.strings
 
 | 版本 | 描述           | 注意 |
 | ---- | -------------- | ---- |
 | -    | 字符串操作模块 | -    |
 
-### 16.14.1.reduce_join()
+### 16.15.1.reduce_join()
 
 将所有的字符连接成一个字符串|tensorflow.python.framework.ops.EagerTensor
 
@@ -4866,7 +4930,7 @@ input = ['1', 'a', '2', 'b']
 x = tf.strings.reduce_join(inputs=input)  # 输入的字符|array-like
 ```
 
-### 16.14.2.unicode_split()
+### 16.15.2.unicode_split()
 
 将输入的字符串的每一个字符转换成Unicode编码的bytes|tensorflow.python.framework.ops.EagerTensor
 
