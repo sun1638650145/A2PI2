@@ -2170,7 +2170,18 @@ sr.plot()
 plt.show()
 ```
 
-### 9.10.6.tolist()
+### 9.10.6.sort_index()
+
+通过索引排序|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(data=[4, 3, 2, 1], index=[4, 3, 2, 1])
+sr = sr.sort_index()
+```
+
+### 9.10.7.tolist()
 
 返回Series值组成的列表|list
 
@@ -2786,6 +2797,28 @@ y = np.asarray([1, 2, 3, 4, 5])
 y_trans, lmbda = boxcox(x=y)  # 输入的数组|numpy.ndarray(必须是一维的)
 ```
 
+### 14.1.2.f
+
+#### 14.1.2.1.cdf()
+
+计算标准正态分布函数.|numpy.ndarray
+
+```python
+from scipy.stats import f
+
+value = f.cdf(1, 1, 1)
+```
+
+### 14.1.3.ttest_rel()
+
+在两个相关的样本a和b上计算t检验|numpy.ndarray
+
+```python
+from scipy.stats import ttest_rel
+
+value = ttest_rel(a=[1, 2, 3], b=[2, 4, 6])
+```
+
 ## 14.2.special
 
 ### 14.2.1.inv_boxcox()
@@ -3001,6 +3034,28 @@ from sklearn.metrics import accuracy_score
 accuracy = accuracy_score(y_true,  # 真实标签|1d array-like, or label indicator array / sparse matrix
                           y_pred,  # 预测标签|1d array-like, or label indicator array / sparse matrix
                           sample_weight)  # 类别权重|array-like of shape (n_samples,)|None
+```
+
+### 15.4.2.confusion_matrix()
+
+计算混淆矩阵|numpy.ndarray
+
+```python
+from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(y_true=[1, 2, 3],  # 真实标签|array-like of shape (n_samples,)
+                      y_pred=[1, 2, 3])  # 预测标签|array-like of shape (n_samples,)
+```
+
+### 15.4.3.r2_score()
+
+计算R2决定系数|numpy.float64
+
+```python
+from sklearn.metrics import r2_score
+
+r2 = r2_score(y_true=[1., 2., 3.],  # 真实值|array-like of shape (n_samples,) or (n_samples, n_outputs)
+              y_pred=[1., 2., 3.])  # 预测值PPIL|array-like of shape (n_samples,) or (n_samples, n_outputs)
 ```
 
 ## 15.5.model_selection
@@ -4782,8 +4837,10 @@ from tensorflow.keras.preprocessing import timeseries_dataset_from_array
 dataset = timeseries_dataset_from_array(data,  # numpy.ndarray or eager tensor|输入数据.
                                         targets,  # numpy.ndarray or eager tensor|标签.
                                         sequence_length,  # int|输出的序列长度.
+                                        sequence_stride=1,  # int|连续输出序列之间的周期|1.
                                         sampling_rate=1,  # int|1|连续时间步之间的时间间隔.
-                                        batch_size=128)  # int|128|批次大小.
+                                        batch_size=128,  # int|128|批次大小.
+                                        shuffle=False)  # 是否打乱|bool|False.
 ```
 
 ### 16.10.11.regularizers
