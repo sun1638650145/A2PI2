@@ -12,7 +12,7 @@
 
 | 版本  | 描述           | 注意                                                         | 适配M1 |
 | ----- | -------------- | ------------------------------------------------------------ | ------ |
-| 4.5.0 | 图像处理软件库 | 1. M1目前需要使用conda安装, 使用conda install opencv                                                                                          2. OpenCV的图片格式是HWC, TensorFlow的是WHC.                                                     3. Intel-based Mac安装时使用pip install opencv-python | 是     |
+| 4.5.0 | 图像处理软件库 | 1. M1目前需要使用conda安装, 使用conda install opencv                                                                                   2. OpenCV的图片格式是HWC, TensorFlow的是WHC.                                                                                          3. Intel-based Mac安装时使用pip install opencv-python | 是     |
 
 ## 2.1.imread()
 
@@ -689,7 +689,7 @@ image = imageio.imread(uri='./image.jpg')  # str or pathlib.Path or bytes or fil
 
 | 版本  | 描述                 | 注意                                                         | 适配M1 |
 | ----- | -------------------- | ------------------------------------------------------------ | ------ |
-| 3.1.1 | 基于树的梯度提升框架 | 1. M1目前需要使用conda安装.                                                                                                                          2. 可直接在sklearn使用.                                                                                                                                       3. Intel-based Mac需要先使用brew安装libomp | 是     |
+| 3.1.1 | 基于树的梯度提升框架 | 1. M1目前需要使用conda安装.                                                                                                                          2. 2.可直接在sklearn使用.                                                                                                                                       3. 3.Intel-based Mac需要先使用brew安装libomp | 是     |
 
 ## 6.1.LGBMClassifier()
 
@@ -1929,5 +1929,76 @@ import numpy as np
 
 x = np.zeros(shape=[2, 3],  # int or sequence of ints|数组的形状.
              dtype=np.int8)  # data-type(可选)|numpy.float64|矩阵元素的数据类型.
+```
+
+# 9.pandas
+
+| 版本  | 描述                  | 注意                        | 适配M1 |
+| ----- | --------------------- | --------------------------- | ------ |
+| 1.1.4 | 结构化数据分析软件库. | 1. M1目前需要使用conda安装. | 是     |
+
+## 9.1.concat()
+
+沿特定轴连接pandas对象.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+sr0 = pd.Series([1, 4, 7])
+sr1 = pd.Series([2, 5, 8])
+sr2 = pd.Series([3, 6, 9])
+df = pd.concat([sr0, sr1, sr2],  # Series or DataFrame|要连接的pandas对象.
+               axis=1)  # {0/'index', 1/'columns'}|0|所沿的维度.
+```
+
+## 9.2.DataFrame()
+
+实例化DataFrame对象.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(data=df_map,  # ndarray (structured or homogeneous), Iterable, dict, or DataFrame|输入的数据.
+                  index=['一', '二', '三'],  # Index or array-like|None(0, 1, 2, ..., n)|索引名.
+                  columns=None)  # Index or array-like|None(0, 1, 2, ..., n)|列名.
+```
+
+### 9.2.1.columns
+
+DataFrame的列标签.|pandas.core.indexes.base.Index
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+
+print(df.columns)
+```
+
+### 9.2.2.corr()
+
+计算列成对相关度.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+correlation_value = df.corr()
+```
+
+### 9.2.3.drop()
+
+根据指定的标签删除行或者列.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+df = df.drop(labels=1,  # single label or list-like|None|要删除的行或者列的标签.
+             axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
 ```
 
