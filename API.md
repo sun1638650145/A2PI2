@@ -1998,7 +1998,147 @@ import pandas as pd
 
 df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
 df = pd.DataFrame(df_map)
-df = df.drop(labels=1,  # single label or list-like|None|要删除的行或者列的标签.
-             axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
+new_df = df.drop(labels=1,  # single label or list-like|None|要删除的行或者列的标签.
+             		 axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
+```
+
+### 9.2.4.drop_duplicates()
+
+返回删除重复行的DataFrame.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 1, 2], 'values': [0.1, 0.5, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+new_df = df.drop_duplicates(subset=None,  # column label or sequence of labels(可选)|None|仅选子列进行删除.
+                        		keep='first',  # {'first', 'last', False}|'first'|保留重复项的位置.
+                        		inplace=False)  # bool|False|是否修改源DataFrame.
+```
+
+### 9.2.5.fillna() 
+
+填充缺失值.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2, 3], 'values': [0.1, 0.5, None, 1.0]}
+df = pd.DataFrame(df_map)
+new_df = df.fillna(value=10,  # scalar, dict, Series, or DataFrame|填充缺失的值.
+               		 inplace=False)  # bool|False|是否修改源DataFrame.
+```
+
+### 9.2.6.head()
+
+返回前n行数据.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2, 3], 'values': [0.1, 0.5, None, 1.0]}
+df = pd.DataFrame(df_map)
+head_value = df.head(n=1)  # int|5|行数.
+```
+
+### 9.2.7.iloc[]
+
+按照行号取出数据.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}
+df = pd.DataFrame(df_map)
+new_df = df.iloc[0:2]
+```
+
+### 9.2.8.info()
+
+在终端打印摘要信息.
+
+```python
+import pandas as pd
+
+df_map = {'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}
+df = pd.DataFrame(df_map)
+```
+
+### 9.2.9.loc[]
+
+按照行名称取出数据.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}
+df = pd.DataFrame(df_map, index=df_map['key'])
+new_df = df.loc['a':'b']
+```
+
+### 9.2.10.median()
+
+获取DataFrame的中位数.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+df_map = {'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}
+df = pd.DataFrame(df_map)
+median_value = df.median()
+```
+
+### 9.2.11.replace()
+
+替换DataFrame中的值.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
+new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float, or None|None|被替换的值.
+                    value=5,  # scalar, dict, list, str, regex|None|替换的值.
+                    inplace=False)  # bool|False|是否修改源DataFrame.
+```
+
+### 9.2.12.reset_index()
+
+重置DataFrame中的索引.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}, index=[1, 2, 3])
+new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
+                        inplace=False)  # bool|False|是否修改源DataFrame.
+```
+
+### 9.2.13.sample()
+
+返回随机采样的DataFrame样本.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
+new_df = df.sample(n=None,  # int(可选)|None|采样数.
+                   frac=0.75)  # float(可选)|None|采样的比例.
+```
+
+### 9.3.merge()
+
+将两个DataFrame按照列键值进行合并.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df0 = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
+df1 = pd.DataFrame({'values': [1, 2, 3], 'tag': [0, 0, 1]})
+df = pd.merge(left=df0,  # DataFrame|要合并的DataFrame.
+              right=df1,  # DataFrame|要合并的DataFrame.
+              how='inner',  # {'left', 'right', 'outer', 'inner'}|'inner'|合并的方式.
+              left_on='values',  # label or list, or array-like|None|左侧参考项.
+              right_on='values',  # label or list, or array-like|None|右侧参考项.
+              sort=True)  # bool|False|是否进行排序.
 ```
 
