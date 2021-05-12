@@ -689,7 +689,7 @@ image = imageio.imread(uri='./image.jpg')  # str or pathlib.Path or bytes or fil
 
 | 版本  | 描述                 | 注意                                                         | 适配M1 |
 | ----- | -------------------- | ------------------------------------------------------------ | ------ |
-| 3.1.1 | 基于树的梯度提升框架 | 1. M1目前需要使用conda安装.                                                                                                                          2. 2.可直接在sklearn使用.                                                                                                                                       3. 3.Intel-based Mac需要先使用brew安装libomp | 是     |
+| 3.1.1 | 基于树的梯度提升框架 | 1. M1目前需要使用conda安装.                                                                                                                          2. 可直接在sklearn使用.                                                                                                                                       3. Intel-based Mac需要先使用brew安装libomp | 是     |
 
 ## 6.1.LGBMClassifier()
 
