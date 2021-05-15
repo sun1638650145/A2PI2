@@ -2687,6 +2687,81 @@ print(example.m_print)
 print(example.my_print)
 ```
 
+## 11.10.将默认参数设置为None
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+#include "pybind11/stl.h"
+
+void myprint(std::optional<int> a) {
+    if (!a.has_value()) {
+        std::cout << pybind11::none() << std::endl;
+    } else {
+        std::cout << a.value() << std::endl;
+    }
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("myprint", &myprint, pybind11::arg("a")=pybind11::none());
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+c++ -O3 -Wall -shared -std=c++17 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+example.myprint(1)
+example.myprint()
+```
+
+## 11.11.接受任意数量的参数
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(const pybind11::args& args, const pybind11::kwargs& kwargs) {
+    int sum = 0;
+    for (auto item : args) {
+        sum += pybind11::cast<int>(item);
+    }
+    for (auto item : kwargs) {
+        sum += pybind11::cast<int>(item.second);
+    }
+    return sum;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", &add);
+}
+```
+
+2. 使用c++编译，并生成so文件
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 --includes` example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py 测试
+
+```python
+import example
+
+ans = example.add(1, 2, 3, 4, a=5, b=6)
+print(ans)
+```
+
 # 12.pybind11
 
 | 版本  | 描述                              | 注意                    |
