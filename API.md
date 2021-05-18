@@ -2125,7 +2125,52 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 9.3.merge()
+## 9.3.date_sample()
+
+生成固定频率的时间索引.|pandas.core.indexes.datetimes.DatetimeIndex
+
+```python
+import pandas as pd
+
+datetime_index = pd.date_range(start='2021/05/18',  # str or datetime-like(可选)|生成时间的开始界线.
+                               periods=5,  # int(可选)|生成的周期.
+                               freq='M')  # str or DateOffset|'D'|生成的频率.
+```
+
+## 9.4.get_dummies()
+
+将类别变量转换成Dummy编码的变量.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+sr = pd.Series(['a', 'b', 'c', 'a'])
+coding = pd.get_dummies(data=sr)  # array-like, Series, or DataFrame|输入的数据.
+```
+
+## 9.5.group_by()
+
+按照列对DataFrame进行分组.|pandas.core.groupby.generic.DataFrameGroupBy
+
+```python
+import pandas as pd
+
+df = pd.DataFrame([[1, 2], [3, 4], [5, 6]], columns=['c1', 'c2'])
+group = df.groupby(by='c2')
+```
+
+## 9.6.isnull()
+
+检测逐个元素是否是缺失值.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([1, 2, None])
+value = pd.isnull(sr)
+```
+
+## 9.7.merge()
 
 将两个DataFrame按照列键值进行合并.|pandas.core.frame.DataFrame
 
@@ -2140,5 +2185,30 @@ df = pd.merge(left=df0,  # DataFrame|要合并的DataFrame.
               left_on='values',  # label or list, or array-like|None|左侧参考项.
               right_on='values',  # label or list, or array-like|None|右侧参考项.
               sort=True)  # bool|False|是否进行排序.
+```
+
+## 9.8.notnull()
+
+检测逐个元素是否是非缺失值.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([1, 2, None])
+value = pd.notnull(sr)
+```
+
+## 9.9.read_csv()
+
+读取csv文件.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.read_csv(filepath_or_buffer='./table.csv',  # str, path object or file-like object|读取的文件路径.
+                 sep=',',  # str|','|使用的分隔符.
+                 header=0,  # int, list of int|'infer'|行名.
+                 index_col=None,  # int, str, sequence of int / str, or False|None|列名.
+                 encoding=None)  # str(可选)|None|编码方式.
 ```
 
