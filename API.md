@@ -2076,7 +2076,19 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 9.2.10.median()
+### 9.2.10.map()
+
+根据输入的对应关系映射Series.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
+map_dict = {'a': 3, 'b': 2, 'c': 1}
+sr = df['key'].map(map_dict)
+```
+
+### 9.2.11.median()
 
 获取DataFrame的中位数.|pandas.core.series.Series
 
@@ -2088,7 +2100,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 9.2.11.replace()
+### 9.2.12.replace()
 
 替换DataFrame中的值.|pandas.core.frame.DataFrame
 
@@ -2101,7 +2113,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.12.reset_index()
+### 9.2.13.reset_index()
 
 重置DataFrame中的索引.|pandas.core.frame.DataFrame
 
@@ -2113,7 +2125,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.13.sample()
+### 9.2.14.sample()
 
 返回随机采样的DataFrame样本.|pandas.core.frame.DataFrame
 
@@ -2210,5 +2222,134 @@ df = pd.read_csv(filepath_or_buffer='./table.csv',  # str, path object or file-l
                  header=0,  # int, list of int|'infer'|行名.
                  index_col=None,  # int, str, sequence of int / str, or False|None|列名.
                  encoding=None)  # str(可选)|None|编码方式.
+```
+
+## 9.10.Series()
+
+实例化Series对象.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(data=[0, 1, 2],  # array-like, Iterable, dict, or scalar value|输入的数据.
+               index=[1, 2, 3])  # array-like or Index (1d)|None|索引名.
+```
+
+### 9.10.1.dt
+
+#### 9.10.1.1day
+
+提取时间中的日期信息.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20', '2021/05/20'])
+sr = pd.to_datetime(sr)
+day = sr.dt.day
+```
+
+#### 9.10.1.2.dayofweek
+
+提取时间中的周几信息.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20', '2021/05/20'])
+sr = pd.to_datetime(sr)
+dayofweek = sr.dt.dayofweek
+```
+
+#### 9.10.1.3.hour
+
+提取时间中的小时信息.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20 8:55:56', '2021/05/20 20:55:56'])
+sr = pd.to_datetime(sr)
+hour = sr.dt.hour
+```
+
+#### 9.10.1.4.month
+
+提取时间中的月份信息.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20', '2021/05/20'])
+sr = pd.to_datetime(sr)
+month = sr.dt.month
+```
+
+#### 9.10.1.5.weekday
+
+提取时间中的周几信息.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20', '2021/05/20'])
+sr = pd.to_datetime(sr)
+weekday = sr.dt.weekday
+```
+
+### 9.10.2.isin()
+
+逐元素判断Series是否包含指定值.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([0, 1, 2])
+sr_isin = sr.isin(values=[2])  # set or list-like|指定值. 
+```
+
+### 9.10.3.mode()
+
+返回数据集的众数.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([0, 1, 2, 2])
+value = sr.mode()
+```
+
+### 9.10.4.plot()
+
+绘制图像.
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+sr = pd.Series([0, 1, 2])
+sr.plot()
+```
+
+### 9.10.5.sort_index()
+
+通过索引值为Series排序.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([0, 1, 2], index=[3, 2, 1])
+sr = sr.sort_index()
+```
+
+### 9.10.6.tolist()
+
+返回值列表.|list
+
+```python
+import pandas as pd
+
+sr = pd.Series([0, 1, 2], index=[3, 2, 1])
+value = sr.tolist()
 ```
 
