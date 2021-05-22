@@ -2137,6 +2137,32 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
+### 9.2.15.to_csv()
+
+写入csv文件.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]})
+df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件路径.
+          sep=',',  # str|','|使用的分隔符.
+          header=True,  # bool or list of str|True|列名.
+          index=True,  # bool|True|行名.
+          encoding=None)  # str(可选)|'utf-8'|编码方式.
+```
+
+### 9.2.16.values
+
+返回DataFrame的值数据.|numpy.ndarray
+
+```python
+import pandas as pd
+
+df = pd.DataFrame(data={'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]})
+values = df.values
+```
+
 ## 9.3.date_sample()
 
 生成固定频率的时间索引.|pandas.core.indexes.datetimes.DatetimeIndex
@@ -2219,8 +2245,8 @@ import pandas as pd
 
 df = pd.read_csv(filepath_or_buffer='./table.csv',  # str, path object or file-like object|读取的文件路径.
                  sep=',',  # str|','|使用的分隔符.
-                 header=0,  # int, list of int|'infer'|行名.
-                 index_col=None,  # int, str, sequence of int / str, or False|None|列名.
+                 header=0,  # int, list of int|'infer'|列名.
+                 index_col=None,  # int, str, sequence of int / str, or False|None|行名.
                  encoding=None)  # str(可选)|None|编码方式.
 ```
 
@@ -2351,5 +2377,38 @@ import pandas as pd
 
 sr = pd.Series([0, 1, 2], index=[3, 2, 1])
 value = sr.tolist()
+```
+
+## 9.11.to_datetime()
+
+将数据转换为日期类型.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series(['2016/05/20', '2021/05/20'])
+sr = pd.to_datetime(arg=sr)  # int, float, str, datetime, list, tuple, 1-d array, Series, DataFrame/dict-like|输入数据.
+```
+
+## 9.12.unqiue()
+
+返回唯一值组成的数组.|numpy.ndarray
+
+```python
+import pandas as pd
+
+sr = pd.Series([0, 1, 1, 1, 2])
+arr = pd.unique(values=sr)  # 1d array-like|输入的数据.
+```
+
+## 9.13.value_count()
+
+计算非空值出现的次数.|pandas.core.series.Series
+
+```python
+import pandas as pd
+
+sr = pd.Series([1, 2, 2, 3, None])
+values = pd.value_counts(values=sr)  # ndarray (1-d)|输入的数据.
 ```
 
