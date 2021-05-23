@@ -2412,3 +2412,72 @@ sr = pd.Series([1, 2, 2, 3, None])
 values = pd.value_counts(values=sr)  # ndarray (1-d)|输入的数据.
 ```
 
+# 10.PIL
+
+| 版本  | 描述               | 注意                            | 适配M1 |
+| ----- | ------------------ | ------------------------------- | ------ |
+| 8.2.0 | Python 图像处理库. | 1. 安装时使用pip install pillow | 是     |
+
+## 10.1.Image
+
+| 版本 | 描述             | 注意 |
+| ---- | ---------------- | ---- |
+| -    | PIL图像类装饰器. | -    |
+
+### 10.1.1.fromarray()
+
+将ndarray转换为图像.|PIL.Image.Image
+
+```python
+import numpy as np
+from PIL.Image import fromarray
+
+arr = np.asarray([[0.1, 0.2], [0.3, 0.4]])
+im = fromarray(obj=arr)  # numpy.ndarray|输入的数组.
+```
+
+### 10.1.2.open()
+
+打开图像文件.|PIL.Image.Image
+
+```python
+from PIL.Image import open
+
+im = open(fp='img.jpeg')  # A filename (string), pathlib.Path object or a file object|加载的图像路径.
+```
+
+### 10.1.3.resize()
+
+调整图像的大小.|PIL.Image.Image
+
+```python
+from PIL.Image import open
+
+im = open('img.jpeg')
+new_im = im.resize(size=[100, 100])
+```
+
+## 10.2.ImageOps
+
+| 版本 | 描述             | 注意 |
+| ---- | ---------------- | ---- |
+| -    | PIL标准图像操作. | -    |
+
+### 10.2.1.autocontrast
+
+最大化(标准化)图像的对比度.|PIL.Image.Image
+
+```python
+from PIL.Image import open
+from PIL.ImageOps import autocontrast
+
+im = open('img.jpeg')
+processed_im = autocontrast(image=im)  # PIL.Image.Image|输入的图像.
+```
+
+# 11.pybind11
+
+| 版本  | 描述                          | 注意                                                         | 适配M1 |
+| ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
+| 2.6.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
+
