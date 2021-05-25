@@ -2481,3 +2481,589 @@ processed_im = autocontrast(image=im)  # PIL.Image.Image|输入的图像.
 | ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
 | 2.6.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
 
+## 11.1.第一个例子
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+PYBIND11_MODULE(example, m) {  // example为Python模块名.
+    m.doc() = "这是一个测试模块.";  // __doc__ Python模块的说明信息
+
+    m.def("add", &add,  // Python侧的函数名和对应的C++函数引用.
+          R"pbdoc(整数加法函数.)pbdoc",  // add.__doc__ 函数的说明信息.
+          pybind11::arg("a"),  // Python侧函数的参数名称.
+          pybind11::arg("b"));
+
+    m.attr("__version__") = "0.1a0";  // 设置其他模块内变量.
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+ans = example.add(a=1, b=1)
+```
+
+## 11.2.类与继承
+
+### 11.2.1.实现类
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+
+class Animal {
+    public:
+        Animal() {
+            this->name = "animal";
+        }
+
+        void call() {
+            std::cout << "Ah!" << std::endl;
+        }
+
+    public:
+        std::string name;  // 私用变量不能转换到Python侧, 只能设置def_readonly的访问权限.
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal")
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+animal = example.Animal()
+print(animal.name)
+animal.call()
+```
+
+### 11.2.2.实现继承
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+
+class Animal {
+    public:
+        Animal() {
+            this->name = "animal";
+        }
+
+        void call() {
+            std::cout << "Ah!" << std::endl;
+        }
+
+    public:
+        std::string name;
+};
+
+class Cat: public Animal {
+    public:
+        Cat() {
+            this->name = "cat";
+        }
+
+        explicit Cat(std::string name) {
+            this->name = std::move(name);
+        }
+
+        void call() {
+            std::cout << "Meow~" << std::endl;
+        }
+};
+
+class Dog: public Animal {
+    public:
+        Dog() {
+            this->name = "dog";
+        }
+
+        explicit Dog(std::string name) {
+            this->name = std::move(name);
+        }
+
+        void call() {
+            std::cout << "Bark" << std::endl;
+        }
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal")
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
+
+    pybind11::class_<Cat, Animal>(m, "Cat")
+            .def(pybind11::init())
+            .def(pybind11::init<std::string>())  // pybind11不能自动重载, 需要显式声明.
+            .def("call", &Cat::call)
+            .def_readonly("name", &Cat::name);
+
+    pybind11::class_<Dog>(m, "Dog")  // Python侧和C++侧的继承关系并不一致, 不显示声明将继承object.
+            .def(pybind11::init())
+            .def(pybind11::init<std::string>())
+            .def("call", &Dog::call)
+            .def_readonly("name", &Dog::name);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+cat = example.Cat("Garfield")
+print(cat.name)
+cat.call()
+print(isinstance(cat, example.Animal))
+
+dog = example.Dog()
+dog.call()
+print(isinstance(dog, example.Animal))
+```
+
+### 11.2.3.允许Python侧动态获取新属性
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+
+class Animal {
+public:
+    Animal() {
+        this->name = "animal";
+    }
+
+    void call() {
+        std::cout << "Ah!" << std::endl;
+    }
+
+public:
+    std::string name;  // 私用变量不能转换到Python侧, 只能设置def_readonly的访问权限.
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal", pybind11::dynamic_attr())
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+animal = example.Animal()
+animal.age = 3
+```
+
+## 11.3.异常处理
+
+### 11.3.1.实现自定义异常
+
+0. pybind11只提供了有限的可被Python解释器捕获的异常, 因此只有手动注册没有提供的异常.
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+class CustomException: public std::exception {
+    public:
+        const char * what() const noexcept override {
+            return "自定义异常.";
+        }
+};
+
+void test() {
+    throw CustomException();
+}
+
+PYBIND11_MODULE(example, m) {
+	  // 在pybind11中注册自定义异常(将自定义异常继承一个Python的异常).
+    pybind11::register_exception<CustomException>(m, "PyCustomException", PyExc_BaseException); 
+    m.def("test", &test);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+try:
+    example.test()
+except BaseException:
+    print('成功捕获异常.')
+```
+
+## 11.4.设置参数相关
+
+### 11.4.1.常规情况
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", &add, pybind11::arg("a")=1, pybind11::arg("b")=1);  // 直接在参数上添加默认信息.
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+ans = example.add()
+```
+
+### 11.4.2.默认参数为None
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+#include "pybind11/stl.h"
+
+int add(int a, std::optional<int> b) {
+    if (!b.has_value()) {
+        return a;
+    } else {
+        return a + b.value();
+    }
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", &add,
+          pybind11::arg("a")=1,
+          pybind11::arg("b")=pybind11::none());
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++17 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+ans0 = example.add(1)
+ans1 = example.add(1, 2)
+```
+
+## 11.5. Python的语法糖
+
+### 11.5.1.在Python侧使用alias
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+void my_print(const std::string& text) {
+    pybind11::print(text);
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("my_print", &my_print);
+    
+    m.attr("m_print") = m.attr("my_print");
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+example.my_print("Hello world")
+```
+
+### 11.5.2.接受任意数量的参数
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(const pybind11::args &args, const pybind11::kwargs &kwargs) {
+    int sum = 0;
+
+    for (auto item: args) {
+        sum += pybind11::cast<int>(item);
+    }
+    for (auto item: kwargs) {
+        sum += pybind11::cast<int>(item.second);
+    }
+
+    return sum;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", &add);  // 不要在此注册参数列表.
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+ans = example.add(1, 2, a=3, b=4)
+```
+
+### 11.5.3.使用Python侧的print函数
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+void my_print(const std::string& text) {
+    pybind11::print(text);
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("my_print", &my_print);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+example.my_print("Hello world")
+```
+
+## 11.6.其他
+
+### 11.6.1.绑定Eigen
+
+1. example.cc代码
+
+```c++
+#include "pybind11/eigen.h"  // pybind11的eigen转换头文件.
+#include "pybind11/pybind11.h"
+#include "Eigen/Dense"
+
+Eigen::MatrixXd transpose(const Eigen::MatrixXd &mat) {
+    return mat.transpose();
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("transpose", &transpose,pybind11::arg("mat"));
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ -I /opt/homebrew/Cellar/eigen/3.3.9/include/eigen3 \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+trans_mat = example.transpose([[1, 2], [3, 4]])
+```
+
+### 11.6.2.实现重载
+
+1. example.cc代码
+
+```c++
+#include "pybind11/pybind11.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+double add(double a, double b) {
+    return a + b;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("add", pybind11::overload_cast<int, int>(&add));  // pybind11的重载接口.
+    m.def("add", pybind11::overload_cast<double, double>(&add));
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++14 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+int_ans = example.add(1, 1)
+float_ans = example.add(0.9, 1.1)
+```
+
+# 12.pybind11
+
+| 版本  | 描述                          | 注意                                                         | 适配M1 |
+| ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
+| 2.6.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
+
+## 12.1.setup_helpers
+
+### 12.1.1.build_ext
+
+实例化一个build_ext将在编译的过程中自动寻找系统所拥有的最高版本的c++
+
+```python
+from setuptools import setup
+
+from pybind11.setup_helpers import build_ext
+
+
+setup(
+    cmdclass={'build_ext': build_ext},
+)
+```
+
+### 12.1.2.Pybind11Extension
+
+Pybind11Extension用于自动构建c++的动态链接库.
+
+```python
+from setuptools import setup
+
+from pybind11.setup_helpers import Pybind11Extension
+
+
+extension_modules = {
+    Pybind11Extension(
+        'path/to/xxx.so',  # str|生成动态链接库的路径.
+        'path/to/source.cc',  # str|扩展源码的路径.
+        include_dirs='path/to/include/xxx',  # str|依赖包的路径.
+        language='c++',  # str|扩展使用的编程语言.
+    )
+}
+
+setup(
+    ext_modules=extension_modules,
+)
+```
+
