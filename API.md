@@ -3755,7 +3755,21 @@ tensor = tf.image.decode_png(contents,  # 图片的字节流|0-D str
                              channels)  # 转换后的色彩通道数|int|0|可选
 ```
 
-### 16.8.3.resize()
+### 16.8.5.extract_patches()
+
+从图像中提取色块.|tensorflow.python.framework.ops.Tensor
+
+```python
+import tensorflow as tf
+
+patches = tf.image.extract_patches(images,  # 4-D Tensor of shape [batch, height, width, channels]|输入的图片.
+                                   sizes,  # [1, size_rows, size_cols, 1]|色块的大小.
+                                   strides,  # [1, stride_rows, stride_cols, 1]｜滑动步长, 两个连续中心之间的距离.
+                                   rates,  # [1, rate_rows, rate_cols, 1]|连续两个色块之间的距离.
+                                   padding)  # {'valid' or 'same'}|填充方式.
+```
+
+### 16.8.6.resize()
 
 改变图片的大小|tensorflow.python.framework.ops.EagerTensor
 
@@ -4055,7 +4069,19 @@ from tensorflow.keras.backend import ones_like
 tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-#### 16.10.2.9.set_value()
+#### 16.10.2.9.reshape()
+
+将张量转换为指定形状.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+from tensorflow.keras.backend import reshape
+
+tensor = reshape(x=[[1, 2, 3],
+                    [4, 5, 6]],  # array-like|输入的张量.
+                 shape=(1, 6))  # tuple|修改后的形状. 
+```
+
+#### 16.10.2.10.set_value()
 
 设置一个变量的值(只能设置数值)
 
@@ -4065,7 +4091,7 @@ set_value(x,  # 需要设置新值的变量
           value)  # 设置的新值|numpy.ndarray(必须和原来形状一致)
 ```
 
-#### 16.10.2.10.shape()
+#### 16.10.2.11.shape()
 
 返回张量的形状|tensorflow.python.framework.ops.EagerTensor
 
@@ -4075,7 +4101,7 @@ tensor = ones_like(x=[[1, 2, 3], [4, 5, 6]])
 tensor_shape = shape(x=tensor)  # 输入的张量|tensor
 ```
 
-#### 16.10.2.11.sigmoid()
+#### 16.10.2.12.sigmoid()
 
 逐元素计算sigmoid函数的值|tensorflow.python.framework.ops.EagerTensor
 
@@ -4084,7 +4110,7 @@ from tensorflow.keras.backend import sigmoid
 tensor = sigmoid(x=[1., 2., 3., 4., 5.])  # 输入的张量|tensor
 ```
 
-#### 16.10.2.12.zeros_like()
+#### 16.10.2.13.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -4176,15 +4202,26 @@ CALLBACKS = [
 | ---- | -------------- | ------------------------------------------------------------ |
 | -    | 入门常用数据集 | 目前有boston_housing, cifar10, cifar100, fashion_mnist, imdb, mnist and reuters数据集 |
 
-#### 16.10.4.mnist
+#### 16.10.4.1.mnist
 
-#### 16.10.4.1.load_data()
+##### 16.10.4.1.1.load_data()
 
 加载mnist数据集|Tuple of Numpy arrays: (x_train, y_train), (x_test, y_test)
 
 ```python
 from tensorflow.keras.datasets import mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
+```
+
+#### 16.10.4.2.cifar100
+
+##### 16.10.4.2.1.load_data()
+
+加载cifar100数据集|Tuple of Numpy arrays: (x_train, y_train), (x_test, y_test)
+
+```python
+from tensorflow.keras.datasets import cifar100
+(x_train, y_train), (x_test, y_test) = cifar100.load_data()
 ```
 
 ### 16.10.5.layers
@@ -4346,20 +4383,49 @@ layer = Embedding(input_dim,  # 输入的维度|int(最大值加一)
 
 ##### 16.10.5.15.1.preprocessing
 
-###### 16.10.5.15.1.1.get_vocabulary()
+###### 16.10.5.15.1.1.Normalization()
 
-获取词汇表|list
+逐特征数据进行归一化.
 
 ```python
-from tensorflow.keras.layers.experimental.preprocessing import StringLookup
-char_to_num = StringLookup(mask_token=None,
-                           num_oov_indices=0,
-                           vocabulary=['a', 'b', 'c', 'd'],
-                           invert=False)
-vocab = char_to_num.get_vocabulary()
+from tensorflow.keras.layers.experimental.preprocessing import Normalization
+
+layer = Normalization()
 ```
 
-###### 16.10.5.15.1.1.StringLookup()
+###### 16.10.5.15.1.2.RandomCrop()
+
+随机裁剪图像以达到目标的尺寸.
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import RandomCrop
+
+layer = RandomCrop(height,  # int|输出图片的高度.
+                   width)  # int|输出图片的宽度.
+```
+
+###### 16.10.5.15.1.3.RandomFlip()
+
+随机水平或垂直翻转每个图像.
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import RandomFlip
+
+layer = RandomFlip(mode='horizontal_and_vertical')  # {'horizontal', 'vertical', 'horizontal_and_vertical'}|使用的翻转模式.
+```
+
+###### 16.10.5.15.1.4.Resizing()
+
+调整图片的大小.
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import Resizing
+
+layer = Resizing(height,  # int|输出图片的高度.
+                 width)  # int|输出图片的宽度.
+```
+
+###### 16.10.5.15.1.5.StringLookup()
 
 实例化一个StringLookup(将词汇表映射到整数索引)
 
@@ -4371,6 +4437,19 @@ char_to_num = StringLookup(mask_token=None,  # 词汇表的最大大小|int|None
                            vocabulary=['a', 'b', 'c', 'd'],  # 词汇表|list
                            invert=False)  # 反转|bool|False(如果是True将整数映射回词汇表)
 tensor = char_to_num(vocab)
+```
+
+###### 16.10.5.15.1.6.get_vocabulary()
+
+获取词汇表|list
+
+```python
+from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+char_to_num = StringLookup(mask_token=None,
+                           num_oov_indices=0,
+                           vocabulary=['a', 'b', 'c', 'd'],
+                           invert=False)
+vocab = char_to_num.get_vocabulary()
 ```
 
 #### 16.10.5.16.Flatten()
@@ -4448,7 +4527,16 @@ class MyLayer(Layer):
         return outputs
 ```
 
-#### 16.10.5.23.LeakyReLU()
+#### 16.10.5.23.LayerNormalization()
+
+实例化一个层标准化层
+
+```python
+from tensorflow.keras.layers import LayerNormalization
+layer = LayerNormalization()
+```
+
+#### 16.10.5.24.LeakyReLU()
 
 实例化一个带侧漏的RelU层
 
@@ -4457,7 +4545,7 @@ from tensorflow.keras.layers import LeakyReLU
 layer = LeakyReLU(alpha=0.3)  # 负斜率系数(侧漏率)|float|0.3
 ```
 
-#### 16.10.5.24.LSTM()
+#### 16.10.5.25.LSTM()
 
 实例化一个长短时记忆网络层
 
@@ -4468,7 +4556,7 @@ layer = LSTM(units=256,  # 神经元的数量|int
              dropout=0.1)  # 随机丢弃率|float|0.
 ```
 
-#### 16.10.5.25.MaxPooling1D()
+#### 16.10.5.26.MaxPooling1D()
 
 实例化一个一维最大池化层
 
@@ -4479,7 +4567,7 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int|2
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 16.10.5.26.MaxPooling2D()
+#### 16.10.5.27.MaxPooling2D()
 
 实例化一个二维最大池化层
 
@@ -4490,7 +4578,19 @@ layer = MaxPooling1D(pool_size=2,  # 池化窗口|int or tuple of 2 int|(2,2)
                      padding='valid')  # 填充方式|str('valid', 'causal' or 'same')|'valid'
 ```
 
-#### 16.10.5.27.Reshape()
+#### 16.10.5.28.MultiHeadAttention()
+
+实例化一个多head注意力层.
+
+```python
+from tensorflow.keras.layers import MultiHeadAttention
+
+layer = MultiHeadAttention(num_heads,  # int|注意力头的数量.
+                           key_dim,  # int|每个注意力头的大小.
+                           dropout=0.1)  # float|0.1|丢弃比例.
+```
+
+#### 16.10.5.29.Reshape()
 
 实例化变形层(将输入的层改变成任意形状)
 
@@ -4499,7 +4599,7 @@ from tensorflow.keras.layers import Reshape
 layer = Reshape(target_shape)  # 目标形状|tuple
 ```
 
-#### 16.10.5.28.SeparableConv2D()
+#### 16.10.5.30.SeparableConv2D()
 
 实例化深度方向的可分离二维卷积
 
@@ -4511,7 +4611,7 @@ layer = SeparableConv2D(filters,  # 卷积核的数量|int
                         padding)  # 填充方式|str('valid' or 'same')|'valid'
 ```
 
-#### 16.10.5.29.SimpleRNN()
+#### 16.10.5.31.SimpleRNN()
 
 实例化一个全连接循环神经网络层.
 
@@ -4522,7 +4622,7 @@ layer = SimpleRNN(units=256,  # 神经元的数量|int
                   dropout=0.1)  # 随机丢弃率|float|0.
 ```
 
-#### 16.10.5.30.TimeDistributed()
+#### 16.10.5.32.TimeDistributed()
 
 实例化一个时间片封装器
 
@@ -4533,7 +4633,7 @@ layer = Dense(32, activation='relu')
 layer = TimeDistributed(layer)
 ```
 
-#### 16.10.5.31.UpSampling2D()
+#### 16.10.5.33.UpSampling2D()
 
 实例化二维上采样层
 
@@ -4542,7 +4642,7 @@ from tensorflow.keras.layers import UpSampling2D
 layer = UpSampling2D(size)  # 上采样因子|int or tuple of 2 integers|2
 ```
 
-#### 16.10.5.32.ZeroPadding2D()
+#### 16.10.5.34.ZeroPadding2D()
 
 实例化一个二维输入的零填充层
 
@@ -4607,6 +4707,27 @@ loss = SparseCategoricalCrossentropy(from_logits=True)  # 是否将y_pred解释�
 ```python
 from tensorflow.keras.metrics import MAE
 mae = MAE
+```
+
+#### 16.10.7.2.SparseCategoricalAccuracy()
+
+实例化稀疏多分类准确率函数.|tensorflow.python.keras.metrics.SparseCategoricalAccuracy
+
+```python
+from tensorflow.keras.metrics import SparseCategoricalAccuracy
+
+accuracy = SparseCategoricalAccuracy(name='accuracy')  # str(可选)|'sparse_categorical_accuracy'|评估函数的名称.
+```
+
+#### 16.10.7.3.SparseTopKCategoricalAccuracy()
+
+实例化稀疏多分类TopK准确率函数.|tensorflow.python.keras.metrics.SparseTopKCategoricalAccuracy
+
+```python
+from tensorflow.keras.metrics import SparseTopKCategoricalAccuracy
+
+accuracy = SparseTopKCategoricalAccuracy(k=5,  # int(可选)|5|计算精度的范围.
+                                         name='accuracy')  # str(可选)|'sparse_top_k_categorical_accuracy'|评估函数的名称.
 ```
 
 ### 16.10.8.models
@@ -4996,7 +5117,19 @@ y = to_categorical(y=y,  # 输入的标签|array-like of int
                    num_classes=5)  # 类别总数|int|None
 ```
 
-## 16.11.ones()
+## 16.11.nn
+
+### 16.11.1.gelu()
+
+计算高斯误差线性单位（GELU）激活函数
+
+```python
+import tensorflow as tf
+
+activation = tf.nn.gelu()
+```
+
+## 16.12.ones()
 
 创建一个全一的张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -5006,7 +5139,7 @@ tensor = tf.ones(shape=(3, 2), # 输入的张量|array-like
                  dtype='int64') # 元素的数据类型|str|dtypes.float32
 ```
 
-## 16.12.ones_like()
+## 16.13.ones_like()
 
 创建一个和输入形状相同的全一张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -5015,7 +5148,7 @@ import tensorflow as tf
 tensor = tf.ones_like(input=[[1, 2, 3], [4, 5, 6]])  # 输入的张量|array-like
 ```
 
-## 16.13.py_function()
+## 16.14.py_function()
 
 将python函数修饰成tensorflow的操作, 并在eager模式下运行.
 
@@ -5035,9 +5168,9 @@ max_value = tf.py_function(func=get_max,  # function|Python函数.
                            Tout=tf.float32)  # tuple of tensorflow.python.framework.dtypes.DType|返回的数据类型.
 ```
 
-## 16.14.random
+## 16.15.random
 
-### 16.14.1.normal()
+### 16.15.1.normal()
 
 生成一个标准正态分布的张量|tensorflow.python.framework.ops.EagerTensor
 
@@ -5046,13 +5179,24 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # 形状|1-D integer Tensor or Python array
 ```
 
-## 16.15.strings
+## 16.16.range()
+
+创建一个张量序列.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.range(start=1,  # int|序列起始值.
+                  limit=None)  # int|None|序列限制值(不包括在内).
+```
+
+## 16.17.strings
 
 | 版本 | 描述           | 注意 |
 | ---- | -------------- | ---- |
 | -    | 字符串操作模块 | -    |
 
-### 16.15.1.reduce_join()
+### 16.17.1.reduce_join()
 
 将所有的字符连接成一个字符串|tensorflow.python.framework.ops.EagerTensor
 
@@ -5062,7 +5206,7 @@ input = ['1', 'a', '2', 'b']
 x = tf.strings.reduce_join(inputs=input)  # 输入的字符|array-like
 ```
 
-### 16.15.2.unicode_split()
+### 16.17.2.unicode_split()
 
 将输入的字符串的每一个字符转换成Unicode编码的bytes|tensorflow.python.framework.ops.EagerTensor
 
@@ -5073,7 +5217,7 @@ tensor = tf.strings.unicode_split(input=string,  # 输入字符串|str
                                   input_encoding='UTF-8')  # 输入字符串的编码|str
 ```
 
-## 16.15.tensordot()
+## 16.18.tensordot()
 
 计算沿指定维度的点积|tensorflow.python.framework.ops.EagerTensor
 
@@ -5084,11 +5228,11 @@ tensor = tf.tensordot(a=[[1], [2]],  # 张量|array-like
                       axes=1)  # 维度|scalar N or list or int32 Tensor of shape [2, k]
 ```
 
-## 16.16.tpu
+## 16.19.tpu
 
-### 16.16.1.experimental
+### 16.19.1.experimental
 
-#### 16.16.1.1.initialize_tpu_system()
+#### 16.19.1.1.initialize_tpu_system()
 
 初始化TPU设备
 
@@ -5097,7 +5241,7 @@ import tensorflow as tf
 tf.tpu.experimental.initialize_tpu_system(cluster_resolver=tpu)  # TPU集群信息|tf.distribute.cluster_resolver.TPUClusterResolver|None
 ```
 
-## 16.17.transpose()
+## 16.20.transpose()
 
 对张量进行转置|tensorflow.python.framework.ops.EagerTensor
 
@@ -5108,7 +5252,7 @@ tensor = tf.transpose(a=tensor,  # 输入的数组|array-like
                       perm=[1, 0, 2])  # 轴的排列顺序|list of ints|None|可选
 ```
 
-## 16.18.zeros_like()
+## 16.21.zeros_like()
 
 创建一个和输入形状相同的全零张量|tensorflow.python.framework.ops.EagerTensor
 
