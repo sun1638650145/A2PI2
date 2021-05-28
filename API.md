@@ -3067,3 +3067,44 @@ setup(
 )
 ```
 
+# 13.pydot
+
+| 版本  | 描述                   | 注意                           | 适配M1 |
+| ----- | ---------------------- | ------------------------------ | ------ |
+| 1.4.2 | graphviz的Python 接口. | 1. 需要同时安装pydot和graphviz | 是     |
+
+## 13.1.Dot
+
+### 13.1.1.write_png()
+
+将图写入png图片.
+
+```python
+import pydot
+
+graph = pydot.graph_from_dot_data(s='digraph{a; b; a->b;}')
+graph[0].write_png(path='./1.png')  # str|保存的文件位置.
+```
+
+## 13.2.graph_from_dot_data()
+
+从dot脚本中加载Dot列表.|list
+
+```python
+import pydot
+
+graph = pydot.graph_from_dot_data(s='digraph{a; b; a->b;}')  # str|dot脚本.
+graph[0].write_png('./1.png')
+```
+
+## 13.3.graph_from_dot_file()
+
+从dot文件中加载Dot列表.|list
+
+```python
+import pydot
+
+graph = pydot.graph_from_dot_file(path='./test.dot')  # str|dot脚本文件.
+graph[0].write_png('./1.png')
+```
+
