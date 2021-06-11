@@ -563,6 +563,45 @@ int main() {
 }
 ```
 
+### 3.6.13.Zero()
+
+实例化一个全零矩阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::MatrixXd zero_mat = Eigen::MatrixXd::Zero(2, 3);
+    std::cout << zero_mat << std::endl;
+    
+    return 0;
+}
+```
+
+#### 3.6.13.1.unaryExpr()
+
+接收一个函数对矩阵进行逐元素的操作.
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+double i = 1.0;
+
+int main() {
+    Eigen::MatrixXd mat = Eigen::MatrixXd::Zero(2, 3).unaryExpr(
+        [] (double element) {
+            return i ++;
+        }
+    );
+
+    std::cout << mat << std::endl;
+    return 0;
+}
+
+```
+
 ## 3.7.RowVectorXd
 
 实例化一个行向量(双精度)
@@ -595,7 +634,39 @@ int main() {
 }
 ```
 
-## 3.8.VectorXd
+## 3.8.RowVectorXi
+
+实例化一个行向量(整型)
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::RowVectorXi vec(4);
+    vec << 1, 2, 3, 4;
+    std::cout << vec << std::endl;
+    return 0;
+}
+```
+
+### 3.8.1.size()
+
+获取行向量的元素总数
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::RowVectorXi vec(4);
+    vec << 1, 2, 3, 4;
+    std::cout << vec.size() << std::endl;
+    return 0;
+}
+```
+
+## 3.9.VectorXd
 
 实例化一个列向量(双精度)
 
@@ -611,7 +682,7 @@ int main() {
 }
 ```
 
-### 3.8.1.asDiagonal()
+### 3.9.1.asDiagonal()
 
 将特征向量转换对角阵.
 
