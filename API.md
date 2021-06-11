@@ -532,6 +532,46 @@ int main() {
 }
 ```
 
+### 3.6.13.Zero()
+
+实例化一个全零矩阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::MatrixXd zero_mat = Eigen::MatrixXd::Zero(2, 3);
+  
+    std::cout << zero_mat << std::endl;
+    
+    return 0;
+}
+```
+
+#### 3.6.13.1.unaryExpr()
+
+接收一个函数对矩阵进行逐元素的操作.
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+double i = 1.0;
+
+int main() {
+    Eigen::MatrixXd mat = Eigen::MatrixXd::Zero(2, 3).unaryExpr(
+        [] (double element) {
+            return i ++;
+        }
+    );
+
+    std::cout << mat << std::endl;
+  
+    return 0;
+}
+```
+
 ## 3.7.RowVectorXd
 
 实例化(双精度)动态行向量.
@@ -568,7 +608,43 @@ int main() {
 }
 ```
 
-## 3.8.VectorXd
+## 3.8.RowVectorXi
+
+实例化一个行向量(整型)
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::RowVectorXi vec(4);
+    vec << 1, 2, 3, 4;
+  
+    std::cout << vec << std::endl;
+  
+    return 0;
+}
+```
+
+### 3.8.1.size()
+
+获取行向量的元素总数
+
+```c++
+#include <iostream>
+#include "Eigen/Core"
+
+int main() {
+    Eigen::RowVectorXi vec(4);
+    vec << 1, 2, 3, 4;
+  
+    std::cout << vec.size() << std::endl;
+  
+    return 0;
+}
+```
+
+## 3.9.VectorXd
 
 实例化(双精度)列态行向量.
 
@@ -586,7 +662,7 @@ int main() {
 }
 ```
 
-### 3.8.1.asDiagonal()
+### 3.9.1.asDiagonal()
 
 将向量转换对角阵.
 
@@ -2687,11 +2763,11 @@ public:
     }
 
 public:
-    std::string name;  // 私用变量不能转换到Python侧, 只能设置def_readonly的访问权限.
+    std::string name;  // 私有变量不能转换到Python侧.
 };
 
 PYBIND11_MODULE(example, m) {
-    pybind11::class_<Animal>(m, "Animal", pybind11::dynamic_attr())
+    pybind11::class_<Animal>(m, "Animal", pybind11::dynamic_attr())  // 允许动态获取新属性.
         .def(pybind11::init())
         .def("call", &Animal::call)
         .def_readonly("name", &Animal::name);
@@ -2713,6 +2789,64 @@ import example
 
 animal = example.Animal()
 animal.age = 3
+```
+
+### 11.2.4.属性的访问权限
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+
+class Animal {
+    public:
+        Animal(std::string name, int age) {
+            this->name = std::move(name);
+            this->age = age;
+        }
+
+        void call() {
+            std::cout << "Ah!" << std::endl;
+        }
+
+    public:
+        std::string name;
+        int age;
+};
+
+PYBIND11_MODULE(example, m) {
+    pybind11::class_<Animal>(m, "Animal")
+        .def(pybind11::init<std::string, int>())
+        .def("call", &Animal::call)
+        .def_readwrite("name", &Animal::name)  // 设置属性权限可读可写.
+        .def_readonly("age", &Animal::age);  // 设置属性权限只读.
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+animal = example.Animal("Garfield", 3)
+print("name: %s, age: %d." % (animal.name, animal.age))
+
+animal.name = "Cat"
+try:
+    animal.age = 4
+except AttributeError:
+    print("年龄是只读参数, 不可修改")
+print("name: %s, age: %d." % (animal.name, animal.age))
 ```
 
 ## 11.3.异常处理
