@@ -1,6 +1,7 @@
 # <center>A²PI²-API version2.2</center>
 
 * 2.2版本添加了关于M1芯片的适配情况, 使用Rosetta 2实现的运行的也将标记为否.
+* 将TensorFlow单独存放在一个文件.
 
 # 1.catboost
 
@@ -3298,5 +3299,277 @@ from scipy.special import inv_boxcox
 y_trans, lmbda = boxcox(x=[1, 2, 3, 4, 5])
 y = inv_boxcox(y_trans,  # numpy.ndarray|变换后的数据.
                lmbda)  # float|变换参数.
+```
+
+# 15.sklearn
+
+| 版本   | 描述                          | 注意                                                         | 适配M1 |
+| ------ | ----------------------------- | ------------------------------------------------------------ | ------ |
+| 0.24.2 | Python机器学习和数据挖掘模块. | 1. M1目前需要使用conda安装.                                                                                         2. 安装的包名是scikit-learn. | 是     |
+
+## 15.1.datasets
+
+| 版本 | 描述                 | 注意                                                         |
+| ---- | -------------------- | ------------------------------------------------------------ |
+| -    | sklearn的内置数据集. | 数据集保存的位置 /path/to/lib/python3/site-packages/sklearn/datasets/data |
+
+### 15.1.1.load_iris()
+
+加载返回iris数据集.|sklearn.utils.Bunch
+
+```python
+from sklearn.datasets import load_iris
+
+dataset = load_iris()
+```
+
+## 15.2.ensemble
+
+| 版本 | 描述                   | 注意                                                         |
+| ---- | ---------------------- | ------------------------------------------------------------ |
+| -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法 |
+
+### 15.2.1.AdaBoostClassifier()
+
+实例化AdaBoost分类器.
+
+```python
+from sklearn.ensemble import AdaBoostClassifier
+
+model = AdaBoostClassifier(n_estimators=50,  # int|50|基学习器的数量.
+                           learning_rate=1.)  # float|1.0|学习率.
+```
+
+### 15.2.2.GradientBoostingClassifier()
+
+实例化梯度提升分类器.
+
+```python
+from sklearn.ensemble import GradientBoostingClassifier
+
+model = GradientBoostingClassifier(learning_rate=0.1,  # float|0.1|学习率.
+                                   n_estimators=100)  # int|100|基学习器的数量.
+
+```
+
+### 15.2.3.RandomForestClassifier()
+
+实例化随机森林分类器.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+model = RandomForestClassifier(n_estimators=100,  # int|100|基学习器的数量.
+                               criterion='gini',  # {'gini', 'entropy'}|'gini'|划分方式.
+                               max_depth=None,  # int|None|决策树的最大深度.
+                               n_jobs=None,  # int|None|并行运行数量.
+                               verbose=0)  # int|0|日志显示模式.
+```
+
+### 15.2.4.RandomForestRegressor()
+
+实例化随机森林回归器.
+
+```python
+from sklearn.ensemble import RandomForestRegressor
+
+model = RandomForestRegressor(n_estimators=100,  # int|100|基学习器的数量.
+                              criterion='mse',  # {'mse', 'mae'}|'mse'|划分方式.
+                              max_depth=None,  # int|None|决策树的最大深度.
+                              n_jobs=None,  # int|None|并行运行数量.
+                              verbose=0)  # int|0|日志显示模式.
+```
+
+### 15.2.5.StackingClassifier()
+
+实例化Stacking分类器.
+
+```python
+from sklearn.ensemble import StackingClassifier
+
+model = StackingClassifier(estimators,  # list of (str, estimator)|基学习器的列表.
+                           final_estimator=None)  # estimator|sklearn.linear_model.LogisticRegression|二级学习器.
+```
+
+### 15.2.6.VotingClassifier()
+
+实例化投票分类器.
+
+```python
+from sklearn.ensemble import VotingClassifier
+
+model = VotingClassifier(estimators,  # list of (str, estimator)|基学习器的列表.
+                         voting='hard',  # {'hard', 'soft'}|'hard'|投票方式.
+                         weights=None)  # array-like of shape (n_classifiers,)|None|基学习器的权重.
+```
+
+## 15.3.linear_model
+
+| 版本 | 描述                   | 注意 |
+| ---- | ---------------------- | ---- |
+| -    | sklearn的线性模型模块. | -    |
+
+### 15.3.1.LinearRegression()
+
+实例化线性回归器.
+
+```python
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+```
+
+#### 15.3.1.1.fit()
+
+训练线性回归器.|self
+
+```python
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
+          y,  # array-like of shape (n_samples,) or (n_samples, n_targets)|标签.
+          sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+```
+
+#### 15.3.1.2.predict()
+
+使用线性回归器进行预测.|numpy.ndarray
+
+```python
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+y_preds = model.predict(X)  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
+```
+
+#### 15.3.1.3.score()
+
+计算验证集的平均准确率.|float
+
+```python
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+res = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
+                  y,  # array-like of shape (n_samples,) or (n_samples, n_targets)|标签.
+                  sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+```
+
+### 15.3.2.LogisticRegression()
+
+实例化逻辑回归器.
+
+```python
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+```
+
+## 15.4.metrics
+
+| 版本 | 描述               | 注意 |
+| ---- | ------------------ | ---- |
+| -    | sklearn的评估模块. | -    |
+
+### 15.4.1.accuracy_score()
+
+计算分类器的准确率.|numpy.float64
+
+```python
+from sklearn.metrics import accuracy_score
+
+accuracy = accuracy_score(y_true,  # 1d array-like, or label indicator array / sparse matrix|真实标签.
+                          y_pred,  # 1d array-like, or label indicator array / sparse matrix|预测标签.
+                          sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+```
+
+### 15.4.2.confusion_matrix()
+
+计算分类器的混淆矩阵.|numpy.ndarray
+
+```python
+from sklearn.metrics import confusion_matrix
+
+matrix = confusion_matrix(y_true,  # array-like of shape (n_samples,)|真实标签.
+                          y_pred,  # array-like of shape (n_samples,)|预测标签.
+                          sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+```
+
+### 15.4.3.r2_score()
+
+计算R2决定系数.|numpy.float64
+
+```python
+from sklearn.metrics import r2_score
+
+r2 = r2_score(y_true,  # array-like of shape (n_samples,) or (n_samples, n_outputs)|真实标签.
+              y_pred,  # array-like of shape (n_samples,) or (n_samples, n_outputs)|预测标签.
+              sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+```
+
+## 15.5.model_selection
+
+| 版本 | 描述                   | 注意 |
+| ---- | ---------------------- | ---- |
+| -    | sklearn的模型选择模块. | -    |
+
+### 15.5.1.cross_val_predict()
+
+对每个样本进行交叉验证.|numpy.ndarray
+
+```python
+from sklearn.model_selection import cross_val_predict
+
+res = cross_val_predict(estimator,  # estimator object|基学习器.
+                        X,  # array-like of shape (n_samples, n_features)|特征数据.
+                        y=None,  # array-like of shape (n_samples,) or (n_samples, n_outputs)|None|标签.
+                        cv=None)  # int|5|交叉验证的划分数.
+```
+
+### 15.5.2.cross_val_score()
+
+进行交叉验证.|numpy.ndarray
+
+```python
+from sklearn.model_selection import cross_val_score
+
+res = cross_val_score(estimator,  # estimator object|基学习器.
+                      X,  # array-like of shape (n_samples, n_features)|特征数据.
+                      y=None,  # array-like of shape (n_samples,) or (n_samples, n_outputs)|None|标签.
+                      scoring=None,  # str or callable|None|评分函数.
+                      cv=None)  # int|5|交叉验证的划分数.
+```
+
+### 15.5.3.GridSearchCV()
+
+实例化网格搜索器.
+
+```python
+from sklearn.model_selection import GridSearchCV
+
+gs = GridSearchCV(estimator,  # estimator object|基学习器.
+                  param_grid,  # dict or list of dictionaries|参数网格.
+                  scoring=None,  # str, callable, list, tuple or dict|None|评分函数.
+                  n_jobs=None,  # int|None|并行运行数量.
+                  cv=None,  # int|5|交叉验证的划分数.
+                  verbose=0)  # int|0|日志显示模式.
+```
+
+#### 15.5.3.1.fit()
+
+组合所有参数网格进行训练.|self
+
+```python
+from sklearn.model_selection import GridSearchCV
+
+gs = GridSearchCV(estimator,
+                  param_grid,
+                  scoring=None,
+                  n_jobs=None,
+                  cv=None,
+                  verbose=0)
+gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
+       y=None)  # array-like of shape (n_samples, n_output) or (n_samples,)|None|标签.
 ```
 
