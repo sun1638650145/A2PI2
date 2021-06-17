@@ -2,6 +2,7 @@
 
 * 2.2版本添加了关于M1芯片的适配情况, 使用Rosetta 2实现的运行的也将标记为否.
 * 将TensorFlow单独存放在一个文件.
+* 简化重复的API信息
 
 # 1.catboost
 
@@ -3327,7 +3328,7 @@ dataset = load_iris()
 
 | 版本 | 描述                   | 注意                                                         |
 | ---- | ---------------------- | ------------------------------------------------------------ |
-| -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法 |
+| -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
 ### 15.2.1.AdaBoostClassifier()
 
@@ -3573,3 +3574,235 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
        y=None)  # array-like of shape (n_samples, n_output) or (n_samples,)|None|标签.
 ```
 
+#### 15.5.3.2.best_params_
+
+最佳参数.|dict
+
+```python
+gs.best_params_
+```
+
+#### 15.5.3.3.best_score_
+
+最佳平均交叉验证分数.|float
+
+```python
+gs.best_score_
+```
+
+### 15.5.4.LeaveOneOut()
+
+实例化留一法交叉验证器.
+
+```python
+from sklearn.model_selection import LeaveOneOut
+
+loo = LeaveOneOut()
+```
+
+#### 15.5.4.1.split()
+
+划分数据.|yield
+
+```python
+from sklearn.model_selection import LeaveOneOut
+
+loo = LeaveOneOut()
+train_set, test_set = loo.split(X,  # array-like of shape (n_samples, n_features)|特征数据.
+                                y=None)  # array-like of shape (n_samples,)|标签.
+```
+
+### 15.5.5.StratifiedKFold()
+
+实例化分层K折交叉验证器.
+
+```python
+from sklearn.model_selection import StratifiedKFold
+
+kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
+                        shuffle=False,  # bool|False|是否打乱数据.
+                        random_state=None)  # int, RandomState instance or None|None|随机状态.
+```
+
+#### 15.5.5.1.n_splits
+
+交叉验证的划分数.|int
+
+```python
+kfold.n_splits
+```
+
+#### 15.5.5.2.split()
+
+划分数据.|yield
+
+```python
+from sklearn.model_selection import StratifiedKFold
+
+kfold = StratifiedKFold(n_splits=5,
+                        shuffle=False,
+                        random_state=None)
+train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_features)|特征数据.
+                                  y=None)  # array-like of shape (n_samples,)|标签.
+```
+
+### 15.5.6.train_test_split()
+
+将数据集拆分成训练和测试集.|list
+
+```python
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(X, y,  # lists, numpy arrays, scipy-sparse matrices or pandas dataframes|要拆分的数据.
+                                                    test_size=None,  # float or int|None|测试集的大小.
+                                                    random_state=None)  # int, RandomState instance or None|None|随机状态.
+```
+
+## 15.6.preprocessing
+
+| 版本 | 描述                     | 注意                                                         |
+| ---- | ------------------------ | ------------------------------------------------------------ |
+| -    | sklearn的数据预处理模块. | 1. 预处理器的类方法基本没有差异, 具体参见`LabelEncoder`的类方法. |
+
+### 15.6.1.LabelEncoder()
+
+实例化标签编码器.
+
+```python
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+```
+
+#### 15.6.1.1.fit_transform()
+
+预处理数据.|numpy.ndarray
+
+```python
+from sklearn.preprocessing import LabelEncoder
+
+raw_y = ['a', 'a', 'b', 'c']
+le = LabelEncoder()
+y = le.fit_transform(y=raw_y)  # array-like of shape (n_samples,)|要处理的数据.
+```
+
+### 15.6.2.MinMaxScaler()
+
+实例化MinMax缩放器.
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+```
+
+### 15.6.3.MultiLabelBinarizer()
+
+实例化多标签二值化缩放器.
+
+```python
+from sklearn.preprocessing import MultiLabelBinarizer
+
+mlb = MultiLabelBinarizer()
+```
+
+#### 15.6.3.1.classes_
+
+原始的标签.|numpy.ndarray
+
+```python
+mlb.classes_
+```
+
+## 15.7.svm
+
+| 版本 | 描述                     | 注意                                                         |
+| ---- | ------------------------ | ------------------------------------------------------------ |
+| -    | sklearn的支持向量机模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
+
+### 15.7.1.SVC()
+
+实例化支持向量分类器.
+
+```python
+from sklearn.svm import SVC
+
+model = SVC(C=1.0,  # float|1.0|正则化系数.
+            kernel='rbf',  # {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}|'rbf'|核函数.
+            probability=False,  # bool|False|是否启用概率估计.
+            class_weight=None)  # dict or 'balanced'|None|类别权重.
+```
+
+### 15.7.2.SVR()
+
+实例化支持向量回归器.
+
+```python
+from sklearn.svm import SVR
+
+model = SVR(kernel='rbf',  # {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}|'rbf'|核函数.
+            C=1.0)  # float|1.0|正则化系数.
+```
+
+## 15.8.tree
+
+| 版本 | 描述                 | 注意                                                         |
+| ---- | -------------------- | ------------------------------------------------------------ |
+| -    | sklearn的决策树模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
+
+### 15.8.1.DecisionTreeClassifier()
+
+实例化决策树分类器.
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+
+model = DecisionTreeClassifier(criterion='gini',  # {'gini', 'entropy'}|'gini'|划分方式.
+                               random_state=None)  # int, RandomState instance or None|None|随机状态.
+```
+
+### 15.8.2.export_graphviz()
+
+导出决策树结构为Dot语言.|str
+
+```python
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+
+model = DecisionTreeClassifier(criterion='gini',
+                               random_state=None)
+dot_str = export_graphviz(decision_tree=model,  # decision tree regressor or classifier|要绘制的决策树.
+                          out_file=None,  # object or str|None|是否导出文件.
+                          feature_names=None,  # list of str|None|特征的名称.
+                          class_names=None)  # list of str or bool|None|类别的名称.
+```
+
+### 15.8.3.plot_tree()
+
+绘制决策树.
+
+```python
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+model = DecisionTreeClassifier(criterion='gini',
+                               random_state=None)
+plot_tree(decision_tree=model)  # decision tree regressor or classifier|要绘制的决策树.
+```
+
+## 15.9.utils
+
+| 版本 | 描述               | 注意 |
+| ---- | ------------------ | ---- |
+| -    | sklearn的工具模块. | -    |
+
+### 15.9.1.multiclass
+
+#### 15.9.1.1.type_of_target()
+
+判断数据的类型.|str
+
+```python
+from sklearn.utils.multiclass import type_of_target
+
+y = ['a', 'b', 'c']
+res = type_of_target(y=y)  # array-like|输入的数据.
+```
