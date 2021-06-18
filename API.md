@@ -1,7 +1,7 @@
 # <center>A²PI²-API version2.2</center>
 
 * 2.2版本添加了关于M1芯片的适配情况, 使用Rosetta 2实现的运行的也将标记为否.
-* 将TensorFlow单独存放在一个文件.
+* 将TensorFlow生态的全部包单独存放在一个文件.
 * 简化重复的API信息
 
 # 1.catboost
@@ -3806,3 +3806,63 @@ from sklearn.utils.multiclass import type_of_target
 y = ['a', 'b', 'c']
 res = type_of_target(y=y)  # array-like|输入的数据.
 ```
+
+# 16.tokenizers
+
+| 版本   | 描述                  | 注意                        | 适配M1 |
+| ------ | --------------------- | --------------------------- | ------ |
+| 0.10.1 | 快速和自定义的分词器. | 1. M1目前需要使用conda安装. | 是     |
+
+## 16.1.ByteLevelBPETokenizer()
+
+实例化字符级BPE分词器.
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+
+tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',  # str(可选)|None|词汇表.
+                                  merges='./merges.txt',  # str(可选)|None|分词表.
+                                  add_prefix_space=False,  # bool|False|是否使用特殊标记器.
+                                  lowercase=False)  # bool|False|是否全部转换为小写字母.
+```
+
+### 16.1.1.decode()
+
+解码给定的ID列表.|str
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+
+tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',
+                                  merges='./merges.txt',
+                                  add_prefix_space=False,
+                                  lowercase=False)
+
+encoding_list = [31414, 34379, 328]
+raw_text = tokenizer.decode(ids=encoding_list)  # list|要解码的ID列表.
+```
+
+### 16.1.2.encode()
+
+编码给定的序列(对).|tokenizers.Encoding
+
+```python
+from tokenizers import ByteLevelBPETokenizer
+
+tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',
+                                  merges='./merges.txt',
+                                  add_prefix_space=False,
+                                  lowercase=False)
+
+raw_text = 'Hello Transformers!'
+encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
+```
+
+#### 16.1.2.1.ids
+
+编码后的ID列表.|list
+
+```python
+encoding.ids
+```
+
