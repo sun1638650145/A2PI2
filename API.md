@@ -3822,7 +3822,7 @@ from tokenizers import ByteLevelBPETokenizer
 
 tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',  # str(可选)|None|词汇表.
                                   merges='./merges.txt',  # str(可选)|None|分词表.
-                                  add_prefix_space=False,  # bool|False|是否使用特殊标记器.
+                                  add_prefix_space=False,  # bool|False|是否田间前缀空间.
                                   lowercase=False)  # bool|False|是否全部转换为小写字母.
 ```
 
@@ -3864,5 +3864,128 @@ encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
 
 ```python
 encoding.ids
+```
+
+# 17.transformers
+
+| 版本  | 描述                | 注意                                                         | 适配M1 |
+| ----- | ------------------- | ------------------------------------------------------------ | ------ |
+| 4.6.1 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                           2. 部分功能需要依赖sentencepiece模块. | 是     |
+
+## 17.1.AlbertTokenizer
+
+### 17.1.1.\__call__()
+
+为Albert分词(预处理)一个或者多个数据.|{input_ids, (token_type_ids), (attention_mask)}
+
+```python
+from transformers import AlbertTokenizer
+
+tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='albert-base-v2',
+                                            do_lower_case=True)
+x = 'Hello Transformer!'
+encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
+                    add_special_tokens=True,  # bool(可选)|True|是否使用特殊标记器.
+                    padding=False,  # bool(可选)|False|是否填充到最大长度.
+                    truncation=False,  # bool(可选)|False|是否截断到最大长度.
+                    max_length=128,  # int(可选)|None|填充和截断的最大长度.
+                    return_tensors='tf',  # {'tf', 'pt', 'np'}(可选)|None|返回张量的类型.
+                    return_token_type_ids=False,  # bool(可选)|False|是否返回令牌ID.
+                    return_attention_mask=False)  # bool(可选)|False|是否返回注意力掩码.
+```
+
+### 17.1.2.from_pretrained()
+
+实例化Albert预训练分词器.|transformers.models.albert.tokenization_albert.AlbertTokenizer
+
+```python
+from transformers import AlbertTokenizer
+
+tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='albert-base-v2',  # str|预训练分词器的名称或者路径.
+                                            do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
+```
+
+## 17.2.BertTokenizer()
+
+### 17.2.1.\__call__()
+
+为Bert分词(预处理)一个或者多个数据.|{input_ids, (token_type_ids), (attention_mask)}
+
+```python
+from transformers import BertTokenizer
+
+tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',
+                                            do_lower_case=True)
+x = 'Hello Transformer!'
+encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
+                    add_special_tokens=True,  # bool(可选)|True|是否使用特殊标记器.
+                    padding=False,  # bool(可选)|False|是否填充到最大长度.
+                    truncation=False,  # bool(可选)|False|是否截断到最大长度.
+                    max_length=128,  # int(可选)|None|填充和截断的最大长度.
+                    return_tensors='tf',  # {'tf', 'pt', 'np'}(可选)|None|返回张量的类型.
+                    return_token_type_ids=False,  # bool(可选)|False|是否返回令牌ID.
+                    return_attention_mask=False)  # bool(可选)|False|是否返回注意力掩码.
+```
+
+### 17.2.2.from_pretrained()
+
+实例化Bert预训练分词器.|transformers.models.bert.tokenization_bert.BertTokenizer
+
+```python
+from transformers import BertTokenizer
+
+tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # str|预训练分词器的名称或者路径.
+                                          do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
+```
+
+## 17.3.RobertaConfig
+
+### 17.3.1.from_pretrained()
+
+获取Roberta的预训练配置信息.|transformers.models.roberta.configuration_roberta.RobertaConfig
+
+```python
+from transformers import RobertaConfig
+
+config = RobertaConfig.from_pretrained(pretrained_model_name_or_path='roberta-base')  # str|预训练的配置信息名称或者路径.
+```
+
+## 17.4.TFAlbertModel
+
+### 17.4.1.from_pretrained()
+
+实例化预训练的Albert模型.|transformers.models.albert.modeling_tf_albert.TFAlbertModel
+
+```python
+from transformers import TFAlbertModel
+
+model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base-v2',  # str|预训练模型的名称或者路径.
+                                      trainable=True)  # bool|True|参数是否可以训练.
+```
+
+## 17.5.TFBertModel
+
+### 17.5.1.from_pretrained()
+
+实例化预训练的Bert模型.|transformers.models.bert.modeling_tf_bert.TFBertModel
+
+```python
+from transformers import TFBertModel
+
+model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-uncased',  # str|预训练模型的名称或者路径.
+                                    trainable=True)  # bool|True|参数是否可以训练.
+```
+
+## 17.6.TFRobertaModel
+
+### 17.6.1.from_pretrained()
+
+实例化预训练的Roberta模型.|transformers.models.roberta.modeling_tf_roberta.TFRobertaModel
+
+```python
+from transformers import TFRobertaModel
+
+model = TFRobertaModel.from_pretrained(pretrained_model_name_or_path='roberta-base',  # str|预训练模型的名称或者路径.
+                                       trainable=True)  # bool|True|参数是否可以训练.
 ```
 
