@@ -6,9 +6,109 @@
 
 # 1.catboost
 
-| 版本   | 描述                  | 注意                 | 适配M1 |
-| ------ | --------------------- | -------------------- | ------ |
-| 0.24.4 | 梯度提升决策树(GBDT). | 可直接在sklearn使用. | 否     |
+| 版本 | 描述                  | 注意                                                         | 适配M1 |
+| ---- | --------------------- | ------------------------------------------------------------ | ------ |
+| 0.26 | 梯度提升决策树(GBDT). | 1. 可直接在sklearn使用.                                                                                                                              2. 模型的类方法基本没有差异, 具体参见`CatBoostClassifier`的类方法. | 否     |
+
+## 1.1.CatBoostClassifier()
+
+实例化CatBoost分类器.
+
+```python
+from catboost import CatBoostClassifier
+
+model = CatBoostClassifier(iterations=None,  # int|500|最大的决策树数量.
+                           learning_rate=None,  # float|0.03|学习率.
+                           depth=None,  # int|6|决策树的最大深度.
+                           l2_leaf_reg=None,  # float|3.0|损失函数的L2正则化系数.
+                           loss_function=None,  # str or object|'Logloss'|损失函数.
+                           od_wait=None,  # int|None|得到最佳结果后迭代的次数.
+                           od_type=None,  # {'IncToDec', 'Iter'}|None|过拟合检测器的类型.
+                           random_seed=None,  # int|None|随机种子.
+                           bagging_temperature=None,  # float|None|使用贝叶斯分配初始化权重.
+                           bootstrap_type=None,  # {'Bayesian', 'Bernoulli', 'Poisson', 'MVS'}|启动类型.
+                           colsample_bylevel=None,  # float|随机特征选择时, 每次拆分选择使用的特征百分比.
+                           allow_writing_files=None,  # bool|True|是否导出缓存文件.
+                           cat_features=None)  # list or numpy.ndarray|None|类别的索引列.
+```
+
+### 1.1.1.fit()
+
+训练CatBoost分类器.|self
+
+```python
+from catboost import CatBoostClassifier
+
+model = CatBoostClassifier(iterations=None,
+                           learning_rate=None,
+                           depth=None,
+                           l2_leaf_reg=None,
+                           loss_function=None,
+                           od_wait=None,
+                           od_type=None,
+                           random_seed=None,
+                           bagging_temperature=None,
+                           bootstrap_type=None,
+                           colsample_bylevel=None,
+                           allow_writing_files=None,
+                           cat_features=None)
+model.fit(X,  # catboost.Pool or list or numpy.ndarray or pandas.DataFrame or pandas.Series|特征数据.
+          y=None,  # list or numpy.ndarray or pandas.DataFrame or pandas.Series(可选)|None|标签.
+          text_features=None,  # list or numpy.ndarray(可选)|None|特征数据的索引列.
+          eval_set=None,  # catboost.Pool or list(可选)|None|验证集元组列表.
+          verbose=None)  # bool or int|日志显示模式.
+```
+
+### 1.1.2.feature_importances_
+
+特征的重要度.|numpy.ndarray
+
+```python
+model.feature_importances_
+```
+
+### 1.1.3.feature_names_
+
+特征的名称.|list of str
+
+```python
+model.feature_names_
+```
+
+### 1.1.4.predict()
+
+使用CatBoost分类器进行预测.|numpy.ndarray
+
+```python
+from catboost import CatBoostClassifier
+
+model = CatBoostClassifier()
+y_preds = model.predict(data)  # catboost.Pool or list of features or list of lists or numpy.ndarray or pandas.DataFrame or pandas.Series or catboost.FeaturesData|特征数据.
+```
+
+## 1.2.CatBoostRegressor()
+
+实例化CatBoost回归器.
+
+```python
+from catboost import CatBoostRegressor
+
+model = CatBoostRegressor(iterations=None,  # int|500|最大的决策树数量.
+                          learning_rate=None,  # float|0.03|学习率.
+                          depth=None,  # int|6|决策树的最大深度.
+                          l2_leaf_reg=None,  # float|3.0|损失函数的L2正则化系数.
+                          loss_function=None,
+                          # {'RMSE', 'MAE', 'Quantile:alpha=value', 'LogLinQuantile:alpha=value', 'Poisson', 'MAPE',
+                          # 'Lq:q=value', 'SurvivalAft:dist=value;scale=value'}|'RMSE'|损失函数.
+                          od_wait=None,  # int|None|得到最佳结果后迭代的次数.
+                          od_type=None,  # {'IncToDec', 'Iter'}|None|过拟合检测器的类型.
+                          random_seed=None,  # int|None|随机种子.
+                          bagging_temperature=None,  # float|None|使用贝叶斯分配初始化权重.
+                          bootstrap_type=None,  # {'Bayesian', 'Bernoulli', 'Poisson', 'MVS'}|启动类型.
+                          colsample_bylevel=None,  # float|随机特征选择时, 每次拆分选择使用的特征百分比.
+                          allow_writing_files=None,  # bool|True|是否导出缓存文件.
+                          cat_features=None)  # list or numpy.ndarray|None|类别的索引列.
+```
 
 # 2.cv2
 
@@ -767,11 +867,11 @@ image = imageio.imread(uri='./image.jpg')  # str or pathlib.Path or bytes or fil
 
 | 版本  | 描述                  | 注意                                                         | 适配M1 |
 | ----- | --------------------- | ------------------------------------------------------------ | ------ |
-| 3.1.1 | 基于树的梯度提升框架. | 1. M1目前需要使用conda安装.                                                                                                                          2. 可直接在sklearn使用.                                                                                                                                       3. Intel-based Mac需要先使用brew安装libomp | 是     |
+| 3.1.1 | 基于树的梯度提升框架. | 1. M1目前需要使用conda安装.                                                                                                                           2. 可直接在sklearn使用.                                                                                                                                       3. Intel-based Mac需要先使用brew安装libomp | 是     |
 
 ## 6.1.LGBMClassifier()
 
-实例化一个LGBM分类器.
+实例化LGBM分类器.
 
 ```python
 from lightgbm import LGBMClassifier
@@ -784,7 +884,7 @@ model = LGBMClassifier(boosting_type='gbdt',  # {'gbdt', 'dart', 'goss', 'rf'}(�
 
 ### 6.1.1.fit()
 
-训练LGBM分类器|self
+训练LGBM分类器.|self
 
 ```python
 model.fit(X,  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|特征数据.
@@ -794,10 +894,10 @@ model.fit(X,  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|�
 
 ### 6.1.2.predict()
 
-进行预测|numpy.ndarray
+使用LGBM分类器进行预测.|numpy.ndarray
 
 ```python
-result = model.predict(X)  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|用于预测的数据.
+y_preds = model.predict(X)  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|用于预测的数据.
 ```
 
 # 7.matplotlib
@@ -3452,9 +3552,9 @@ y_preds = model.predict(X)  # {array-like, sparse matrix} of shape (n_samples, n
 from sklearn.linear_model import LinearRegression
 
 model = LinearRegression()
-res = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
-                  y,  # array-like of shape (n_samples,) or (n_samples, n_targets)|标签.
-                  sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
+accuracy = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
+                       y,  # array-like of shape (n_samples,) or (n_samples, n_targets)|标签.
+                       sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
 ### 15.3.2.LogisticRegression()
@@ -3870,7 +3970,7 @@ encoding.ids
 
 | 版本  | 描述                | 注意                                                         | 适配M1 |
 | ----- | ------------------- | ------------------------------------------------------------ | ------ |
-| 4.6.1 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                           2. 部分功能需要依赖sentencepiece模块. | 是     |
+| 4.6.1 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                                                               2. 部分功能需要依赖sentencepiece模块. | 是     |
 
 ## 17.1.AlbertTokenizer
 
@@ -3987,5 +4087,86 @@ from transformers import TFRobertaModel
 
 model = TFRobertaModel.from_pretrained(pretrained_model_name_or_path='roberta-base',  # str|预训练模型的名称或者路径.
                                        trainable=True)  # bool|True|参数是否可以训练.
+```
+
+# 18.xgboost
+
+| 版本  | 描述                  | 注意                                                         | 适配M1 |
+| ----- | --------------------- | ------------------------------------------------------------ | ------ |
+| 1.4.2 | 梯度提升决策树(GBDT). | 1. 可直接在sklearn使用.                                                                                                                              2. 模型的类方法基本没有差异, 具体参见`XGBClassifier`的类方法. | 是     |
+
+## 18.1.XGBClassifier()
+
+实例化XGBoost分类器.
+
+```python
+from xgboost import XGBClassifier
+
+model = XGBClassifier(max_depth=None,  # int|None|基学习器的最大深度.
+                      learning_rate=None,  # float|None|学习率.
+                      n_estimators=100,  # int|100|基学习器的数量.
+                      objective=None,  # str or callable|None|损失函数.
+                      booster=None,  # {'gbtree', 'gblinear', 'dart'}|None|基学习器的类型.
+                      n_jobs=None,  # int|None|并行运行数量.
+                      subsample=None,  # float|None|随机采样率.
+                      colsample_bytree=None,  # float|None|每棵树的属性随机采样率.
+                      random_state=None)  # int|None|随机状态.
+```
+
+### 18.1.1.fit()
+
+训练XGBoost分类器.|self
+
+```python
+from xgboost import XGBClassifier
+
+model = XGBClassifier()
+model.fit(X,  # array_like|特征数据.
+          y,  # array_like|标签.
+          eval_set=None,  # list(可选)|验证集元组列表.
+          eval_metric=None,  # str, list of str, or callable(可选)|验证时使用的评估指标.
+          early_stopping_rounds=None,  # int|早停的轮数.
+          verbose=True)  # bool|日志显示模式.
+```
+
+### 18.1.2.predict()
+
+使用XGBoost分类器进行预测.|numpy.ndarray
+
+```python
+from xgboost import XGBClassifier
+
+model = XGBClassifier()
+y_preds = model.predict(X)  # array_like|特征数据.
+```
+
+### 18.1.3.score()
+
+计算验证集的平均准确率.|float
+
+```python
+from xgboost import XGBClassifier
+
+model = XGBClassifier()
+accuracy = model.score(X,  # array-like of shape (n_samples, n_features)|特征数据.
+                       y)  # array-like of shape (n_samples,) or (n_samples, n_outputs)|标签.
+```
+
+## 18.2.XGBRegressor()
+
+实例化XGBoost回归器.
+
+```python
+from xgboost import XGBRegressor
+
+model = XGBRegressor(max_depth=None,  # int|None|基学习器的最大深度.
+                     learning_rate=None,  # float|None|学习率.
+                     n_estimators=100,  # int|100|基学习器的数量.
+                     objective=None,  # str or callable|None|损失函数.
+                     booster=None,  # {'gbtree', 'gblinear', 'dart'}|None|基学习器的类型.
+                     n_jobs=None,  # int|None|并行运行数量.
+                     subsample=None,  # float|None|随机采样率.
+                     colsample_bytree=None,  # float|None|每棵树的属性随机采样率.
+                     random_state=None)  # int|None|随机状态.
 ```
 
