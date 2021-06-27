@@ -2951,6 +2951,50 @@ except AttributeError:
 print("name: %s, age: %d." % (animal.name, animal.age))
 ```
 
+### 11.2.5.在C++侧使用Python对象的属性
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/pybind11.h"
+
+void get_person_name(const pybind11::object &person) {
+    std::string name = getattr(person, "name").cast<std::string>();
+    std::cout << "Person's name:" << name << std::endl;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("get_person_name", &get_person_name);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import example
+
+
+class Person(object):
+    def __init__(self, money, name):
+        super(Person, self).__init__()
+
+        self.money = money
+        self.name = name
+
+
+example.get_person_name(Person(money=10, name='Tom'))
+```
+
 ## 11.3.异常处理
 
 ### 11.3.1.实现自定义异常
