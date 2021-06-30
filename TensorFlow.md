@@ -53,6 +53,210 @@ import tensorflow as tf
 tensor = tf.constant(value=2021)  # int, float or list|输入的数据.
 ```
 
+## 1.3.data
+
+| 版本 | 描述                        | 注意 |
+| ---- | --------------------------- | ---- |
+| -    | TensorFlow的数据输入流水线. | -    |
+
+### 1.3.1.AUTOTUNE
+
+自动调整常量.
+
+```python
+import tensorflow as tf
+
+autotune = tf.data.AUTOTUNE
+```
+
+### 1.3.2.Dataset
+
+#### 1.3.2.1.as_numpy_iterator()
+
+返回numpy迭代器,将元素转换为numpy.|tensorflow.python.data.ops.dataset_ops._NumpyIterator
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10)
+iterator = dataset.as_numpy_iterator()
+```
+
+#### 1.3.2.2.batch()
+
+为数据集划分批次.|tensorflow.python.data.ops.dataset_ops.BatchDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(6)
+dataset = dataset.batch(batch_size=3)  # int|批次大小.
+```
+
+#### 1.3.2.3.from_tensor_slices()
+
+从张量切片中创建数据集.|tensorflow.python.data.ops.dataset_ops.TensorSliceDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2], [3, 4]))  # array-like|输入的数据.
+```
+
+#### 1.3.2.4.map()
+
+对数据应用处理.|tensorflow.python.data.ops.dataset_ops.MapDataset or tensorflow.python.data.ops.dataset_ops.ParallelMapDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1., 2.], [3., 4.]))  # array-like|输入的数据.
+dataset = dataset.map(map_func=lambda x, y: (x + 0.5, y - 0.5),  # function or lambda|处理函数.
+                      num_parallel_calls=tf.data.AUTOTUNE)  # int|None|并行处理的数量.
+```
+
+#### 1.3.2.5.padded_batch()
+
+为数据集划分批次(按照规则进行填充).|tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(1, 4, output_type=tf.int32)
+dataset = dataset.map(lambda x: tf.fill([x], x))
+dataset = dataset.padded_batch(batch_size=2,  # int|批次大小.
+                               padded_shapes=4,  # int(可选)|None|填充后的形状.
+                               padding_values=-1)  # int(可选)|0|填充的值.
+```
+
+#### 1.3.2.6.prefetch()
+
+对数据集进行预加载.|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(1, 4, output_type=tf.int32)
+dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)  # int|预加载缓冲区的大小.
+```
+
+#### 1.3.2.7.range()
+
+创建指定范围的数据集.|tensorflow.python.data.ops.dataset_ops.RangeDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10,
+                                output_type=tf.int32)  # tensorflow.python.framework.dtypes.DType|元素的数据类型.
+```
+
+#### 1.3.2.8.shuffle()
+
+对数据集进行打乱.|tensorflow.python.data.ops.dataset_ops.ShuffleDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10, output_type=tf.int32)
+dataset = dataset.shuffle(buffer_size=2)  # int|打乱缓冲区的大小.
+```
+
+#### 1.3.2.9.skip()
+
+跳过指定个数数据创建新数据集.|tensorflow.python.data.ops.dataset_ops.SkipDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10)
+dataset = dataset.skip(count=3)  # int|跳过的个数.
+```
+
+#### 1.3.2.10.take()
+
+取出指定个数数据创建新数据集.|tensorflow.python.data.ops.dataset_ops.TakeDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10)
+dataset = dataset.take(count=3)  # int|取出的个数.
+```
+
+### 1.3.3.experimental
+
+#### 1.3.3.1.make_csv_dataset()
+
+读取CSV文件.|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.experimental.make_csv_dataset(file_pattern='ds.csv',  # str|CSV文件路径.
+                                                batch_size=1,  # int|批次大小.
+                                                column_names=['C1', 'C2'],   # list of str(可选)|None|列名.
+                                                label_name='C2',   # str(可选)|None|标签列名.
+                                                num_epochs=1)  # int|None|数据集重复加载的次数， None则是一直重复加载.
+```
+
+## 1.4.distribute
+
+| 版本 | 描述                    | 注意 |
+| ---- | ----------------------- | ---- |
+| -    | TensorFlow的分布式策略. | -    |
+
+### 1.4.1.cluster_resolver
+
+#### 1.4.1.1.TPUClusterResolver()
+
+实例化TPU集群.
+
+```python
+import tensorflow as tf
+
+resolver = tf.distribute.cluster_resolver.TPUClusterResolver()
+```
+
+### 1.4.2.MirroredStrategy()
+
+```python
+import tensorflow as tf
+
+# 实例化单机多GPU策略.
+strategy = tf.distribute.MirroredStrategy()
+with strategy.scope():
+    # 模型构建代码.
+    ...
+```
+
+### 1.4.3.TPUStrategy()
+
+实例化TPU策略.
+
+```python
+import tensorflow as tf
+
+strategy = tf.distribute.TPUStrategy()
+with strategy.scope():
+    # 模型构建代码.
+    ...
+```
+
+## 1.5.einsum()
+
+爱因斯坦求和约定.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+import tensorflow as tf
+
+a = np.asarray([[1], [2]])
+b = np.asarray([[1, 2]])
+res = tf.einsum('ij,jk->ik',  # str|描述公式.
+                a, b)  # array-like|输入的数据.
+```
+
 # 2.tensorflow.js
 
 # 3.tensorflow_datasets
