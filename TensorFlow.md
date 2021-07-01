@@ -257,6 +257,160 @@ res = tf.einsum('ij,jk->ik',  # str|描述公式.
                 a, b)  # array-like|输入的数据.
 ```
 
+## 1.6.feature_column
+
+### 1.6.1.categorical_column_with_vocabulary_list()
+
+创建分类列.|tensorflow.python.feature_column.feature_column_v2.VocabularyListCategoricalColumn
+
+```python
+import tensorflow as tf
+
+column = tf.feature_column.categorical_column_with_vocabulary_list(key='sex',  # str|特征名称.
+                                                                   vocabulary_list=['male', 'female'])  # list of str|属性名称.
+```
+
+### 1.6.2.indicator_column()
+
+将分类列进行one-hot表示.|tensorflow.python.feature_column.feature_column_v2.IndicatorColumn
+
+```python
+import tensorflow as tf
+
+column = tf.feature_column.categorical_column_with_vocabulary_list(key='sex',
+                                                                   vocabulary_list=['male', 'female'])
+column = tf.feature_column.indicator_column(categorical_column=column)  # CategoricalColumn|分类列.
+```
+
+### 1.6.3.numeric_column()
+
+```python
+import tensorflow as tf
+
+# 创建数值列.|tensorflow.python.feature_column.feature_column_v2.NumericColumn
+column = tf.feature_column.numeric_column(key='age')  # str|特征名称.
+```
+
+## 1.7.GradientTape()
+
+实例化梯度带.
+
+```python
+import tensorflow as tf
+
+tape = tf.GradientTape()
+```
+
+### 1.7.1.gradient()
+
+计算梯度.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+x = tf.Variable(3.0)
+with tf.GradientTape() as tape:
+    y = tf.multiply(2, x)
+
+grad = tape.gradient(target=y,  # Tensors|`sources`关于`target`的梯度.
+                     sources=x)
+```
+
+## 1.8.image
+
+| 版本 | 描述                  | 注意 |
+| ---- | --------------------- | ---- |
+| -    | TensorFlow的图像操作. | -    |
+
+### 1.8.1.convert_image_dtype()
+
+转换图像的数据类型.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+arr = [[[1., 2., 3.], [4., 5., 6.]],
+       [[7., 8., 9.], [1., 2., 3.]]]
+img = tf.image.convert_image_dtype(image=arr,  # array-like|图像.
+                                   dtype=tf.uint8)  # tensorflow.python.framework.dtypes.DType|转换后的数据类型.
+```
+
+### 1.8.2.decode_image()
+
+转换BMP、GIF、JPEG或者PNG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file(f'./img.jpg')
+tensor = tf.image.decode_image(contents=tensor,  # A `Tensor` of type `string`|图片的字节流.
+                               channels=None,  # int|0|色彩通道数.
+                               dtype=tf.uint8)  # tensorflow.python.framework.dtypes.DType|转换后的数据类型.
+```
+
+### 1.8.3.decode_jpeg()
+
+转换JPEG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file('./img.jpg')
+tensor = tf.image.decode_jpeg(contents=tensor,  # A `Tensor` of type `string`|JPEG图片的字节流.
+                              channels=0)  # int|0|色彩通道数.
+```
+
+### 1.8.4.decode_png()
+
+转换PNG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file('./img.png')
+tensor = tf.image.decode_png(contents=tensor,  # A `Tensor` of type `string`|PNG图片的字节流.
+                             channels=0)  # int|0|色彩通道数.
+```
+
+### 1.8.5.resize()
+
+修改图片的尺寸.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file('./img.jpg')
+tensor = tf.image.decode_jpeg(tensor, 3)
+tensor = tf.image.resize(tensor,  # 4-D Tensor or #-D Tensor|输入的图片.
+                         size=[200, 200])  # list of int|修改后的尺寸.
+```
+
+## 1.9.io
+
+| 版本 | 描述                 | 注意 |
+| ---- | -------------------- | ---- |
+| -    | TensorFlow的I/O操作. | -    |
+
+### 1.9.1.read_file()
+
+读取文件.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file(filename='./img.jpg')  # str|文件路径.
+```
+
+## 1.10.Variable()
+
+创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
+
+```python
+import tensorflow as tf
+
+tensor = tf.Variable(2021)
+```
+
 # 2.tensorflow.js
 
 # 3.tensorflow_datasets
