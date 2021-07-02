@@ -401,7 +401,165 @@ import tensorflow as tf
 tensor = tf.io.read_file(filename='./img.jpg')  # str|文件路径.
 ```
 
-## 1.10.Variable()
+## 1.10.keras
+
+| 版本  | 描述                         | 注意 |
+| ----- | ---------------------------- | ---- |
+| 2.5.0 | TensorFlow的高阶机器学习API. | -    |
+
+### 1.10.1.applications
+
+| 版本 | 描述                      | 注意                               |
+| ---- | ------------------------- | ---------------------------------- |
+| -    | 提供带有预训练权重的模型. | 1. 默认的缓存路径是~/.keras/models |
+
+#### 1.10.1.1.efficientnet
+
+| 版本 | 描述 | 注意                                      |
+| ---- | ---- | ----------------------------------------- |
+| -    | -    | 1. `efficientnet`包提供的模型包括`B0-B7`. |
+
+##### 1.10.1.1.1.EfficientNetB0()
+
+EfficientNetB0的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.efficientnet import EfficientNetB0
+
+model = EfficientNetB0(include_top=True,  # bool|True|是否包含全连接输出层.
+                       weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                       input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+##### 1.10.1.1.2.preprocess_input()
+
+按ImageNet格式预处理数据.|numpy.array or tf.Tensor
+
+```python
+from tensorflow.keras.applications.efficientnet import preprocess_input
+
+tensor = preprocess_input(x=tensor)  # numpy.array or tf.Tensor|输入的数据.
+```
+
+#### 1.10.1.2.imagenet_utils
+
+##### 1.10.1.2.1.preprocess_input()
+
+按ImageNet格式预处理数据.|numpy.array or tf.Tensor
+
+```python
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
+
+tensor = preprocess_input(x=tensor)  # numpy.array or tf.Tensor|输入的数据.
+```
+
+#### 1.10.1.3.inception_resnet_v2
+
+##### 1.10.1.3.1.InceptionResNetV2()
+
+InceptionResNetV2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.inception_resnet_v2 import InceptionResNetV2
+
+model = InceptionResNetV2(include_top=True,  # bool|True|是否包含全连接输出层.
+                          weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                          input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.4.inception_v3
+
+##### 1.10.1.4.1.InceptionV3()
+
+InceptionV3的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.inception_v3 import InceptionV3
+
+model = InceptionV3(include_top=True,  # bool|True|是否包含全连接输出层.
+                    weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                    input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.5.mobilenet_v2
+
+##### 1.10.1.5.1.MobileNetV2()
+
+MobileNetV2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
+
+model = MobileNetV2(include_top=True,  # bool|True|是否包含全连接输出层.
+                    weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                    input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.6.resnet
+
+| 版本 | 描述 | 注意                                       |
+| ---- | ---- | ------------------------------------------ |
+| -    | -    | 1. `resnet`包提供的模型包括`50, 101, 152`. |
+
+##### 1.10.1.6.1.ResNet50()
+
+ResNet50的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.resnet import ResNet50
+
+model = ResNet50(include_top=True,  # bool|True|是否包含全连接输出层.
+                 weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                 input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.7.resnet_v2
+
+| 版本 | 描述 | 注意                                                |
+| ---- | ---- | --------------------------------------------------- |
+| -    | -    | 1. `resnet_v2`包提供的模型包括`50V2, 101V2, 152V2`. |
+
+##### 1.10.1.7.1.ResNet50V2()
+
+ResNet50V2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.resnet_v2 import ResNet50V2
+
+model = ResNet50V2(include_top=True,  # bool|True|是否包含全连接输出层.
+                   weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                   input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.8.vgg19
+
+##### 1.10.1.8.1.vgg19()
+
+VGG19的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.vgg19 import vgg19
+
+model = VGG19(include_top=True,  # bool|True|是否包含全连接输出层.
+              weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+              input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+#### 1.10.1.9.xception
+
+##### 1.10.1.9.1.Xception()
+
+Xception的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+
+```python
+from tensorflow.keras.applications.xception import Xception
+
+model = Xception(include_top=True,  # bool|True|是否包含全连接输出层.
+                 weights='imagenet',  # None, str or 'imagenet'|'imagenet'|初始化权重的加载方式.
+                 input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
+```
+
+## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
 
