@@ -559,6 +559,159 @@ model = Xception(include_top=True,  # bool|True|是否包含全连接输出层.
                  input_tensor=None)  # tf.Tensor(可选)|None|输入层张量.
 ```
 
+### 1.10.2.backend
+
+| 版本 | 描述                | 注意 |
+| ---- | ------------------- | ---- |
+| -    | tf.keras的后端函数. | -    |
+
+#### 1.10.2.1.cast()
+
+转换张量元素的数据类型.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([1, 2, 3], dtype=np.float32)
+tensor = K.cast(x=arr,  # array-like or tf.Tensor|输入的数据.
+                dtype='float16')  # str or tensorflow.python.framework.dtypes.DType|转换后的数据类型.
+```
+
+#### 1.10.2.2.clear_session()
+
+重置计算图.
+
+```python
+from tensorflow.keras import backend as K
+
+K.clear_session()
+```
+
+#### 1.10.2.3.clip()
+
+逐元素裁切张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.arange(1, 10)
+tensor = K.clip(x=arr,  # array-like or tf.Tensor|输入的数据.
+                min_value=2,  # int or float|最小值.
+                max_value=8)  # int or float|最大值.
+```
+
+#### 1.10.2.4.ctc_batch_cost()
+
+逐批次计算ctc损失.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+from tensorflow.keras import backend as K
+
+loss = K.ctc_batch_cost(y_true,  # tf.Tensor(samples, max_string_length)|真实的标签.
+                        y_pred,  # tf.Tensor(samples, time_steps, num_categories)|预测的标签.
+                        input_length,  # tf.Tensor(samples, 1)|预测的长度.
+                        label_length)  # tf.Tensor(samples, 1)|真实的长度.
+```
+
+#### 1.10.2.5.ctc_decode()
+
+解码CTC输出.|tuple of tensorflow.python.framework.ops.EagerTensor
+
+```python
+from tensorflow.keras import backend as K
+
+tensor = K.ctc_decode(y_pred,  # tf.Tensor(samples, time_steps, num_categories)|预测的标签.
+                      input_length,  # tf.Tensor(samples, )|预测的长度.
+                      greedy=True)  # bool|True|是否使用贪心解码.
+```
+
+#### 1.10.2.6.expand_dims()
+
+增加张量的维度.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([1, 2, 3])
+tensor = K.expand_dims(x=arr,  # tf.Tensor or array-like|输入的数组.
+                       axis=0)  # int|添加新维度的位置.
+```
+
+#### 1.10.2.7.get_value()
+
+获取变量的值.|numpy.ndarray
+
+```python
+from tensorflow.keras import backend as K
+from tensorflow.keras.models import Model
+
+model = Model()
+model.compile(optimizer='adam')
+value = K.get_value(x=model.optimizer)  # 输入的变量.
+```
+
+#### 1.10.2.8.one_likes()
+
+创建输入张量形状相同形状的全一张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([[1, 2], [3, 4]])
+tensor = K.ones_like(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+#### 1.10.2.9.set_value()
+
+设置数值变量的值.
+
+```python
+from tensorflow.keras import backend as K
+
+K.set_value(x,  # 被设置的变量.
+            value)  # numpy.ndarray|设置的值.  
+```
+
+#### 1.10.2.10.shape()
+
+返回张量的形状.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([1, 2, 3])
+tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+#### 1.10.2.11.sigmoid()
+
+逐元素计算sigmoid的值.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([1., 2., 3.])
+tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+#### 1.10.2.12.zeros_like()
+
+创建输入张量形状相同形状的全零张量.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import numpy as np
+from tensorflow.keras import backend as K
+
+arr = np.asarray([[1, 2], [3, 4]])
+tensor = K.zeros_like(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
