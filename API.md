@@ -2155,7 +2155,19 @@ df = pd.DataFrame(df_map)
 print(df.columns)
 ```
 
-### 9.2.2.corr()
+### 9.2.2.convert_dtypes()
+
+将数据自动转换成最佳数据类型.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+df = df.convert_dtypes()
+```
+
+### 9.2.3.corr()
 
 计算列成对相关度.|pandas.core.frame.DataFrame
 
@@ -2167,7 +2179,7 @@ df = pd.DataFrame(df_map)
 correlation_value = df.corr()
 ```
 
-### 9.2.3.drop()
+### 9.2.4.drop()
 
 根据指定的标签删除行或者列.|pandas.core.frame.DataFrame
 
@@ -2180,7 +2192,7 @@ new_df = df.drop(labels=1,  # single label or list-like|None|要删除的行或�
              		 axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
 ```
 
-### 9.2.4.drop_duplicates()
+### 9.2.5.drop_duplicates()
 
 返回删除重复行的DataFrame.|pandas.core.frame.DataFrame
 
@@ -2194,7 +2206,7 @@ new_df = df.drop_duplicates(subset=None,  # column label or sequence of labels(�
                         		inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.5.fillna() 
+### 9.2.6.fillna()
 
 填充缺失值.|pandas.core.frame.DataFrame
 
@@ -2207,7 +2219,7 @@ new_df = df.fillna(value=10,  # scalar, dict, Series, or DataFrame|填充缺失�
                		 inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.6.head()
+### 9.2.7.head()
 
 返回前n行数据.|pandas.core.frame.DataFrame
 
@@ -2219,7 +2231,7 @@ df = pd.DataFrame(df_map)
 head_value = df.head(n=1)  # int|5|行数.
 ```
 
-### 9.2.7.iloc[]
+### 9.2.8.iloc[]
 
 按照行号取出数据.|pandas.core.frame.DataFrame
 
@@ -2231,7 +2243,7 @@ df = pd.DataFrame(df_map)
 new_df = df.iloc[0:2]
 ```
 
-### 9.2.8.info()
+### 9.2.9.info()
 
 在终端打印摘要信息.
 
@@ -2242,7 +2254,7 @@ df_map = {'key': ['a', 'b', 'c'], 'values': [1, 2, 3]}
 df = pd.DataFrame(df_map)
 ```
 
-### 9.2.9.loc[]
+### 9.2.10.loc[]
 
 按照行名称取出数据.|pandas.core.frame.DataFrame
 
@@ -2254,7 +2266,7 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 9.2.10.map()
+### 9.2.11.map()
 
 根据输入的对应关系映射Series.|pandas.core.series.Series
 
@@ -2266,7 +2278,7 @@ map_dict = {'a': 3, 'b': 2, 'c': 1}
 sr = df['key'].map(map_dict)
 ```
 
-### 9.2.11.median()
+### 9.2.12.median()
 
 获取DataFrame的中位数.|pandas.core.series.Series
 
@@ -2278,7 +2290,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 9.2.12.replace()
+### 9.2.13.replace()
 
 替换DataFrame中的值.|pandas.core.frame.DataFrame
 
@@ -2291,7 +2303,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.13.reset_index()
+### 9.2.14.reset_index()
 
 重置DataFrame中的索引.|pandas.core.frame.DataFrame
 
@@ -2303,7 +2315,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 9.2.14.sample()
+### 9.2.15.sample()
 
 返回随机采样的DataFrame样本.|pandas.core.frame.DataFrame
 
@@ -2315,7 +2327,18 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 9.2.15.to_csv()
+### 9.2.16.select_dtypes()
+
+返回指定元素类型的列组成的新DataFrame.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
+df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
+```
+
+### 9.2.17.to_csv()
 
 写入csv文件.
 
@@ -2330,7 +2353,7 @@ df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件�
           encoding=None)  # str(可选)|'utf-8'|编码方式.
 ```
 
-### 9.2.16.values
+### 9.2.18.values
 
 返回DataFrame的值数据.|numpy.ndarray
 

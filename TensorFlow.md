@@ -712,6 +712,113 @@ arr = np.asarray([[1, 2], [3, 4]])
 tensor = K.zeros_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
+### 1.10.3.callbacks
+
+| 版本 | 描述                | 注意 |
+| ---- | ------------------- | ---- |
+| -    | tf.keras的回调函数. | -    |
+
+#### 1.10.3.1.EarlyStopping()
+
+实例化EarlyStopping, 用以提前停止训练避免过拟合.
+
+```python
+from tensorflow.keras.callbacks import EarlyStopping
+
+CALLBACKS = [
+    EarlyStopping(monitor='val_loss',  # str|'val_loss'|监控的评估值.
+                  min_delta=0,  # float|0|监控信息的最小变化量.
+                  patience=0,  # int|0|监控信息的容忍轮数, 到达后将停止训练.
+                  verbose=0,  # int|0|日志显示模式.
+                  restore_best_weights=False)  # bool|False|恢复最佳的监测值的权重.
+]
+```
+
+#### 1.10.3.2.LearningRateScheduler()
+
+实例化LearningRateScheduler, 用以定时调整学习率.
+
+```python
+import tensorflow as tf
+from tensorflow.keras.callbacks import LearningRateScheduler
+
+
+def scheduler(epoch, lr):
+    if epoch < 10:
+        return lr
+    else:
+        return lr * tf.math.exp(-0.1)
+CALLBACKS = [
+    LearningRateScheduler(schedule=scheduler,  # function|学习率调整函数(以当前轮数和学习率为输入, 新学习率位输出).
+                          verbose=0)  # int|0|日志显示模式.
+]
+```
+
+#### 1.10.3.3.ModelCheckpoint()
+
+实例化ModelCheckpoint, 用以保存模型的权重.
+
+```python
+from tensorflow.keras.callbacks import ModelCheckpoint
+
+CALLBACKS = [
+    ModelCheckpoint(filepath,  # str or PathLike|保存的路径.
+                    monitor='val_loss',  # str|'val_loss'|监控的评估值.
+                    verbose=0,  # int|0|日志显示模式.
+                    period=1)  # int|1|定时保存的频率.
+]
+```
+
+#### 1.10.3.4.ReduceLROnPlateau()
+
+实例化ReduceLROnPlateau, 用以在评估值不变时降低学习率.
+
+```python
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+
+CALLBACKS = [
+    ReduceLROnPlateau(monitor='val_loss',  # str|'val_loss'|监控的评估值.
+                      factor=0.1,  # float|0.1|学习率衰减因子.
+                      patience=10,  # int|0|监控信息的容忍轮数, 到达后将停止训练.
+                      verbose=0,  # int|0|日志显示模式.
+                      min_delta=1e-4,  # float|1e-4|评估值的最小变化量.
+                      min_lr=0)  # float|0|学习率的下界.
+]
+```
+
+#### 1.10.3.5.TensorBoard()
+
+实例化TensorBoard, 可视化训练信息.
+
+```python
+from tensorflow.keras.callbacks import TensorBoard
+
+CALLBACKS = [
+    TensorBoard(log_dir='logs',  # str|'logs'|日志保存的路径.
+                histogram_freq=0,  # {0, 1}|0|是否计算直方图.
+                write_graph=True,  # bool|True|是否绘制计算图.
+                update_freq='epoch')  # {'epoch', 'batch'}|'epoch'|更新的频率.
+]
+```
+
+### 1.10.4.datasets
+
+| 版本 | 描述                  | 注意                                 |
+| ---- | --------------------- | ------------------------------------ |
+| -    | tf.keras的内置数据集. | 1. 默认的缓存路径是~/.keras/datasets |
+
+#### 1.10.4.1.mnist
+
+##### 1.10.4.1.1.load_data()
+
+加载mnist数据集.|tuple
+
+```python
+from tensorflow.keras.datasets import mnist
+
+(x_train, y_train), (x_val, y_val) = mnist.load_data()
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
