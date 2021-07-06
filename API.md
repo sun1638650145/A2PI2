@@ -1905,7 +1905,19 @@ df = pd.DataFrame(data=df_map)
 print(df.columns)
 ```
 
-### 9.2.2.corr()
+### 9.2.2.convert_dtypes()
+
+将数据自动转换成最佳数据类型.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+df = df.convert_dtypes()
+```
+
+### 9.2.3.corr()
 
 计算列的成对相关度.|pandas.core.frame.DataFrame
 
@@ -1916,7 +1928,7 @@ df = pd.DataFrame(data={'index': [0, 1, 2], 'values': [0.1, 0.2, 0.3]})
 correlation = df.corr()
 ```
 
-### 9.2.3.drop()
+### 9.2.4.drop()
 
 删除指定行或者列|pandas.core.frame.DataFrame
 
@@ -1927,7 +1939,7 @@ df = df.drop(labels=1,  # 希望删除的行或者列|single label or list-like
              axis=0)  # 删除行或者列|{0/'index', 1/'columns'}|0
 ```
 
-### 9.2.4.drop_duplicates()
+### 9.2.5.drop_duplicates()
 
  删除重复的行|pandas.core.frame.DataFrame
 
@@ -1939,7 +1951,7 @@ df.drop_duplicates(subset=None,  # 仅选子列进行删除|None
                    inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.5.fillna()
+### 9.2.6.fillna()
 
 填充缺失值|pandas.core.frame.DataFrame or None
 
@@ -1950,7 +1962,7 @@ df.fillna(value=10,  # 填充进的值
           inplace=True)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.6.head()
+### 9.2.7.head()
 
 返回前n行数据|pandas.core.frame.DataFrame
 
@@ -1960,7 +1972,7 @@ df = pd.DataFrame([1, 2, 3])
 print(df.head(n=1))  # 选择的行数|int|5
 ```
 
-### 9.2.7.iloc[]
+### 9.2.8.iloc[]
 
 按照行号取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1970,7 +1982,7 @@ df = pd.DataFrame([[1, 4], [2, 5], [3, 6]])
 new_df = df.iloc[0:2]  # 要提取的数据|int or array of int or slice object with ints
 ```
 
-### 9.2.8.info()
+### 9.2.9.info()
 
 显示摘要信息(包括索引、非Non值计数、数据类型和内存占用)
 
@@ -1983,7 +1995,7 @@ df = pd.DataFrame(data=df_map,
 df.info()
 ```
 
-### 9.2.9.loc[]
+### 9.2.10.loc[]
 
 按照行名称取出数据|pandas.core.frame.DataFrame or pandas.core.series.Series
 
@@ -1994,7 +2006,7 @@ df = pd.DataFrame(df_map, index=['a', 'b', 'c'])
 new_df = df.loc['a':'b']  # 要提取的数据|label or array of label or slice object with labels(没有名称的时候就是iloc函数)
 ```
 
-### 9.2.10.median()
+### 9.2.11.median()
 
 获取中位数|pandas.core.series.Series
 
@@ -2004,7 +2016,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'value': [1, 2, 3, 4]})
 df.median()
 ```
 
-### 9.2.11.merge()
+### 9.2.12.merge()
 
 将两列进行合并|pandas.core.frame.DataFrame
 
@@ -2020,7 +2032,7 @@ df = pd.merge(left=df1,  # 参与合并左侧的数据|DataFrame
               sort=True)  # 是否排序|bool|True
 ```
 
-### 9.2.12.replace()
+### 9.2.13.replace()
 
 替换DataFrame中的值|pandas.core.frame.DataFrame or None
 
@@ -2032,7 +2044,7 @@ new_df = df.replace(to_replace=1,  # 被替换的值|scalar or dict or list or s
                     inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.13.reset_index()
+### 9.2.14.reset_index()
 
 重置DataFrame的索引为从零开始的整数索引|pandas.core.frame.DataFrame or None
 
@@ -2044,7 +2056,7 @@ new_df = df.reset_index(drop=True,  # 是否丢弃原来的索引|bool|False
                         inplace=False)  # 是否修改源DataFrame|bool(True没有返回值，False返回一个新的DataFrame)|False
 ```
 
-### 9.2.14.sample()
+### 9.2.15.sample()
 
 随机采样指定个数的样本|pandas.core.frame.DataFrame
 
@@ -2053,6 +2065,17 @@ import pandas as pd
 df = pd.DataFrame([1, 2, 3, 4])
 new_df = df.sample(n=None,  # 采样的个数|int|None(表示采样全部)|可选
                    frac=True)  # 是否对全部数据采样|bool|None(不可与n同时为非None的值)|可选
+```
+
+### 9.2.16.select_dtypes()
+
+返回指定元素类型的列组成的新DataFrame.|pandas.core.frame.DataFrame
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
+df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
 ```
 
 ## 9.3.date_range()
