@@ -819,6 +819,409 @@ from tensorflow.keras.datasets import mnist
 (x_train, y_train), (x_val, y_val) = mnist.load_data()
 ```
 
+### 1.10.5.layers
+
+| 版本 | 描述                 | 注意 |
+| ---- | -------------------- | ---- |
+| -    | tf.keras的网络层API. | -    |
+
+#### 1.10.5.1.Activation()
+
+实例化激活函数层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Activation(activation='relu')  # str or keras.activations or tf.nn |激活函数.
+```
+
+#### 1.10.5.2.Add()
+
+实例化矩阵加法层.
+
+```python
+from tensorflow.keras import layers
+
+x1 = layers.Dense(16)
+x2 = layers.Dense(16)
+layer = layers.Add()([x1, x2])  # list of keras.layers.Layer|形状相同的网络层列表.
+```
+
+#### 1.10.5.3.AdditiveAttention()
+
+实例化Bahdanau注意力层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.AdditiveAttention()
+```
+
+#### 1.10.5.4.BatchNormalization()
+
+实例化批标准化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.BatchNormalization()
+```
+
+#### 1.10.5.5.Bidirectional()
+
+实例化循环层的双向封装器.
+
+```python
+from tensorflow.keras import layers
+
+lstm_layer = layers.LSTM(256)
+layer = layers.Bidirectional(layer=lstm_layer)  # keras.layers.RNN|循环层.
+```
+
+#### 1.10.5.6.Concatenate()
+
+实例化合并层.
+
+```python
+from tensorflow.keras import layers
+
+x1 = layers.Dense(16)
+x2 = layers.Dense(16)
+layer = layers.Concatenate(axis=-1)([x1, x2])  # int|-1|合并所沿的维度, 除此形状相同.
+```
+
+#### 1.10.5.7.Conv1D()
+
+实例化1D卷积层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Conv1D(filters=32,  # int|卷积核的数量.
+                      kernel_size=1,  # int|卷积核的尺寸.
+                      strides=1,  # int|1|滑动步长.
+                      padding='valid',  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
+                      data_format='channels_last',  # {'channels_last' or 'channels_first'}|'channels_last'|数据格式.
+                      activation=None,  # str or keras.activations|None|激活函数.
+                      use_bias=True,  # bool|True|是否使用偏置.
+                      kernel_initializer='glorot_uniform',  # str or keras.initializers|'glorot_uniform'|权重初始化方式.
+                      bias_initializer='zeros')  # str or keras.initializers|'zeros'|偏置初始化方式.
+```
+
+#### 1.10.5.8.Conv2D()
+
+实例化2D卷积层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Conv2D(filters=32,  # int|卷积核的数量.
+                      kernel_size=1,  # tuple/list of 2 integers or int|卷积核的尺寸.
+                      strides=(1, 1),  # tuple/list of 2 integers or int|(1, 1)|滑动步长.
+                      padding='valid',  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
+                      data_format='channels_last',  # {'channels_last' or 'channels_first'}|'channels_last'|数据格式.
+                      activation=None,  # str or keras.activations|None|激活函数.
+                      use_bias=True,  # bool|True|是否使用偏置.
+                      kernel_initializer='glorot_uniform',  # str or keras.initializers|'glorot_uniform'|权重初始化方式.
+                      bias_initializer='zeros')  # str or keras.initializers|'zeros'|偏置初始化方式.
+```
+
+#### 1.10.5.9.Conv2DTranspose()
+
+实例化2D转置卷积层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Conv2DTranspose(filters=32,  # int|卷积核的数量.
+                               kernel_size=1,  # tuple/list of 2 integers or int|卷积核的尺寸.
+                               strides=(1, 1),  # tuple/list of 2 integers or int|(1, 1)|滑动步长.
+                               padding='valid',  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
+                               use_bias=True)  # bool|True|是否使用偏置.
+```
+
+#### 1.10.5.10.Dense()
+
+实例化全连接层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Dense(units=32,  # int|神经元的数量.
+                     use_bias=True,  # bool|True|是否使用偏置.
+                     input_shape)  # tuple of int|模型的第一层将需要指出输入的形状.
+```
+
+#### 1.10.5.11.DenseFeatures()
+
+实例化DenseFeatures.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.DenseFeatures(feature_columns)  # list of tensorflow.python.feature_column|特征列.
+```
+
+#### 1.10.5.12.Dot()
+
+实例化点积层.
+
+```python
+from tensorflow.keras import layers
+
+x1 = layers.Dense(16)
+x2 = layers.Dense(16)
+layer = layers.Dot(axes=1)(x1, x2)  # int|点积所沿的轴.
+```
+
+#### 1.10.5.13.Dropout()
+
+实例化Dropout层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Dropout(rate=0.5)  # float|随机丢弃比例.
+```
+
+#### 1.10.5.14.Embedding()
+
+实例化嵌入层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Embedding(input_dim=128,  # int|输入的维度.
+                         output_dim=64,  # int|嵌入矩阵的维度.
+                         embeddings_initializer='uniform',  # str or keras.initializers|'uniform'|权重初始化方式.
+                         embeddings_regularizer=None)  # keras.regularizers|None|是否使用正则化器.
+```
+
+#### 1.10.5.15.experimental
+
+##### 1.10.5.15.1.preprocessing
+
+###### 1.10.5.15.1.1.StringLookup()
+
+实例化词汇到索引的映射工具.
+
+```python
+from tensorflow.keras import layers
+
+vocab = ['a', 'b', 'c', 'd', 'a']
+char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # int|None|词汇表的最大范围.
+                                                          num_oov_indices=1,  # int|1|超出词汇范围使用的索引.
+                                                          vocabulary=['a', 'b', 'c'],  # list|None|词汇表.
+                                                          invert=False)  # bool|False|翻转操作.
+```
+
+###### 1.10.5.15.1.2.get_vocabulary()
+
+获取词汇表.|list
+
+```python
+from tensorflow.keras import layers
+
+char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,
+                                                          num_oov_indices=1,
+                                                          vocabulary=['a', 'b', 'c'],
+                                                          invert=False)
+vocab = char2num.get_vocabulary()
+```
+
+#### 1.10.5.16.Flatten()
+
+实例化展平层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Flatten()
+```
+
+#### 1.10.5.17.GlobalAveragePooling1D()
+
+实例化全局1D平均池化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.GlobalAveragePooling1D()
+```
+
+#### 1.10.5.18.GlobalMaxPooling1D()
+
+实例化全局1D最大池化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.GlobalMaxPooling1D()
+```
+
+#### 1.10.5.19.GRU()
+
+实例化门控循环网络层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.GRU(units=256,  # int|神经元的数量.
+                   return_sequences=True)  # bool|False|是否返回全部序列.
+```
+
+#### 1.10.5.20.Input()
+
+实例化输入层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Input(shape=(224, 224, 3),  # tuple|输入张量的形状.
+                     name=None,  # str|None|网络层的名称.
+                     dtype=None)  # str|None|期望的数据类型.
+```
+
+#### 1.10.5.21.Lambda()
+
+将一个函数封装称网络层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Lambda(function=lambda x: x**2,  # lambda or function|要封装的函数.
+                      output_shape=None,  # tuple|None|期望的输出形状.
+                      name=None)  # str|None|网络层的名称.
+```
+
+#### 1.10.5.22.Layer()
+
+自定义一个符合tf.keras接口的层.
+
+```python
+from tensorflow.keras import layers
+
+class MyLayer(layers.Layer):
+    def __init__(self, **kwargs):
+        super(MyLayer, self).__init__(**kwargs)
+        # 初始化代码.
+
+    def call(self, inputs, *args, **kwargs):
+        # 处理代码.
+        return outputs
+```
+
+#### 1.10.5.23.LeakyReLU()
+
+实例化带泄漏的ReLU层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.LeakyReLU(alpha=0.3)  # float|0.3|负斜率系数(泄漏率).
+```
+
+#### 1.10.5.24.LSTM()
+
+实例化长短时记忆层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.LSTM(units=256,  # int|神经元的数量.
+                    return_sequences=True,  # bool|False|是否返回全部序列.
+                    dropout=0.)  # float|0.|随机丢弃比例.
+```
+
+#### 1.10.5.25.MaxPooling1D()
+
+实例化1D最大池化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.MaxPooling1D(pool_size=2,  # int|2|池化窗口.
+                            strides=None,  # int|None|滑动步长.
+                            padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
+```
+
+#### 1.10.5.26.MaxPooling2D()
+
+实例化2D最大池化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.MaxPooling2D(pool_size=(2, 2),  # int or tuple of 2 int|(2, 2)|池化窗口.
+                            strides=None,  # int or tuple of 2 int|None|滑动步长.
+                            padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
+```
+
+#### 1.10.5.27.Reshape()
+
+实例化变形层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Reshape(target_shape=(None, 10))  # tuple of int|目标形状.
+```
+
+#### 1.10.5.28.SeparableConv2D()
+
+实例化深度可分离2D卷积层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.SeparableConv2D(filters=32,  # int|卷积核的数量.
+                               kernel_size=1,  # tuple/list of 2 integers or int|卷积核的尺寸.
+                               strides=(1, 1),  # tuple/list of 2 integers or int|(1, 1)|滑动步长.
+                               padding='valid')  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
+```
+
+#### 1.10.5.29.SimpleRNN()
+
+实例化循环网络层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.SimpleRNN(units=256,  # int|神经元的数量.
+                         dropout=0.,  # float|0.|随机丢弃比例.
+                         return_sequences=True)  # bool|False|是否返回全部序列.
+```
+
+1.10.5.30.TimeDistributed()
+
+实例化时间片封装器.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.Dense(32)
+layer = layers.TimeDistributed(layer=layer)  # keras.layers|需要分片的网络层.
+```
+
+#### 1.10.5.31.UpSampling2D()
+
+```python
+from tensorflow.keras import layers
+
+# 实例化2D上采样层.
+layer = layers.UpSampling2D(size=(2, 2))  # int or tuple of 2 int|(2, 2)|上采样因子.
+```
+
+#### 1.10.5.32.ZeroPadding2D()
+
+实例化2D零填充层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.ZeroPadding2D(size=(1, 1))  # int or tuple of 2 int|(1, 1)|填充数.
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
