@@ -1192,7 +1192,7 @@ layer = layers.SimpleRNN(units=256,  # int|神经元的数量.
                          return_sequences=True)  # bool|False|是否返回全部序列.
 ```
 
-1.10.5.30.TimeDistributed()
+#### 1.10.5.30.TimeDistributed()
 
 实例化时间片封装器.
 
