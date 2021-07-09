@@ -1222,6 +1222,68 @@ from tensorflow.keras import layers
 layer = layers.ZeroPadding2D(size=(1, 1))  # int or tuple of 2 int|(1, 1)|填充数.
 ```
 
+### 1.10.6.losses
+
+| 版本 | 描述                   | 注意 |
+| ---- | ---------------------- | ---- |
+| -    | tf.keras的损失函数API. | -    |
+
+#### 1.10.6.1.BinaryCrossentropy()
+
+实例化二分类交叉熵损失函数.
+
+```python
+from tensorflow.keras.losses import BinaryCrossentropy
+
+loss = BinaryCrossentropy(from_logits=False)  # bool|False|是否将预测值解释为张量.
+```
+
+#### 1.10.6.2.CategoricalCrossentropy()
+
+实例化多分类交叉熵损失函数(one-hot编码).
+
+```python
+from tensorflow.keras.losses import CategoricalCrossentropy
+
+loss = CategoricalCrossentropy(from_logits=False)  # bool|False|是否将预测值解释为张量.
+```
+
+#### 1.10.6.3.MeanAbsoluteError()
+
+实例化平均绝对误差损失函数.
+
+```python
+from tensorflow.keras.losses import MeanAbsoluteError
+
+loss = MeanAbsoluteError()
+```
+
+#### 1.10.6.4.SparseCategoricalCrossentropy()
+
+实例化多分类交叉熵损失函数(稀释编码).
+
+```python
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
+
+loss = SparseCategoricalCrossentropy(from_logits=False)  # bool|False|是否将预测值解释为张量.
+```
+
+### 1.10.7.metrics
+
+| 版本 | 描述                   | 注意 |
+| ---- | ---------------------- | ---- |
+| -    | tf.keras的评估函数API. | -    |
+
+#### 1.10.7.1.MAE()
+
+实例化平均绝对误差损失函数.
+
+```python
+from tensorflow.keras.metrics import MAE
+
+metric = MAE()
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
