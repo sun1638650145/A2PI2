@@ -1284,6 +1284,91 @@ from tensorflow.keras.metrics import MAE
 metric = MAE()
 ```
 
+### 1.10.8.models
+
+| 版本 | 描述         | 注意                                                         |
+| ---- | ------------ | ------------------------------------------------------------ |
+| -    | 模型构建API. | 1.tf.keras支持两种模型`Model(Function API)`和`Sequential`, 相同的类方法都写在`Model`里. |
+
+#### 1.10.8.1.load_model()
+
+加载模型.|tensorflow.python.keras.engine.training.Model or tensorflow.python.keras.engine.sequential.Sequential
+
+```python
+from tensorflow.keras.models import load_model
+
+model = load_model(filepath='model.h5')  # str or pathlib.Path|文件路径.
+```
+
+#### 1.10.8.2.Model()
+
+实例化Model.
+
+```python
+from tensorflow.keras.models import Model
+
+model = Model(inputs,  # keras.layers.Input|输入层.
+              outputs)  # keras.layers|输出层.
+```
+
+##### 1.10.8.2.1.build()
+
+构建模型.
+
+```python
+model.build(input_shape)  # single tuple, TensorShape, or list/dict of shapes|输入层的形状.
+```
+
+##### 1.10.8.2.2.compile()
+
+编译模型, 配置模型训练参数.
+
+```python
+model.compile(optimizer='rmsprop',  # str or keras.optimizers|'rmsprop'|优化器.
+              loss=None,  # str or keras.losses|None|损失函数.
+              metrics=None)  # str or keras.metrics|None|评估函数.
+```
+
+##### 1.10.8.2.3.evaluate()
+
+在测试模型下评估损失和准确率.
+
+```python
+model.evaluate(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
+               y=None,  # Numpy array, TensorFlow tensor(如果是dataset或generator或Sequence则y都是None)|None|标签.
+               batch_size=None,  # int|None|批次大小.
+               verbose=1)  # int|0|日志显示模式.
+```
+
+##### 1.10.8.2.4.fit()
+
+训练模型.|keras.callbacks.History
+
+```python
+model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
+          y=None,  # Numpy array, TensorFlow tensor(如果是dataset或generator或Sequence则y都是None)|None|标签.
+          batch_size=None,  # int|None|批次大小.
+          epochs=1,  # int|None|轮数.
+          verbose='auto',  # str or int|'auto'|日志显示模式.
+          callbacks=None,  # list of tf.keras.callbacks|None|回调函数函数列表.
+          validation_split=0.,  # float|0.|划分验证集的比例.
+          validation_data=None,  # tuple (x_val, y_val), `tf.data` dataset or generator or `keras.utils.Sequence`|None|验证集.
+          shuffle=True,  # bool|True|是否打乱数据.
+          class_weight=None,  # dict(可选)|None|类别权重字典(只在训练时有效).
+          initial_epoch=0,  # int|0|初始化训练的轮数.
+          steps_per_epoch=None,  # int|None|每轮的步数(样本数/批次大小).
+          workers=1,  # int|1|使用的线程数(仅适用`keras.utils.Sequence`).
+          use_multiprocessing=False)  # bool|False|是否使用多线程(仅适用`keras.utils.Sequence`).
+```
+
+##### 1.10.8.2.5.load_weights()
+
+加载模型的权重.
+
+```python
+model.load_weights(filepath)  # str or pathlib.Path|文件路径.
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
