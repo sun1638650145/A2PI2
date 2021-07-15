@@ -1369,6 +1369,134 @@ model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generato
 model.load_weights(filepath)  # str or pathlib.Path|文件路径.
 ```
 
+##### 1.10.8.2.6.predict()
+
+使用模型进行预测.|numpy.ndarray
+
+```python
+y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
+                       batch_size=None,  # int|None|批次大小.
+                       verbose=0)  # int|0|日志显示模式.
+```
+
+##### 1.10.8.2.7.output_shape
+
+模型输出层的形状.|tuple
+
+```python
+shape = model.output_shape
+```
+
+##### 1.10.8.2.8.save()
+
+保存模型.
+
+```python
+model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
+           save_format=None)  # {'tf', 'h5'}|None|保存文件格式.
+```
+
+##### 1.10.8.2.9.summary()
+
+打印模型的摘要.
+
+```python
+model.summary()
+```
+
+#### 1.10.8.3.Sequential()
+
+实例化Sequential.
+
+```python
+from tensorflow.keras.models import Sequential
+
+model = Sequential()
+```
+
+##### 1.10.8.3.1.add()
+
+添加一个网络层到Sequential的栈顶.
+
+```python
+model.add(layer=layers.Input(shape=(224, 224, 3)))  # keras.layers|网络层.
+```
+
+### 1.10.9.optimizers
+
+| 版本 | 描述                 | 注意                                |
+| ---- | -------------------- | ----------------------------------- |
+| -    | tf.keras的优化器API. | 1.优化器相同的类方法都写在`Adam`里. |
+
+#### 1.10.9.1.Adam()
+
+实例化Adam优化器.
+
+```python
+from tensorflow.keras.optimizers import Adam
+
+optimizer = Adam(learning_rate=0.001)  # float|0.001|学习率.
+```
+
+##### 1.10.9.1.1.apply_gradients()
+
+GradientTape更新的参数赋值给优化器.
+
+```python
+from tensorflow.keras.optimizers import Adam
+
+optimizer = Adam()
+optimizer.apply_gradients(grads_and_vars=zip(grads, vars))  # list of (gradient, variable) pairs|梯度和变量对. 
+```
+
+#### 1.10.9.2.SGD()
+
+实例化随机梯度下降优化器.
+
+```python
+from tensorflow.keras.optimizers import SGD
+
+optimizer = SGD(learning_rate=0.01)  # float|0.001|学习率.
+```
+
+### 1.10.10.preprocessing
+
+| 版本 | 描述                     | 注意 |
+| ---- | ------------------------ | ---- |
+| -    | tf.keras的数据预处理API. | -    |
+
+#### 1.10.10.1.image
+
+##### 1.10.10.1.1.array_to_img()
+
+将数组转换为PIL图像.|PIL.Image.Image
+
+```python
+import numpy as np
+from tensorflow.keras.preprocessing.image import array_to_img
+
+arr = np.ones([128, 128, 3])
+img = array_to_img(x=arr)  # numpy.ndarray|输入的数组.
+```
+
+##### 1.10.10.1.2.ImageDataGenerator()
+
+实例化ImageDataGenerator, 对图像进行实时增强.
+
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+generator = ImageDataGenerator(rotation_range=0,  # int|0|随机旋转的度数.
+                               width_shift_range=0.,  # float|0.|水平位移范围.
+                               height_shift_range=0.,  # float|0.|垂直位移范围.
+                               shear_range=0.,  # float|0.|裁切角度.
+                               zoom_range=0.,  # float|0.|随机缩放倍数.
+                               channel_shift_range=0.,  # float|0.|随机色彩通道位移.
+                               fill_mode='nearest',  # {'constant', 'nearest', 'reflect', 'wrap'}|'nearest'|填充模式.
+                               horizontal_flip=False,  # bool|False|随机水平翻转.
+                               vertical_flip=False)  # bool|False|随机垂直翻转.
+```
+
 ## 1.11.Variable()
 
 创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
