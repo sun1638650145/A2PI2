@@ -35,7 +35,7 @@ tf.config.experimental_connect_to_cluster(cluster_spec_or_resolver)  # `ClusterS
 
 ### 1.1.3.list_physical_devices()
 
-返回所有可用的物理设备.|list
+返回所有可用的物理设备.|`list`
 
 ```python
 import tensorflow as tf
@@ -45,7 +45,7 @@ devices = tf.config.list_physical_devices(device_type=None)  # str(可选)|None|
 
 ## 1.2.constant()
 
-创建常张量.|tensorflow.python.framework.ops.EagerTensor
+创建常张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -73,7 +73,7 @@ autotune = tf.data.AUTOTUNE
 
 #### 1.3.2.1.as_numpy_iterator()
 
-返回numpy迭代器,将元素转换为numpy.|tensorflow.python.data.ops.dataset_ops._NumpyIterator
+返回`numpy`迭代器,将元素转换为`numpy`.|`tensorflow.python.data.ops.dataset_ops._NumpyIterator`
 
 ```python
 import tensorflow as tf
@@ -84,7 +84,7 @@ iterator = dataset.as_numpy_iterator()
 
 #### 1.3.2.2.batch()
 
-为数据集划分批次.|tensorflow.python.data.ops.dataset_ops.BatchDataset
+为数据集划分批次.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
 
 ```python
 import tensorflow as tf
@@ -95,7 +95,7 @@ dataset = dataset.batch(batch_size=3)  # int|批次大小.
 
 #### 1.3.2.3.from_tensor_slices()
 
-从张量切片中创建数据集.|tensorflow.python.data.ops.dataset_ops.TensorSliceDataset
+从张量切片中创建数据集.|`tensorflow.python.data.ops.dataset_ops.TensorSliceDataset`
 
 ```python
 import tensorflow as tf
@@ -105,7 +105,7 @@ dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2], [3, 4]))  # array-
 
 #### 1.3.2.4.map()
 
-对数据应用处理.|tensorflow.python.data.ops.dataset_ops.MapDataset or tensorflow.python.data.ops.dataset_ops.ParallelMapDataset
+对数据应用处理.|`tensorflow.python.data.ops.dataset_ops.MapDataset` or `tensorflow.python.data.ops.dataset_ops.ParallelMapDataset`
 
 ```python
 import tensorflow as tf
@@ -117,7 +117,7 @@ dataset = dataset.map(map_func=lambda x, y: (x + 0.5, y - 0.5),  # function or l
 
 #### 1.3.2.5.padded_batch()
 
-为数据集划分批次(按照规则进行填充).|tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset
+为数据集划分批次(按照规则进行填充).|`tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset`
 
 ```python
 import tensorflow as tf
@@ -131,7 +131,7 @@ dataset = dataset.padded_batch(batch_size=2,  # int|批次大小.
 
 #### 1.3.2.6.prefetch()
 
-对数据集进行预加载.|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
+对数据集进行预加载.|`tensorflow.python.data.ops.dataset_ops.PrefetchDataset`
 
 ```python
 import tensorflow as tf
@@ -142,7 +142,7 @@ dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)  # int|预加载缓冲�
 
 #### 1.3.2.7.range()
 
-创建指定范围的数据集.|tensorflow.python.data.ops.dataset_ops.RangeDataset
+创建指定范围的数据集.|`tensorflow.python.data.ops.dataset_ops.RangeDataset`
 
 ```python
 import tensorflow as tf
@@ -153,7 +153,7 @@ dataset = tf.data.Dataset.range(10,
 
 #### 1.3.2.8.shuffle()
 
-对数据集进行打乱.|tensorflow.python.data.ops.dataset_ops.ShuffleDataset
+对数据集进行打乱.|`tensorflow.python.data.ops.dataset_ops.ShuffleDataset`
 
 ```python
 import tensorflow as tf
@@ -164,7 +164,7 @@ dataset = dataset.shuffle(buffer_size=2)  # int|打乱缓冲区的大小.
 
 #### 1.3.2.9.skip()
 
-跳过指定个数数据创建新数据集.|tensorflow.python.data.ops.dataset_ops.SkipDataset
+跳过指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.SkipDataset`
 
 ```python
 import tensorflow as tf
@@ -175,7 +175,7 @@ dataset = dataset.skip(count=3)  # int|跳过的个数.
 
 #### 1.3.2.10.take()
 
-取出指定个数数据创建新数据集.|tensorflow.python.data.ops.dataset_ops.TakeDataset
+取出指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.TakeDataset`
 
 ```python
 import tensorflow as tf
@@ -188,7 +188,7 @@ dataset = dataset.take(count=3)  # int|取出的个数.
 
 #### 1.3.3.1.make_csv_dataset()
 
-读取CSV文件.|tensorflow.python.data.ops.dataset_ops.PrefetchDataset
+读取CSV文件.|`tensorflow.python.data.ops.dataset_ops.PrefetchDataset`
 
 ```python
 import tensorflow as tf
@@ -245,7 +245,7 @@ with strategy.scope():
 
 ## 1.5.einsum()
 
-爱因斯坦求和约定.|tensorflow.python.framework.ops.EagerTensor
+爱因斯坦求和约定.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -261,7 +261,7 @@ res = tf.einsum('ij,jk->ik',  # str|描述公式.
 
 ### 1.6.1.categorical_column_with_vocabulary_list()
 
-创建分类列.|tensorflow.python.feature_column.feature_column_v2.VocabularyListCategoricalColumn
+创建分类列.|`tensorflow.python.feature_column.feature_column_v2.VocabularyListCategoricalColumn`
 
 ```python
 import tensorflow as tf
@@ -272,7 +272,7 @@ column = tf.feature_column.categorical_column_with_vocabulary_list(key='sex',  #
 
 ### 1.6.2.indicator_column()
 
-将分类列进行one-hot表示.|tensorflow.python.feature_column.feature_column_v2.IndicatorColumn
+将分类列进行one-hot表示.|`tensorflow.python.feature_column.feature_column_v2.IndicatorColumn`
 
 ```python
 import tensorflow as tf
@@ -303,7 +303,7 @@ tape = tf.GradientTape()
 
 ### 1.7.1.gradient()
 
-计算梯度.|tensorflow.python.framework.ops.EagerTensor
+计算梯度.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -324,7 +324,7 @@ grad = tape.gradient(target=y,  # Tensors|`sources`关于`target`的梯度.
 
 ### 1.8.1.convert_image_dtype()
 
-转换图像的数据类型.|tensorflow.python.framework.ops.EagerTensor
+转换图像的数据类型.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -337,7 +337,7 @@ img = tf.image.convert_image_dtype(image=arr,  # array-like|图像.
 
 ### 1.8.2.decode_image()
 
-转换BMP、GIF、JPEG或者PNG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+转换BMP、GIF、JPEG或者PNG图片为张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -350,7 +350,7 @@ tensor = tf.image.decode_image(contents=tensor,  # A `Tensor` of type `string`|�
 
 ### 1.8.3.decode_jpeg()
 
-转换JPEG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+转换JPEG图片为张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -362,7 +362,7 @@ tensor = tf.image.decode_jpeg(contents=tensor,  # A `Tensor` of type `string`|JP
 
 ### 1.8.4.decode_png()
 
-转换PNG图片为张量.|tensorflow.python.framework.ops.EagerTensor
+转换PNG图片为张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -374,7 +374,7 @@ tensor = tf.image.decode_png(contents=tensor,  # A `Tensor` of type `string`|PNG
 
 ### 1.8.5.resize()
 
-修改图片的尺寸.|tensorflow.python.framework.ops.EagerTensor
+修改图片的尺寸.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -393,7 +393,7 @@ tensor = tf.image.resize(tensor,  # 4-D Tensor or #-D Tensor|输入的图片.
 
 ### 1.9.1.read_file()
 
-读取文件.|tensorflow.python.framework.ops.EagerTensor
+读取文件.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -421,7 +421,7 @@ tensor = tf.io.read_file(filename='./img.jpg')  # str|文件路径.
 
 ##### 1.10.1.1.1.EfficientNetB0()
 
-EfficientNetB0的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+EfficientNetB0的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.efficientnet import EfficientNetB0
@@ -433,7 +433,7 @@ model = EfficientNetB0(include_top=True,  # bool|True|是否包含全连接输�
 
 ##### 1.10.1.1.2.preprocess_input()
 
-按ImageNet格式预处理数据.|numpy.array or tf.Tensor
+按ImageNet格式预处理数据.|`numpy.array` or `tf.Tensor`
 
 ```python
 from tensorflow.keras.applications.efficientnet import preprocess_input
@@ -445,7 +445,7 @@ tensor = preprocess_input(x=tensor)  # numpy.array or tf.Tensor|输入的数据.
 
 ##### 1.10.1.2.1.preprocess_input()
 
-按ImageNet格式预处理数据.|numpy.array or tf.Tensor
+按ImageNet格式预处理数据.|`numpy.array` or `tf.Tensor`
 
 ```python
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
@@ -457,7 +457,7 @@ tensor = preprocess_input(x=tensor)  # numpy.array or tf.Tensor|输入的数据.
 
 ##### 1.10.1.3.1.InceptionResNetV2()
 
-InceptionResNetV2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+InceptionResNetV2的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.inception_resnet_v2 import InceptionResNetV2
@@ -471,7 +471,7 @@ model = InceptionResNetV2(include_top=True,  # bool|True|是否包含全连接�
 
 ##### 1.10.1.4.1.InceptionV3()
 
-InceptionV3的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+InceptionV3的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.inception_v3 import InceptionV3
@@ -485,7 +485,7 @@ model = InceptionV3(include_top=True,  # bool|True|是否包含全连接输出�
 
 ##### 1.10.1.5.1.MobileNetV2()
 
-MobileNetV2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+MobileNetV2的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
@@ -503,7 +503,7 @@ model = MobileNetV2(include_top=True,  # bool|True|是否包含全连接输出�
 
 ##### 1.10.1.6.1.ResNet50()
 
-ResNet50的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+ResNet50的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.resnet import ResNet50
@@ -521,7 +521,7 @@ model = ResNet50(include_top=True,  # bool|True|是否包含全连接输出层.
 
 ##### 1.10.1.7.1.ResNet50V2()
 
-ResNet50V2的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+ResNet50V2的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.resnet_v2 import ResNet50V2
@@ -535,7 +535,7 @@ model = ResNet50V2(include_top=True,  # bool|True|是否包含全连接输出层
 
 ##### 1.10.1.8.1.vgg19()
 
-VGG19的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+VGG19的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.vgg19 import vgg19
@@ -549,7 +549,7 @@ model = VGG19(include_top=True,  # bool|True|是否包含全连接输出层.
 
 ##### 1.10.1.9.1.Xception()
 
-Xception的预训练模型.|tensorflow.python.keras.engine.functional.Functional
+Xception的预训练模型.|`tensorflow.python.keras.engine.functional.Functional`
 
 ```python
 from tensorflow.keras.applications.xception import Xception
@@ -567,7 +567,7 @@ model = Xception(include_top=True,  # bool|True|是否包含全连接输出层.
 
 #### 1.10.2.1.cast()
 
-转换张量元素的数据类型.|tensorflow.python.framework.ops.EagerTensor
+转换张量元素的数据类型.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -590,7 +590,7 @@ K.clear_session()
 
 #### 1.10.2.3.clip()
 
-逐元素裁切张量.|tensorflow.python.framework.ops.EagerTensor
+逐元素裁切张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -604,7 +604,7 @@ tensor = K.clip(x=arr,  # array-like or tf.Tensor|输入的数据.
 
 #### 1.10.2.4.ctc_batch_cost()
 
-逐批次计算ctc损失.|tensorflow.python.framework.ops.EagerTensor
+逐批次计算ctc损失.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 from tensorflow.keras import backend as K
@@ -617,7 +617,7 @@ loss = K.ctc_batch_cost(y_true,  # tf.Tensor(samples, max_string_length)|真实�
 
 #### 1.10.2.5.ctc_decode()
 
-解码CTC输出.|tuple of tensorflow.python.framework.ops.EagerTensor
+解码CTC输出.|`tuple of tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 from tensorflow.keras import backend as K
@@ -629,7 +629,7 @@ tensor = K.ctc_decode(y_pred,  # tf.Tensor(samples, time_steps, num_categories)|
 
 #### 1.10.2.6.expand_dims()
 
-增加张量的维度.|tensorflow.python.framework.ops.EagerTensor
+增加张量的维度.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -642,7 +642,7 @@ tensor = K.expand_dims(x=arr,  # tf.Tensor or array-like|输入的数组.
 
 #### 1.10.2.7.get_value()
 
-获取变量的值.|numpy.ndarray
+获取变量的值.|`numpy.ndarray`
 
 ```python
 from tensorflow.keras import backend as K
@@ -655,7 +655,7 @@ value = K.get_value(x=model.optimizer)  # 输入的变量.
 
 #### 1.10.2.8.one_likes()
 
-创建输入张量形状相同形状的全一张量.|tensorflow.python.framework.ops.EagerTensor
+创建输入张量形状相同形状的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -678,7 +678,7 @@ K.set_value(x,  # 被设置的变量.
 
 #### 1.10.2.10.shape()
 
-返回张量的形状.|tensorflow.python.framework.ops.EagerTensor
+返回张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -690,7 +690,7 @@ tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
 
 #### 1.10.2.11.sigmoid()
 
-逐元素计算sigmoid的值.|tensorflow.python.framework.ops.EagerTensor
+逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -702,7 +702,7 @@ tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 
 #### 1.10.2.12.zeros_like()
 
-创建输入张量形状相同形状的全零张量.|tensorflow.python.framework.ops.EagerTensor
+创建输入张量形状相同形状的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import numpy as np
@@ -720,7 +720,7 @@ tensor = K.zeros_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 
 #### 1.10.3.1.EarlyStopping()
 
-实例化EarlyStopping, 用以提前停止训练避免过拟合.
+实例化`EarlyStopping`, 用以提前停止训练避免过拟合.
 
 ```python
 from tensorflow.keras.callbacks import EarlyStopping
@@ -736,7 +736,7 @@ CALLBACKS = [
 
 #### 1.10.3.2.LearningRateScheduler()
 
-实例化LearningRateScheduler, 用以定时调整学习率.
+实例化`LearningRateScheduler`, 用以定时调整学习率.
 
 ```python
 import tensorflow as tf
@@ -756,7 +756,7 @@ CALLBACKS = [
 
 #### 1.10.3.3.ModelCheckpoint()
 
-实例化ModelCheckpoint, 用以保存模型的权重.
+实例化`ModelCheckpoint`, 用以保存模型的权重.
 
 ```python
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -771,7 +771,7 @@ CALLBACKS = [
 
 #### 1.10.3.4.ReduceLROnPlateau()
 
-实例化ReduceLROnPlateau, 用以在评估值不变时降低学习率.
+实例化`ReduceLROnPlateau`, 用以在评估值不变时降低学习率.
 
 ```python
 from tensorflow.keras.callbacks import ReduceLROnPlateau
@@ -788,7 +788,7 @@ CALLBACKS = [
 
 #### 1.10.3.5.TensorBoard()
 
-实例化TensorBoard, 可视化训练信息.
+实例化`TensorBoard`, 可视化训练信息.
 
 ```python
 from tensorflow.keras.callbacks import TensorBoard
@@ -811,7 +811,7 @@ CALLBACKS = [
 
 ##### 1.10.4.1.1.load_data()
 
-加载mnist数据集.|tuple
+加载mnist数据集.|`tuple`
 
 ```python
 from tensorflow.keras.datasets import mnist
@@ -1017,7 +1017,7 @@ char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # in
 
 ###### 1.10.5.15.1.2.get_vocabulary()
 
-获取词汇表.|list
+获取词汇表.|`list`
 
 ```python
 from tensorflow.keras import layers
@@ -1292,7 +1292,7 @@ metric = MAE()
 
 #### 1.10.8.1.load_model()
 
-加载模型.|tensorflow.python.keras.engine.training.Model or tensorflow.python.keras.engine.sequential.Sequential
+加载模型.|`tensorflow.python.keras.engine.training.Model` or `tensorflow.python.keras.engine.sequential.Sequential`
 
 ```python
 from tensorflow.keras.models import load_model
@@ -1302,7 +1302,7 @@ model = load_model(filepath='model.h5')  # str or pathlib.Path|文件路径.
 
 #### 1.10.8.2.Model()
 
-实例化Model.
+实例化`Model`.
 
 ```python
 from tensorflow.keras.models import Model
@@ -1342,7 +1342,7 @@ model.evaluate(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, gen
 
 ##### 1.10.8.2.4.fit()
 
-训练模型.|keras.callbacks.History
+训练模型.|`keras.callbacks.History`
 
 ```python
 model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
@@ -1371,7 +1371,7 @@ model.load_weights(filepath)  # str or pathlib.Path|文件路径.
 
 ##### 1.10.8.2.6.predict()
 
-使用模型进行预测.|numpy.ndarray
+使用模型进行预测.|`numpy.ndarray`
 
 ```python
 y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
@@ -1381,7 +1381,7 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
 
 ##### 1.10.8.2.7.output_shape
 
-模型输出层的形状.|tuple
+模型输出层的形状.|`tuple`
 
 ```python
 shape = model.output_shape
@@ -1406,7 +1406,7 @@ model.summary()
 
 #### 1.10.8.3.Sequential()
 
-实例化Sequential.
+实例化`Sequential`.
 
 ```python
 from tensorflow.keras.models import Sequential
@@ -1416,7 +1416,7 @@ model = Sequential()
 
 ##### 1.10.8.3.1.add()
 
-添加一个网络层到Sequential的栈顶.
+添加一个网络层到`Sequential`的栈顶.
 
 ```python
 model.add(layer=layers.Input(shape=(224, 224, 3)))  # keras.layers|网络层.
@@ -1440,7 +1440,7 @@ optimizer = Adam(learning_rate=0.001)  # float|0.001|学习率.
 
 ##### 1.10.9.1.1.apply_gradients()
 
-GradientTape更新的参数赋值给优化器.
+`GradientTape`更新的参数赋值给优化器.
 
 ```python
 from tensorflow.keras.optimizers import Adam
@@ -1469,7 +1469,7 @@ optimizer = SGD(learning_rate=0.01)  # float|0.001|学习率.
 
 ##### 1.10.10.1.1.array_to_img()
 
-将数组转换为PIL图像.|PIL.Image.Image
+将数组转换为PIL图像.|`PIL.Image.Image`
 
 ```python
 import numpy as np
@@ -1481,7 +1481,7 @@ img = array_to_img(x=arr)  # numpy.ndarray|输入的数组.
 
 ##### 1.10.10.1.2.ImageDataGenerator()
 
-实例化ImageDataGenerator, 对图像进行实时增强.
+实例化`ImageDataGenerator`, 对图像进行实时增强.
 
 ```python
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -1497,9 +1497,127 @@ generator = ImageDataGenerator(rotation_range=0,  # int|0|随机旋转的度数.
                                vertical_flip=False)  # bool|False|随机垂直翻转.
 ```
 
+###### 1.10.10.1.2.1.class_indices
+
+
+
+###### 1.10.10.1.2.2.flow()
+
+对数据进行增强.|`yield`
+
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+generator = ImageDataGenerator()
+generator.flow(x,  # numpy array of rank 4 or tuple|输入的数据.
+               y=None,  # array-like|None|标签.
+               batch_size=32,  # int|32|批次大小.
+               shuffle=True)  # bool|True|是否打乱.
+```
+
+#### 1.10.10.2.timeseries_dataset_from_array()
+
+从数组中创建时间序列数据集.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
+
+```python
+from tensorflow.keras.preprocessing import timeseries_dataset_from_array
+
+dataset = timeseries_dataset_from_array(data,  # numpy.ndarray or eager tensor|输入数据.
+                                        targets,  # numpy.ndarray or eager tensor|标签.
+                                        sequence_length,  # int|输出的序列⻓度.
+                                        sequence_stride=1,  # int|1|连续输出序列之间的周期.
+                                        sampling_rate=1,  # int|1|连续时间步之间的时间间隔.
+                                        batch_size=128,  # int|128|批次大小.
+                                        shuffle=False)  # bool|False|是否打乱.
+```
+
+### 1.10.11.regularizers
+
+| 版本 | 描述                   | 注意 |
+| ---- | ---------------------- | ---- |
+| -    | tf.keras的正则化器API. | -    |
+
+#### 1.10.11.1.L2()
+
+实例化L2正则化器.
+
+```python
+from tensorflow.keras.regularizers import L2
+
+regularizer = L2(l2=0.01)  # float|0.01|L2正则化因子.
+```
+
+### 1.10.12.utils
+
+| 版本 | 描述               | 注意 |
+| ---- | ------------------ | ---- |
+| -    | tf.keras的工具API. | -    |
+
+#### 1.10.12.1.get_file()
+
+从指定URL下载文件.|`str`
+
+```python
+from tensorflow.keras.utils import get_file
+
+file = get_file(fname,  # str|保存的文件名.
+                origin,  # str|文件的URL.
+                extract=False)  # bool|False|是否解压tar或zip文件.
+```
+
+#### 1.10.12.2.plot_model()
+
+绘制模型网络图.
+
+```python
+from tensorflow.keras.applications.resnet50 import ResNet50
+from tensorflow.keras.utils import plot_model
+
+plot_model(model=ResNet50(),  # keras.models|要绘制的模型.
+           to_file='model.png',  # str|'model.png'｜保存的文件名.
+           show_shapes=False,  # bool|False|显示网络层的形状.
+           show_layer_names=True,  # bool|True|显示网络层的名称.
+           rankdir='TB',  # {'TB', 'LR'}|'TB'|
+           dpi=96)  # int|96|DPI值.
+```
+
+#### 1.10.12.3.Sequence()
+
+实现数据序列(`__getitem__`和`__len__`必须实现).
+
+```python
+from tensorflow.keras.utils import Sequence
+
+class DataSequence(Sequence):
+    def __init__(self, **kwargs):
+        super(DataSequence, self).__init__(**kwargs)
+        self.on_epoch_end()
+
+    def __getitem__(self, item):
+        """获取一个批次的数据."""
+
+    def __len__(self):
+        """批次的数量."""
+
+    def on_epoch_end(self):
+        """每轮训练结束后对数据进行某种操作."""
+```
+
+#### 1.10.12.4.to_categorical()
+
+将离散编码的标签转换为one-hot编码.|`numpy.ndarray`
+
+```python
+from tensorflow.keras.utils import to_categorical
+
+label = [1, 2, 3]
+y = to_categorical(y=label,  # array-like|标签.
+                   num_classes=4)  # int|None|类别总数.
+```
+
 ## 1.11.Variable()
 
-创建变量.|tensorflow.python.ops.resource_variable_ops.ResourceVariable
+创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
 ```python
 import tensorflow as tf
