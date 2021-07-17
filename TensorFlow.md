@@ -1515,6 +1515,68 @@ generator.flow(x,  # numpy array of rank 4 or tuple|输入的数据.
                shuffle=True)  # bool|True|是否打乱.
 ```
 
+###### 1.10.10.1.2.3.flow_from_dataframe()
+
+从dataframe中读取数据, 并对数据进行增强.|`yield`
+
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+generator = ImageDataGenerator()
+generator.flow_from_dataframe(dataframe,  # pandas.DataFrame|描述图片位置的dataframe.
+                              directory=None,  # str|None|图片文件夹路径.
+                              x_col='filename',  # str|'filename'|图片文件列.
+                              y_col='class',  # str|'class'|标签列.
+                              target_size=(256, 256),  # (height, width)|(256, 256)|读入图片的大小.
+                              color_mode='rgb',  # {'grayscale', 'rgb', 'rgba'}|'rgb'|色彩空间.
+                              classes=None,  # list of str|None|类名称列表.
+                              class_mode='categorical',  # {'binary', 'categorical', 'input', 'multi_output', 'raw', 'sparse'}|'categorical'|标签数组类型.
+                              batch_size=32,  # int|32|批次大小.
+                              shuffle=True,  # bool|True|是否打乱.
+                              interpolation='nearest',  # {'nearest', 'bilinear', 'bicubic', 'lanczos', 'box', 'hamming'}|'nearest'|插值方式.
+                              validate_filenames=True)  # bool|True|是否检查文件可靠性.
+```
+
+###### 1.10.10.1.2.4.flow_from_directory()
+
+从文件夹中读取数据(每个类别是个单独的文件夹), 并对数据进行增强.|`yield`
+
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+generator = ImageDataGenerator()
+generator.flow_from_directory(directory,  # str|图片文件夹路径.
+                              target_size=(256, 256),  # (height, width)|(256, 256)|读入图片的大小.
+                              color_mode='rgb',  # {'grayscale', 'rgb', 'rgba'}|'rgb'|色彩空间.
+                              classes=None,  # list of str|None|类名称列表.
+                              class_mode='categorical',  # {'binary', 'categorical', 'input', 'multi_output', 'raw', 'sparse'}|'categorical'|标签数组类型.
+                              batch_size=32,  # int|32|批次大小.
+                              shuffle=True,  # bool|True|是否打乱.
+                              interpolation='nearest')  # {'nearest', 'bilinear', 'bicubic', 'lanczos', 'box', 'hamming'}|'nearest'|插值方式.
+```
+
+##### 1.10.10.1.3.img_to_array()
+
+将PIL图片转换为numpy数组.|numpy.ndarray
+
+```python
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+
+img = load_img(path='./img.png')
+arr = img_to_array(img=img)  # PIL.Image|输入的图片.
+```
+
+##### 1.10.10.1.4.load_img()
+
+加载图片.|PIL.Image.Image
+
+```python
+from tensorflow.keras.preprocessing.image import load_img
+
+img = load_img(path='./img.png',  # str|图片的路径.
+               target_size=None)  # (img_height, img_width)|None|读入图片的大小.
+```
+
 #### 1.10.10.2.timeseries_dataset_from_array()
 
 从数组中创建时间序列数据集.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
@@ -1615,7 +1677,18 @@ y = to_categorical(y=label,  # array-like|标签.
                    num_classes=4)  # int|None|类别总数.
 ```
 
-## 1.11.Variable()
+## 1.11.ones()
+
+创建全一张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.ones(shape=(3, 2),  # list/tuple of int|张量的形状.
+                 dtype='int32')  # str|dtypes.float32|元素数据类型.
+```
+
+## 1.12.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
