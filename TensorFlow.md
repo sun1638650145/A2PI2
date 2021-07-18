@@ -1688,7 +1688,115 @@ tensor = tf.ones(shape=(3, 2),  # list/tuple of int|张量的形状.
                  dtype='int32')  # str|dtypes.float32|元素数据类型.
 ```
 
-## 1.12.Variable()
+## 1.12.ones_like()
+
+创建一个输入数组形状相同的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [[1, 2, 3], [4, 5, 6]]
+tensor = tf.ones_like(input=arr)  # array-like|输入的数组. 
+```
+
+## 1.13.py_function()
+
+将Python函数修饰成TensorFlow的操作, 并在Eager模式下运行.
+
+```python
+import tensorflow as tf
+
+def get_max(a, b):
+    return max(a, b)
+a = tf.constant(5)
+b = tf.constant(-6)
+max_value = tf.py_function(func=get_max,  # function|Python函数.
+                           inp=[a, b],  # list of Tensor|输入的张量.
+                           Tout=tf.int32)  # tensorflow.python.framework.dtypes.DType|返回数据的数据类型.
+```
+
+## 1.14.random
+
+### 1.14.1.normal()
+
+生成标准正态分布的张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.random.normal(shape=[2, 3])  # array-like|张量的形状.
+```
+
+## 1.15.strings
+
+| 版本 | 描述               | 注意 |
+| ---- | ------------------ | ---- |
+| -    | tf的字符串操作API. | -    |
+
+### 1.15.1.reduce_join()
+
+拼接字符串.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+str = ['12', 'ab', '3', 'c']
+tensor = tf.strings.reduce_join(inputs=str)  # str|输入的字符串.
+```
+
+### 1.15.2.unicode_split()
+
+将字符串转换为Unicode编码的字节.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+str = 'cat'
+tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
+                                  input_encoding='UTF-8')  # str|输入字符串的编码.
+```
+
+## 1.16.tensordot()
+
+沿指定维度点乘.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+a = [[1], [2]]
+b = [[2, 1]]
+tensor = tf.tensordot(a=a,  # tf.Tensor|输入的张量.
+                      b=b,  # tf.Tensor|输入的张量.
+                      axes=1)  # int|维度.
+```
+
+## 1.17.tpu
+
+### 1.17.1.experimental
+
+#### 1.17.1.1.initialize_tpu_system()
+
+初始化TPU系统.
+
+```python
+import tensorflow as tf
+
+tf.tpu.experimental.initialize_tpu_system()
+```
+
+## 1.18.transpose()
+
+对张量进行转置操作.|tensorflow.python.framework.ops.EagerTensor
+
+```python
+import tensorflow as tf
+
+a = [[[1, 1, 1], [2, 2, 2]]]
+tensor = tf.transpose(a=a,  # tf.Tensor|输入的张量.
+                      perm=[1, 2, 0])  # list|None|轴的排列顺序.
+```
+
+## 1.19.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
@@ -1698,9 +1806,37 @@ import tensorflow as tf
 tensor = tf.Variable(2021)
 ```
 
+## 1.20.zeros_like()
+
+创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [[1, 2, 3], [4, 5, 6]]
+tensor = tf.zeros_like(input=arr)  # array-like|输入的数组. 
+```
+
 # 2.tensorflow.js
 
 # 3.tensorflow_datasets
+
+| 版本  | 描述                    | 注意                                                         | 适配M1 |
+| ----- | ----------------------- | ------------------------------------------------------------ | ------ |
+| 4.3.0 | TensorFlow的官方数据集. | 1. 默认的缓存路径是~/tensorflow_datasets.                                                                         2. 视网络情况使用代理 | 是     |
+
+## 3.1.load()
+
+加载数据集.|`dict of tf.data.Datasets`
+
+```python
+import tensorflow_datasets as tfds
+
+ds_train, ds_test = tfds.load(name='mnist',  # str|数据集的注册名称.
+                              split=['train', 'test'],  # str or list{'train', ['train', 'test'], 'train[80%:]'}(可选)|None|是否拆分测试集.
+                              shuffle_files=True,  # bool(可选)|False|是否打乱数据.
+                              as_supervised=True)  # bool(可选)|False|是否返回标签.
+```
 
 # 4.tensorflow_hub
 
