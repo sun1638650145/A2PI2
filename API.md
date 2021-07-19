@@ -2782,54 +2782,54 @@ animal.call()
 #include "pybind11/pybind11.h"
 
 class Animal {
-    public:
-        Animal() {
-            this->name = "animal";
-        }
+public:
+    Animal() {
+        this->name = "animal";
+    }
 
-        void call() {
-            std::cout << "Ah!" << std::endl;
-        }
+    void call() {
+        std::cout << "Ah!" << std::endl;
+    }
 
-    public:
-        std::string name;
+public:
+    std::string name;
 };
 
 class Cat: public Animal {
-    public:
-        Cat() {
-            this->name = "cat";
-        }
+public:
+    Cat() {
+        this->name = "cat";
+    }
 
-        explicit Cat(std::string name) {
-            this->name = std::move(name);
-        }
+    explicit Cat(std::string name) {
+        this->name = std::move(name);
+    }
 
-        void call() {
-            std::cout << "Meow~" << std::endl;
-        }
+    void call() {
+        std::cout << "Meow~" << std::endl;
+    }
 };
 
 class Dog: public Animal {
-    public:
-        Dog() {
-            this->name = "dog";
-        }
+public:
+    Dog() {
+        this->name = "dog";
+    }
 
-        explicit Dog(std::string name) {
-            this->name = std::move(name);
-        }
+    explicit Dog(std::string name) {
+        this->name = std::move(name);
+    }
 
-        void call() {
-            std::cout << "Bark" << std::endl;
-        }
+    void call() {
+        std::cout << "Woof!" << std::endl;
+    }
 };
 
 PYBIND11_MODULE(example, m) {
     pybind11::class_<Animal>(m, "Animal")
-        .def(pybind11::init())
-        .def("call", &Animal::call)
-        .def_readonly("name", &Animal::name);
+            .def(pybind11::init())
+            .def("call", &Animal::call)
+            .def_readonly("name", &Animal::name);
 
     pybind11::class_<Cat, Animal>(m, "Cat")
             .def(pybind11::init())
@@ -3264,7 +3264,7 @@ Eigen::MatrixXd transpose(const Eigen::MatrixXd &mat) {
 }
 
 PYBIND11_MODULE(example, m) {
-    m.def("transpose", &transpose,pybind11::arg("mat"));
+    m.def("transpose", &transpose, pybind11::arg("mat"));
 }
 ```
 
@@ -3321,6 +3321,67 @@ import example
 
 int_ans = example.add(1, 1)
 float_ans = example.add(0.9, 1.1)
+```
+
+### 11.6.3.区分32位和64位的数据类型
+
+0. 受限于 Python 3.x 没有区分32位和64位的类型, 这里需要依赖于NumPy, 同时pybind11没有对于NumPy标量处理的模板, 因此需要借助`pybind11::buffer`实现.
+
+1. example.cc代码
+
+```c++
+#include "pybind11/eigen.h"
+#include "pybind11/pybind11.h"
+#include "pybind11/stl.h"
+
+typedef std::int32_t int32;
+typedef std::int64_t int64;
+
+std::variant<Eigen::MatrixXf, Eigen::MatrixXd> create_matrix(const pybind11::buffer &rows,
+                                                             const pybind11::buffer &cols) {
+    auto type_code = rows.request().format;
+
+    if (type_code == "i") {
+        Eigen::MatrixXf matrix = Eigen::MatrixXf::Zero(pybind11::cast<int32>(rows), pybind11::cast<int32>(cols));
+
+        return matrix;
+    } else if (type_code == "l") {
+        Eigen::MatrixXd matrix = Eigen::MatrixXd::Zero(pybind11::cast<int64>(rows), pybind11::cast<int64>(cols));
+
+        return matrix;
+    }
+
+    return std::variant<Eigen::MatrixXf, Eigen::MatrixXd>();
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("create_matrix", &create_matrix);
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++17 -undefined dynamic_lookup \
+ -I /opt/homebrew/Cellar/eigen/3.3.9/include/eigen3 \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import numpy as np
+
+import example
+
+n32 = np.int32(2)
+n64 = np.int64(2)
+
+ans32 = example.create_matrix(n32, n32)
+print(ans32.dtype)
+ans64 = example.create_matrix(n64, n64)
+print(ans64.dtype)
 ```
 
 # 12.pybind11
