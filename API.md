@@ -2782,66 +2782,66 @@ animal.call()
 #include "pybind11/pybind11.h"
 
 class Animal {
-public:
-    Animal() {
-        this->name = "animal";
-    }
+    public:
+        Animal() {
+            this->name = "animal";
+        }
 
-    void call() {
-        std::cout << "Ah!" << std::endl;
-    }
+        void call() {
+            std::cout << "Ah!" << std::endl;
+        }
 
-public:
-    std::string name;
+    public:
+        std::string name;
 };
 
 class Cat: public Animal {
-public:
-    Cat() {
-        this->name = "cat";
-    }
+      public:
+        Cat() {
+            this->name = "cat";
+        }
 
-    explicit Cat(std::string name) {
-        this->name = std::move(name);
-    }
+        explicit Cat(std::string name) {
+            this->name = std::move(name);
+        }
 
-    void call() {
-        std::cout << "Meow~" << std::endl;
-    }
+        void call() {
+            std::cout << "Meow~" << std::endl;
+        }
 };
 
 class Dog: public Animal {
-public:
-    Dog() {
-        this->name = "dog";
-    }
+    public:
+        Dog() {
+            this->name = "dog";
+        }
 
-    explicit Dog(std::string name) {
-        this->name = std::move(name);
-    }
+        explicit Dog(std::string name) {
+            this->name = std::move(name);
+        }
 
-    void call() {
-        std::cout << "Woof!" << std::endl;
-    }
+        void call() {
+            std::cout << "Woof!" << std::endl;
+        }
 };
 
 PYBIND11_MODULE(example, m) {
     pybind11::class_<Animal>(m, "Animal")
-            .def(pybind11::init())
-            .def("call", &Animal::call)
-            .def_readonly("name", &Animal::name);
+        .def(pybind11::init())
+        .def("call", &Animal::call)
+        .def_readonly("name", &Animal::name);
 
     pybind11::class_<Cat, Animal>(m, "Cat")
-            .def(pybind11::init())
-            .def(pybind11::init<std::string>())  // pybind11不能自动重载, 需要显式声明.
-            .def("call", &Cat::call)
-            .def_readonly("name", &Cat::name);
+        .def(pybind11::init())
+        .def(pybind11::init<std::string>())  // pybind11不能自动重载, 需要显式声明.
+        .def("call", &Cat::call)
+        .def_readonly("name", &Cat::name);
 
     pybind11::class_<Dog>(m, "Dog")  // Python侧和C++侧的继承关系并不一致, 不显示声明将继承object.
-            .def(pybind11::init())
-            .def(pybind11::init<std::string>())
-            .def("call", &Dog::call)
-            .def_readonly("name", &Dog::name);
+        .def(pybind11::init())
+        .def(pybind11::init<std::string>())
+        .def("call", &Dog::call)
+        .def_readonly("name", &Dog::name);
 }
 ```
 
