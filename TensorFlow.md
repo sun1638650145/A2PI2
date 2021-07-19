@@ -1819,11 +1819,26 @@ tensor = tf.zeros_like(input=arr)  # array-like|输入的数组.
 
 # 2.tensorflow.js
 
+| 版本  | 描述                                  | 注意                             | 适配M1 |
+| ----- | ------------------------------------- | -------------------------------- | ------ |
+| 3.8.0 | TensorFlow 的  JavaScript 机器学习库. | 1. TensorFlow.js 使用ES2017语法. | 是     |
+
+## 2.1.scalar()
+
+实例化`tf.Tensor`常量.
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let tensor = tf.scalar(10.0,  // number or boolean or string or Uint8Array|输入的数据.
+                       'float32');  // 'float32' or 'int32' or 'bool' or 'complex64' or 'string'(可选)|数据类型.
+```
+
 # 3.tensorflow_datasets
 
 | 版本  | 描述                    | 注意                                                         | 适配M1 |
 | ----- | ----------------------- | ------------------------------------------------------------ | ------ |
-| 4.3.0 | TensorFlow的官方数据集. | 1. 默认的缓存路径是~/tensorflow_datasets.                                                                         2. 视网络情况使用代理 | 是     |
+| 4.3.0 | TensorFlow的官方数据集. | 1. 默认的缓存路径是~/tensorflow_datasets.                                                                          2. 视网络情况使用代理. | 是     |
 
 ## 3.1.load()
 
@@ -1840,3 +1855,30 @@ ds_train, ds_test = tfds.load(name='mnist',  # str|数据集的注册名称.
 
 # 4.tensorflow_hub
 
+| 版本   | 描述                    | 注意                                                         | 适配M1 |
+| ------ | ----------------------- | ------------------------------------------------------------ | ------ |
+| 0.12.0 | TensorFlow的官方模型库. | 1. 推荐使用环境变量`TFHUB_CACHE_DIR`指定模型保存位置.                                                       2. [TensorFlow Hub 国内镜像](https://hub.tensorflow.google.cn/) | 是     |
+
+## 4.1.KerasLayer()
+
+将模型修饰为Keras的网络层.|`tensorflow_hub.keras_layer.KerasLayer`
+
+```python
+from tensorflow_hub import KerasLayer
+
+layer = KerasLayer(handle='https://hub.tensorflow.google.cn/google/efficientnet/b0/classification/1',  # str|模型的路径或者(URL).
+                   trainable=False,  # bool(可选)|False|是否可以训练.
+                   output_shape=None,  # tuple|None|网络层的输出形状.
+                   input_shape,  # tuple|None|期望的形状.
+                   dtype='float32')  # tensorflow.python.framework.dtypes.DType|'float32'|期望的数据类型.
+```
+
+## 4.2.load()
+
+加载模型.|`tensorflow.python.training.tracking.tracking.AutoTrackable`
+
+```python
+from tensorflow_hub import load
+
+model = load(handle='https://hub.tensorflow.google.cn/google/efficientnet/b0/classification/1')  # str|模型的路径或者(URL).
+```
