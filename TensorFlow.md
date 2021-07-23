@@ -1499,7 +1499,14 @@ generator = ImageDataGenerator(rotation_range=0,  # int|0|随机旋转的度数.
 
 ###### 1.10.10.1.2.1.class_indices
 
+类名称和索引映射字典.|`dict`
 
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+generator = ImageDataGenerator()
+class_indices = generator.flow_from_dataframe(x).class_indices
+```
 
 ###### 1.10.10.1.2.2.flow()
 
@@ -1557,7 +1564,7 @@ generator.flow_from_directory(directory,  # str|图片文件夹路径.
 
 ##### 1.10.10.1.3.img_to_array()
 
-将PIL图片转换为numpy数组.|numpy.ndarray
+将PIL图片转换为numpy数组.|`numpy.ndarray`
 
 ```python
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -1568,7 +1575,7 @@ arr = img_to_array(img=img)  # PIL.Image|输入的图片.
 
 ##### 1.10.10.1.4.load_img()
 
-加载图片.|PIL.Image.Image
+加载图片.|`PIL.Image.Image`
 
 ```python
 from tensorflow.keras.preprocessing.image import load_img
@@ -1758,7 +1765,7 @@ tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
 
 ## 1.16.tensordot()
 
-沿指定维度点乘.|tensorflow.python.framework.ops.EagerTensor
+沿指定维度点乘.|`tensorflow.python.framework.ops.EagerTensor`
 
 ```python
 import tensorflow as tf
@@ -1823,15 +1830,176 @@ tensor = tf.zeros_like(input=arr)  # array-like|输入的数组.
 | ----- | ------------------------------------ | -------------------------------- | ------ |
 | 3.8.0 | TensorFlow 的 JavaScript 机器学习库. | 1. TensorFlow.js 使用ES2017语法. | 是     |
 
-## 2.1.scalar()
+## 2.1.browser
+
+### 2.1.1.fromPixels()
+
+从图片中创建`tf.Tensor`.|`tf.Tensor3D`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let tensor = tf.browser.fromPixels(image);  // pixels: PixelData, ImageData, HTMLImageElement, HTMLCanvasElement, HTMLVideoElement or ImageBitmap|输入的图片.
+```
+
+## 2.2.div()
+
+张量逐元素除法.|`tf.Tensor`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let a = tf.scalar(5);
+let b = tf.scalar(2);
+
+let c = tf.div(a,  // a: tf.Tensor, TypedArray or Array|被除数.
+               b);  // b: tf.Tensor, TypedArray or Array|除数.
+```
+
+## 2.3.expandDims()
+
+增加张量的维度.|`tf.Tensor`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let a = tf.tensor([5]);
+
+let b = tf.expandDims(a,  // x: tf.Tensor, TypedArray or Array|输入的数组.
+                      0);  // axis: number(可选)|0|添加新维度的位置.
+```
+
+## 2.4.image
+
+### 2.4.1.resizeBilinear()
+
+使用双线性插值修改图片的尺寸.|`tf.Tensor3D` 或 `tf.Tensor4D`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+var tensor = tf.tensor([[[1, 2],
+                         [1, 2]]]);
+tensor = tf.image.resizeBilinear(tensor,  // images: tf.Tensor3D, tf.Tensor4D, TypedArray or Array|输入的图像.
+                         			   [2, 3]);  // size: [number, number]|修改后的尺寸.
+```
+
+## 2.5.LayersModel
+
+### 2.5.1.predict()
+
+使用模型进行预测.|`tf.Tensor` 或 `tf.Tensor[]`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let model = await tf.loadLayersModel(
+    'https://storage.googleapis.com/tfjs-models/tfjs/iris_v1/model.json');
+model.predict(tf.ones([1, 4])).print();  // x: tf.Tensor, tf.Tensor[]|特征数据.
+```
+
+### 2.5.2.summary()
+
+打印模型的摘要.
+
+```javascript
+model.summary();
+```
+
+## 2.6.loadLayersModel()
+
+加载`LayersModel`.
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let model = await tf.loadLayersModel(
+     'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');  // pathOrIOHandler: string, io.IOHandler|模型的路径.
+```
+
+## 2.7.ones()
+
+生成全一数组.|`tf.Tensor`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let tensor = tf.ones([1, 4]);  // shape: number[]|数组的形状.
+```
+
+## 2.8.print()
+
+将信息输出在控制台.
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let a = tf.tensor([5]);
+
+tf.print(a);
+```
+
+## 2.9.scalar()
 
 实例化`tf.Tensor`常量.
 
 ```javascript
 import * as tf from '@tensorflow/tfjs';
 
-let tensor = tf.scalar(10.0,  // number or boolean or string or Uint8Array|输入的数据.
-                       'float32');  // 'float32' or 'int32' or 'bool' or 'complex64' or 'string'(可选)|数据类型.
+let tensor = tf.scalar(10.0,  // value: number or boolean or string or Uint8Array|输入的数据.
+                       'float32');  // dtype: 'float32','int32', 'bool', 'complex64' or 'string'(可选)|数据类型.
+```
+
+## 2.10.sub()
+
+张量逐元素减法.|`tf.Tensor`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let a = tf.scalar(5);
+let b = tf.scalar(2);
+
+let c = tf.sub(a,  // a: tf.Tensor, TypedArray or Array|被减数.
+               b);  // b: tf.Tensor, TypedArray or Array|减数.
+```
+
+## 2.11.tensor()
+
+实例化`tf.Tensor`张量.
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let tensor = tf.tensor(10.0);  // values: TypedArray or Array|输入的数据.
+```
+
+### 2.11.1.data()
+
+异步获取的`tf.Tensor`值.|`Promise<DataTypeMap[NumericDataType]>`
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+let tensor = tf.tensor(10.0);
+let value = tensor.data();
+```
+
+## 2.12.tidy()
+
+自动清理除返回值外的全部中间变量, 避免内存泄漏.
+
+```javascript
+import * as tf from '@tensorflow/tfjs';
+
+function func() {
+    let a = tf.scalar(2);
+    let b = tf.scalar(2);
+    
+    return tf.add(a, b);
+}
+
+let c = tf.tidy(func);  // nameOrFn: string or Function|输入的函数.
 ```
 
 # 3.tensorflow_datasets
