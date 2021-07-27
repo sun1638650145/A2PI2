@@ -153,16 +153,15 @@
       精度定义为
       $$
       \begin{equation}
-      	\begin{aligned}
-     	acc(f;D)&=\frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\pmb{x}_i) = y_i) \\
-     	&= 1 - E(f;D)
-     	\end{aligned}
-     \end{equation}
-     $$
-     
-   2. 对于数据分布$\mathcal{D}$和概率密度函数$p(·)$，错误率定义为
+      	\begin{aligned}acc(f;D)&=\frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\pmb{x}_i) = y_i) \\
+      	&= 1 - E(f;D)
+      	\end{aligned}
+      \end{equation}
       $$
-      E(f;D)=\int{_{\textbf{x}\sim{}\mathcal{D}} \mathbb I(f(\textbf{x}) \neq y)p(\textbf{x})d\textbf{x}}
+      
+   2. 对于数据分布$\mathcal{D}$和概率密度函数$p(·)$​，错误率定义为
+      $$
+      E(f;D)=\int{_{\pmb{x}\sim{}\mathcal{D}} \mathbb I(f(\pmb{x}) \neq y)p(\pmb{x})d\pmb{x}}
       $$
       精度定义为
       $$
@@ -173,8 +172,9 @@
       	\end{aligned}
       \end{equation}
       $$
-  
+
   ---
+
 
 ### 2.3.2.查准度(precision)、查全率(recall)与F1
 
@@ -503,7 +503,7 @@ $\tau_{\chi^2}=\frac{(|e_{01}-e_{10}|-1)^2}{e_{01}+e_{10}}$在给定显著度$\a
              \end{aligned}
          \end{equation}
       $$
-    令上式为0，得到w和b的最优解的闭式解
+      令上式为0，得到w和b的最优解的闭式解
       $$
       \begin{equation}
              \begin{aligned}
