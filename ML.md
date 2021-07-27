@@ -128,12 +128,12 @@
   
    1. 回归任务的性能度量是均方误差(mean squared error) 
       $$
-      E(f;D)=\frac{1}{m} \sum\limits_{{i=1}}^m (f(\textbf{x_i})-y_i)^2
+      E(f;D)=\frac{1}{m} \sum_{{i=1}}^m(f(\pmb x_i)-y_i)^2
       $$
   
    2. 对于数据分布$\mathcal{D}$和概率密度函数$p(·)$，均方误差的描述为 
       $$
-      E(f;D)=\int{_{\textbf{x}\sim{}\mathcal{D}}(f(\textbf{x})-y)^2p(\textbf{x})d\textbf{x}}
+      E(f;D)=\int{_{\pmb{x}\sim{}\mathcal{D}}(f(\pmb{x})-y)^2p(\pmb{x})d\pmb{x}}
       $$
 
   ---
@@ -148,12 +148,17 @@
 
    1. 样例集$$D$$分类错误率定义为
       $$
-      E(f;D)=\frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\textbf{x_i}) \neq y_i)
+      E(f;D)=\frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\pmb{x}_i) \neq y_i)
       $$
       精度定义为
       $$
-      acc(f;D) = \frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\textbf{x_i}) = y_i) = 1 - E(f;D)
-      $$
+      \begin{equation}
+      	\begin{aligned}
+     	acc(f;D)&=\frac{1}{m} \sum\limits_{{i=1}}^m \mathbb I(f(\pmb{x}_i) = y_i) \\
+     	&= 1 - E(f;D)
+     	\end{aligned}
+     \end{equation}
+     $$
      
    2. 对于数据分布$\mathcal{D}$和概率密度函数$p(·)$，错误率定义为
       $$
@@ -161,9 +166,14 @@
       $$
       精度定义为
       $$
-      acc(f;D) = \int{_{\textbf{x}\sim{}\mathcal{D}} \mathbb I(f(\textbf{x}) = y)p(\textbf{x})d\textbf{x}} = 1 - E(f;D)
+      \begin{equation}
+      	\begin{aligned}
+      	acc(f;D)&=\int_{\pmb{x}\sim{}\mathcal{D}}\mathbb I(f(\pmb{x}) = y)p(\pmb{x})d\pmb{x} \\
+        &=1 - E(f;D)
+      	\end{aligned}
+      \end{equation}
       $$
-
+  
   ---
 
 ### 2.3.2.查准度(precision)、查全率(recall)与F1
@@ -295,7 +305,12 @@
   此时错误率为
 
   $$
-E(f;D;cost)=\frac{1}{m} \Big (\sum\limits_{{x_i\in D^+}} \mathbb I(f(\textbf{x_i}) \neq y_i) \times cost_{01} + \sum\limits_{{x_i\in D^-}} \mathbb I(f(\textbf{x_i}) \neq y_i) \times cost_{10}\Big )
+  \begin{equation}
+  	\begin{aligned}
+  	E(f;D;cost)&=\frac{1}{m}\Bigg(\sum\limits_{\pmb{x}_i\in D^+}\mathbb I f(\pmb{x}_i)\neq y_i \times cost_{01}\\
+  	&+\sum\limits_{\pmb{x}_i\in D^-}\mathbb I(f(\pmb{x}_i) \neq y_i) \times cost_{10}\Bigg)
+  	\end{aligned}
+  \end{equation}
   $$
   
 * 在非均等代价下，ROC不能直接反映学习器的期望总体代价，而需要通过代价曲线(cost curve)
@@ -318,7 +333,7 @@ E(f;D;cost)=\frac{1}{m} \Big (\sum\limits_{{x_i\in D^+}} \mathbb I(f(\textbf{x_i
 
 ## 2.4.比较检验
 
-* 使用统计假设检验(hypotheis test)进行学习器性能的比较
+* 使用统计假设检验(hypothesis test)进行学习器性能的比较
 
 ### 2.4.1.假设检验
 
@@ -488,7 +503,7 @@ $\tau_{\chi^2}=\frac{(|e_{01}-e_{10}|-1)^2}{e_{01}+e_{10}}$在给定显著度$\a
              \end{aligned}
          \end{equation}
       $$
-令上式为0，得到w和b的最优解的闭式解
+    令上式为0，得到w和b的最优解的闭式解
       $$
       \begin{equation}
              \begin{aligned}
@@ -535,7 +550,7 @@ $\tau_{\chi^2}=\frac{(|e_{01}-e_{10}|-1)^2}{e_{01}+e_{10}}$在给定显著度$\a
       令$\hat x_i= (x_i;1)$，此时学得的线性回归模型是
       $$
       f(\hat x_i)=\hat x_i^T(\textbf X^T\textbf X)^{-1}\textbf X^Ty
-  $$
+      $$
       当矩阵不是满秩矩阵的时候，可解出多个解，此时作为输出的将由学习算法的归纳偏好决定，常见的做法是引入正则化(regularization)项
       
 
@@ -603,7 +618,7 @@ $\tau_{\chi^2}=\frac{(|e_{01}-e_{10}|-1)^2}{e_{01}+e_{10}}$在给定显著度$\a
       $$
       \ell(w,b) = \sum \limits^m_{i=1}\ln p(y_i|x_i;w,b)
       $$
-  其中似然函数是
+      其中似然函数是
       $$
       P(w,b)=\prod\limits^m_{i=1}p(y_i|x_i;w,b)
       $$
@@ -619,7 +634,7 @@ $\tau_{\chi^2}=\frac{(|e_{01}-e_{10}|-1)^2}{e_{01}+e_{10}}$在给定显著度$\a
       $$
       p(y_i|x_i;w,b)=y_ip_1(\hat x_i;\beta)+(1-y_i)p_0(\hat x_i;\beta)
       $$
-  最大化对数似然，得
+      最大化对数似然，得
       $$
       \ell(\beta) = \sum \limits^m_{i=1}\big(y_i\beta^T\hat x_i-\ln\big(1+e^{\beta^T\hat x_i}\big)\big)
       $$
