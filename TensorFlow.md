@@ -1684,7 +1684,25 @@ y = to_categorical(y=label,  # array-like|标签.
                    num_classes=4)  # int|None|类别总数.
 ```
 
-## 1.11.ones()
+## 1.11.nn
+
+| 版本 | 描述                            | 注意 |
+| ---- | ------------------------------- | ---- |
+| -    | TensorFlow的神经网络操作修饰器. | -    |
+
+### 1.11.1.sigmoid()
+
+逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow as tf
+
+arr = np.asarray([1., 2., 3.])
+tensor = tf.nn.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+## 1.12.ones()
 
 创建全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1695,7 +1713,7 @@ tensor = tf.ones(shape=(3, 2),  # list/tuple of int|张量的形状.
                  dtype='int32')  # str|dtypes.float32|元素数据类型.
 ```
 
-## 1.12.ones_like()
+## 1.13.ones_like()
 
 创建一个输入数组形状相同的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1706,7 +1724,7 @@ arr = [[1, 2, 3], [4, 5, 6]]
 tensor = tf.ones_like(input=arr)  # array-like|输入的数组. 
 ```
 
-## 1.13.py_function()
+## 1.14.py_function()
 
 将Python函数修饰成TensorFlow的操作, 并在Eager模式下运行.
 
@@ -1722,9 +1740,9 @@ max_value = tf.py_function(func=get_max,  # function|Python函数.
                            Tout=tf.int32)  # tensorflow.python.framework.dtypes.DType|返回数据的数据类型.
 ```
 
-## 1.14.random
+## 1.15.random
 
-### 1.14.1.normal()
+### 1.15.1.normal()
 
 生成标准正态分布的张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1734,13 +1752,13 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # array-like|张量的形状.
 ```
 
-## 1.15.strings
+## 1.16.strings
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | tf的字符串操作API. | -    |
 
-### 1.15.1.reduce_join()
+### 1.16.1.reduce_join()
 
 拼接字符串.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1751,7 +1769,7 @@ str = ['12', 'ab', '3', 'c']
 tensor = tf.strings.reduce_join(inputs=str)  # str|输入的字符串.
 ```
 
-### 1.15.2.unicode_split()
+### 1.16.2.unicode_split()
 
 将字符串转换为Unicode编码的字节.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1763,7 +1781,7 @@ tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
                                   input_encoding='UTF-8')  # str|输入字符串的编码.
 ```
 
-## 1.16.tensordot()
+## 1.17.tensordot()
 
 沿指定维度点乘.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1777,11 +1795,11 @@ tensor = tf.tensordot(a=a,  # tf.Tensor|输入的张量.
                       axes=1)  # int|维度.
 ```
 
-## 1.17.tpu
+## 1.18.tpu
 
-### 1.17.1.experimental
+### 1.18.1.experimental
 
-#### 1.17.1.1.initialize_tpu_system()
+#### 1.18.1.1.initialize_tpu_system()
 
 初始化TPU系统.
 
@@ -1791,7 +1809,7 @@ import tensorflow as tf
 tf.tpu.experimental.initialize_tpu_system()
 ```
 
-## 1.18.transpose()
+## 1.19.transpose()
 
 对张量进行转置操作.|tensorflow.python.framework.ops.EagerTensor
 
@@ -1803,7 +1821,7 @@ tensor = tf.transpose(a=a,  # tf.Tensor|输入的张量.
                       perm=[1, 2, 0])  # list|None|轴的排列顺序.
 ```
 
-## 1.19.Variable()
+## 1.20.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
@@ -1813,7 +1831,7 @@ import tensorflow as tf
 tensor = tf.Variable(2021)
 ```
 
-## 1.20.zeros_like()
+## 1.21.zeros_like()
 
 创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
