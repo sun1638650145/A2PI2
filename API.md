@@ -2736,6 +2736,26 @@ c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
  example.cc -o example`python3-config --extension-suffix`
 ```
 
+或者, 使用CMakeLists.txt编译(手动`cmake ..`, 以clion为例IDE找不到正确的环境).
+
+```cmake
+cmake_minimum_required(VERSION 3.19)
+project(example LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 11)
+
+# 设置O3级别优化
+set(CMAKE_CXX_FLAGS "-O3")
+
+# 配置pybind11
+find_package(pybind11)
+
+# 设置编译动态库路径.
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
+
+pybind11_add_module(example SHARED example.cc)
+```
+
 3. test.py进行测试.
 
 ```python
@@ -3271,9 +3291,104 @@ import example
 example.my_print("Hello world")
 ```
 
-## 11.6.其他
+## 11.6.绑定NumPy
 
-### 11.6.1.绑定Eigen
+### 11.6.1.直接访问
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/numpy.h"
+#include "pybind11/pybind11.h"
+
+void range(const pybind11::array &array) {
+    if (array.ndim() == 2 and array.dtype().kind() == 'i') {  // 判断是否是一个2D数组和元素的数据类型.
+        for (int i = 0; i < array.shape(0); i ++) {
+            for (int j = 0; j < array.shape(1); j ++) {
+                std::cout << *(int*)array.data(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("range", &range, pybind11::arg("array"));
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import numpy as np
+
+import example
+
+example.range(np.asarray([[1, 2], [3, 4]]))
+```
+
+### 11.6.2.提供的方法
+
+1. example.cc代码
+
+```c++
+#include <iostream>
+
+#include "pybind11/numpy.h"
+#include "pybind11/pybind11.h"
+
+void show_methods(const pybind11::array &array) {
+    std::cout << "ndim:" << array.ndim() << std::endl;  // 数组的维度.
+    std::cout << "data:" << array.data() << std::endl;  // 数组索引处的指针.
+
+    std::cout << "shape:"; // 数组每个维度的大小.
+    auto shape = array.request().shape;
+    for (long i : shape) {
+        std::cout << " " << i;
+    }
+    std::cout << std::endl;
+
+    std::cout << "size:" << array.size() << std::endl;  // 数组元素的总数.
+    std::cout << "dtype:" << (std::string)pybind11::str(array.dtype()) << std::endl;  // 数组元素的数据类型.
+    std::cout << "kind:" << array.dtype().kind() << std::endl;  // 数组元素的数据类型字符代码('biufcmMOSUV').
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("show_methods", &show_methods, pybind11::arg("array"));
+}
+```
+
+2. 使用c++编译, 并产生对应的动态链接库.
+
+```shell
+c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup \
+ `python3 -m pybind11 --includes` \
+ example.cc -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import numpy as np
+
+import example
+
+example.show_methods(np.asarray([[1, 2], [3, 4]]))
+```
+
+## 11.7.其他
+
+### 11.7.1.绑定Eigen
 
 1. example.cc代码
 
@@ -3308,7 +3423,7 @@ import example
 trans_mat = example.transpose([[1, 2], [3, 4]])
 ```
 
-### 11.6.2.实现重载
+### 11.7.2.实现重载
 
 1. example.cc代码
 
@@ -3346,7 +3461,7 @@ int_ans = example.add(1, 1)
 float_ans = example.add(0.9, 1.1)
 ```
 
-### 11.6.3.区分32位和64位的数据类型
+### 11.7.3.区分32位和64位的数据类型
 
 0. 受限于 Python 3.x 没有区分32位和64位的类型, 这里需要依赖于NumPy, 同时pybind11没有对于NumPy标量处理的模板, 因此需要借助`pybind11::buffer`实现.
 
