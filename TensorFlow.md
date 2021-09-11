@@ -667,7 +667,19 @@ tensor = K.ctc_decode(y_pred,  # tf.Tensor(samples, time_steps, num_categories)|
                       greedy=True)  # bool|True|是否使用贪心解码.
 ```
 
-#### 1.12.3.6.expand_dims()
+#### 1.12.3.6.equal()
+
+逐元素比较两个张量是否相等.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr = [1, 2]
+tensor = K.equal(x=arr,  # tf.Tensor|比较的张量.
+                 y=arr)  # tf.Tensor|比较的张量.
+```
+
+#### 1.12.3.7.expand_dims()
 
 增加张量的维度.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -680,7 +692,7 @@ tensor = K.expand_dims(x=arr,  # tf.Tensor or array-like|输入的数组.
                        axis=0)  # int|添加新维度的位置.
 ```
 
-#### 1.12.3.7.get_value()
+#### 1.12.3.8.get_value()
 
 获取变量的值.|`numpy.ndarray`
 
@@ -693,7 +705,32 @@ model.compile(optimizer='adam')
 value = K.get_value(x=model.optimizer)  # 输入的变量.
 ```
 
-#### 1.12.3.8.one_likes()
+#### 1.12.3.9.greater()
+
+逐元素比较第一个张量是否大于第二个张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr1 = [1, 2]
+arr2 = [3, 4]
+tensor = K.greater(x=arr1,  # tf.Tensor|比较的张量.
+                   y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.12.3.10.one_hot()
+
+对整数张量进行独热编码.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr = [0, 1, 1, 2]
+tensor = K.one_hot(indices=arr,  # tf.Tensor(batch_size, dim1, dim2, ... dim(n-1))|张量.
+                   num_classes=3)  # int|类别总数.
+```
+
+#### 1.12.3.11.one_likes()
 
 创建输入张量形状相同形状的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -705,7 +742,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 tensor = K.ones_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.9.set_value()
+#### 1.12.3.12.set_value()
 
 设置数值变量的值.
 
@@ -716,7 +753,7 @@ K.set_value(x,  # 被设置的变量.
             value)  # numpy.ndarray|设置的值.  
 ```
 
-#### 1.12.3.10.shape()
+#### 1.12.3.13.shape()
 
 返回张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -728,7 +765,7 @@ arr = np.asarray([1, 2, 3])
 tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.11.sigmoid()
+#### 1.12.3.14.sigmoid()
 
 逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -740,7 +777,19 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.12.zeros_like()
+#### 1.12.3.15.sum()
+
+对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr = [[0, 1], [2, 2]]
+tensor = K.sum(x=arr,  # tf.Tensor or array-like|输入的张量.
+               axis=1)  # int|None|沿指定维度合并.
+```
+
+#### 1.12.3.16.zeros_like()
 
 创建输入张量形状相同形状的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1785,13 +1834,33 @@ y = to_categorical(y=label,  # array-like|标签.
                    num_classes=4)  # int|None|类别总数.
 ```
 
-## 1.13.nn
+## 1.13.math
+
+| 版本 | 描述                  | 注意 |
+| ---- | --------------------- | ---- |
+| -    | TensorFlow的数学操作. | -    |
+
+### 1.13.1.divide_no_nan()
+
+安全除法, 遇到除零时返回值为零.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow as tf
+
+arr1 = np.asarray([1., 2., 3.])
+arr2 = np.asarray([1., 0., 3.])
+tensor = tf.math.divide_no_nan(x=arr1,  # tf.Tensor or array-like(float32 or float64)|被除数.
+                               y=arr2)  # tf.Tensor or array-like|除数.
+```
+
+## 1.14.nn
 
 | 版本 | 描述                            | 注意 |
 | ---- | ------------------------------- | ---- |
 | -    | TensorFlow的神经网络操作修饰器. | -    |
 
-### 1.13.1.sigmoid()
+### 1.14.1.sigmoid()
 
 逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1803,7 +1872,7 @@ arr = np.asarray([1., 2., 3.])
 tensor = tf.nn.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-## 1.14.ones()
+## 1.15.ones()
 
 创建全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1814,7 +1883,7 @@ tensor = tf.ones(shape=(3, 2),  # list/tuple of int|张量的形状.
                  dtype='int32')  # str|dtypes.float32|元素数据类型.
 ```
 
-## 1.15.ones_like()
+## 1.16.ones_like()
 
 创建一个输入数组形状相同的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1825,7 +1894,7 @@ arr = [[1, 2, 3], [4, 5, 6]]
 tensor = tf.ones_like(input=arr)  # array-like|输入的数组. 
 ```
 
-## 1.16.py_function()
+## 1.17.py_function()
 
 将Python函数修饰成TensorFlow的操作, 并在Eager模式下运行.
 
@@ -1841,9 +1910,9 @@ max_value = tf.py_function(func=get_max,  # function|Python函数.
                            Tout=tf.int32)  # tensorflow.python.framework.dtypes.DType|返回数据的数据类型.
 ```
 
-## 1.17.random
+## 1.18.random
 
-### 1.17.1.normal()
+### 1.18.1.normal()
 
 生成标准正态分布的张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1853,7 +1922,19 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # array-like|张量的形状.
 ```
 
-## 1.18.reshape()
+## 1.19.reduce_sum()
+
+对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [[0, 1], [2, 2]]
+tensor = tf.reduce_sum(input_tensor=arr,  # tf.Tensor or array-like|输入的张量.
+                       axis=1)  # int|None|沿指定维度合并.
+```
+
+## 1.20.reshape()
 
 改变张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1865,7 +1946,7 @@ tensor = tf.reshape(tensor=tensor,  # tf.Tensor|要改变形状的张量.
                     shape=[2, 2])  # list or tuple|改变后的形状.
 ```
 
-## 1.19.shape()
+## 1.21.shape()
 
 返回包含输入张量形状的张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1876,13 +1957,13 @@ tensor = tf.constant([[1.], [2.]])
 shape = tf.shape(input=tensor)  # tf.Tensor|输入的张量.
 ```
 
-## 1.20.strings
+## 1.22.strings
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | tf的字符串操作API. | -    |
 
-### 1.20.1.reduce_join()
+### 1.22.1.reduce_join()
 
 拼接字符串.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1893,7 +1974,7 @@ str = ['12', 'ab', '3', 'c']
 tensor = tf.strings.reduce_join(inputs=str)  # str|输入的字符串.
 ```
 
-### 1.20.2.unicode_split()
+### 1.22.2.unicode_split()
 
 将字符串转换为Unicode编码的字节.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1905,7 +1986,7 @@ tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
                                   input_encoding='UTF-8')  # str|输入字符串的编码.
 ```
 
-## 1.21.tensordot()
+## 1.23.tensordot()
 
 沿指定维度点乘.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1919,11 +2000,11 @@ tensor = tf.tensordot(a=a,  # tf.Tensor|输入的张量.
                       axes=1)  # int|维度.
 ```
 
-## 1.22.tpu
+## 1.24.tpu
 
-### 1.22.1.experimental
+### 1.24.1.experimental
 
-#### 1.22.1.1.initialize_tpu_system()
+#### 1.24.1.1.initialize_tpu_system()
 
 初始化TPU系统.
 
@@ -1933,7 +2014,7 @@ import tensorflow as tf
 tf.tpu.experimental.initialize_tpu_system()
 ```
 
-## 1.23.transpose()
+## 1.25.transpose()
 
 对张量进行转置操作.|tensorflow.python.framework.ops.EagerTensor
 
@@ -1945,7 +2026,7 @@ tensor = tf.transpose(a=a,  # tf.Tensor|输入的张量.
                       perm=[1, 2, 0])  # list|None|轴的排列顺序.
 ```
 
-## 1.24.Variable()
+## 1.26.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
@@ -1955,7 +2036,21 @@ import tensorflow as tf
 tensor = tf.Variable(2021)
 ```
 
-## 1.25.zeros_like()
+## 1.27.where()
+
+根据判断条件, 真值返回`x`, 假值返回`y`.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+a = 1
+b = 2
+tensor = tf.where(condition=(a > b),  # tf.Tensor of type bool|判断条件.
+                  x=True,  # tf.Tensor|None|情况为真的返回值.
+                  y=False)  # tf.Tensor|None|情况为假的返回值.
+```
+
+## 1.28.zeros_like()
 
 创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
