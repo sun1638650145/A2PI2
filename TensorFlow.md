@@ -605,7 +605,19 @@ model = Xception(include_top=True,  # bool|True|是否包含全连接输出层.
 | ---- | ------------------- | ---- |
 | -    | tf.keras的后端函数. | -    |
 
-#### 1.12.3.1.cast()
+#### 1.12.3.1.abs()
+
+逐元素计算张量的绝对值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow.keras.backend as K
+
+arr = np.asarray([-1., 2., 3.])
+tensor = K.abs(x=arr)   # array-like or tf.Tensor|输入的数据.
+```
+
+#### 1.12.3.2.cast()
 
 转换张量元素的数据类型.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -618,7 +630,7 @@ tensor = K.cast(x=arr,  # array-like or tf.Tensor|输入的数据.
                 dtype='float16')  # str or tensorflow.python.framework.dtypes.DType|转换后的数据类型.
 ```
 
-#### 1.12.3.2.clear_session()
+#### 1.12.3.3.clear_session()
 
 重置计算图.
 
@@ -628,7 +640,7 @@ from tensorflow.keras import backend as K
 K.clear_session()
 ```
 
-#### 1.12.3.3.clip()
+#### 1.12.3.4.clip()
 
 逐元素裁切张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -642,7 +654,7 @@ tensor = K.clip(x=arr,  # array-like or tf.Tensor|输入的数据.
                 max_value=8)  # int or float|最大值.
 ```
 
-#### 1.12.3.4.ctc_batch_cost()
+#### 1.12.3.5.ctc_batch_cost()
 
 逐批次计算ctc损失.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -655,7 +667,7 @@ loss = K.ctc_batch_cost(y_true,  # tf.Tensor(samples, max_string_length)|真实�
                         label_length)  # tf.Tensor(samples, 1)|真实的长度.
 ```
 
-#### 1.12.3.5.ctc_decode()
+#### 1.12.3.6.ctc_decode()
 
 解码CTC输出.|`tuple of tensorflow.python.framework.ops.EagerTensor`
 
@@ -667,7 +679,7 @@ tensor = K.ctc_decode(y_pred,  # tf.Tensor(samples, time_steps, num_categories)|
                       greedy=True)  # bool|True|是否使用贪心解码.
 ```
 
-#### 1.12.3.6.equal()
+#### 1.12.3.7.equal()
 
 逐元素比较两个张量是否相等.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -679,7 +691,7 @@ tensor = K.equal(x=arr,  # tf.Tensor|比较的张量.
                  y=arr)  # tf.Tensor|比较的张量.
 ```
 
-#### 1.12.3.7.expand_dims()
+#### 1.12.3.8.expand_dims()
 
 增加张量的维度.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -692,7 +704,7 @@ tensor = K.expand_dims(x=arr,  # tf.Tensor or array-like|输入的数组.
                        axis=0)  # int|添加新维度的位置.
 ```
 
-#### 1.12.3.8.get_value()
+#### 1.12.3.9.get_value()
 
 获取变量的值.|`numpy.ndarray`
 
@@ -705,7 +717,7 @@ model.compile(optimizer='adam')
 value = K.get_value(x=model.optimizer)  # 输入的变量.
 ```
 
-#### 1.12.3.9.greater()
+#### 1.12.3.10.greater()
 
 逐元素比较第一个张量是否大于第二个张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -718,7 +730,20 @@ tensor = K.greater(x=arr1,  # tf.Tensor|比较的张量.
                    y=arr2)  # tf.Tensor|比较的张量.
 ```
 
-#### 1.12.3.10.one_hot()
+#### 1.12.3.11.less()
+
+逐元素比较第一个张量是否小于第二个张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr1 = [1, 2]
+arr2 = [3, 4]
+tensor = K.less(x=arr1,  # tf.Tensor|比较的张量.
+                y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.12.3.12.one_hot()
 
 对整数张量进行独热编码.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -730,7 +755,7 @@ tensor = K.one_hot(indices=arr,  # tf.Tensor(batch_size, dim1, dim2, ... dim(n-1
                    num_classes=3)  # int|类别总数.
 ```
 
-#### 1.12.3.11.one_likes()
+#### 1.12.3.13.one_likes()
 
 创建输入张量形状相同形状的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -742,7 +767,20 @@ arr = np.asarray([[1, 2], [3, 4]])
 tensor = K.ones_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.12.set_value()
+#### 1.12.3.14.pow()
+
+对张量逐元素求幂.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow.keras.backend as K
+
+arr = np.asarray([-1., 2., 3.])
+tensor = K.pow(x=arr,   # array-like or tf.Tensor|输入的数据.
+               a=2)  # int|幂次.
+```
+
+#### 1.12.3.15.set_value()
 
 设置数值变量的值.
 
@@ -753,7 +791,7 @@ K.set_value(x,  # 被设置的变量.
             value)  # numpy.ndarray|设置的值.  
 ```
 
-#### 1.12.3.13.shape()
+#### 1.12.3.16.shape()
 
 返回张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -765,7 +803,7 @@ arr = np.asarray([1, 2, 3])
 tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.14.sigmoid()
+#### 1.12.3.17.sigmoid()
 
 逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -777,7 +815,19 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.15.sum()
+#### 1.12.3.18.square()
+
+对张量逐元素求平方.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow.keras.backend as K
+
+arr = np.asarray([1., 2., 3.])
+tensor = K.square(x=arr)   # array-like or tf.Tensor|输入的数据.
+```
+
+#### 1.12.3.19.sum()
 
 对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -789,7 +839,7 @@ tensor = K.sum(x=arr,  # tf.Tensor or array-like|输入的张量.
                axis=1)  # int|None|沿指定维度合并.
 ```
 
-#### 1.12.3.16.zeros_like()
+#### 1.12.3.20.zeros_like()
 
 创建输入张量形状相同形状的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1382,7 +1432,28 @@ from tensorflow.keras.losses import CategoricalCrossentropy
 loss = CategoricalCrossentropy(from_logits=False)  # bool|False|是否将预测值解释为张量.
 ```
 
-#### 1.12.8.3.MeanAbsoluteError()
+#### 1.12.8.3.Loss()
+
+自定义一个符合tf.keras接口的损失函数.
+
+```python
+from tensorflow.keras.losses import Loss
+
+class MyLoss(Loss):
+    def __init__(self,
+                 reduction='auto',  # {'auto'|'none'|'sum'|'sum_over_batch_size'}(可选)|'auto'|损失函数减少类型.
+                 **kwargs):
+        super(MyLoss, self).__init__(reduction, **kwargs)
+        # 初始化代码.
+
+    def call(self,
+             y_true,  # array-like[batch_size, d0, .. dN]|真实值.
+             y_pred):  # array-like[batch_size, d0, .. dN]|预测值.
+        # 处理代码.
+        return loss
+```
+
+#### 1.12.8.4.MeanAbsoluteError()
 
 实例化平均绝对误差损失函数.
 
@@ -1392,7 +1463,7 @@ from tensorflow.keras.losses import MeanAbsoluteError
 loss = MeanAbsoluteError()
 ```
 
-#### 1.12.8.4.SparseCategoricalCrossentropy()
+#### 1.12.8.5.SparseCategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数(稀释编码).
 
@@ -1870,6 +1941,19 @@ import tensorflow as tf
 
 arr = np.asarray([1., 2., 3.])
 tensor = tf.nn.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+### 1.14.2.sigmoid_cross_entropy_with_logits()
+
+逐元素计算带有sigmoid的交叉熵的值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow as tf
+
+arr = np.asarray([1., 0., 1.])
+tensor = tf.nn.sigmoid_cross_entropy_with_logits(labels=arr,  # tf.Tensor or array-like|真实值.
+                                                 logits=arr)  # tf.Tensor or array-like|标签值.
 ```
 
 ## 1.15.ones()
