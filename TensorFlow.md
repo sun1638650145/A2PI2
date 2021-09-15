@@ -93,7 +93,18 @@ autotune = tf.data.AUTOTUNE
 
 ### 1.5.2.Dataset
 
-#### 1.5.2.1.as_numpy_iterator()
+#### 1.5.2.1.apply()
+
+对数据集整体应用处理.|`tensorflow.python.data.experimental.ops.error_ops._IgnoreErrorsDataset`
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10)
+dataset = dataset.apply(transformation_func=tf.data.experimental.ignore_errors())  # function or lambda|处理函数.
+```
+
+#### 1.5.2.2.as_numpy_iterator()
 
 返回`numpy`迭代器,将元素转换为`numpy`.|`tensorflow.python.data.ops.dataset_ops._NumpyIterator`
 
@@ -104,7 +115,7 @@ dataset = tf.data.Dataset.range(10)
 iterator = dataset.as_numpy_iterator()
 ```
 
-#### 1.5.2.2.batch()
+#### 1.5.2.3.batch()
 
 为数据集划分批次.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
 
@@ -115,7 +126,19 @@ dataset = tf.data.Dataset.range(6)
 dataset = dataset.batch(batch_size=3)  # int|批次大小.
 ```
 
-#### 1.5.2.3.from_tensor_slices()
+#### 1.5.2.4.experimental
+
+##### 1.5.2.4.1.ignore_errors()
+
+忽略创建数据集过程中的一切错误.
+
+```python
+import tensorflow as tf
+
+tf.data.experimental.ignore_errors()
+```
+
+#### 1.5.2.5.from_tensor_slices()
 
 从张量切片中创建数据集.|`tensorflow.python.data.ops.dataset_ops.TensorSliceDataset`
 
@@ -125,7 +148,7 @@ import tensorflow as tf
 dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2], [3, 4]))  # array-like|输入的数据.
 ```
 
-#### 1.5.2.4.map()
+#### 1.5.2.6.map()
 
 对数据应用处理.|`tensorflow.python.data.ops.dataset_ops.MapDataset` or `tensorflow.python.data.ops.dataset_ops.ParallelMapDataset`
 
@@ -137,7 +160,7 @@ dataset = dataset.map(map_func=lambda x, y: (x + 0.5, y - 0.5),  # function or l
                       num_parallel_calls=tf.data.AUTOTUNE)  # int|None|并行处理的数量.
 ```
 
-#### 1.5.2.5.padded_batch()
+#### 1.5.2.7.padded_batch()
 
 为数据集划分批次(按照规则进行填充).|`tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset`
 
@@ -151,7 +174,7 @@ dataset = dataset.padded_batch(batch_size=2,  # int|批次大小.
                                padding_values=-1)  # int(可选)|0|填充的值.
 ```
 
-#### 1.5.2.6.prefetch()
+#### 1.5.2.8.prefetch()
 
 对数据集进行预加载.|`tensorflow.python.data.ops.dataset_ops.PrefetchDataset`
 
@@ -162,7 +185,7 @@ dataset = tf.data.Dataset.range(1, 4, output_type=tf.int32)
 dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)  # int|预加载缓冲区的大小.
 ```
 
-#### 1.5.2.7.range()
+#### 1.5.2.9.range()
 
 创建指定范围的数据集.|`tensorflow.python.data.ops.dataset_ops.RangeDataset`
 
@@ -173,7 +196,7 @@ dataset = tf.data.Dataset.range(10,
                                 output_type=tf.int32)  # tensorflow.python.framework.dtypes.DType|元素的数据类型.
 ```
 
-#### 1.5.2.8.shuffle()
+#### 1.5.2.10.shuffle()
 
 对数据集进行打乱.|`tensorflow.python.data.ops.dataset_ops.ShuffleDataset`
 
@@ -184,7 +207,7 @@ dataset = tf.data.Dataset.range(10, output_type=tf.int32)
 dataset = dataset.shuffle(buffer_size=2)  # int|打乱缓冲区的大小.
 ```
 
-#### 1.5.2.9.skip()
+#### 1.5.2.11.skip()
 
 跳过指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.SkipDataset`
 
@@ -195,7 +218,21 @@ dataset = tf.data.Dataset.range(10)
 dataset = dataset.skip(count=3)  # int|跳过的个数.
 ```
 
-#### 1.5.2.10.take()
+#### 1.5.2.12.stack()
+
+将秩R的矩阵堆叠成R+1的矩阵.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import numpy as np
+import tensorflow.keras.backend as K
+
+a = np.asarray([1, 2])
+b = np.asarray([3, 4])
+tensor = K.stack(x=[a, b],  # list of tf.Tensor|张量列表.
+                 axis=-1)  # int|0|堆叠时的维度.
+```
+
+#### 1.5.2.13.take()
 
 取出指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.TakeDataset`
 
