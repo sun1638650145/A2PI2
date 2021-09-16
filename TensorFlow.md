@@ -401,7 +401,7 @@ img = tf.image.convert_image_dtype(image=arr,  # array-like|图像.
 ```python
 import tensorflow as tf
 
-tensor = tf.io.read_file(f'./img.jpg')
+tensor = tf.io.read_file('./img.jpg')
 tensor = tf.image.decode_image(contents=tensor,  # A `Tensor` of type `string`|图片的字节流.
                                channels=None,  # int|0|色彩通道数.
                                dtype=tf.uint8)  # tensorflow.python.framework.dtypes.DType|转换后的数据类型.
@@ -431,7 +431,35 @@ tensor = tf.image.decode_png(contents=tensor,  # A `Tensor` of type `string`|PNG
                              channels=0)  # int|0|色彩通道数.
 ```
 
-### 1.10.5.resize()
+### 1.10.5.flip_left_right()
+
+从左到右水平翻转图像.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file('./img.png')
+tensor = tf.image.decode_image(contents=tensor, dtype=tf.uint8)
+tensor = tf.image.flip_left_right(image=tensor)  # 4-D Tensor or 3-D Tensor|输入的图片.
+```
+
+### 1.10.6.pad_to_bounding_box()
+
+使用零填充图像到指定的和尺寸.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.io.read_file('./img.png')
+tensor = tf.image.decode_image(contents=tensor, dtype=tf.uint8)
+tensor = tf.image.pad_to_bounding_box(image=tensor,  # 4-D Tensor or 3-D Tensor|输入的图片.
+                                      offset_height=0,  # int|高度上的偏移量.
+                                      offset_width=0,  # int|宽度上的偏移量.
+                                      target_height=1000,  # int|目标尺寸的高度.
+                                      target_width=1000)  # int|目标尺寸的宽度.
+```
+
+### 1.10.7.resize()
 
 修改图片的尺寸.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -440,7 +468,7 @@ import tensorflow as tf
 
 tensor = tf.io.read_file('./img.jpg')
 tensor = tf.image.decode_jpeg(tensor, 3)
-tensor = tf.image.resize(tensor,  # 4-D Tensor or #-D Tensor|输入的图片.
+tensor = tf.image.resize(images=tensor,  # 4-D Tensor or 3-D Tensor|输入的图片.
                          size=[200, 200])  # list of int|修改后的尺寸.
 ```
 
@@ -780,7 +808,29 @@ tensor = K.less(x=arr1,  # tf.Tensor|比较的张量.
                 y=arr2)  # tf.Tensor|比较的张量.
 ```
 
-#### 1.12.3.12.one_hot()
+#### 1.12.3.12.max()
+
+返回张量中的最大值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr = [1, 2, 3, 2]
+tensor = K.max(x=arr)  # tf.Tensor|输入的张量.
+```
+
+#### 1.12.3.13.min()
+
+返回张量中的最小值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow.keras.backend as K
+
+arr = [1, 2, 3, 2]
+tensor = K.min(x=arr)  # tf.Tensor|输入的张量.
+```
+
+#### 1.12.3.14.one_hot()
 
 对整数张量进行独热编码.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -792,7 +842,7 @@ tensor = K.one_hot(indices=arr,  # tf.Tensor(batch_size, dim1, dim2, ... dim(n-1
                    num_classes=3)  # int|类别总数.
 ```
 
-#### 1.12.3.13.one_likes()
+#### 1.12.3.15.one_likes()
 
 创建输入张量形状相同形状的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -804,7 +854,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 tensor = K.ones_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.14.pow()
+#### 1.12.3.16.pow()
 
 对张量逐元素求幂.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -817,7 +867,7 @@ tensor = K.pow(x=arr,   # array-like or tf.Tensor|输入的数据.
                a=2)  # int|幂次.
 ```
 
-#### 1.12.3.15.set_value()
+#### 1.12.3.17.set_value()
 
 设置数值变量的值.
 
@@ -828,7 +878,7 @@ K.set_value(x,  # 被设置的变量.
             value)  # numpy.ndarray|设置的值.  
 ```
 
-#### 1.12.3.16.shape()
+#### 1.12.3.18.shape()
 
 返回张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -840,7 +890,7 @@ arr = np.asarray([1, 2, 3])
 tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.17.sigmoid()
+#### 1.12.3.19.sigmoid()
 
 逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -852,7 +902,7 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.12.3.18.square()
+#### 1.12.3.20.square()
 
 对张量逐元素求平方.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -864,7 +914,7 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.square(x=arr)   # array-like or tf.Tensor|输入的数据.
 ```
 
-#### 1.12.3.19.sum()
+#### 1.12.3.21.sum()
 
 对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -876,7 +926,7 @@ tensor = K.sum(x=arr,  # tf.Tensor or array-like|输入的张量.
                axis=1)  # int|None|沿指定维度合并.
 ```
 
-#### 1.12.3.20.zeros_like()
+#### 1.12.3.22.zeros_like()
 
 创建输入张量形状相同形状的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -1948,7 +1998,18 @@ y = to_categorical(y=label,  # array-like|标签.
 | ---- | --------------------- | ---- |
 | -    | TensorFlow的数学操作. | -    |
 
-### 1.13.1.divide_no_nan()
+### 1.13.1.ceil()
+
+逐元素向上取整.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [-1.1, 2.4, 3.5]
+tensor = tf.math.ceil(x=arr)  # tf.Tensor|输入的张量.
+```
+
+### 1.13.2.divide_no_nan()
 
 安全除法, 遇到除零时返回值为零.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2043,7 +2104,39 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # array-like|张量的形状.
 ```
 
-## 1.19.reduce_sum()
+### 1.18.2.uniform()
+
+生成均匀分布的张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.random.uniform(shape=[2, 3])  # array-like|张量的形状.
+```
+
+## 1.19.reduce_max()
+
+返回张量中的最大值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [1, 2, 3, 2]
+tensor = tf.reduce_max(input_tensor=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+## 1.20.reduce_min()
+
+返回张量中的最小值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+arr = [1, 2, 3, 2]
+tensor = tf.reduce_min(input_tensor=arr)  # tf.Tensor or array-like|输入的张量.
+```
+
+## 1.21.reduce_sum()
 
 对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2055,7 +2148,7 @@ tensor = tf.reduce_sum(input_tensor=arr,  # tf.Tensor or array-like|输入的张
                        axis=1)  # int|None|沿指定维度合并.
 ```
 
-## 1.20.reshape()
+## 1.22.reshape()
 
 改变张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2067,7 +2160,7 @@ tensor = tf.reshape(tensor=tensor,  # tf.Tensor|要改变形状的张量.
                     shape=[2, 2])  # list or tuple|改变后的形状.
 ```
 
-## 1.21.shape()
+## 1.23.shape()
 
 返回包含输入张量形状的张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2078,13 +2171,13 @@ tensor = tf.constant([[1.], [2.]])
 shape = tf.shape(input=tensor)  # tf.Tensor|输入的张量.
 ```
 
-## 1.22.strings
+## 1.24.strings
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | tf的字符串操作API. | -    |
 
-### 1.22.1.reduce_join()
+### 1.24.1.reduce_join()
 
 拼接字符串.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2095,7 +2188,7 @@ str = ['12', 'ab', '3', 'c']
 tensor = tf.strings.reduce_join(inputs=str)  # str|输入的字符串.
 ```
 
-### 1.22.2.unicode_split()
+### 1.24.2.unicode_split()
 
 将字符串转换为Unicode编码的字节.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2107,7 +2200,7 @@ tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
                                   input_encoding='UTF-8')  # str|输入字符串的编码.
 ```
 
-## 1.23.tensordot()
+## 1.25.tensordot()
 
 沿指定维度点乘.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2121,11 +2214,11 @@ tensor = tf.tensordot(a=a,  # tf.Tensor|输入的张量.
                       axes=1)  # int|维度.
 ```
 
-## 1.24.tpu
+## 1.26.tpu
 
-### 1.24.1.experimental
+### 1.26.1.experimental
 
-#### 1.24.1.1.initialize_tpu_system()
+#### 1.26.1.1.initialize_tpu_system()
 
 初始化TPU系统.
 
@@ -2135,7 +2228,7 @@ import tensorflow as tf
 tf.tpu.experimental.initialize_tpu_system()
 ```
 
-## 1.25.transpose()
+## 1.27.transpose()
 
 对张量进行转置操作.|tensorflow.python.framework.ops.EagerTensor
 
@@ -2147,7 +2240,7 @@ tensor = tf.transpose(a=a,  # tf.Tensor|输入的张量.
                       perm=[1, 2, 0])  # list|None|轴的排列顺序.
 ```
 
-## 1.26.Variable()
+## 1.28.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
@@ -2157,7 +2250,7 @@ import tensorflow as tf
 tensor = tf.Variable(2021)
 ```
 
-## 1.27.where()
+## 1.29.where()
 
 根据判断条件, 真值返回`x`, 假值返回`y`.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2171,7 +2264,7 @@ tensor = tf.where(condition=(a > b),  # tf.Tensor of type bool|判断条件.
                   y=False)  # tf.Tensor|None|情况为假的返回值.
 ```
 
-## 1.28.zeros_like()
+## 1.30.zeros_like()
 
 创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
