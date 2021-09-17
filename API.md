@@ -1826,9 +1826,9 @@ x = np.mean(a=arr,  # array_like|输入的数据.
 ```python
 import numpy as np
 
-x_crood = np.linspace(0, 4, 5)
-y_crood = np.linspace(0, 4, 5)
-vec_mat = np.meshgrid(x_crood, y_crood)  # array_like|坐标向量.
+x_coord = np.linspace(0, 4, 5)
+y_coord = np.linspace(0, 4, 5)
+vec_mat = np.meshgrid(x_coord, y_coord)  # array_like|坐标向量.
 ```
 
 ## 8.32.nonzero()
