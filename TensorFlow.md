@@ -833,7 +833,20 @@ tensor = K.greater(x=arr1,  # tf.Tensor|比较的张量.
                    y=arr2)  # tf.Tensor|比较的张量.
 ```
 
-#### 1.14.3.13.less()
+#### 1.14.3.13.greater_equal()
+
+逐元素比较第一个张量是否大于等于第二个张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras import backend as K
+
+arr1 = [1, 2, 3]
+arr2 = [3, 4, 3]
+tensor = K.greater_equal(x=arr1,  # tf.Tensor|比较的张量.
+                         y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.14.3.14.less()
 
 逐元素比较第一个张量是否小于第二个张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -846,7 +859,7 @@ tensor = K.less(x=arr1,  # tf.Tensor|比较的张量.
                 y=arr2)  # tf.Tensor|比较的张量.
 ```
 
-#### 1.14.3.14.max()
+#### 1.14.3.15.max()
 
 返回张量中的最大值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -857,7 +870,20 @@ arr = [1, 2, 3, 2]
 tensor = K.max(x=arr)  # tf.Tensor|输入的张量.
 ```
 
-#### 1.14.3.15.min()
+#### 1.14.3.16.maximum()
+
+逐元素返回最大值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras import backend as K
+
+arr1 = [1, 2, 4]
+arr2 = [3, 4, 3]
+tensor = K.maximum(x=arr1,  # tf.Tensor|比较的张量.
+                   y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.14.3.17.min()
 
 返回张量中的最小值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -868,7 +894,33 @@ arr = [1, 2, 3, 2]
 tensor = K.min(x=arr)  # tf.Tensor|输入的张量.
 ```
 
-#### 1.14.3.16.one_hot()
+#### 1.14.3.18.minimum()
+
+逐元素返回最小值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras import backend as K
+
+arr1 = [1, 2, 4]
+arr2 = [3, 4, 3]
+tensor = K.minimum(x=arr1,  # tf.Tensor|比较的张量.
+                   y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.14.3.19.not_equal()
+
+逐元素比较两个张量是否不等.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras import backend as K
+
+arr1 = [1, 2, 3]
+arr2 = [3, 4, 3]
+tensor = K.not_equal(x=arr1,  # tf.Tensor|比较的张量.
+                     y=arr2)  # tf.Tensor|比较的张量.
+```
+
+#### 1.14.3.20.one_hot()
 
 对整数张量进行独热编码.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -880,7 +932,7 @@ tensor = K.one_hot(indices=arr,  # tf.Tensor(batch_size, dim1, dim2, ... dim(n-1
                    num_classes=3)  # int|类别总数.
 ```
 
-#### 1.14.3.17.one_likes()
+#### 1.14.3.21.one_likes()
 
 创建输入张量形状相同形状的全一张量.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -892,7 +944,7 @@ arr = np.asarray([[1, 2], [3, 4]])
 tensor = K.ones_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.14.3.18.pow()
+#### 1.14.3.22.pow()
 
 对张量逐元素求幂.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -905,7 +957,7 @@ tensor = K.pow(x=arr,   # array-like or tf.Tensor|输入的数据.
                a=2)  # int|幂次.
 ```
 
-#### 1.14.3.19.set_value()
+#### 1.14.3.23.set_value()
 
 设置数值变量的值.
 
@@ -916,7 +968,7 @@ K.set_value(x,  # 被设置的变量.
             value)  # numpy.ndarray|设置的值.  
 ```
 
-#### 1.14.3.20.shape()
+#### 1.14.3.24.shape()
 
 返回张量的形状.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -928,7 +980,7 @@ arr = np.asarray([1, 2, 3])
 tensor_shape = K.shape(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.14.3.21.sigmoid()
+#### 1.14.3.25.sigmoid()
 
 逐元素计算sigmoid的值.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -940,7 +992,7 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.sigmoid(x=arr)  # tf.Tensor or array-like|输入的张量.
 ```
 
-#### 1.14.3.22.square()
+#### 1.14.3.26.square()
 
 对张量逐元素求平方.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -952,7 +1004,7 @@ arr = np.asarray([1., 2., 3.])
 tensor = K.square(x=arr)   # array-like or tf.Tensor|输入的数据.
 ```
 
-#### 1.14.3.23.stack()
+#### 1.14.3.27.stack()
 
 将秩R的矩阵堆叠成R+1的矩阵.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -966,7 +1018,7 @@ tensor = K.stack(x=[a, b],  # list of tf.Tensor|张量列表.
                  axis=-1)  # int|0|堆叠时的维度.
 ```
 
-#### 1.14.3.24.sum()
+#### 1.14.3.28.sum()
 
 对张量沿指定轴求和.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -978,7 +1030,20 @@ tensor = K.sum(x=arr,  # tf.Tensor or array-like|输入的张量.
                axis=1)  # int|None|沿指定维度合并.
 ```
 
-#### 1.14.3.25.zeros_like()
+#### 1.14.3.29.tile()
+
+按照扩充的倍数将张量平铺.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras import backend as K
+
+arr = [[1, 2, 3], [4, 5, 6]]
+n = [3, 1]
+tensor = K.tile(x=arr,  # tf.Tensor or array-like|输入的张量.
+                n=n)  # list of int(数量和张量的形状一致)|扩充的倍数.
+```
+
+#### 1.14.3.30.zeros_like()
 
 创建输入张量形状相同形状的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
