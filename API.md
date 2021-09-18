@@ -912,7 +912,20 @@ y_preds = model.predict(X)  # array-like or 形状为[n_samples, n_features]的�
 | ---- | ------------------------------------------------- | ---- |
 | -    | axes是matplotlib的图形接口, 提供设置坐标系的功能. | -    |
 
-### 7.1.1.annotate()
+### 7.1.1.add_patch()
+
+添加元素.
+
+```python
+import matplotlib.pyplot as plt
+
+axes = plt.subplot()
+axes.add_patch(p=plt.Rectangle((0, 0), width=0.5, height=0.5))
+
+plt.show()
+```
+
+### 7.1.2.annotate()
 
 为坐标点进行注释.
 
@@ -934,7 +947,7 @@ ax.annotate(text='annotate',  # str|注释的内容.
 plt.show()
 ```
 
-### 7.1.2.axis()
+### 7.1.3.axis()
 
 坐标轴的设置选项.
 
@@ -945,7 +958,7 @@ ax = plt.subplot()
 ax.axis('off')
 ```
 
-### 7.1.3.clabel()
+### 7.1.4.clabel()
 
 在等高线上显示高度.
 
@@ -963,7 +976,7 @@ ax.clabel(cs)
 plt.show()
 ```
 
-### 7.1.4.contour()
+### 7.1.5.contour()
 
 绘制等高线.|`matplotlib.contour.QuadContourSet`
 
@@ -984,7 +997,7 @@ cs = ax.contour(X,  # array-like|横坐标.
 plt.show()
 ```
 
-### 7.1.5.grid()
+### 7.1.6.grid()
 
 绘制网格线.
 
@@ -998,7 +1011,7 @@ ax.grid(axis='x',  # {'both', 'x', 'y'}(可选)|'both'|绘制的范围.
 plt.show()
 ```
 
-### 7.1.6.legend()
+### 7.1.7.legend()
 
 放置图例.
 
@@ -1011,13 +1024,13 @@ ax.legend(loc='center')  # {'upper right', 'upper left', 'lower left', 'lower ri
 plt.show()
 ```
 
-### 7.1.7.patch
+### 7.1.8.patch
 
 | 版本 | 描述                                   | 注意 |
 | ---- | -------------------------------------- | ---- |
 | -    | patches是画布颜色和边框颜色的控制接口. | -    |
 
-#### 7.1.7.1.set_alpha()
+#### 7.1.8.1.set_alpha()
 
 设置画布的透明度.
 
@@ -1031,7 +1044,7 @@ ax.patch.set_facecolor('green')
 plt.show()
 ```
 
-#### 7.1.7.2.set_facecolor()
+#### 7.1.8.2.set_facecolor()
 
 设置画布的颜色.
 
@@ -1045,7 +1058,7 @@ ax.patch.set_facecolor(color='green')  # str|颜色.
 plt.show()
 ```
 
-### 7.1.8.set_title()
+### 7.1.9.set_title()
 
 设置标题.
 
@@ -1058,7 +1071,7 @@ ax.set_title('this is title')
 plt.show()
 ```
 
-### 7.1.9.set_xlabel()
+### 7.1.10.set_xlabel()
 
 设置x轴的内容.
 
@@ -1071,7 +1084,7 @@ ax.set_xlabel(xlabel='this is x label')  # str|文本内容.
 plt.show()
 ```
 
-### 7.1.10.set_xticks()
+### 7.1.11.set_xticks()
 
 设置x轴的刻度.
 
@@ -1084,7 +1097,7 @@ ax.set_xticks(ticks=[1, 2, 3, 4])  # list(空列表就表示不显示刻度)|刻
 plt.show()
 ```
 
-### 7.1.11.set_yticks()
+### 7.1.12.set_yticks()
 
 设置y轴的刻度.
 
@@ -1097,13 +1110,13 @@ ax.set_yticks(ticks=[1, 2, 3, 4])  # list(空列表就表示不显示刻度)|刻
 plt.show()
 ```
 
-###  7.1.12.spines
+###  7.1.13.spines
 
 | 版本 | 描述                          | 注意 |
 | ---- | ----------------------------- | ---- |
 | -    | 画布的边框, 包括上下左右四个. | -    |
 
-#### 7.1.12.1.set_color()
+#### 7.1.13.1.set_color()
 
 设置画布边框的颜色.
 
@@ -1119,7 +1132,7 @@ ax.spines['bottom'].set_color(c='green')
 plt.show()
 ```
 
-### 7.1.13.text()
+### 7.1.14.text()
 
 给点添加文本.|`matplotlib.text.Text`
 
@@ -1282,7 +1295,22 @@ plt.plot(x, y)  # 1D array-like|函数的变量.
 plt.show()
 ```
 
-### 7.2.11.rcParams[]
+### 7.2.11.Rectangle()
+
+实例化矩阵.
+
+```python
+import matplotlib.pyplot as plt
+
+axes = plt.subplot()
+axes.add_patch(plt.Rectangle(xy=(0, 0),  # (float, float)|锚点.
+                             width=0.5,  # float|矩行的宽度.
+                             height=0.5))  # float|矩行的长度.
+
+plt.show()
+```
+
+### 7.2.12.rcParams[]
 
 实例化配置文件实例.
 
@@ -1292,7 +1320,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 7.2.12.savefig()
+### 7.2.13.savefig()
 
 保存当前的画布.
 
@@ -1302,7 +1330,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # str or path-like or file-like A path|要加载的文件的路径.
 ```
 
-### 7.2.13.scatter()
+### 7.2.14.scatter()
 
 绘制散点图.
 
@@ -1322,7 +1350,7 @@ plt.scatter(x=x,  # float or array-like 形状必须是(n, )|x坐标.
 plt.show()
 ```
 
-### 7.2.14.show()
+### 7.2.15.show()
 
 显示画布.
 
@@ -1337,7 +1365,7 @@ plt.plot(x, y)
 plt.show()
 ```
 
-### 7.2.15.subplot()
+### 7.2.16.subplot()
 
 在当前画布上创建子图.|`matplotlib.axes._subplots.AxesSubplot`
 
@@ -1347,7 +1375,7 @@ import matplotlib.pyplot as plt
 axes = plt.subplot()
 ```
 
-### 7.2.16.subplots()
+### 7.2.17.subplots()
 
 同时创建画布和一组子图.|`matplotlib.figure.Figure`和`array of matplotlib.axes._subplots.AxesSubplot`
 
@@ -1359,7 +1387,7 @@ figure, axes = plt.subplots(nrows=4,  # int|1|子图数量的行数.
                             figsize=(10, 10))  # tuple(list) of int|画布的大小.
 ```
 
-### 7.2.17.subplots_adjust()
+### 7.2.18.subplots_adjust()
 
 调整子图布局.
 
@@ -1374,7 +1402,7 @@ plt.subplots_adjust(left=0.125,  # float(可选)|None|子图左边框距离画�
                     hspace=0.2)  # float(可选)|None|两张子图之间的上下间隔.
 ```
 
-### 7.2.18.tight_layout()
+### 7.2.19.tight_layout()
 
 自动调整子图布局.
 
@@ -1384,7 +1412,7 @@ import matplotlib.pyplot as plt
 plt.tight_layout()
 ```
 
-### 7.2.19.title()
+### 7.2.20.title()
 
 设置标题.
 
@@ -1396,7 +1424,7 @@ plt.title(label='this is title')  # str|文本内容.
 plt.show()
 ```
 
-### 7.2.20.xlabel()
+### 7.2.21.xlabel()
 
 设置x轴的内容.
 
@@ -1408,7 +1436,7 @@ plt.xlabel(xlabel='x')  # str|文本内容.
 plt.show()
 ```
 
-### 7.2.21.xlim()
+### 7.2.22.xlim()
 
 设置x轴的显示范围.
 
@@ -1420,7 +1448,7 @@ plt.xlim([1, 2])  # [left, right]|[左界, 右界].
 plt.show()
 ```
 
-### 7.2.22.ylabel()
+### 7.2.23.ylabel()
 
 设置y轴的内容.
 
