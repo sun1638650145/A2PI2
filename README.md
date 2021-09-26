@@ -30,9 +30,10 @@
 
 1. [使用Keras构建CRNN](https://github.com/sun1638650145/CRNN)
 2. [使用Keras和transformers实现文本提取类任务](https://github.com/sun1638650145/TextExtraction)
-3. 更多内容 coming soon
+3. [使用Keras构建RetinaNet](https://github.com/sun1638650145/RetinaNet)
+4. 更多内容 coming soon
 
-## 时间机器
+## 时间🤖️
 
 时间机器在2021年的第一次提交被发明，它被用来记录更新的大事件。
 
