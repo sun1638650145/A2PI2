@@ -2040,7 +2040,95 @@ img = load_img(path='./img.png',  # str|图片的路径.
                target_size=None)  # (img_height, img_width)|None|读入图片的大小.
 ```
 
-#### 1.14.12.2.timeseries_dataset_from_array()
+#### 1.14.12.2.sequence
+
+##### 1.14.12.2.1.pad_sequences()
+
+填充序列到相同的长度.|`list`
+
+```python
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+sequences = [[1],
+             [2, 3],
+             [4, 5, 6]]
+padded_sequences = pad_sequences(sequences=sequences,  # list|序列.
+                                 maxlen=2,  # int|None|最大长度.
+                                 padding='pre',  # {'pre', 'post'}|'pre'|填充方式.
+                                 truncating='pre')  # {'pre', 'post'}|'pre'|截断方式.
+```
+
+#### 1.14.12.3.text
+
+##### 1.14.12.3.1.Tokenizer()
+
+实例化分词器.
+
+```python
+from tensorflow.keras.preprocessing.text import Tokenizer
+
+tokenizer = Tokenizer(num_words=None,  # int|None|词汇表大小.
+                      oov_token=None)  # str|None|超出词汇表的词的处理方式.
+```
+
+###### 1.14.12.3.1.1.fit_on_texts()
+
+根据文本列表, 更新词汇表.
+
+```python
+from tensorflow.keras.preprocessing.text import Tokenizer
+
+sentences = [
+    'I love my dog.',
+    'I love my cat.',
+    'You love my dog!',
+    'Do you think my dog is amazing?'
+]
+
+tokenizer = Tokenizer(num_words=100, oov_token='<OOV>')
+tokenizer.fit_on_texts(texts=sentences)  # list of str|文本列表.
+```
+
+###### 1.14.12.3.1.2.texts_to_sequences()
+
+将文本转换为整数序列.|`list`
+
+```python
+from tensorflow.keras.preprocessing.text import Tokenizer
+
+sentences = [
+    'I love my dog.',
+    'I love my cat.',
+    'You love my dog!',
+    'Do you think my dog is amazing?'
+]
+
+tokenizer = Tokenizer(num_words=100, oov_token='<OOV>')
+tokenizer.fit_on_texts(sentences)
+sequences = tokenizer.texts_to_sequences(texts=sentences)  # list of str|文本列表.
+```
+
+###### 1.14.12.3.1.3.word_index
+
+词汇表.|`dict`
+
+```python
+from tensorflow.keras.preprocessing.text import Tokenizer
+
+sentences = [
+    'I love my dog.',
+    'I love my cat.',
+    'You love my dog!',
+    'Do you think my dog is amazing?'
+]
+
+tokenizer = Tokenizer(num_words=100, oov_token='<OOV>')
+tokenizer.fit_on_texts(texts=sentences)
+
+print(tokenizer.word_index)
+```
+
+#### 1.14.12.4.timeseries_dataset_from_array()
 
 从数组中创建时间序列数据集.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
 
