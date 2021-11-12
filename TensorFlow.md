@@ -1092,7 +1092,22 @@ tensor = K.zeros_like(x=arr)  # tf.Tensor or array-like|输入的张量.
 | ---- | ------------------- | ---- |
 | -    | tf.keras的回调函数. | -    |
 
-#### 1.14.4.1.EarlyStopping()
+#### 1.14.4.1.Callback()
+
+`Callback`抽象基类, 可用于构建新的回调函数.
+
+```python
+from tensorflow.keras.callbacks import Callback
+
+class MyCallback(Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        """当epoch结束时执行某种操作."""
+        if logs.get('accuracy') > 0.99:
+            print('准确率达到99%, 将停止训练.')
+            self.model.stop_training = True
+```
+
+#### 1.14.4.2.EarlyStopping()
 
 实例化`EarlyStopping`, 用以提前停止训练避免过拟合.
 
@@ -1108,7 +1123,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 1.14.4.2.LearningRateScheduler()
+#### 1.14.4.3.LearningRateScheduler()
 
 实例化`LearningRateScheduler`, 用以定时调整学习率.
 
@@ -1128,7 +1143,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 1.14.4.3.ModelCheckpoint()
+#### 1.14.4.4.ModelCheckpoint()
 
 实例化`ModelCheckpoint`, 用以保存模型的权重.
 
@@ -1143,7 +1158,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 1.14.4.4.ReduceLROnPlateau()
+#### 1.14.4.5.ReduceLROnPlateau()
 
 实例化`ReduceLROnPlateau`, 用以在评估值不变时降低学习率.
 
@@ -1160,7 +1175,7 @@ CALLBACKS = [
 ]
 ```
 
-#### 1.14.4.5.TensorBoard()
+#### 1.14.4.6.TensorBoard()
 
 实例化`TensorBoard`, 可视化训练信息.
 
@@ -1520,6 +1535,14 @@ class MyLayer(layers.Layer):
 tensor = layer.output
 ```
 
+##### 1.14.7.23.2.trainable
+
+网络层在训练期间是否能更新权重.|`bool`
+
+```python
+trainable = layer.trainable
+```
+
 #### 1.14.7.24.LeakyReLU()
 
 实例化带泄漏的ReLU层.
@@ -1797,13 +1820,14 @@ model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generato
           class_weight=None,  # dict(可选)|None|类别权重字典(只在训练时有效).
           initial_epoch=0,  # int|0|初始化训练的轮数.
           steps_per_epoch=None,  # int|None|每轮的步数(样本数/批次大小).
+          validation_steps=None,  # int|None|每验证轮的步数(样本数/批次大小).
           workers=1,  # int|1|使用的线程数(仅适用`keras.utils.Sequence`).
           use_multiprocessing=False)  # bool|False|是否使用多线程(仅适用`keras.utils.Sequence`).
 ```
 
 ##### 1.14.10.2.5.inputs
 
-模型的输入层对象|`keras.Input` or `list of keras.Input`
+模型的输入层对象.|`list of keras.Input`
 
 ```python
 inputs = model.inputs
@@ -1817,7 +1841,22 @@ inputs = model.inputs
 layer = model.get_layer(name)  # str|网络层名称.
 ```
 
-##### 1.14.10.2.7.load_weights()
+##### 1.14.10.2.7.layers
+
+返回模型的所有网络层列表.|`list`
+
+```python
+from tensorflow.keras import layers
+from tensorflow.keras.models import Model
+
+input_layer = layers.Input(shape=[64, 64, 3])
+output_layer = layers.Dense(units=16)(input_layer)
+model = Model(inputs=input_layer, outputs=output_layer)
+
+layers = model.layers
+```
+
+##### 1.14.10.2.8.load_weights()
 
 加载模型的权重.
 
@@ -1825,7 +1864,7 @@ layer = model.get_layer(name)  # str|网络层名称.
 model.load_weights(filepath)  # str or pathlib.Path|文件路径.
 ```
 
-##### 1.14.10.2.8.predict()
+##### 1.14.10.2.9.predict()
 
 使用模型进行预测.|`numpy.ndarray`
 
@@ -1835,7 +1874,7 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
                        verbose=0)  # int|0|日志显示模式.
 ```
 
-##### 1.14.10.2.9.output_shape
+##### 1.14.10.2.10.output_shape
 
 模型输出层的形状.|`tuple`
 
@@ -1843,7 +1882,7 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
 shape = model.output_shape
 ```
 
-##### 1.14.10.2.10.save()
+##### 1.14.10.2.11.save()
 
 保存模型.
 
@@ -1852,7 +1891,7 @@ model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
            save_format=None)  # {'tf', 'h5'}|None|保存文件格式.
 ```
 
-##### 1.14.10.2.11.summary()
+##### 1.14.10.2.12.summary()
 
 打印模型的摘要.
 
@@ -1886,7 +1925,7 @@ model.add(layer=layers.Input(shape=(224, 224, 3)))  # keras.layers|网络层.
 
 #### 1.14.11.1.Adam()
 
-实例化Adam优化器.
+实例化`Adam`优化器.
 
 ```python
 from tensorflow.keras.optimizers import Adam
@@ -1905,14 +1944,24 @@ optimizer = Adam()
 optimizer.apply_gradients(grads_and_vars=zip(grads, vars))  # list of (gradient, variable) pairs|梯度和变量对. 
 ```
 
-#### 1.14.11.2.SGD()
+#### 1.14.11.2.RMSProp()
+
+实例化`RMSprop`优化器.
+
+```python
+from tensorflow.keras.optimizers import RMSprop
+
+optimizer = RMSprop(learning_rate=0.001)  # float|0.001|学习率.
+```
+
+#### 1.14.11.3.SGD()
 
 实例化随机梯度下降优化器.
 
 ```python
 from tensorflow.keras.optimizers import SGD
 
-optimizer = SGD(learning_rate=0.01)  # float|0.001|学习率.
+optimizer = SGD(learning_rate=0.01)  # float|0.01|学习率.
 ```
 
 ### 1.14.12.preprocessing
