@@ -1330,7 +1330,19 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # str or path-like or file-like A path|要加载的文件的路径.
 ```
 
-### 7.2.14.scatter()
+### 7.2.14.semilogx()
+
+在x轴上绘制对数缩放的图.
+
+```python
+import matplotlib.pyplot as plt
+
+plt.semilogx(range(1, 6), range(1, 6))
+
+plt.show()
+```
+
+### 7.2.15.scatter()
 
 绘制散点图.
 
@@ -1350,7 +1362,7 @@ plt.scatter(x=x,  # float or array-like 形状必须是(n, )|x坐标.
 plt.show()
 ```
 
-### 7.2.15.show()
+### 7.2.16.show()
 
 显示画布.
 
@@ -1365,7 +1377,7 @@ plt.plot(x, y)
 plt.show()
 ```
 
-### 7.2.16.subplot()
+### 7.2.17.subplot()
 
 在当前画布上创建子图.|`matplotlib.axes._subplots.AxesSubplot`
 
@@ -1375,7 +1387,7 @@ import matplotlib.pyplot as plt
 axes = plt.subplot()
 ```
 
-### 7.2.17.subplots()
+### 7.2.18.subplots()
 
 同时创建画布和一组子图.|`matplotlib.figure.Figure`和`array of matplotlib.axes._subplots.AxesSubplot`
 
@@ -1387,7 +1399,7 @@ figure, axes = plt.subplots(nrows=4,  # int|1|子图数量的行数.
                             figsize=(10, 10))  # tuple(list) of int|画布的大小.
 ```
 
-### 7.2.18.subplots_adjust()
+### 7.2.19.subplots_adjust()
 
 调整子图布局.
 
@@ -1402,7 +1414,7 @@ plt.subplots_adjust(left=0.125,  # float(可选)|None|子图左边框距离画�
                     hspace=0.2)  # float(可选)|None|两张子图之间的上下间隔.
 ```
 
-### 7.2.19.tight_layout()
+### 7.2.20.tight_layout()
 
 自动调整子图布局.
 
@@ -1412,7 +1424,7 @@ import matplotlib.pyplot as plt
 plt.tight_layout()
 ```
 
-### 7.2.20.title()
+### 7.2.21.title()
 
 设置标题.
 
@@ -1424,7 +1436,7 @@ plt.title(label='this is title')  # str|文本内容.
 plt.show()
 ```
 
-### 7.2.21.xlabel()
+### 7.2.22.xlabel()
 
 设置x轴的内容.
 
@@ -1436,7 +1448,7 @@ plt.xlabel(xlabel='x')  # str|文本内容.
 plt.show()
 ```
 
-### 7.2.22.xlim()
+### 7.2.23.xlim()
 
 设置x轴的显示范围.
 
@@ -1448,7 +1460,7 @@ plt.xlim([1, 2])  # [left, right]|[左界, 右界].
 plt.show()
 ```
 
-### 7.2.23.ylabel()
+### 7.2.24.ylabel()
 
 设置y轴的内容.
 

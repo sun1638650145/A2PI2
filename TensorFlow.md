@@ -165,7 +165,19 @@ import tensorflow as tf
 tf.data.experimental.ignore_errors()
 ```
 
-#### 1.7.2.5.from_tensor_slices()
+#### 1.7.2.5.flat_map()
+
+对数据应用处理, 并展平数据集.|`tensorflow.python.data.ops.dataset_ops.FlatMapDataset`
+
+```python
+import tensorflow as tf
+
+
+dataset = tf.data.Dataset.from_tensor_slices([[1, 2, 3], [4, 5, 6]])
+dataset = dataset.flat_map(map_func=lambda x: tf.data.Dataset.from_tensor_slices(x + 1))  # function or lambda|处理函数.
+```
+
+#### 1.7.2.6.from_tensor_slices()
 
 从张量切片中创建数据集.|`tensorflow.python.data.ops.dataset_ops.TensorSliceDataset`
 
@@ -175,19 +187,19 @@ import tensorflow as tf
 dataset = tf.data.Dataset.from_tensor_slices(tensors=([1, 2], [3, 4]))  # array-like|输入的数据.
 ```
 
-#### 1.7.2.6.map()
+#### 1.7.2.7.map()
 
 对数据应用处理.|`tensorflow.python.data.ops.dataset_ops.MapDataset` or `tensorflow.python.data.ops.dataset_ops.ParallelMapDataset`
 
 ```python
 import tensorflow as tf
 
-dataset = tf.data.Dataset.from_tensor_slices(tensors=([1., 2.], [3., 4.]))  # array-like|输入的数据.
+dataset = tf.data.Dataset.from_tensor_slices(tensors=([1., 2.], [3., 4.]))
 dataset = dataset.map(map_func=lambda x, y: (x + 0.5, y - 0.5),  # function or lambda|处理函数.
                       num_parallel_calls=tf.data.AUTOTUNE)  # int|None|并行处理的数量.
 ```
 
-#### 1.7.2.7.padded_batch()
+#### 1.7.2.8.padded_batch()
 
 为数据集划分批次(按照规则进行填充).|`tensorflow.python.data.ops.dataset_ops.PaddedBatchDataset`
 
@@ -201,7 +213,7 @@ dataset = dataset.padded_batch(batch_size=2,  # int|批次大小.
                                padding_values=-1)  # int(可选)|0|填充的值.
 ```
 
-#### 1.7.2.8.prefetch()
+#### 1.7.2.9.prefetch()
 
 对数据集进行预加载.|`tensorflow.python.data.ops.dataset_ops.PrefetchDataset`
 
@@ -212,7 +224,7 @@ dataset = tf.data.Dataset.range(1, 4, output_type=tf.int32)
 dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)  # int|预加载缓冲区的大小.
 ```
 
-#### 1.7.2.9.range()
+#### 1.7.2.10.range()
 
 创建指定范围的数据集.|`tensorflow.python.data.ops.dataset_ops.RangeDataset`
 
@@ -223,7 +235,7 @@ dataset = tf.data.Dataset.range(10,
                                 output_type=tf.int32)  # tensorflow.python.framework.dtypes.DType|元素的数据类型.
 ```
 
-#### 1.7.2.10.shuffle()
+#### 1.7.2.11.shuffle()
 
 对数据集进行打乱.|`tensorflow.python.data.ops.dataset_ops.ShuffleDataset`
 
@@ -234,7 +246,7 @@ dataset = tf.data.Dataset.range(10, output_type=tf.int32)
 dataset = dataset.shuffle(buffer_size=2)  # int|打乱缓冲区的大小.
 ```
 
-#### 1.7.2.11.skip()
+#### 1.7.2.12.skip()
 
 跳过指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.SkipDataset`
 
@@ -245,7 +257,7 @@ dataset = tf.data.Dataset.range(10)
 dataset = dataset.skip(count=3)  # int|跳过的个数.
 ```
 
-#### 1.7.2.12.take()
+#### 1.7.2.13.take()
 
 取出指定个数数据创建新数据集.|`tensorflow.python.data.ops.dataset_ops.TakeDataset`
 
@@ -254,6 +266,19 @@ import tensorflow as tf
 
 dataset = tf.data.Dataset.range(10)
 dataset = dataset.take(count=3)  # int|取出的个数.
+```
+
+#### 1.7.2.14.window()
+
+创建窗口化的数据集.|`tensorflow.python.data.ops.dataset_ops.WindowDataset`
+
+```python
+import tensorflow as tf
+
+dataset = tf.data.Dataset.range(10)
+dataset = dataset.window(size=5,  # int|窗口的大小.
+                         shift=2,  # int(可选)|None|窗口滑动的步长.
+                         drop_remainder=True)  # bool(可选)|False|小于窗口大小的元素是否删除.
 ```
 
 ### 1.7.3.experimental
@@ -2546,7 +2571,20 @@ tensor = tf.strings.unicode_split(input=str,  # str|输入的字符串.
                                   input_encoding='UTF-8')  # str|输入字符串的编码.
 ```
 
-## 1.31.TensorArray()
+## 1.31.Tensor
+
+### 1.31.1.numpy()
+
+将`Tensor`的值复制到`numpy.ndarray`中.|`numpy.ndarray`
+
+```python
+import tensorflow as tf
+
+tensor = tf.Variable([1.0, 2.0, 3.0])
+arr = tensor.numpy()
+```
+
+## 1.32.TensorArray()
 
 实例化`TensorArray`.
 
@@ -2558,7 +2596,7 @@ tensor_arr = tf.TensorArray(dtype=tf.float32,  # tensorflow.python.framework.dty
                             dynamic_size=True)  # bool(可选)|False|是否可以将TensorArray增长到超过其初始大小.
 ```
 
-### 1.31.1.write()
+### 1.32.1.write()
 
 在`TensorArray`指定索引位置写入值.|`tensorflow.python.ops.tensor_array_ops.TensorArray`
 
@@ -2570,7 +2608,7 @@ ta = ta.write(index=2,  # int|写入处的索引.
               value=10)  # tf.Tensor of type `dtype`|写入的值.
 ```
 
-## 1.32.tensordot()
+## 1.33.tensordot()
 
 沿指定维度点乘.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2584,11 +2622,11 @@ tensor = tf.tensordot(a=a,  # tf.Tensor|输入的张量.
                       axes=1)  # int|维度.
 ```
 
-## 1.33.tpu
+## 1.34.tpu
 
-### 1.33.1.experimental
+### 1.34.1.experimental
 
-#### 1.33.1.1.initialize_tpu_system()
+#### 1.34.1.1.initialize_tpu_system()
 
 初始化TPU系统.
 
@@ -2598,7 +2636,7 @@ import tensorflow as tf
 tf.tpu.experimental.initialize_tpu_system()
 ```
 
-## 1.34.transpose()
+## 1.35.transpose()
 
 对张量进行转置操作.|tensorflow.python.framework.ops.EagerTensor
 
@@ -2610,7 +2648,7 @@ tensor = tf.transpose(a=a,  # tf.Tensor|输入的张量.
                       perm=[1, 2, 0])  # list|None|轴的排列顺序.
 ```
 
-## 1.35.Variable()
+## 1.36.Variable()
 
 创建变量.|`tensorflow.python.ops.resource_variable_ops.ResourceVariable`
 
@@ -2620,7 +2658,7 @@ import tensorflow as tf
 tensor = tf.Variable(2021)
 ```
 
-## 1.36.where()
+## 1.37.where()
 
 根据判断条件, 真值返回`x`, 假值返回`y`.|`tensorflow.python.framework.ops.EagerTensor`
 
@@ -2634,7 +2672,7 @@ tensor = tf.where(condition=(a > b),  # tf.Tensor of type bool|判断条件.
                   y=False)  # tf.Tensor|None|情况为假的返回值.
 ```
 
-## 1.37.zeros_like()
+## 1.38.zeros_like()
 
 创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
