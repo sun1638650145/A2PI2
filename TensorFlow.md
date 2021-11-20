@@ -1552,7 +1552,20 @@ class MyLayer(layers.Layer):
         return outputs
 ```
 
-##### 1.14.7.23.1.output
+##### 1.14.7.23.1.get_weights()
+
+获取当前网络层的权重.|list of `numpy.ndarray`
+
+```python
+import tensorflow as tf
+from tensorflow.keras.layers import Dense
+
+layer = Dense(units=4, activation='relu')
+layer(tf.constant([[1., 2., 3.]]))
+weights = layer.get_weights()
+```
+
+##### 1.14.7.23.2.output
 
 网络层输出张量.|`tensorflow.python.keras.engine.keras_tensor.KerasTensor`
 
@@ -1560,7 +1573,7 @@ class MyLayer(layers.Layer):
 tensor = layer.output
 ```
 
-##### 1.14.7.23.2.trainable
+##### 1.14.7.23.3.trainable
 
 网络层在训练期间是否能更新权重.|`bool`
 
