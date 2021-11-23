@@ -1728,7 +1728,17 @@ from tensorflow.keras.losses import CategoricalCrossentropy
 loss = CategoricalCrossentropy(from_logits=False)  # bool|False|是否将预测值解释为张量.
 ```
 
-#### 1.14.8.3.Loss()
+#### 1.14.8.3.Huber()
+
+实例化Huber损失函数.
+
+```python
+from tensorflow.keras.losses import Huber
+
+loss = Huber()
+```
+
+#### 1.14.8.4.Loss()
 
 自定义一个符合tf.keras接口的损失函数.
 
@@ -1749,7 +1759,7 @@ class MyLoss(Loss):
         return loss
 ```
 
-#### 1.14.8.4.MeanAbsoluteError()
+#### 1.14.8.5.MeanAbsoluteError()
 
 实例化平均绝对误差损失函数.
 
@@ -1759,7 +1769,7 @@ from tensorflow.keras.losses import MeanAbsoluteError
 loss = MeanAbsoluteError()
 ```
 
-#### 1.14.8.5.SparseCategoricalCrossentropy()
+#### 1.14.8.6.SparseCategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数(稀释编码).
 
