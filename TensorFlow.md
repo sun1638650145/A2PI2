@@ -2487,7 +2487,17 @@ import tensorflow as tf
 tensor = tf.random.normal(shape=[2, 3])  # array-like|张量的形状.
 ```
 
-### 1.23.2.uniform()
+### 1.23.2.set_seed()
+
+设置全局随机种子.
+
+```python
+import tensorflow as tf
+
+tf.random.set_seed(seed=2021)  # int|随机种子.
+```
+
+### 1.23.3.uniform()
 
 生成均匀分布的张量.|`tensorflow.python.framework.ops.EagerTensor`
 
