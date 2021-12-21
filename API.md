@@ -143,7 +143,7 @@ image = cv2.resize(src=image,  # numpy.ndarray|输入的图像.
 
 | 版本  | 描述               | 注意                                                         | 适配M1 |
 | ----- | ------------------ | ------------------------------------------------------------ | ------ |
-| 3.3.9 | C++线性代数模版库. | 1. 在ubuntu 16.04下请使用源码安装, apt的最高版本是3.3beta0, 存在BUG. | 是     |
+| 3.4.0 | C++线性代数模版库. | 1. 在ubuntu 16.04下请使用源码安装, apt的最高版本是3.3beta0, 存在BUG. | 是     |
 
 ## 3.1.ArrayXd
 
@@ -526,7 +526,45 @@ int main() {
 
 ```
 
-### 3.6.7.row()
+### 3.6.7.reshaped()
+
+改变矩阵的形状.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+
+    std::cout << mat.reshaped(1, 4) << std::endl;
+
+    return 0;
+}
+```
+
+### 3.6.8.resize()
+
+原地改变矩阵的形状.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(2, 2);
+    mat << 1, 2, 3, 4;
+
+    mat.resize(1, 4);
+    
+    std::cout << mat << std::endl;
+
+    return 0;
+}
+```
+
+### 3.6.9.row()
 
 获取矩阵的某行.
 
@@ -544,7 +582,7 @@ int main() {
 }
 ```
 
-### 3.6.8.rows()
+### 3.6.10.rows()
 
 获取矩阵的行数.
 
@@ -562,7 +600,7 @@ int main() {
 }
 ```
 
-### 3.6.9.rowwise()
+### 3.6.11.rowwise()
 
 将矩阵修饰成多个向量, 对矩阵进行逐行操作.
 
@@ -580,7 +618,7 @@ int main() {
 }
 ```
 
-### 3.6.10.size()
+### 3.6.12.size()
 
 获取矩阵的元素总数.
 
@@ -598,7 +636,7 @@ int main() {
 }
 ```
 
-### 3.6.11.sum()
+### 3.6.13.sum()
 
 计算矩阵的元素和.
 
@@ -616,7 +654,7 @@ int main() {
 }
 ```
 
-### 3.6.12.transpose()
+### 3.6.14.transpose()
 
 获取矩阵的转置矩阵.
 
@@ -634,7 +672,7 @@ int main() {
 }
 ```
 
-### 3.6.13.Zero()
+### 3.6.15.Zero()
 
 实例化一个全零矩阵.
 
@@ -651,7 +689,7 @@ int main() {
 }
 ```
 
-#### 3.6.13.1.unaryExpr()
+#### 3.6.15.1.unaryExpr()
 
 接收一个函数对矩阵进行逐元素的操作.
 
