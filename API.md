@@ -1008,7 +1008,7 @@ ax = plt.subplot()
 x = np.linspace(0, 9, 10)
 y = np.linspace(0, 9, 10)
 X, Y = np.meshgrid(x, y)
-cs = ax.contour(X, Y, X + Y, 'orange', 1)
+cs = ax.contour(X, Y, X + Y, colors='orange', linewidths=1)
 ax.clabel(cs)
 
 plt.show()
@@ -1030,7 +1030,8 @@ cs = ax.contour(X,  # array-like|横坐标.
                 Y,  # array-like|纵坐标.
                 X + Y,  # array-like(必须是2D的)|横纵坐标的关系公式.
                 colors='orange',  # str|等高线的颜色.
-                linewidths=1)  # int|等高线的宽度.
+                linewidths=1.0,  # float|等高线的宽度.
+                linestyles='dashed')  # str|等高线的形状.
 
 plt.show()
 ```
