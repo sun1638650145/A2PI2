@@ -4330,6 +4330,18 @@ y = ['a', 'b', 'c']
 res = type_of_target(y=y)  # array-like|输入的数据.
 ```
 
+### 15.9.2.resample()
+
+对数组进行重采样.|`list`
+
+```python
+from sklearn.utils import resample
+
+arr = [1, 2, 3, 4, 5]
+new_arr = resample(arr,  # array-like|输入的数据, (可以输入多个).
+                   random_state=2022)  # int|None|随机状态.
+```
+
 # 16.tokenizers
 
 | 版本   | 描述                  | 注意                        | 适配M1 |
