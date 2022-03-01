@@ -526,7 +526,24 @@ int main() {
 
 ```
 
-### 3.6.7.reshaped()
+### 3.6.7.Random
+
+实例化(双精度)均匀分布的随机矩阵.
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd rnd_mat = Eigen::MatrixXd::Random(2, 2);
+    
+    std::cout << rnd_mat << std::endl;
+
+    return 0;
+}
+```
+
+### 3.6.8.reshaped()
 
 改变矩阵的形状.
 
@@ -544,7 +561,7 @@ int main() {
 }
 ```
 
-### 3.6.8.resize()
+### 3.6.9.resize()
 
 原地改变矩阵的形状.
 
@@ -564,7 +581,7 @@ int main() {
 }
 ```
 
-### 3.6.9.row()
+### 3.6.10.row()
 
 获取矩阵的某行.
 
@@ -582,7 +599,7 @@ int main() {
 }
 ```
 
-### 3.6.10.rows()
+### 3.6.11.rows()
 
 获取矩阵的行数.
 
@@ -600,7 +617,7 @@ int main() {
 }
 ```
 
-### 3.6.11.rowwise()
+### 3.6.12.rowwise()
 
 将矩阵修饰成多个向量, 对矩阵进行逐行操作.
 
@@ -618,7 +635,7 @@ int main() {
 }
 ```
 
-### 3.6.12.size()
+### 3.6.13.size()
 
 获取矩阵的元素总数.
 
@@ -636,7 +653,7 @@ int main() {
 }
 ```
 
-### 3.6.13.sum()
+### 3.6.14.sum()
 
 计算矩阵的元素和.
 
@@ -654,7 +671,7 @@ int main() {
 }
 ```
 
-### 3.6.14.transpose()
+### 3.6.15.transpose()
 
 获取矩阵的转置矩阵.
 
@@ -672,7 +689,7 @@ int main() {
 }
 ```
 
-### 3.6.15.Zero()
+### 3.6.16.Zero()
 
 实例化一个全零矩阵.
 
@@ -689,7 +706,7 @@ int main() {
 }
 ```
 
-#### 3.6.15.1.unaryExpr()
+#### 3.6.16.1.unaryExpr()
 
 接收一个函数对矩阵进行逐元素的操作.
 
@@ -817,6 +834,24 @@ int main() {
     
     std::cout << diag_mat << std::endl;
     
+    return 0;
+}
+```
+
+## 3.10. 对矩阵进行切片
+
+```c++
+#include <iostream>
+#include "Eigen/Dense"
+
+int main() {
+    Eigen::MatrixXd mat(3, 3);
+    mat << 1, 2, 3, 4, 5, 6, 7, 8, 9;
+
+    std::cout << mat(Eigen::all, Eigen::all) << std::endl;
+    std::cout << "对任意行进行切片:\n" << mat({0, 2}, Eigen::all) << std::endl;
+    std::cout << "对任意列进行切片:\n" << mat(Eigen::all, {1, 2}) << std::endl;
+    std::cout << "对任意行列进行切片:\n" << mat({0, 2}, 2) << std::endl;
     return 0;
 }
 ```
