@@ -1,8 +1,8 @@
 # A²PI²
 
-* API.md 深度学习和机器学习框架的中文API
+* <b>API.md</b> 深度学习和机器学习框架的中文API
 
-* ML.md 机器学习理论
+* <b>ML.md</b> 机器学习理论
 
   * 如果您希望实践这些理论，却没有那么强的编程能力可考虑本人的配套框架[classicML](https://github.com/sun1638650145/classicML)
 
@@ -12,7 +12,9 @@
      
   * 增加集成学习内容
 
-* TensorFlow.md TensorFlow 生态的中文API
+* <b>TensorFlow.md</b> TensorFlow 生态的中文API
+
+* <b>CUDA.md</b> 关于CUDA使用的中文API
 
 * 由于作者本人错误的之前上传一堆打包的pdf文件导致项目很大
 
@@ -46,3 +48,5 @@
 > `20211230` 今年没有更新`ML.md`多少有些遗憾，今年这个仓库提交了`80`次，一共增加了`2848`行，比去年多增加了`2`个软件包的内容，今年还贡献了`tensorflow_text`和获得了`TensorFlow Developer Certificate`，明年需要更加努力！
 
 > ```20220110```这是2022年的第一次更新.
+
+> `20220322`新增关于`CUDA`的内容, 同时获得了英伟达的`Fundamentals of Accelerated Computing with CUDA C/C++`学习证书.
