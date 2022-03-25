@@ -329,3 +329,160 @@ int main() {
 }
 ```
 
+## 1.6.使用非默认流
+
+```c++
+#include <cstdio>
+
+__global__ void Print(int number) {
+    std::printf("%d ", number);
+}
+
+int main() {
+    for (int i = 0; i < 5; i ++) {
+        cudaStream_t stream;
+        cudaStreamCreate(&stream); // 创建非默认流.
+
+        Print<<<1, 1, 0, stream >>>(i);
+        cudaDeviceSynchronize();
+
+        cudaStreamDestroy(stream); // 销毁非默认流.
+    }
+    return 0;
+}
+```
+
+## 1.7.手动管理内存
+
+### 1.7.1.在GPU和CPU上分配内存.
+
+```c++
+#include <iostream>
+
+#define N 10
+
+// 在GPU上初始化向量.
+__global__ void InitializeVectorOnGPU(int *vector, int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector[i] = i;
+    }
+}
+
+// 在GPU上向量加法.
+__global__ void AddOnGPU(int *vector0, int *vector1, int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector0[i] += vector1[i];
+    }
+}
+
+// 打印向量.
+void PrintVector(int *vector, int n) {
+    for (int i = 0; i < n; i ++) {
+        std::cout << vector[i] << " ";
+    }
+}
+
+int main() {
+    int *a, *host_a;
+    size_t size = N * sizeof(int);
+
+    cudaMalloc(&a, size); // 在GPU手动分配内存.
+    cudaMallocHost(&host_a, size); // 在CPU手动分配内存.
+
+    InitializeVectorOnGPU<<<10, 1>>>(a, N);
+    AddOnGPU<<<10, 1>>>(a, a, N);
+
+    cudaMemcpy(host_a, a, size, cudaMemcpyDeviceToHost); // 将数据从GPU拷贝到CPU.
+
+    PrintVector(host_a, N);
+
+    cudaFree(a);
+    cudaFree(host_a); // 释放CPU内存.
+
+    return 0;
+}
+```
+
+### 1.7.2.异步拷贝内存.
+
+```c++
+#include <cstdio>
+#include <iostream>
+
+#define N 30
+
+// 在GPU上初始化向量.
+__global__ void InitializeVectorOnGPU(int *vector, int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector[i] = i;
+    }
+}
+
+// 在GPU上向量加法.
+__global__ void AddOnGPU(int *vector, int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector[i] *= 2;
+    }
+}
+
+// 打印向量.
+void PrintVector(int *vector, int n) {
+    for (int i = 0; i < n; i ++) {
+        std::printf("%2d ", vector[i]);
+        if ((i + 1) % 5 == 0) {
+            std::cout << std::endl;
+        }
+    }
+}
+
+int main() {
+    int *a, *host_a;
+    size_t size = N * sizeof(int);
+
+    cudaMalloc(&a, size);
+    cudaMallocHost(&host_a, size);
+
+    InitializeVectorOnGPU<<<32, 1>>>(a, N);
+
+    int numberOfSegments = 5; // 分块数需要是大小的因子.
+    int segmentN = N / numberOfSegments; // 每个分块的大小.
+    size_t segmentSize = size / numberOfSegments; // 每个分块的内存大小.
+
+    for (int segment = 0; segment < numberOfSegments; segment ++) {
+        int segmentOffset = segment * segmentN; // 计算每个分块的偏移量.
+
+        cudaStream_t stream;
+        cudaStreamCreate(&stream);
+
+        AddOnGPU<<<32, 1, 0, stream>>>(&a[segmentOffset], segmentN);
+        // 将数据异步从GPU拷贝到CPU.
+        cudaMemcpyAsync(&host_a[segmentOffset],
+                        &a[segmentOffset],
+                        segmentSize,
+                        cudaMemcpyDeviceToHost,
+                        stream);
+
+        cudaStreamDestroy(stream);
+    }
+
+    PrintVector(host_a, N);
+
+    cudaFree(a);
+    cudaFreeHost(host_a);
+
+    return 0;
+}
+```
+
