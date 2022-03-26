@@ -486,3 +486,44 @@ int main() {
 }
 ```
 
+# 2.CUDA命令
+
+## 2.1.nsight-sys
+
+在Linux上启动`Nsight Systems`工具.
+
+```shell
+nsight-sys
+```
+
+## 2.2.nsys
+
+用于分析CUDA程序.
+
+```shell
+nsys profile --force-overwrite=true --stats=true -o report.qdrep ./out
+```
+
+* `--force-overwrite/-f` 覆盖原有的`qdrep`报告文件.
+* `--stats` 是否将摘要信息输出到终端.
+* `-o` 指定`qdrep`报告文件名.
+
+## 2.3.nvcc
+
+基本与`gcc`的使用方式相同, 用于编译CUDA C/C++源代码.
+
+```shell
+nvcc -arch=sm_70 -o out main.cu -run
+```
+
+* `-arch` 指定编译的GPU架构类型.
+* `-run` 编译成功后直接执行二进制文件.
+
+## 2.4.nvidia-smi
+
+`nvidia-smi`(Systems Management Interface)用于查询加速系统内的GPU信息.
+
+```shell
+nvidia-smi
+```
+
