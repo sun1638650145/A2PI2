@@ -3528,9 +3528,10 @@ example.range(np.asarray([[1, 2], [3, 4]]))
 #include "pybind11/numpy.h"
 #include "pybind11/pybind11.h"
 
-void show_methods(const pybind11::array &array) {
+void show_methods(pybind11::array &array) {
     std::cout << "ndim:" << array.ndim() << std::endl;  // 数组的维度.
     std::cout << "data:" << array.data() << std::endl;  // 数组索引处的指针.
+    std::cout << "mutable_data:" << array.mutable_data() << std::endl;  // 数组索引处的可变指针.
 
     std::cout << "shape:"; // 数组每个维度的大小.
     auto shape = array.request().shape;
@@ -3567,9 +3568,75 @@ import example
 example.show_methods(np.asarray([[1, 2], [3, 4]]))
 ```
 
-## 11.7.其他
+## 11.7.绑定CUDA
 
-### 11.7.1.绑定Eigen
+### 11.7.1.调用GPU计算
+
+1. example.cu代码
+
+```c++
+#include "pybind11/pybind11.h"
+#include "pybind11/numpy.h"
+
+__global__ void kernel(const double scalar, double *vector, const int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector[i] *= scalar;
+    }
+}
+
+void run_kernel(const double scalar, double *vector, const int n) {
+    dim3 threadsPerBlock(256, 1, 1);
+    dim3 numberOfBlock(32, 1, 1);
+
+    kernel<<<numberOfBlock, threadsPerBlock>>>(scalar, vector, n);
+}
+
+void multiply_with_scalar(const double &scalar, pybind11::array &array) {
+    double *gpu_array;
+    int length = (int)array.request().shape[0];
+    size_t size = length * sizeof(double);
+
+    cudaMalloc(&gpu_array, size);
+
+    cudaMemcpy(gpu_array, array.data(), size, cudaMemcpyHostToDevice);  // 将CPU上的数据拷贝到GPU上.
+    run_kernel(scalar, gpu_array, length);  // 调用核函数.
+    cudaMemcpy(array.mutable_data(), gpu_array, size, cudaMemcpyDeviceToHost);  // 将GPU的计算后数据拷贝回CPU.
+
+    cudaFree(gpu_array);
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("multiply_with_scalar", &multiply_with_scalar,
+          pybind11::arg("scalar"), pybind11::arg("array"));
+}
+```
+
+2. 使用nvcc编译, 并产生对应的动态链接库.
+
+```shell
+nvcc -O3 -shared -Xcompiler -fPIC -std=c++11 \
+ `python3 -m pybind11 --includes` \
+ example.cu -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import numpy as np
+
+import example
+
+arr = np.asarray([1., 2., 3., 4., 5.])
+example.multiply_with_scalar(3, arr)
+print(arr)
+```
+
+## 11.8.其他
+
+### 11.8.1.绑定Eigen
 
 1. example.cc代码
 
@@ -3604,7 +3671,7 @@ import example
 trans_mat = example.transpose([[1, 2], [3, 4]])
 ```
 
-### 11.7.2.实现重载
+### 11.8.2.实现重载
 
 1. example.cc代码
 
@@ -3642,7 +3709,7 @@ int_ans = example.add(1, 1)
 float_ans = example.add(0.9, 1.1)
 ```
 
-### 11.7.3.区分32位和64位的数据类型
+### 11.8.3.区分32位和64位的数据类型
 
 0. 受限于 Python 3.x 没有区分32位和64位的类型, 这里需要依赖于NumPy, 同时pybind11没有对于NumPy标量处理的模板, 因此需要借助`pybind11::buffer`实现.
 
