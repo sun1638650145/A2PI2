@@ -16,6 +16,8 @@
 
 * <b>CUDA.md</b> 关于CUDA使用的中文API
 
+* <b>PyTorch.md</b> PyTorch 生态的中文API
+
 * 由于作者本人错误的之前上传一堆打包的pdf文件导致项目很大
 
   1. 您如果只想看文档，请直接下载releases中的PDF，每次提交都会更新
@@ -50,3 +52,5 @@
 > ```20220110```这是2022年的第一次更新.
 
 > `20220322`新增关于`CUDA`的内容, 同时获得了英伟达的`Fundamentals of Accelerated Computing with CUDA C/C++`学习证书.
+
+> `20220408`新增关于`PyTorch`的内容.
