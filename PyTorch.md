@@ -8,13 +8,23 @@
 | ------ | ------------- | ---- | ------ |
 | 1.11.0 | 深度学习框架. | -    | 是     |
 
-## 1.1.nn
+## 1.1.load()
+
+加载模型.
+
+```python
+from torch import load
+
+model = load(f='./model.pt')  # str or a file-like|文件路径.
+```
+
+## 1.2.nn
 
 | 版本 | 描述                       | 注意 |
 | ---- | -------------------------- | ---- |
 | -    | Torch的计算图的基本构建块. | -    |
 
-### 1.1.1.CrossEntropyLoss()
+### 1.2.1.CrossEntropyLoss()
 
 实例化交叉熵损失函数.
 
@@ -24,7 +34,7 @@ from torch.nn import CrossEntropyLoss
 loss = CrossEntropyLoss()
 ```
 
-### 1.1.2.Dropout()
+### 1.2.2.Dropout()
 
 实例化Dropout层.
 
@@ -34,7 +44,7 @@ from torch import nn
 layer = nn.Dropout(p=0.5)  # float|0.5|随机丢弃比例.
 ```
 
-### 1.1.3.Flatten()
+### 1.2.3.Flatten()
 
 实例化展平层.
 
@@ -44,7 +54,7 @@ from torch import nn
 layer = nn.Flatten()
 ```
 
-### 1.1.4.Linear()
+### 1.2.4.Linear()
 
 实例化全连接层.
 
@@ -55,7 +65,7 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.1.5.Module()
+### 1.2.5.Module()
 
 实例化`Module`.
 
@@ -79,7 +89,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.1.5.1.eval()
+#### 1.2.5.1.eval()
 
 设置模块为评估模式.
 
@@ -87,7 +97,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.1.5.2.parameters()
+#### 1.2.5.2.parameters()
 
 返回模块参数迭代器.
 
@@ -95,7 +105,7 @@ model.eval()
 model.parameters()
 ```
 
-#### 1.1.5.3.train()
+#### 1.2.5.3.train()
 
 设置模块为训练模式.
 
@@ -103,7 +113,7 @@ model.parameters()
 model.train()
 ```
 
-### 1.1.6.ReLU()
+### 1.2.6.ReLU()
 
 实例化ReLU层.
 
@@ -113,13 +123,24 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-## 1.2.optim
+## 1.3.no_grad()
+
+禁用梯度计算的上下文管理器.
+
+```python
+from torch import no_grad
+
+with no_grad():
+    # 代码.
+```
+
+## 1.4.optim
 
 | 版本 | 描述              | 注意                                |
 | ---- | ----------------- | ----------------------------------- |
 | -    | Torch的优化器API. | 1.优化器相同的类方法都写在`Adam`里. |
 
-### 1.2.1.Adam()
+### 1.4.1.Adam()
 
 实例化`Adam`优化器.
 
@@ -130,7 +151,7 @@ optimizer = Adam(params,  # 需要优化的参数.
                  lr=1e-3)  # float(可选)|1e-3|学习率.
 ```
 
-#### 1.2.1.1.step()
+#### 1.4.1.1.step()
 
 更新梯度.
 
@@ -138,7 +159,7 @@ optimizer = Adam(params,  # 需要优化的参数.
 optimizer.step()
 ```
 
-#### 1.2.1.2.zero_grad()
+#### 1.4.1.2.zero_grad()
 
 将梯度设置为零.
 
@@ -146,7 +167,20 @@ optimizer.step()
 optimizer.zero_grad()
 ```
 
-## 1.3.Tensor()
+## 1.5.save()
+
+保存模型或模型参数.
+
+```python
+from torch import nn
+from torch import save
+
+model = nn.Module()
+save(obj=model,  # 要保存的模型.
+     f='./model.pt')  # str or a file-like|文件路径.
+```
+
+## 1.6.Tensor()
 
 初始化一个`Tensor`.
 
@@ -156,7 +190,7 @@ from torch import Tensor
 tensor = Tensor(data=[1, 2])
 ```
 
-### 1.3.1.backward()
+### 1.6.1.backward()
 
 计算张量的梯度(反向传播).
 
@@ -164,15 +198,15 @@ tensor = Tensor(data=[1, 2])
 tensor.backward()
 ```
 
-## 1.4.utils
+## 1.7.utils
 
-### 1.4.1.data
+### 1.7.1.data
 
 | 版本 | 描述                 | 注意 |
 | ---- | -------------------- | ---- |
 | -    | Torch的数据加载工具. | -    |
 
-#### 1.4.1.1.DataLoader()
+#### 1.7.1.1.DataLoader()
 
 实例化数据加载器.
 
