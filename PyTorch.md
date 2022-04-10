@@ -8,7 +8,35 @@
 | ------ | ------------- | ---- | ------ |
 | 1.11.0 | 深度学习框架. | -    | 是     |
 
-## 1.1.load()
+## 1.1.cuda
+
+| 版本 | 描述               | 注意 |
+| ---- | ------------------ | ---- |
+| -    | Torch对CUDA的支持. | -    |
+
+### 1.1.1.is_available()
+
+判断系统是否支持CUDA.|`bool`
+
+```python
+from torch import cuda
+
+cuda.is_available()
+```
+
+## 1.2.from_numpy()
+
+从`numpy.ndarray`中创建`Tensor`.
+
+```python
+import numpy as np
+from torch import from_numpy
+
+arr = np.asarray([1, 2])
+tensor = from_numpy(arr)  # np.ndarray|输入的数据.
+```
+
+## 1.3.load()
 
 加载模型.
 
@@ -18,13 +46,13 @@ from torch import load
 model = load(f='./model.pt')  # str or a file-like|文件路径.
 ```
 
-## 1.2.nn
+## 1.4.nn
 
 | 版本 | 描述                       | 注意 |
 | ---- | -------------------------- | ---- |
 | -    | Torch的计算图的基本构建块. | -    |
 
-### 1.2.1.CrossEntropyLoss()
+### 1.4.1.CrossEntropyLoss()
 
 实例化交叉熵损失函数.
 
@@ -34,7 +62,7 @@ from torch.nn import CrossEntropyLoss
 loss = CrossEntropyLoss()
 ```
 
-### 1.2.2.Dropout()
+### 1.4.2.Dropout()
 
 实例化Dropout层.
 
@@ -44,7 +72,7 @@ from torch import nn
 layer = nn.Dropout(p=0.5)  # float|0.5|随机丢弃比例.
 ```
 
-### 1.2.3.Flatten()
+### 1.4.3.Flatten()
 
 实例化展平层.
 
@@ -54,7 +82,7 @@ from torch import nn
 layer = nn.Flatten()
 ```
 
-### 1.2.4.Linear()
+### 1.4.4.Linear()
 
 实例化全连接层.
 
@@ -65,7 +93,7 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.2.5.Module()
+### 1.4.5.Module()
 
 实例化`Module`.
 
@@ -89,7 +117,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.2.5.1.eval()
+#### 1.4.5.1.eval()
 
 设置模块为评估模式.
 
@@ -97,7 +125,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.2.5.2.parameters()
+#### 1.4.5.2.parameters()
 
 返回模块参数迭代器.
 
@@ -105,7 +133,7 @@ model.eval()
 model.parameters()
 ```
 
-#### 1.2.5.3.train()
+#### 1.4.5.3.train()
 
 设置模块为训练模式.
 
@@ -113,7 +141,7 @@ model.parameters()
 model.train()
 ```
 
-### 1.2.6.ReLU()
+### 1.4.6.ReLU()
 
 实例化ReLU层.
 
@@ -123,9 +151,9 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-## 1.3.no_grad()
+## 1.5.no_grad()
 
-禁用梯度计算的上下文管理器.
+禁用梯度计算的上下文管理器(可以减少内存消耗).
 
 ```python
 from torch import no_grad
@@ -134,13 +162,13 @@ with no_grad():
     # 代码.
 ```
 
-## 1.4.optim
+## 1.6.optim
 
 | 版本 | 描述              | 注意                                |
 | ---- | ----------------- | ----------------------------------- |
 | -    | Torch的优化器API. | 1.优化器相同的类方法都写在`Adam`里. |
 
-### 1.4.1.Adam()
+### 1.6.1.Adam()
 
 实例化`Adam`优化器.
 
@@ -151,7 +179,7 @@ optimizer = Adam(params,  # 需要优化的参数.
                  lr=1e-3)  # float(可选)|1e-3|学习率.
 ```
 
-#### 1.4.1.1.step()
+#### 1.6.1.1.step()
 
 更新梯度.
 
@@ -159,7 +187,7 @@ optimizer = Adam(params,  # 需要优化的参数.
 optimizer.step()
 ```
 
-#### 1.4.1.2.zero_grad()
+#### 1.6.1.2.zero_grad()
 
 将梯度设置为零.
 
@@ -167,7 +195,7 @@ optimizer.step()
 optimizer.zero_grad()
 ```
 
-## 1.5.save()
+## 1.7.save()
 
 保存模型或模型参数.
 
@@ -180,17 +208,17 @@ save(obj=model,  # 要保存的模型.
      f='./model.pt')  # str or a file-like|文件路径.
 ```
 
-## 1.6.Tensor()
+## 1.8.Tensor()
 
 初始化一个`Tensor`.
 
 ```python
 from torch import Tensor
 
-tensor = Tensor(data=[1, 2])
+tensor = Tensor(data=[1, 2])  # array-like|输入的数据.
 ```
 
-### 1.6.1.backward()
+### 1.8.1.backward()
 
 计算张量的梯度(反向传播).
 
@@ -198,15 +226,54 @@ tensor = Tensor(data=[1, 2])
 tensor.backward()
 ```
 
-## 1.7.utils
+### 1.8.2.device
 
-### 1.7.1.data
+张量的存储设备.|`torch.device`
+
+```python
+tensor.device
+```
+
+### 1.8.3.dtype
+
+张量的数据类型.|`torch.dtype`
+
+```python
+tensor.dtype
+```
+
+### 1.8.4.shape
+
+张量的形状.|`torch.Size`
+
+```python
+tensor.shape
+```
+
+### 1.8.5.to()
+
+执行张量的设备转换.|`torch.Tensor`
+
+```python
+from torch import cuda
+from torch import Tensor
+
+tensor = Tensor([1, 2])
+if cuda.is_available():
+    tensor = tensor.to(device='cuda')  # {'cpu', 'cuda', 'xpu', 'mkldnn', 'opengl',
+                                       #  'opencl', 'ideep', 'hip', 've', 'ort', 'mlc',
+                                       #  'xla', 'lazy', 'vulkan', 'meta', 'hpu'}|转换到的目标设备.
+```
+
+## 1.9.utils
+
+### 1.9.1.data
 
 | 版本 | 描述                 | 注意 |
 | ---- | -------------------- | ---- |
 | -    | Torch的数据加载工具. | -    |
 
-#### 1.7.1.1.DataLoader()
+#### 1.9.1.1.DataLoader()
 
 实例化数据加载器.
 
