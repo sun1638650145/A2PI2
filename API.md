@@ -2139,7 +2139,8 @@ np.random.seed(seed=2021)  # None|随机种子.
 import numpy as np
 
 x = np.asarray([[1, 2], [3, 4]])
-x = np.ravel(a=x)  # array_like|输入的数据.
+x = np.ravel(a=x,  # array_like|输入的数据.
+             order='f')  # {'C','F', 'A', 'K'}(可选)|'C'|索引读取顺序.
 ```
 
 ## 8.40.reshape()

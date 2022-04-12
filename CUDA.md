@@ -486,9 +486,167 @@ int main() {
 }
 ```
 
-# 2.CUDA命令
+# 2.cuBLAS
 
-## 2.1.nsight-sys
+## 2.1.cublas\<t\>gemm()
+
+矩阵乘法.
+
+```c++
+#include <cstdio>
+#include <iostream>
+
+#include "cublas_v2.h"
+
+// 矩阵的维度.
+#define M 2
+#define K 3
+#define N 4
+
+// 初始化矩阵.
+void initializeMatrix(float *mat, int m, int n) {
+    for (int i = 0; i < m; i ++) {
+        for (int j = 0; j < n; j ++) {
+            mat[i * n + j] = i * n + j;
+        }
+    }
+}
+
+// 打印矩阵.
+void printMatrix(float *mat, int m, int n) {
+    for (int i = 0; i < m; i ++) {
+        for (int j = 0; j < n; j ++) {
+            std::printf("%2.0f ", mat[i * n + j]);
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "---------------" << std::endl;
+}
+
+// 矩阵乘法.
+void matrixMultiply(float *mat_a, size_t a,
+                    float *mat_b, size_t b,
+                    float *mat_c, size_t c,
+                    float *mat_ct, size_t ct) {
+    // 获取矩阵的维度信息.
+    int m = M, k = K, n = N;
+
+    // 创建cuBLAS状态变量.
+    cublasStatus_t status;
+
+    // 初始化cuBLAS句柄.
+    cublasHandle_t handle;
+    status = cublasCreate(&handle);
+    if (status != CUBLAS_STATUS_SUCCESS) {
+        if (status == CUBLAS_STATUS_NOT_INITIALIZED) {
+            std::cout << "cuBLAS句柄创建失败" << std::endl;
+        }
+    }
+
+    /* 计算矩阵乘法. cublas<t>gemm()
+     * 数学逻辑公式: C = \alpha op(A)op(B) + \beta C
+     * 显存物理公式: 通常令 alpha = 1; beta = 0
+     *             M = AB
+     *             M^T = B^TA^T
+     *             M = C^T
+     *             M^T = C
+     *
+     * 参数:
+     *      1. handle句柄.
+     *      2/3. op:   A = CUBLAS_OP_N
+     *               A^T = CUBLAS_OP_T
+     *               A^H = CUBLAS_OP_C
+     *      4/5. M行, 列
+     *      6.k: A列(B行).
+     *      7. alpha的指针.
+     *      8/9. 矩阵(显存)和lda.
+     *      10/11. 矩阵(显存)和ldb.
+     *      12. beta的指针.
+     *      13/14. M(显存)和ldm.
+     *
+     * lda, ldb: CUBLAS_OP_N 行.
+     *           CUBLAS_OP_T 原始矩阵的列(不转置).
+     * ldc: M的行
+     */
+    float alpha = 1, beta = 0;
+
+    // 显存存储是A^T和B^T
+    // M = B^TA^T
+    // 显存存M^T取出就是C
+    cublasSgemm(handle,
+                CUBLAS_OP_N, CUBLAS_OP_N,
+                n, m,
+                k,
+                &alpha,
+                mat_b, n,  // B(n, k)
+                mat_a, k,  // A(k, m)
+                &beta,
+                mat_c, n); // M(n, m)
+
+    // 显存存储是A^T和B^T
+    // 转置后存储A和B
+    // M = AB
+    // 显存存M取出就是C^T
+    cublasSgemm(handle,
+                CUBLAS_OP_T, CUBLAS_OP_T,
+                m, n,
+                k,
+                &alpha,
+                mat_a, k,   // A(m, k)
+                mat_b, n,   // B(k, n)
+                &beta,
+                mat_ct, m); // M(m, n)
+
+    // 同步数据.
+    cudaDeviceSynchronize();
+
+    // 销毁cuBLAS句柄.
+    cublasDestroy(handle);
+}
+
+int main() {
+    float *mat_a, *mat_b, *mat_c, *mat_ct;
+    size_t size_a = M * K * sizeof(float);
+    size_t size_b = K * N * sizeof(float);
+    size_t size_c = M * N * sizeof(float);
+    size_t size_ct = N * M * sizeof(float);
+
+    // 分配UM内存.
+    cudaMallocManaged(&mat_a, size_a);
+    cudaMallocManaged(&mat_b, size_b);
+    cudaMallocManaged(&mat_c, size_c);
+    cudaMallocManaged(&mat_ct, size_ct);
+
+    initializeMatrix(mat_a, M, K);
+    initializeMatrix(mat_b, K, N);
+    std::cout << "矩阵A:" << std::endl;
+    printMatrix(mat_a, M, K);
+    std::cout << "矩阵B:" << std::endl;
+    printMatrix(mat_b, K, N);
+
+    matrixMultiply(mat_a, size_a,
+                   mat_b, size_b,
+                   mat_c, size_c,
+                   mat_ct, size_ct);
+
+    std::cout << "矩阵C:" << std::endl;
+    printMatrix(mat_c, M, N);
+    std::cout << "矩阵C的转置:" << std::endl;
+    printMatrix(mat_ct, N, M);
+
+    // 释放UM内存.
+    cudaFree(mat_a);
+    cudaFree(mat_b);
+    cudaFree(mat_c);
+    cudaFree(mat_ct);
+
+    return 0;
+}
+```
+
+# 3.CUDA命令
+
+## 3.1.nsight-sys
 
 在Linux上启动`Nsight Systems`工具.
 
@@ -496,7 +654,7 @@ int main() {
 nsight-sys
 ```
 
-## 2.2.nsys
+## 3.2.nsys
 
 用于分析CUDA程序.
 
@@ -508,18 +666,19 @@ nsys profile --force-overwrite=true --stats=true -o report.qdrep ./out
 * `--stats` 是否将摘要信息输出到终端.
 * `-o` 指定`qdrep`报告文件名.
 
-## 2.3.nvcc
+## 3.3.nvcc
 
 基本与`gcc`的使用方式相同, 用于编译CUDA C/C++源代码.
 
 ```shell
-nvcc -arch=sm_70 -o out main.cu -run
+nvcc -arch=sm_70 -lcublas -o out main.cu -run
 ```
 
 * `-arch` 指定编译的GPU架构类型.
+* `-l` 添加库的位置.
 * `-run` 编译成功后直接执行二进制文件.
 
-## 2.4.nvidia-smi
+## 3.4.nvidia-smi
 
 `nvidia-smi`(Systems Management Interface)用于查询加速系统内的GPU信息.
 
