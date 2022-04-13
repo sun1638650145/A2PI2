@@ -2822,7 +2822,7 @@ values = pd.value_counts(values=sr)  # ndarray (1-d)|输入的数据.
 
 | 版本  | 描述               | 注意                            | 适配M1 |
 | ----- | ------------------ | ------------------------------- | ------ |
-| 8.2.0 | Python 图像处理库. | 1. 安装时使用pip install pillow | 是     |
+| 8.4.0 | Python 图像处理库. | 1. 安装时使用pip install pillow | 是     |
 
 ## 10.1.Image
 
@@ -2830,7 +2830,18 @@ values = pd.value_counts(values=sr)  # ndarray (1-d)|输入的数据.
 | ---- | ---------------- | ---- |
 | -    | PIL图像类装饰器. | -    |
 
-### 10.1.1.fromarray()
+### 10.1.1.convert()
+
+转换图像的色彩空间.|`PIL.Image.Image`
+
+```python
+from PIL.Image import open
+
+im = open('img.jpeg')
+im = im.convert(mode='CMYK')  # {'L', 'RGB', 'RGBA', 'CMYK'}|None|模式.
+```
+
+### 10.1.2.fromarray()
 
 将ndarray转换为图像.|`PIL.Image.Image`
 
@@ -2842,7 +2853,7 @@ arr = np.asarray([[0.1, 0.2], [0.3, 0.4]])
 im = fromarray(obj=arr)  # numpy.ndarray|输入的数组.
 ```
 
-### 10.1.2.open()
+### 10.1.3.open()
 
 打开图像文件.|`PIL.Image.Image`
 
@@ -2852,7 +2863,7 @@ from PIL.Image import open
 im = open(fp='img.jpeg')  # A filename (string), pathlib.Path object or a file object|加载的图像路径.
 ```
 
-### 10.1.3.resize()
+### 10.1.4.resize()
 
 调整图像的大小.|`PIL.Image.Image`
 
@@ -2861,6 +2872,17 @@ from PIL.Image import open
 
 im = open('img.jpeg')
 new_im = im.resize(size=[100, 100])
+```
+
+### 10.1.5.save()
+
+保存图像文件.
+
+```python
+from PIL.Image import open
+
+im = open('img.jpeg')
+im.save(fp='new_image.jpg')  # A filename (string), pathlib.Path object or a file object|保存图像路径.
 ```
 
 ## 10.2.ImageOps

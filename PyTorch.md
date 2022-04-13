@@ -125,7 +125,15 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.4.5.2.parameters()
+#### 1.4.5.2.load_state_dict()
+
+加载模块的权重.
+
+```python
+model.load_state_dict(state_dict)  # dict|参数字典.
+```
+
+#### 1.4.5.3.parameters()
 
 返回模块参数迭代器.
 
@@ -133,7 +141,7 @@ model.eval()
 model.parameters()
 ```
 
-#### 1.4.5.3.train()
+#### 1.4.5.4.train()
 
 设置模块为训练模式.
 
@@ -226,7 +234,19 @@ tensor = Tensor(data=[1, 2])  # array-like|输入的数据.
 tensor.backward()
 ```
 
-### 1.8.2.device
+### 1.8.2.clip()
+
+逐元素裁切张量.|`torch.Tensor`
+
+```python
+from torch import Tensor
+
+tensor = Tensor(data=[0, 1, 2, 3, 4, 5, 6])
+tensor = tensor.clip(min=1,  # int or float|None|最小值.
+                     max=5)  # int or float|None|最大值.
+```
+
+### 1.8.3.device
 
 张量的存储设备.|`torch.device`
 
@@ -234,7 +254,7 @@ tensor.backward()
 tensor.device
 ```
 
-### 1.8.3.dtype
+### 1.8.4.dtype
 
 张量的数据类型.|`torch.dtype`
 
@@ -242,7 +262,7 @@ tensor.device
 tensor.dtype
 ```
 
-### 1.8.4.shape
+### 1.8.5.shape
 
 张量的形状.|`torch.Size`
 
@@ -250,7 +270,7 @@ tensor.dtype
 tensor.shape
 ```
 
-### 1.8.5.to()
+### 1.8.6.to()
 
 执行张量的设备转换.|`torch.Tensor`
 
@@ -263,6 +283,17 @@ if cuda.is_available():
     tensor = tensor.to(device='cuda')  # {'cpu', 'cuda', 'xpu', 'mkldnn', 'opengl',
                                        #  'opencl', 'ideep', 'hip', 've', 'ort', 'mlc',
                                        #  'xla', 'lazy', 'vulkan', 'meta', 'hpu'}|转换到的目标设备.
+```
+
+### 1.8.7.unsqueeze()
+
+增加张量的维度.|`torch.Tensor`
+
+```python
+from torch import Tensor
+
+tensor = Tensor(data=[1, 2, 3])
+tensor = tensor.unsqueeze(dim=1)  # int|添加新维度的位置.
 ```
 
 ## 1.9.utils
@@ -354,7 +385,19 @@ tensor = read_image(path='img.jpeg')  # str|图像的路径.
 | ---- | ------------------------- | ---- |
 | -    | Torchvision的数据转换API. | -    |
 
-### 2.3.1.ToTensor()
+### 2.3.1.ToPILImage()
+
+将张量或numpy.ndarray转换为PIL Image.|`PIL.Image.Image`
+
+```python
+from torch import Tensor
+from torchvision.transforms import ToPILImage
+
+tensor = Tensor(data=[[1, 2], [3, 4]])
+image = ToPILImage()(pic=tensor)  # Tensor or numpy.ndarray|要转换的张量.
+```
+
+### 2.3.2.ToTensor()
 
 将PIL Image或numpy.ndarray转换为张量.|`torch.Tensor`
 
@@ -363,5 +406,5 @@ import numpy as np
 from torchvision.transforms import ToTensor
 
 arr = np.asarray([[1, 2, 3]])
-tensor = ToTensor()(pic=arr)  # PIL Image or numpy.ndarray|转换成张量的图像.
+tensor = ToTensor()(pic=arr)  # PIL Image or numpy.ndarray|要转换的图像.
 ```
