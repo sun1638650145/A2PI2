@@ -283,7 +283,32 @@ from torch.utils.data import DataLoader
 
 arr = np.asarray([[1], [2], [3], [4]])
 dataloader = DataLoader(dataset=arr,  # array-like|要加载的数据集.
-                        batch_size=2)  # int(可选)|1|批次大小.
+                        batch_size=2,  # int(可选)|1|批次大小.
+                        shuffle=False)  # bool(可选)|False|是否打乱数据.
+```
+
+#### 1.9.1.2.Dataset()
+
+自定义一个数据集.
+
+```python
+from torch.utils.data import Dataset
+
+class MyDataset(Dataset):
+    def __init__(self,
+                 image_dir,  # 图片文件夹的路径.
+                 annotations_file,  # 标签文件的位置.
+                 transform=None,  # 对数据集进行预处理转换.
+                 target_transform=None):  # 对标签进行预处理转换.
+        super(MyDataset, self).__init__()
+        # 初始化代码.
+
+    def __len__(self):
+        # 数据集的大小.
+
+    def __getitem__(self, index):
+        # 给定索引加载一个数据和标签.
+        return feature, label
 ```
 
 # 2.torchvision
@@ -311,13 +336,25 @@ training_data = MNIST(root='./data',  # str|数据集保存的目录.
                       download=False)  # bool(可选)|False|是否从网络下载数据集.
 ```
 
-## 2.2.transforms
+## 2.2.io
+
+###  2.2.1.read_image()
+
+将JPEG或PNG图像读入为张量.|`torch.Tensor`
+
+```python
+from torchvision.io import read_image
+
+tensor = read_image(path='img.jpeg')  # str|图像的路径.
+```
+
+## 2.3.transforms
 
 | 版本 | 描述                      | 注意 |
 | ---- | ------------------------- | ---- |
 | -    | Torchvision的数据转换API. | -    |
 
-### 2.2.1.ToTensor()
+### 2.3.1.ToTensor()
 
 将PIL Image或numpy.ndarray转换为张量.|`torch.Tensor`
 
