@@ -728,6 +728,11 @@ nvidia-smi
    
    set(CMAKE_CXX_STANDARD 17)  # 须使用C++17以上.
    
+   # 配置Foundation, Metal和QUARTZ_CORE框架.
+   find_library(APPLE_FWK_FOUNDATION Foundation REQUIRED)
+   find_library(APPLE_FWK_METAL Metal REQUIRED)
+   find_library(APPLE_FWK_QUARTZ_CORE QuartzCore REQUIRED)
+   
    add_executable(exec main.cpp)
    
    # 添加metal-cpp头文件(在Xcode中是 ${PROJECT_DIR}/metal-cpp).
@@ -738,5 +743,5 @@ nvidia-smi
                               ${APPLE_FWK_METAL}  # Metal相关.
                               ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
    ```
-
+   
    
