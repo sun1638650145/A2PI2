@@ -1,6 +1,8 @@
-# <center>A²PI²-CUDA version2.2</center>
+# <center>A²PI²-GPU version2.2</center>
 
+* 使用GPU开发并行程序的教程.
 * 包含CUDA生态的软件包和使用教程.
+* 包含Metal的使用教程.
 
 # 1.CUDA
 
@@ -686,3 +688,55 @@ nvcc -arch=sm_70 -lcublas -o out main.cu -run
 nvidia-smi
 ```
 
+# 4.Metal
+
+| 版本 |               描述               |                             注意                             |
+| :--: | :------------------------------: | :----------------------------------------------------------: |
+| 2.4  | 渲染3D图形, 使用GPU进行并行计算. | 此文档使用[Metal-cpp](https://developer.apple.com/cn/metal/cpp/), 而非常见的`Objective-C`. |
+
+## 4.1.查询设备信息
+
+1. main.cpp代码
+
+   ```c++
+   // 使用metal-cpp而不是Objective-C.
+   #define MTL_PRIVATE_IMPLEMENTATION  // Metal相关
+   #define NS_PRIVATE_IMPLEMENTATION   // NS::String相关
+   
+   #include <iostream>
+   #include "Metal/Metal.hpp"
+   
+   int main() {
+       // 获取默认的Metal设备.
+       MTL::Device* device = MTL::CreateSystemDefaultDevice();
+   
+       std::cout << "GPU名称: " << device->name()->utf8String() << std::endl;
+       std::cout << "注册ID: " << device->registryID() << std::endl;
+       std::cout << "集成/独立GPU(0/1): " << device->lowPower() << std::endl;
+       std::cout << "eGPU: " << device->removable() << std::endl;
+       std::cout << "是否支持UM内存: " << device->hasUnifiedMemory() << std::endl;
+   
+       return 0;
+   }
+   ```
+
+2.  使用CMakeLists.txt编译
+
+   ```cmake
+   cmake_minimum_required(VERSION 3.22)
+   project(Metal)
+   
+   set(CMAKE_CXX_STANDARD 17)  # 须使用C++17以上.
+   
+   add_executable(exec main.cpp)
+   
+   # 添加metal-cpp头文件(在Xcode中是 ${PROJECT_DIR}/metal-cpp).
+   target_include_directories(exec SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/metal-cpp)
+   
+   # 链接Foundation, Metal和QUARTZ_CORE框架.
+   target_link_libraries(exec ${APPLE_FWK_FOUNDATION}  # NS相关.
+                              ${APPLE_FWK_METAL}  # Metal相关.
+                              ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
+   ```
+
+   

@@ -14,7 +14,7 @@
 
 * <b>TensorFlow.md</b> TensorFlow 生态的中文API
 
-* <b>CUDA.md</b> 关于CUDA使用的中文API
+* <b>GPU.md</b> GPU编程的中文API
 
 * <b>PyTorch.md</b> PyTorch 生态的中文API
 
@@ -54,3 +54,5 @@
 > `20220322`新增关于`CUDA`的内容, 同时获得了英伟达的`Fundamentals of Accelerated Computing with CUDA C/C++`学习证书.
 
 > `20220408`新增关于`PyTorch`的内容.
+
+> `20220415`新增关于`Metal`的内容.
