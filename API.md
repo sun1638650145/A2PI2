@@ -3626,7 +3626,7 @@ void multiply_with_scalar(const double &scalar, pybind11::array &array) {
 
     cudaMemcpy(gpu_array, array.data(), size, cudaMemcpyHostToDevice);  // 将CPU上的数据拷贝到GPU上.
     run_kernel(scalar, gpu_array, length);  // 调用核函数.
-    cudaMemcpy(array.mutable_data(), gpu_array, size, cudaMemcpyDeviceToHost);  // 将GPU的计算后数据拷贝回CPU.
+    cudaMemcpy(array.mutable_data(), gpu_array, size, cudaMemcpyDeviceToHost);  // 将GPU上计算后的数据拷贝回CPU.
 
     cudaFree(gpu_array);
 }
@@ -3655,6 +3655,109 @@ import example
 arr = np.asarray([1., 2., 3., 4., 5.])
 example.multiply_with_scalar(3, arr)
 print(arr)
+```
+
+### 11.7.2.调用cuBLAS
+
+1. example.cu代码
+
+```c++
+#include "cublas_v2.h"
+#include "pybind11/pybind11.h"
+#include "pybind11/numpy.h"
+
+void kernel(pybind11::array_t<float> &a,
+            pybind11::array_t<float> &b,
+            pybind11::array_t<float> &c) {
+    cublasStatus_t status; // 创建cuBLAS状态信息.
+    cublasHandle_t handle; // 创建cuBLAS句柄.
+    status = cublasCreate(&handle);
+    if (status != CUBLAS_STATUS_SUCCESS) {
+        throw std::runtime_error("cuBLAS句柄创建失败.");
+    }
+
+    float *gpu_a, *gpu_b, *gpu_c;
+    int m = (int)a.request().shape[0];
+    int k = (int)a.request().shape[1];
+    int n = (int)b.request().shape[1];
+    size_t a_size = m * k * sizeof(float);
+    size_t b_size = k * n * sizeof(float);
+    size_t c_size = m * n * sizeof(float);
+
+    // 分配显存.
+    cudaMalloc(&gpu_a, a_size);
+    cudaMalloc(&gpu_b, b_size);
+    cudaMalloc(&gpu_c, c_size);
+
+    // 将CPU上数据拷贝到GPU上.
+    cudaMemcpy(gpu_a, a.data(), a_size, cudaMemcpyHostToDevice);
+    cudaMemcpy(gpu_b, b.data(), b_size, cudaMemcpyHostToDevice);
+
+    // 使用cuBLAS的矩阵乘法函数.
+    float alpha = 1.0, beta = 0.0;
+    cublasSgemm(handle,
+                CUBLAS_OP_N, CUBLAS_OP_N,
+                n, m,
+                k,
+                &alpha,
+                gpu_b, n,
+                gpu_a, k,
+                &beta,
+                gpu_c, n);
+
+    // 将GPU上计算后的数据拷贝回CPU.
+    cudaMemcpy(c.mutable_data(), gpu_c, c_size, cudaMemcpyDeviceToHost);
+
+    // 释放显存.
+    cudaFree(gpu_a);
+    cudaFree(gpu_b);
+    cudaFree(gpu_c);
+
+    // 销毁cuBLAS句柄.
+    cublasDestroy(handle);
+}
+
+pybind11::array matmul_on_gpu(pybind11::array_t<float> &a,
+                              pybind11::array_t<float> &b) {
+    // 初始化全零矩阵.
+    auto c = pybind11::array_t<float>(pybind11::array::ShapeContainer({a.request().shape[0],
+                                                                       b.request().shape[1]}));
+
+    // 调用计算函数.
+    kernel(a, b, c);
+
+    return c;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.def("matmul_on_gpu", &matmul_on_gpu,
+          pybind11::arg("a"), pybind11::arg("b"));
+}
+```
+
+2. 使用nvcc编译, 并产生对应的动态链接库.
+
+```shell
+nvcc -O3 -lcublas -shared -Xcompiler -fPIC -std=c++11 \
+ `python3 -m pybind11 --includes` \
+ example.cu -o example`python3-config --extension-suffix`
+```
+
+3. test.py进行测试.
+
+```python
+import numpy as np
+
+import example
+
+mat_a = np.asarray([[1, 2, 3],
+                    [4, 5, 6]], dtype=np.float32)
+mat_b = np.asarray([[1, 2, 3, 4],
+                    [5, 6, 7, 8],
+                    [9, 10, 11, 12]], dtype=np.float32)
+
+mat_c = example.matmul_on_gpu(mat_a, mat_b)
+print(mat_c)
 ```
 
 ## 11.8.其他

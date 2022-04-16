@@ -541,7 +541,7 @@ void matrixMultiply(float *mat_a, size_t a,
     status = cublasCreate(&handle);
     if (status != CUBLAS_STATUS_SUCCESS) {
         if (status == CUBLAS_STATUS_NOT_INITIALIZED) {
-            std::cout << "cuBLAS句柄创建失败" << std::endl;
+            throw std::runtime_error("cuBLAS句柄创建失败.");
         }
     }
 
@@ -564,7 +564,7 @@ void matrixMultiply(float *mat_a, size_t a,
      *      8/9. 矩阵(显存)和lda.
      *      10/11. 矩阵(显存)和ldb.
      *      12. beta的指针.
-     *      13/14. M(显存)和ldm.
+     *      13/14. M(显存)和ldc.
      *
      * lda, ldb: CUBLAS_OP_N 行.
      *           CUBLAS_OP_T 原始矩阵的列(不转置).
@@ -743,4 +743,3 @@ nvidia-smi
                               ${APPLE_FWK_METAL}  # Metal相关.
                               ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
    ```
-   
