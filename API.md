@@ -2948,7 +2948,7 @@ project(example LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
-# 设置O3级别优化
+# 设置O3级别优化.
 set(CMAKE_CXX_FLAGS "-O3")
 
 # 配置pybind11
@@ -3741,6 +3741,32 @@ PYBIND11_MODULE(example, m) {
 nvcc -O3 -lcublas -shared -Xcompiler -fPIC -std=c++11 \
  `python3 -m pybind11 --includes` \
  example.cu -o example`python3-config --extension-suffix`
+```
+
+或者, 使用CMakeLists.txt编译.
+
+```cmake
+cmake_minimum_required(VERSION 3.17)
+project(example LANGUAGES CXX CUDA)
+
+set(CMAKE_CUDA_STANDARD 17)
+
+# 设置O3级别优化.
+set(CMAKE_CUDA_FLAGS "-O3")
+
+# 配置pybind11.
+find_package(pybind11 REQUIRED)
+
+# 设置编译动态库路径.
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
+
+pybind11_add_module(example SHARED example.cu)
+
+# 链接cuBLAS库.
+target_link_libraries(example PRIVATE -lcublas)
+
+# 可分离汇编.
+set_target_properties(example PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 ```
 
 3. test.py进行测试.
