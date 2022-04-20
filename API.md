@@ -2070,7 +2070,7 @@ x = np.random.permutation(arr)  # array_like|输入的数据.
 
 ### 8.38.5.rand()
 
-生成随机数组.|`numpy.ndarray`
+生成均匀分布随机数组.|`numpy.ndarray`
 
 ```python
 import numpy as np
