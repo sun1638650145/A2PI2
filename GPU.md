@@ -743,3 +743,176 @@ nvidia-smi
                               ${APPLE_FWK_METAL}  # Metal相关.
                               ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
    ```
+
+## 4.2.实现在GPU上简单的向量加法
+
+1. main.cpp代码
+
+   ```c++
+   #define NS_PRIVATE_IMPLEMENTATION  // NS::String相关
+   #define MTL_PRIVATE_IMPLEMENTATION
+   
+   #include <iostream>
+   #include <tuple>
+   
+   #include "Metal/Metal.hpp"
+   
+   #define N 20
+   
+   // 返回metal管道和命令队列, 初始化GPU.
+   std::tuple<MTL::ComputePipelineState *, MTL::CommandQueue *> initWithDevice(MTL::Device *device) {
+       NS::Error *error;
+   
+       // 加载metal库文件.
+       MTL::Library *library = device->newDefaultLibrary(); // 先尝试加载默认metal库文件.
+       if (!library) {
+           // 再尝试加载当前目录下的metal库文件.
+           NS::String *filePath = NS::String::string("./add.metallib", NS::UTF8StringEncoding);
+           library = device->newLibrary(filePath, &error);
+   
+           if (!library) {
+               std::cout << "加载metal库失败." << std::endl;
+               std::exit(-1);
+           }
+       }
+   
+       // 加载metal函数.
+       NS::String *functionName = NS::String::string("add", NS::UTF8StringEncoding);
+       MTL::Function *function = library->newFunction(functionName);
+       if (!function) {
+           std::cout << "没有找到" << functionName->utf8String() << "函数." << std::endl;
+           std::exit(-1);
+       }
+   
+       // 创建metal管道.
+       MTL::ComputePipelineState *mFunctionPSO = device->newComputePipelineState(function, &error);
+       // 创建命令队列.
+       MTL::CommandQueue *mCommandQueue = device->newCommandQueue();
+   
+       return {mFunctionPSO, mCommandQueue};
+   }
+   
+   // 初始化向量.
+   void initializationVector(MTL::Buffer *buffer, int n) {
+       auto *dataPtr = (int *)buffer->contents();
+   
+       for (int i = 0; i < n; i ++) {
+           dataPtr[i] = i;
+       }
+   }
+   
+   // 配置命令.
+   void configureCommand(MTL::ComputeCommandEncoder *computeCommandEncoder, MTL::ComputePipelineState *mFunctionPSO,
+                         MTL::Buffer *a, MTL::Buffer *b, MTL::Buffer *c, int n) {
+       // 添加metal管道.
+       computeCommandEncoder->setComputePipelineState(mFunctionPSO);
+       // 添加数据缓冲区.
+       computeCommandEncoder->setBuffer(a, 0, 0);
+       computeCommandEncoder->setBuffer(b, 0, 1);
+       computeCommandEncoder->setBuffer(c, 0, 2);
+   
+       // 配置线程组和线程. CUDA三层结构是thread, block, grid. Metal三层结构是thread, group, grid.
+       // 配置每个线程组的线程数.
+       NS::UInteger threadGroupSize = mFunctionPSO->maxTotalThreadsPerThreadgroup(); // 线程组支持最大线程数.
+       if (n > threadGroupSize) {
+           n = (int)threadGroupSize;
+       }
+       MTL::Size threadsPerThreadgroup = MTL::Size(n, 1, 1);
+       // 配置网格使用的线程组数.
+       MTL::Size threadgroupsPerGrid = MTL::Size(1, 1, 1);
+   
+       computeCommandEncoder->dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup); // 网格中有1个线程组, 这个线程组中有n个线程.
+   }
+   
+   // 执行命令.
+   void executeCommand(MTL::CommandQueue* mCommandQueue, MTL::ComputePipelineState *mFunctionPSO,
+                       MTL::Buffer *a, MTL::Buffer *b, MTL::Buffer *c, int n) {
+       // 创建命令缓冲区和命令编码器.
+       MTL::CommandBuffer *commandBuffer = mCommandQueue->commandBuffer();
+       MTL::ComputeCommandEncoder *computeCommandEncoder = commandBuffer->computeCommandEncoder();
+       // 配置命令.
+       configureCommand(computeCommandEncoder, mFunctionPSO, a, b, c, n);
+       // 结束配置命令.
+       computeCommandEncoder->endEncoding();
+       // 提交命令.
+       commandBuffer->commit();
+       // 同步数据.
+       commandBuffer->waitUntilCompleted();
+   }
+   
+   // 打印向量.
+   void printVector(MTL::Buffer *buffer, int n) {
+       auto *result = (int *)buffer->contents();
+   
+       for (int i = 0; i < n; i ++) {
+           std::cout << result[i] << " ";
+       }
+   }
+   
+   int main() {
+       size_t size = N * sizeof(int);
+   
+       // 查找并初始化GPU.
+       MTL::Device *device = MTL::CreateSystemDefaultDevice();
+       auto mFunctionPSOAndCommandQueue = initWithDevice(device);
+       auto *mFunctionPSO = std::get<0>(mFunctionPSOAndCommandQueue);
+       auto *mCommandQueue = std::get<1>(mFunctionPSOAndCommandQueue);
+   
+       // 创建数据缓冲区并初始化数据.
+       // [设置为CPU和GPU都可以访问, 等同于CUDA的UM内存概念.](https://developer.apple.com/documentation/metal/mtlstoragemode?language=objc).
+       MTL::Buffer *a = device->newBuffer(size, MTL::ResourceStorageModeShared);
+       MTL::Buffer *b = device->newBuffer(size, MTL::ResourceStorageModeShared);
+       MTL::Buffer *c = device->newBuffer(size, MTL::ResourceStorageModeShared);
+       initializationVector(a, N);
+       initializationVector(b, N);
+   
+       executeCommand(mCommandQueue, mFunctionPSO, a, b, c, N);
+   
+       printVector(c, N);
+   
+       return 0;
+   }
+   ```
+
+2. add.metal代码
+
+   ```c++
+   #include <metal_stdlib>
+   
+   // 计算向量加法.
+   kernel void add(device const int *vectorA,
+                   device const int *vectorB,
+                   device int *result,
+                   metal::uint index [[thread_position_in_threadgroup]]) {
+       result[index] = vectorA[index] + vectorB[index];
+   }
+   ```
+
+3. 使用CMakeLists.txt编译
+
+   ```cmake
+   cmake_minimum_required(VERSION 3.22)
+   project(Metal)
+   
+   set(CMAKE_CXX_STANDARD 17)  # 须使用C++17以上.
+   
+   # 配置Foundation, Metal和QuartzCore框架.
+   find_library(APPLE_FWK_FOUNDATION Foundation REQUIRED)
+   find_library(APPLE_FWK_METAL Metal REQUIRED)
+   find_library(APPLE_FWK_QUARTZ_CORE QuartzCore REQUIRED)
+   
+   # 生成metal库文件.
+   execute_process(COMMAND xcrun -sdk macosx metal -c ${PROJECT_SOURCE_DIR}/add.metal -o add.air)
+   execute_process(COMMAND xcrun -sdk macosx metal add.air -o default.metallib)
+   
+   add_executable(exec main.cpp)
+   
+   # 添加metal-cpp头文件(在Xcode中是 ${PROJECT_DIR}/metal-cpp).
+   target_include_directories(exec SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/metal-cpp)
+   
+   # 链接Foundation, Metal和QuartzCore框架.
+   target_link_libraries(exec ${APPLE_FWK_FOUNDATION}  # NS相关.
+                              ${APPLE_FWK_METAL}  # Metal相关.
+                              ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
+   ```
+
