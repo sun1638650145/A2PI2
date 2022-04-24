@@ -3191,12 +3191,12 @@ $$
   则集成的分歧是
 
 
-  $$
+$$
   \begin{aligned}
   	\overline{A}(h|\pmb{x})&=\sum\nolimits^T_{i=1}w_iA(h_i|\pmb{x})\\
   	&=\sum\nolimits^T_{i=1}w_i\big(h_i(\pmb{x})-H(\pmb{x})\big)^2
   \end{aligned}
-  $$
+$$
 
 * 分歧项表征了个体学习器在样本$\pmb{x}$上的不一致性，即在一定程度上反映了个体学习器的多样性.
 
@@ -3376,3 +3376,108 @@ $$
   * 使用单一学习器时通常需使用交叉验证法等方式来确定参数值，这事实上已使用了不同参数训练出多个学习器，只不过最终仅选择其中一个学习器进行使用，而集成学习则相当于把这些学习器都利用起来；集成学习技术的实际计算开销并不比使用单一学习器大很多.
 
 * 不同的多样性增强机制可同时使用.
+
+# 第九章 聚类
+
+## 9.1.聚类任务
+
+* 在无监督学习(unsupervised learning)中, 训练样本的标记信息是未知的, 目标是通过对无标记训练样本的学习来揭示数据的内在性质及规律, 为进一步的数据分析提供基础.
+* 常见的无监督学习任务有聚类(clustering)、密度估计(density estimation)和异常检测(anomaly detection)等.
+* 聚类是无监督学习任务中研究最多、应用最广的.
+* 聚类试图将数据集中的样本划分为若干个通常是不相交的子集, 每个子集称为一个簇(cluster).
+    * 对于聚类算法而言, 样本簇亦称类.
+    * 通过这样的划分, 每个簇可能对应于一些潜在的概念(类别).
+    * 这些概念对聚类算法而言事先是未知的, 聚类过程仅能自动形成簇结构, 簇所对应的概念语义需由使用者来把握和命名.
+* 形式化地说, 假定样本集$D=\{\pmb{x}_1, \pmb{x}_2,...,\pmb{x}_m\}$包含$m$个无标记样本, 每个样本$\pmb{x}_i=(x_{i1};x_{i2};...;x_{in})$是一个$n$维特征向量, 则聚类算法将样本集$D$划分为$k$个不相交的簇$\{C_l|l=1,2,...,k\}$, 其中$C_{l'}\bigcap_{l'\ne l}C_l=\varnothing$且$D=\bigcup^k_{l=1}C_l$.
+* 相应地, 我们用$\lambda_j\in\{1,2,...,k\}$表示样本$\pmb{x}_j$的簇标记(cluster label), 即$\pmb{x}_j\in C_{\lambda_j}$; 聚类的结果可用包含$m$个元素的簇标记向量$\pmb{\lambda}=(\lambda_1;\lambda_2;...;\lambda_m)$表示.
+* 聚类既能作为一个单独过程, 用于找寻数据内在的分布结构, 也可作为分类等其他学习任务的前驱过程.
+* 基于不同的学习策略, 可以设计多种类型的聚类算法.
+* 聚类算法的两个基本问题----性能度量和距离计算.
+
+## 9.2.性能度量
+
+* 聚类性能度量亦称聚类有效性指标(validity index); 与监督学习中的性能度量作用类似.
+
+* 对聚类结果, 我们需通过某种性能度量来评估其好坏.
+
+* 明确最终将要使用的性能度量, 则可直接将其作为聚类过程的优化目标.
+
+* 同一簇的样本尽可能彼此相似, 不同簇的样本尽可能不同. 聚类结果的簇内相似度(intra-cluster similarity)高且簇间相似度(inter-cluster similarity)低.
+
+* 聚类性能度量大致有两类. 
+
+    1. 将聚类结果与某个参考模型(reference model)进行比较, 称为外部指标(external index).
+        * 可以将领域专家给出的划分结果作为参考模型.
+    2. 直接考察聚类结果而不用任何参考模型, 称为内部指标(internal index).
+
+* 对数据集$D=\{\pmb{x}_1,\pmb{x}_2,...,\pmb{x}_m\}$, 假定通过聚类给出的簇划分为$C=\{C_1,C_2,...,C_k\}$, 参考模型给出的簇划分为$C^*=\{C^*_1, C^*_2, ..., C^*_s\}$.
+
+    * 通常$k \neq s$.
+
+    * 令$\pmb\lambda$与$\pmb\lambda^*$分别表示与$C$和$C^*$对应的簇标记向量.
+
+    * 将样本两两配对考虑, 定义
+        $$
+        \begin{equation}
+        	\begin{aligned}
+            a&=|SS|,\space\space SS=\{(\pmb{x}_i, \pmb{x}_j)|\lambda_i=\lambda_j, \lambda_i^*=\lambda_j^*,i<j\}, \\
+            b&=|SD|,\space\space SD=\{(\pmb{x}_i, \pmb{x}_j)|\lambda_i=\lambda_j, \lambda_i^*\neq\lambda_j^*,i<j\}, \\
+            c&=|DS|,\space\space DS=\{(\pmb{x}_i, \pmb{x}_j)|\lambda_i\neq\lambda_j, \lambda_i^*=\lambda_j^*,i<j\}, \\
+            d&=|DD|,\space\space DD=\{(\pmb{x}_i, \pmb{x}_j)|\lambda_i\neq\lambda_j, \lambda_i^*\neq\lambda_j^*,i<j\}, \\
+        	\end{aligned}
+        \end{equation}
+        $$
+        其中集合$SS$包含了在$C$中隶属于相同簇且在$C^*$中也隶属于相同簇的样本对, 集合$SD$包含了在$C$中隶属于相同簇但在$C^*$中隶属于不同簇的样本对, 由于每个样本对$(\pmb{x}_i, \pmb{x}_j)(i<j)$仅能出现在一个集合中, 因此有$a+b+c+d=m(m-1)/2$成立.
+
+* 基于上式可以导出常用的聚类性能度量外部指标: 
+
+    * Jaccard系数(Jaccard Coefficient, 简称$\text{JC}$)
+        $$
+        JC=\frac{a}{a+b+c}
+        $$
+
+    * 
+
+    * FM指数(Folkeds and Mallows Index, 简称$\text{FMI}$)
+        $$
+        FMI=\sqrt{\frac{a}{a+b}·\frac{a}{a+c}}
+        $$
+        
+
+    * Rand指数(Rand Index, 简称$\text{RI}$)
+        $$
+        RI=\frac{2(a+d)}{m(m-1)}
+        $$
+        上述性能度量的结果值均在$[0, 1]$区间, 值越大越好.
+
+* 考虑聚类结果的簇划分为$C=\{C_1, C_2, ..., C_k\}$, 定义
+    $$
+    \begin{equation}
+    	\begin{aligned}
+    		\text{avg}(C)&=\frac{2}{|C|(|C|-1)}\sum_\nolimits{{1\leq i<j\leq|C|}}\text{dist}(\pmb{x}_i, \pmb{x}_j), \\
+    		\text{diam}(C)&=\max_\nolimits{{1\leq i<j\leq|C|}}\text{dist}(\pmb{x}_i, \pmb{x}_j), \\
+    		\text d_\min(C_i, C_j)&=\min_\nolimits{\pmb{x}_i\in C_i, \pmb{x}_j\in C_j}\text{dist}(\pmb{x}_i, \pmb{x}_j), \\
+    		\text d_{\text{cen}}(C_i, C_j)&=\text{dist}(\pmb{\mu}_i, \pmb{\mu}_j),
+    	\end{aligned}
+    \end{equation}
+    $$
+    $\text{dist}(·, ·)$用于计算两个样本之间的距离, 距离越大则样本的相似度越低;  $\pmb{\mu}$代表簇$C$的中心点$\pmb{\mu}=\frac{1}{|C|}\sum_\nolimits{1\leq i\leq|C|}\pmb{x}_i$. 
+
+    * $\text{avg}(C)$对应于簇$C$内样本间的平均距离.
+    * $\text{diam}(C)$对应于簇$C$内样本间的最远距离.
+    * $d_\min(C_i, C_j)$对应于簇$C_i$与簇$C_j$最近样本间的距离.
+    * $d_\text{cen}(C_i, C_j)$对应于簇$C_i$与簇$C_j$中心点间的距离.
+
+* 基于上式可导出常用的聚类性能度量的内部指标:
+
+    * DB指数(Davies-Bouldin Index, 简称$\text{DBI}$)
+        $$
+        DBI=\frac{1}{k}\sum^k_{i=1}\max_{j\neq i}\Bigg(\frac{\text{avg}(C_i)+\text{avg}(C_j)}{d_{\text{cen}}(C_i, C_j)}\Bigg)
+        $$
+
+    * Dunn指数(Dunn Index, 简称$\text{DI}$)
+        $$
+        DI=\min_{1\leq i\leq k}\Bigg\{\min_{j\neq i}\Bigg(\frac{d_\min(C_i, C_j)}{\max_\nolimits{1\leq l \leq k}\text{diam}(C_l)}\Bigg)\Bigg\}
+        $$
+        显然, DBI的值越小越好, DI的值越大越好.
+
