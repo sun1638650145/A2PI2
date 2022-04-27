@@ -58,13 +58,37 @@ from torch import load
 model = load(f='./model.pt')  # str or a file-like|文件路径.
 ```
 
-## 1.5.nn
+## 1.5.manual_seed()
+
+设置随机种子.
+
+```python
+import torch
+
+torch.manual_seed(seed=2022)  # int|随机种子.
+```
+
+## 1.6.matmul()
+
+两个张量的矩阵乘积.|`torch.Tensor`
+
+```python
+import torch
+
+tensor0 = torch.Tensor([[1, 2, 3]])
+tensor1 = torch.Tensor([[1], [2], [3]])
+
+x = torch.matmul(input=tensor0,  # torch.Tensor|第一个张量.
+                 other=tensor1)  # torch.Tensor|第二个张量.
+```
+
+## 1.7.nn
 
 | 版本 | 描述                       | 注意 |
 | ---- | -------------------------- | ---- |
 | -    | Torch的计算图的基本构建块. | -    |
 
-### 1.5.1.CrossEntropyLoss()
+### 1.7.1.CrossEntropyLoss()
 
 实例化交叉熵损失函数.
 
@@ -74,7 +98,7 @@ from torch.nn import CrossEntropyLoss
 loss = CrossEntropyLoss()
 ```
 
-### 1.5.2.Dropout()
+### 1.7.2.Dropout()
 
 实例化Dropout层.
 
@@ -84,7 +108,7 @@ from torch import nn
 layer = nn.Dropout(p=0.5)  # float|0.5|随机丢弃比例.
 ```
 
-### 1.5.3.Flatten()
+### 1.7.3.Flatten()
 
 实例化展平层.
 
@@ -94,7 +118,23 @@ from torch import nn
 layer = nn.Flatten()
 ```
 
-### 1.5.4.Linear()
+### 1.7.4.functional
+
+#### 1.7.4.1.binary_cross_entropy_with_logits()
+
+计算带有sigmoid的二分类交叉熵的值.|`torch.Tensor`
+
+```python
+import torch
+from torch.nn.functional import binary_cross_entropy_with_logits
+
+y = torch.Tensor([1, 1, 1, 1, 1])
+y_pred = torch.Tensor([1, 1, 1, 1, 0])
+loss = binary_cross_entropy_with_logits(input=y_pred,  # torch.Tensor|预测值.
+                                        target=y)  # torch.Tensor|真实值.
+```
+
+### 1.7.5.Linear()
 
 实例化全连接层.
 
@@ -105,7 +145,7 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.5.5.Module()
+### 1.7.6.Module()
 
 实例化`Module`.
 
@@ -129,7 +169,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.5.5.1.eval()
+#### 1.7.6.1.eval()
 
 设置模块为评估模式.
 
@@ -137,7 +177,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.5.5.2.load_state_dict()
+#### 1.7.6.2.load_state_dict()
 
 加载模块的权重.
 
@@ -145,7 +185,7 @@ model.eval()
 model.load_state_dict(state_dict)  # dict|参数字典.
 ```
 
-#### 1.5.5.3.parameters()
+#### 1.7.6.3.parameters()
 
 返回模块参数迭代器.
 
@@ -153,7 +193,7 @@ model.load_state_dict(state_dict)  # dict|参数字典.
 model.parameters()
 ```
 
-#### 1.5.5.4.train()
+#### 1.7.6.4.train()
 
 设置模块为训练模式.
 
@@ -161,7 +201,7 @@ model.parameters()
 model.train()
 ```
 
-### 1.5.6.ReLU()
+### 1.7.7.ReLU()
 
 实例化ReLU层.
 
@@ -171,7 +211,7 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-### 1.5.7.Sequential()
+### 1.7.8.Sequential()
 
 实例化`Sequential`.
 
@@ -185,7 +225,7 @@ model = nn.Sequential(
 )
 ```
 
-#### 1.5.7.1.add_module()
+#### 1.7.8.1.add_module()
 
 添加一个模块到`Sequential`结尾, 使用给定名称.
 
@@ -194,7 +234,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
                  module=nn.Flatten())  # nn.Module|模块.
 ```
 
-#### 1.5.7.2.append()
+#### 1.7.8.2.append()
 
 添加一个模块到`Sequential`结尾.
 
@@ -202,7 +242,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
 model.append(module=nn.Flatten())  # nn.Module|模块.
 ```
 
-### 1.5.8.Softmax()
+### 1.7.9.Softmax()
 
 实例化Softmax层.
 
@@ -212,7 +252,7 @@ from torch import nn
 layer = nn.Softmax()
 ```
 
-## 1.6.no_grad()
+## 1.8.no_grad()
 
 禁用梯度计算的上下文管理器(可以减少内存消耗).
 
@@ -223,13 +263,23 @@ with no_grad():
     # 代码.
 ```
 
-## 1.7.optim
+## 1.9.ones()
+
+生成全一张量.|`torch.Tensor`
+
+```python
+import torch
+
+tensor = torch.ones(size=[2, 3])  # sequence of ints|张量的形状.
+```
+
+## 1.10.optim
 
 | 版本 | 描述              | 注意                                |
 | ---- | ----------------- | ----------------------------------- |
 | -    | Torch的优化器API. | 1.优化器相同的类方法都写在`Adam`里. |
 
-### 1.7.1.Adam()
+### 1.10.1.Adam()
 
 实例化`Adam`优化器.
 
@@ -240,7 +290,7 @@ optimizer = Adam(params,  # 需要优化的参数.
                  lr=1e-3)  # float(可选)|1e-3|学习率.
 ```
 
-#### 1.7.1.1.step()
+#### 1.10.1.1.step()
 
 更新梯度.
 
@@ -248,7 +298,7 @@ optimizer = Adam(params,  # 需要优化的参数.
 optimizer.step()
 ```
 
-#### 1.7.1.2.zero_grad()
+#### 1.10.1.2.zero_grad()
 
 将梯度设置为零.
 
@@ -256,17 +306,27 @@ optimizer.step()
 optimizer.zero_grad()
 ```
 
-## 1.8.rand()
+## 1.11.rand()
 
 生成均匀分布随机张量.|`torch.Tensor`
 
 ```python
 from torch import rand
 
-tensor = rand(3, 4)  # int|张量的形状.
+tensor = rand(3, 4)  # sequence of ints|张量的形状.
 ```
 
-## 1.9.save()
+## 1.12.randn()
+
+生成正态分布随机张量.|`torch.Tensor`
+
+```python
+from torch import randn
+
+tensor = randn(3, 4)  # sequence of ints|张量的形状.
+```
+
+## 1.13.save()
 
 保存模型或模型参数.
 
@@ -279,7 +339,7 @@ save(obj=model,  # 要保存的模型.
      f='./model.pt')  # str or a file-like|文件路径.
 ```
 
-## 1.10.Tensor()
+## 1.14.Tensor()
 
 初始化一个`Tensor`.
 
@@ -289,7 +349,7 @@ from torch import Tensor
 tensor = Tensor(data=[1, 2])  # array-like|输入的数据.
 ```
 
-### 1.10.1.backward()
+### 1.14.1.backward()
 
 计算张量的梯度(反向传播).
 
@@ -297,7 +357,7 @@ tensor = Tensor(data=[1, 2])  # array-like|输入的数据.
 tensor.backward()
 ```
 
-### 1.10.2.clip()
+### 1.14.2.clip()
 
 逐元素裁切张量.|`torch.Tensor`
 
@@ -309,7 +369,15 @@ tensor = tensor.clip(min=1,  # int or float|None|最小值.
                      max=5)  # int or float|None|最大值.
 ```
 
-### 1.10.3.device
+### 1.14.3.detach()
+
+禁用张量的梯度.|`torch.Tensor`
+
+```python
+tensor = tensor.detach()
+```
+
+### 1.14.4.device
 
 张量的存储设备.|`torch.device`
 
@@ -317,7 +385,7 @@ tensor = tensor.clip(min=1,  # int or float|None|最小值.
 tensor.device
 ```
 
-### 1.10.4.dtype
+### 1.14.5.dtype
 
 张量的数据类型.|`torch.dtype`
 
@@ -325,7 +393,39 @@ tensor.device
 tensor.dtype
 ```
 
-### 1.10.5.shape
+### 1.14.6.grad
+
+张量的梯度.|`torch.Tensor`
+
+```python
+tensor.grad
+```
+
+### 1.14.7.grad_fn
+
+张量的梯度函数.|`class`
+
+```python
+tensor.grad_fn
+```
+
+### 1.14.8.requires_grad
+
+张量是否需要返回梯度.|`bool`
+
+```python
+tensor.requires_grad
+```
+
+### 1.14.9.requires_grad_()
+
+设置张量是否需要返回梯度.
+
+```python
+tensor.requires_grad_(requires_grad=True)  # bool|True|是否需要返回梯度.
+```
+
+### 1.14.10.shape
 
 张量的形状.|`torch.Size`
 
@@ -333,7 +433,7 @@ tensor.dtype
 tensor.shape
 ```
 
-### 1.10.6.to()
+### 1.14.11.to()
 
 执行张量的设备转换.|`torch.Tensor`
 
@@ -348,7 +448,7 @@ if cuda.is_available():
                                        #  'xla', 'lazy', 'vulkan', 'meta', 'hpu'}|转换到的目标设备.
 ```
 
-### 1.10.7.unsqueeze()
+### 1.14.12.unsqueeze()
 
 增加张量的维度.|`torch.Tensor`
 
@@ -359,15 +459,15 @@ tensor = Tensor(data=[1, 2, 3])
 tensor = tensor.unsqueeze(dim=1)  # int|添加新维度的位置.
 ```
 
-## 1.11.utils
+## 1.15.utils
 
-### 1.11.1.data
+### 1.15.1.data
 
 | 版本 | 描述                 | 注意 |
 | ---- | -------------------- | ---- |
 | -    | Torch的数据加载工具. | -    |
 
-#### 1.11.1.1.DataLoader()
+#### 1.15.1.1.DataLoader()
 
 实例化数据加载器.
 
@@ -381,7 +481,7 @@ dataloader = DataLoader(dataset=arr,  # array-like|要加载的数据集.
                         shuffle=False)  # bool(可选)|False|是否打乱数据.
 ```
 
-#### 1.11.1.2.Dataset()
+#### 1.15.1.2.Dataset()
 
 自定义一个数据集.
 
@@ -403,6 +503,16 @@ class MyDataset(Dataset):
     def __getitem__(self, index):
         # 给定索引加载一个数据和标签.
         return feature, label
+```
+
+## 1.16.zeros()
+
+生成全零张量.|`torch.Tensor`
+
+```python
+import torch
+
+tensor = torch.zeros(size=[2, 3])  # sequence of ints|张量的形状.
 ```
 
 # 2.torchvision
