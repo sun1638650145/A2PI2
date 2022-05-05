@@ -193,7 +193,15 @@ model.load_state_dict(state_dict)  # dict|参数字典.
 model.parameters()
 ```
 
-#### 1.7.6.4.train()
+#### 1.7.6.4.state_dict()
+
+返回模块参数字典.
+
+```python
+model.state_dict()
+```
+
+#### 1.7.6.5.train()
 
 设置模块为训练模式.
 
@@ -304,6 +312,17 @@ optimizer.step()
 
 ```python
 optimizer.zero_grad()
+```
+
+### 1.10.2.SGD()
+
+实例化随机梯度下降优化器.
+
+```python
+from torch.optim import SGD
+
+optimizer = SGD(params,  # 需要优化的参数.
+                lr=1e-2)  # float|学习率.
 ```
 
 ## 1.11.rand()
