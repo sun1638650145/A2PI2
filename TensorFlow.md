@@ -1795,13 +1795,89 @@ from tensorflow.keras.metrics import MAE
 metric = MAE()
 ```
 
-### 1.14.10.models
+### 1.14.10.mixed_precision
+
+| 版本 | 描述         | 注意 |
+| ---- | ------------ | ---- |
+| -    | 混合精度API. | -    |
+
+#### 1.14.10.1.loss_scale_optimizer
+
+##### 1.14.10.1.1.LossScaleOptimizer()
+
+应用损失标度的优化器.|`tensorflow.python.keras.mixed_precision.loss_scale_optimizer.LossScaleOptimizer`
+
+```python
+from tensorflow.python.keras.mixed_precision.loss_scale_optimizer import LossScaleOptimizer
+from tensorflow.python.keras.optimizer_v2.adam import Adam
+
+optimizer = Adam()
+wrapped_optimizer = LossScaleOptimizer(inner_optimizer=optimizer,  # tf.keras.optimizers.Optimizer|包装的优化器.
+                                       dynamic=True)  # bool|True|是否使用动态损失标度.
+
+```
+
+###### 1.14.10.1.1.1.get_scaled_loss()
+
+按损失标度放大损失.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+scaled_loss = wrapped_optimizer.get_scaled_loss(loss)  # tf.Tensor|损失值.
+```
+
+###### 1.14.10.1.1.2.get_unscaled_gradients()
+
+使用损失标度对梯度进行缩放.|`list`
+
+```python
+gradients = wrapped_optimizer.get_unscaled_gradients(grads=scaled_gradients)  # list of tf.Tensors|梯度值.
+```
+
+#### 1.14.10.2.policy
+
+##### 1.14.10.2.1.set_global_policy()
+
+设置全局混合精度策略.
+
+```python
+from tensorflow.python.keras.mixed_precision.policy import set_global_policy
+
+set_global_policy(policy=policy)  # tf.keras.mixed_precision.Policy|混合精度策略.
+```
+
+##### 1.14.10.2.2.Policy()
+
+实例化一个混合精度策略.
+
+```python
+from tensorflow.python.keras.mixed_precision.policy import Policy
+
+policy = Policy(name='mixed_float16')  # {'mixed_float16', 'mixed_bfloat16'}|策略名称.
+```
+
+###### 1.14.10.2.2.1.compute_dtype
+
+计算操作的数据类型.|str
+
+```python
+policy.compute_dtype
+```
+
+###### 1.14.10.2.2.2.variable_dtype
+
+变量的数据类型.|str
+
+```python
+policy.variable_dtype
+```
+
+### 1.14.11.models
 
 | 版本 | 描述         | 注意                                                         |
 | ---- | ------------ | ------------------------------------------------------------ |
 | -    | 模型构建API. | 1.tf.keras支持两种模型`Model(Function API)`和`Sequential`, 相同的类方法都写在`Model`里. |
 
-#### 1.14.10.1.load_model()
+#### 1.14.11.1.load_model()
 
 加载模型.|`tensorflow.python.keras.engine.training.Model` or `tensorflow.python.keras.engine.sequential.Sequential`
 
@@ -1811,7 +1887,7 @@ from tensorflow.keras.models import load_model
 model = load_model(filepath='model.h5')  # str or pathlib.Path|文件路径.
 ```
 
-#### 1.14.10.2.Model()
+#### 1.14.11.2.Model()
 
 实例化`Model`.
 
@@ -1822,7 +1898,7 @@ model = Model(inputs,  # keras.layers.Input|输入层.
               outputs)  # keras.layers|输出层.
 ```
 
-##### 1.14.10.2.1.build()
+##### 1.14.11.2.1.build()
 
 构建模型.
 
@@ -1830,7 +1906,7 @@ model = Model(inputs,  # keras.layers.Input|输入层.
 model.build(input_shape)  # single tuple, TensorShape, or list/dict of shapes|输入层的形状.
 ```
 
-##### 1.14.10.2.2.compile()
+##### 1.14.11.2.2.compile()
 
 编译模型, 配置模型训练参数.
 
@@ -1840,7 +1916,7 @@ model.compile(optimizer='rmsprop',  # str or keras.optimizers|'rmsprop'|优化�
               metrics=None)  # str or keras.metrics|None|评估函数.
 ```
 
-##### 1.14.10.2.3.evaluate()
+##### 1.14.11.2.3.evaluate()
 
 在测试模型下评估损失和准确率.
 
@@ -1851,7 +1927,7 @@ model.evaluate(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, gen
                verbose=1)  # int|0|日志显示模式.
 ```
 
-##### 1.14.10.2.4.fit()
+##### 1.14.11.2.4.fit()
 
 训练模型.|`keras.callbacks.History`
 
@@ -1873,7 +1949,7 @@ model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generato
           use_multiprocessing=False)  # bool|False|是否使用多线程(仅适用`keras.utils.Sequence`).
 ```
 
-##### 1.14.10.2.5.inputs
+##### 1.14.11.2.5.inputs
 
 模型的输入层对象.|`list of keras.Input`
 
@@ -1881,7 +1957,7 @@ model.fit(x=None,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generato
 inputs = model.inputs
 ```
 
-##### 1.14.10.2.6.get_layer()
+##### 1.14.11.2.6.get_layer()
 
 根据网络层名称检索网络层.|`tensorflow.python.keras.layers`
 
@@ -1889,7 +1965,7 @@ inputs = model.inputs
 layer = model.get_layer(name)  # str|网络层名称.
 ```
 
-##### 1.14.10.2.7.layers
+##### 1.14.11.2.7.layers
 
 返回模型的所有网络层列表.|`list`
 
@@ -1904,7 +1980,7 @@ model = Model(inputs=input_layer, outputs=output_layer)
 layers = model.layers
 ```
 
-##### 1.14.10.2.8.load_weights()
+##### 1.14.11.2.8.load_weights()
 
 加载模型的权重.
 
@@ -1912,7 +1988,7 @@ layers = model.layers
 model.load_weights(filepath)  # str or pathlib.Path|文件路径.
 ```
 
-##### 1.14.10.2.9.predict()
+##### 1.14.11.2.9.predict()
 
 使用模型进行预测.|`numpy.ndarray`
 
@@ -1922,7 +1998,7 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
                        verbose=0)  # int|0|日志显示模式.
 ```
 
-##### 1.14.10.2.10.output_shape
+##### 1.14.11.2.10.output_shape
 
 模型输出层的形状.|`tuple`
 
@@ -1930,7 +2006,7 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
 shape = model.output_shape
 ```
 
-##### 1.14.10.2.11.save()
+##### 1.14.11.2.11.save()
 
 保存模型.
 
@@ -1939,7 +2015,7 @@ model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
            save_format=None)  # {'tf', 'h5'}|None|保存文件格式.
 ```
 
-##### 1.14.10.2.12.summary()
+##### 1.14.11.2.12.summary()
 
 打印模型的摘要.
 
@@ -1947,7 +2023,15 @@ model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
 model.summary()
 ```
 
-#### 1.14.10.3.Sequential()
+##### 1.14.11.2.13.trainable_variables
+
+模型所有可训练权重的列表.|`list`
+
+```python
+model.trainable_variables
+```
+
+#### 1.14.11.3.Sequential()
 
 实例化`Sequential`.
 
@@ -1957,7 +2041,7 @@ from tensorflow.keras.models import Sequential
 model = Sequential()
 ```
 
-##### 1.14.10.3.1.add()
+##### 1.14.11.3.1.add()
 
 添加一个网络层到`Sequential`的栈顶.
 
@@ -1965,13 +2049,13 @@ model = Sequential()
 model.add(layer=layers.Input(shape=(224, 224, 3)))  # keras.layers|网络层.
 ```
 
-### 1.14.11.optimizers
+### 1.14.12.optimizers
 
 | 版本 | 描述                 | 注意                                |
 | ---- | -------------------- | ----------------------------------- |
 | -    | tf.keras的优化器API. | 1.优化器相同的类方法都写在`Adam`里. |
 
-#### 1.14.11.1.Adam()
+#### 1.14.12.1.Adam()
 
 实例化`Adam`优化器.
 
@@ -1981,7 +2065,7 @@ from tensorflow.keras.optimizers import Adam
 optimizer = Adam(learning_rate=0.001)  # float|0.001|学习率.
 ```
 
-##### 1.14.11.1.1.apply_gradients()
+##### 1.14.12.1.1.apply_gradients()
 
 `GradientTape`更新的参数赋值给优化器.
 
@@ -1992,7 +2076,7 @@ optimizer = Adam()
 optimizer.apply_gradients(grads_and_vars=zip(grads, vars))  # list of (gradient, variable) pairs|梯度和变量对. 
 ```
 
-#### 1.14.11.2.RMSProp()
+#### 1.14.12.2.RMSProp()
 
 实例化`RMSprop`优化器.
 
@@ -2002,7 +2086,7 @@ from tensorflow.keras.optimizers import RMSprop
 optimizer = RMSprop(learning_rate=0.001)  # float|0.001|学习率.
 ```
 
-#### 1.14.11.3.SGD()
+#### 1.14.12.3.SGD()
 
 实例化随机梯度下降优化器.
 
@@ -2012,15 +2096,15 @@ from tensorflow.keras.optimizers import SGD
 optimizer = SGD(learning_rate=0.01)  # float|0.01|学习率.
 ```
 
-### 1.14.12.preprocessing
+### 1.14.13.preprocessing
 
 | 版本 | 描述                     | 注意 |
 | ---- | ------------------------ | ---- |
 | -    | tf.keras的数据预处理API. | -    |
 
-#### 1.14.12.1.image
+#### 1.14.13.1.image
 
-##### 1.14.12.1.1.array_to_img()
+##### 1.14.13.1.1.array_to_img()
 
 将数组转换为PIL图像.|`PIL.Image.Image`
 
@@ -2032,7 +2116,7 @@ arr = np.ones([128, 128, 3])
 img = array_to_img(x=arr)  # numpy.ndarray|输入的数组.
 ```
 
-##### 1.14.12.1.2.ImageDataGenerator()
+##### 1.14.13.1.2.ImageDataGenerator()
 
 实例化`ImageDataGenerator`, 对图像进行实时增强.
 
@@ -2050,7 +2134,7 @@ generator = ImageDataGenerator(rotation_range=0,  # int|0|随机旋转的度数.
                                vertical_flip=False)  # bool|False|随机垂直翻转.
 ```
 
-###### 1.14.12.1.2.1.class_indices
+###### 1.14.13.1.2.1.class_indices
 
 类名称和索引映射字典.|`dict`
 
@@ -2061,7 +2145,7 @@ generator = ImageDataGenerator()
 class_indices = generator.flow_from_dataframe(x).class_indices
 ```
 
-###### 1.14.12.1.2.2.flow()
+###### 1.14.13.1.2.2.flow()
 
 对数据进行增强.|`yield`
 
@@ -2075,7 +2159,7 @@ generator.flow(x,  # numpy array of rank 4 or tuple|输入的数据.
                shuffle=True)  # bool|True|是否打乱.
 ```
 
-###### 1.14.12.1.2.3.flow_from_dataframe()
+###### 1.14.13.1.2.3.flow_from_dataframe()
 
 从dataframe中读取数据, 并对数据进行增强.|`yield`
 
@@ -2097,7 +2181,7 @@ generator.flow_from_dataframe(dataframe,  # pandas.DataFrame|描述图片位置�
                               validate_filenames=True)  # bool|True|是否检查文件可靠性.
 ```
 
-###### 1.14.12.1.2.4.flow_from_directory()
+###### 1.14.13.1.2.4.flow_from_directory()
 
 从文件夹中读取数据(每个类别是个单独的文件夹), 并对数据进行增强.|`yield`
 
@@ -2115,7 +2199,7 @@ generator.flow_from_directory(directory,  # str|图片文件夹路径.
                               interpolation='nearest')  # {'nearest', 'bilinear', 'bicubic', 'lanczos', 'box', 'hamming'}|'nearest'|插值方式.
 ```
 
-##### 1.14.12.1.3.img_to_array()
+##### 1.14.13.1.3.img_to_array()
 
 将PIL图片转换为numpy数组.|`numpy.ndarray`
 
@@ -2126,7 +2210,7 @@ img = load_img(path='./img.png')
 arr = img_to_array(img=img)  # PIL.Image|输入的图片.
 ```
 
-##### 1.14.12.1.4.load_img()
+##### 1.14.13.1.4.load_img()
 
 加载图片.|`PIL.Image.Image`
 
@@ -2137,9 +2221,9 @@ img = load_img(path='./img.png',  # str|图片的路径.
                target_size=None)  # (img_height, img_width)|None|读入图片的大小.
 ```
 
-#### 1.14.12.2.sequence
+#### 1.14.13.2.sequence
 
-##### 1.14.12.2.1.pad_sequences()
+##### 1.14.13.2.1.pad_sequences()
 
 填充序列到相同的长度.|`list`
 
@@ -2155,9 +2239,9 @@ padded_sequences = pad_sequences(sequences=sequences,  # list|序列.
                                  truncating='pre')  # {'pre', 'post'}|'pre'|截断方式.
 ```
 
-#### 1.14.12.3.text
+#### 1.14.13.3.text
 
-##### 1.14.12.3.1.Tokenizer()
+##### 1.14.13.3.1.Tokenizer()
 
 实例化分词器.
 
@@ -2168,7 +2252,7 @@ tokenizer = Tokenizer(num_words=None,  # int|None|词汇表大小.
                       oov_token=None)  # str|None|超出词汇表的词的处理方式.
 ```
 
-###### 1.14.12.3.1.1.fit_on_texts()
+###### 1.14.13.3.1.1.fit_on_texts()
 
 根据文本列表, 更新词汇表.
 
@@ -2186,7 +2270,7 @@ tokenizer = Tokenizer(num_words=100, oov_token='<OOV>')
 tokenizer.fit_on_texts(texts=sentences)  # list of str|文本列表.
 ```
 
-###### 1.14.12.3.1.2.texts_to_sequences()
+###### 1.14.13.3.1.2.texts_to_sequences()
 
 将文本转换为整数序列.|`list`
 
@@ -2205,7 +2289,7 @@ tokenizer.fit_on_texts(sentences)
 sequences = tokenizer.texts_to_sequences(texts=sentences)  # list of str|文本列表.
 ```
 
-###### 1.14.12.3.1.3.word_index
+###### 1.14.13.3.1.3.word_index
 
 词汇表.|`dict`
 
@@ -2225,7 +2309,7 @@ tokenizer.fit_on_texts(texts=sentences)
 print(tokenizer.word_index)
 ```
 
-#### 1.14.12.4.timeseries_dataset_from_array()
+#### 1.14.13.4.timeseries_dataset_from_array()
 
 从数组中创建时间序列数据集.|`tensorflow.python.data.ops.dataset_ops.BatchDataset`
 
@@ -2241,13 +2325,13 @@ dataset = timeseries_dataset_from_array(data,  # numpy.ndarray or eager tensor|�
                                         shuffle=False)  # bool|False|是否打乱.
 ```
 
-### 1.14.13.regularizers
+### 1.14.14.regularizers
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | tf.keras的正则化器API. | -    |
 
-#### 1.14.13.1.L2()
+#### 1.14.14.1.L2()
 
 实例化L2正则化器.
 
@@ -2257,13 +2341,13 @@ from tensorflow.keras.regularizers import L2
 regularizer = L2(l2=0.01)  # float|0.01|L2正则化因子.
 ```
 
-### 1.14.14.utils
+### 1.14.15.utils
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | tf.keras的工具API. | -    |
 
-#### 1.14.14.1.get_file()
+#### 1.14.15.1.get_file()
 
 从指定URL下载文件.|`str`
 
@@ -2275,7 +2359,7 @@ file = get_file(fname,  # str|保存的文件名.
                 extract=False)  # bool|False|是否解压tar或zip文件.
 ```
 
-#### 1.14.14.2.plot_model()
+#### 1.14.15.2.plot_model()
 
 绘制模型网络图.
 
@@ -2291,7 +2375,7 @@ plot_model(model=ResNet50(),  # keras.models|要绘制的模型.
            dpi=96)  # int|96|DPI值.
 ```
 
-#### 1.14.14.3.Sequence()
+#### 1.14.15.3.Sequence()
 
 实现数据序列(`__getitem__`和`__len__`必须实现).
 
@@ -2313,7 +2397,7 @@ class DataSequence(Sequence):
         """每轮训练结束后对数据进行某种操作."""
 ```
 
-#### 1.14.14.4.to_categorical()
+#### 1.14.15.4.to_categorical()
 
 将离散编码的标签转换为one-hot编码.|`numpy.ndarray`
 
