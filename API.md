@@ -4692,15 +4692,15 @@ encoding.ids
 
 # 17.transformers
 
-| 版本  | 描述                | 注意                                                         | 适配M1 |
-| ----- | ------------------- | ------------------------------------------------------------ | ------ |
-| 4.6.1 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                                                               2. 部分功能需要依赖sentencepiece模块. | 是     |
+| 版本   | 描述                | 注意                                                         | 适配M1 |
+| ------ | ------------------- | ------------------------------------------------------------ | ------ |
+| 4.18.0 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                                                               2. 部分功能需要依赖sentencepiece模块. | 是     |
 
 ## 17.1.AlbertTokenizer
 
 ### 17.1.1.\__call__()
 
-为Albert分词(预处理)一个或者多个数据.|{`input_ids`, (`token_type_ids`), (`attention_mask`)}
+为Albert分词(预处理)一个或者多个数据.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
 ```python
 from transformers import AlbertTokenizer
@@ -4714,8 +4714,10 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
                     truncation=False,  # bool(可选)|False|是否截断到最大长度.
                     max_length=128,  # int(可选)|None|填充和截断的最大长度.
                     return_tensors='tf',  # {'tf', 'pt', 'np'}(可选)|None|返回张量的类型.
-                    return_token_type_ids=False,  # bool(可选)|False|是否返回令牌ID.
-                    return_attention_mask=False)  # bool(可选)|False|是否返回注意力掩码.
+                    return_token_type_ids=True,  # bool(可选)|False|是否返回令牌ID.
+                    return_attention_mask=True)  # bool(可选)|False|是否返回注意力掩码.
+
+input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
 ### 17.1.2.from_pretrained()
@@ -4729,7 +4731,7 @@ tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='alber
                                             do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
 ```
 
-## 17.2.BertTokenizer()
+## 17.2.BertTokenizer
 
 ### 17.2.1.\__call__()
 
@@ -4747,13 +4749,15 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
                     truncation=False,  # bool(可选)|False|是否截断到最大长度.
                     max_length=128,  # int(可选)|None|填充和截断的最大长度.
                     return_tensors='tf',  # {'tf', 'pt', 'np'}(可选)|None|返回张量的类型.
-                    return_token_type_ids=False,  # bool(可选)|False|是否返回令牌ID.
-                    return_attention_mask=False)  # bool(可选)|False|是否返回注意力掩码.
+                    return_token_type_ids=True,  # bool(可选)|False|是否返回令牌ID.
+                    return_attention_mask=True)  # bool(可选)|False|是否返回注意力掩码.
+
+input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
 ### 17.2.2.from_pretrained()
 
-实例化Bert预训练分词器.|`transformers.models.bert.tokenization_bert.BertTokenizer`
+实例化Bert预训练分词器.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
 ```python
 from transformers import BertTokenizer
@@ -4776,7 +4780,22 @@ config = RobertaConfig.from_pretrained(pretrained_model_name_or_path='roberta-ba
 
 ## 17.4.TFAlbertModel
 
-### 17.4.1.from_pretrained()
+### 17.4.1.\_\_call\_\_()
+
+调用Albert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPooling`
+
+```python
+from transformers import TFAlbertModel
+
+model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base-v2', trainable=True)
+outputs = model(input_ids=input_ids,
+                attention_mask=attention_mask,
+                token_type_ids=token_type_ids)
+
+sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
+```
+
+### 17.4.2.from_pretrained()
 
 实例化预训练的Albert模型.|`transformers.models.albert.modeling_tf_albert.TFAlbertModel`
 
@@ -4789,7 +4808,22 @@ model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base
 
 ## 17.5.TFBertModel
 
-### 17.5.1.from_pretrained()
+### 17.5.1.\_\_call\_\_()
+
+调用Bert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPoolingAndCrossAttentions`
+
+```python
+from transformers import TFBertModel
+
+model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-uncased', trainable=True)
+outputs = model(input_ids=input_ids,
+                attention_mask=attention_mask,
+                token_type_ids=token_type_ids)
+
+sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
+```
+
+### 17.5.2.from_pretrained()
 
 实例化预训练的Bert模型.|`transformers.models.bert.modeling_tf_bert.TFBertModel`
 

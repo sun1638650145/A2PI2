@@ -2978,15 +2978,38 @@ function func() {
 let c = tf.tidy(func);  // nameOrFn: string or Function|输入的函数.
 ```
 
-# 3.tensorflow_datasets
+# 3.tensorflow_addons
+
+| 版本   | 描述                  | 注意 | 适配M1 |
+| ------ | --------------------- | ---- | ------ |
+| 0.16.1 | TensorFlow的额外工具. | -    | 是     |
+
+## 3.1.optimizers
+
+| 版本 | 描述                       | 注意 |
+| ---- | -------------------------- | ---- |
+| -    | 符合Keras API的其他优化器. | -    |
+
+### 3.1.2.AdamW()
+
+实例化带权重衰减的`Adam`优化器.
+
+```python
+from tensorflow_addons.optimizers import AdamW
+
+optimizer = AdamW(weight_decay=4e-3,  # float|权重衰减.
+                  learning_rate=0.001)  # float|0.001|学习率.
+```
+
+# 4.tensorflow_datasets
 
 | 版本  | 描述                    | 注意                                                         | 适配M1 |
 | ----- | ----------------------- | ------------------------------------------------------------ | ------ |
 | 4.3.0 | TensorFlow的官方数据集. | 1. 默认的缓存路径是~/tensorflow_datasets.                                                                          2. 视网络情况使用代理. | 是     |
 
-## 3.1.features
+## 4.1.features
 
-### 3.1.1.ClassLabel
+### 4.1.1.ClassLabel
 
 实例化`ClassLabel`来建立整数和标签的映射.
 
@@ -2996,7 +3019,7 @@ import tensorflow_datasets as tfds
 class_label = tfds.features.ClassLabel(names=['cat', 'dog', 'bird'])  # list of str|标签字符串列表.
 ```
 
-#### 3.1.1.1.int2str()
+#### 4.1.1.1.int2str()
 
 将整数转换为标签字符串.|str
 
@@ -3007,7 +3030,7 @@ class_label = tfds.features.ClassLabel(names=['cat', 'dog', 'bird'])
 label = class_label.int2str(int_value=1)  # int|标签整数索引.
 ```
 
-## 3.2.load()
+## 4.2.load()
 
 加载数据集.|`dict of tf.data.Datasets`
 
@@ -3020,13 +3043,13 @@ ds_train, ds_test = tfds.load(name='mnist',  # str|数据集的注册名称.
                               as_supervised=True)  # bool(可选)|False|是否返回标签.
 ```
 
-# 4.tensorflow_hub
+# 5.tensorflow_hub
 
 | 版本   | 描述                    | 注意                                                         | 适配M1 |
 | ------ | ----------------------- | ------------------------------------------------------------ | ------ |
 | 0.12.0 | TensorFlow的官方模型库. | 1. 推荐使用环境变量`TFHUB_CACHE_DIR`指定模型保存位置.                                                       2. [TensorFlow Hub 国内镜像](https://hub.tensorflow.google.cn/) | 是     |
 
-## 4.1.KerasLayer()
+## 5.1.KerasLayer()
 
 将模型修饰为Keras的网络层.|`tensorflow_hub.keras_layer.KerasLayer`
 
@@ -3040,7 +3063,7 @@ layer = KerasLayer(handle='https://hub.tensorflow.google.cn/google/efficientnet/
                    dtype='float32')  # tensorflow.python.framework.dtypes.DType|'float32'|期望的数据类型.
 ```
 
-## 4.2.load()
+## 5.2.load()
 
 加载模型.|`tensorflow.python.training.tracking.tracking.AutoTrackable`
 
