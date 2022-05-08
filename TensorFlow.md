@@ -1490,7 +1490,17 @@ from tensorflow.keras import layers
 layer = layers.GlobalMaxPooling1D()
 ```
 
-#### 1.14.7.19.GRU()
+#### 1.14.7.19.GlobalMaxPooling2D()
+
+实例化全局2D最大池化层.
+
+```python
+from tensorflow.keras import layers
+
+layer = layers.GlobalMaxPooling2D()
+```
+
+#### 1.14.7.20.GRU()
 
 实例化门控循环网络层.
 
@@ -1501,7 +1511,7 @@ layer = layers.GRU(units=256,  # int|神经元的数量.
                    return_sequences=True)  # bool|False|是否返回全部序列.
 ```
 
-#### 1.14.7.20.Input()
+#### 1.14.7.21.Input()
 
 实例化输入层.
 
@@ -1513,7 +1523,7 @@ layer = layers.Input(shape=(224, 224, 3),  # tuple|输入张量的形状.
                      dtype=None)  # str|None|期望的数据类型.
 ```
 
-#### 1.14.7.21.InputLayer()
+#### 1.14.7.22.InputLayer()
 
 实例化输入层.
 
@@ -1523,7 +1533,7 @@ from tensorflow.keras import layers
 layer = layers.InputLayer(input_shape=(224, 224, 3))  # tuple|输入张量的形状.
 ```
 
-#### 1.14.7.22.Lambda()
+#### 1.14.7.23.Lambda()
 
 将一个函数封装称网络层.
 
@@ -1535,7 +1545,7 @@ layer = layers.Lambda(function=lambda x: x**2,  # lambda or function|要封装�
                       name=None)  # str|None|网络层的名称.
 ```
 
-#### 1.14.7.23.Layer()
+#### 1.14.7.24.Layer()
 
 自定义一个符合tf.keras接口的层.
 
@@ -1552,7 +1562,7 @@ class MyLayer(layers.Layer):
         return outputs
 ```
 
-##### 1.14.7.23.1.get_weights()
+##### 1.14.7.24.1.get_weights()
 
 获取当前网络层的权重.|list of `numpy.ndarray`
 
@@ -1565,7 +1575,7 @@ layer(tf.constant([[1., 2., 3.]]))
 weights = layer.get_weights()
 ```
 
-##### 1.14.7.23.2.output
+##### 1.14.7.24.2.output
 
 网络层输出张量.|`tensorflow.python.keras.engine.keras_tensor.KerasTensor`
 
@@ -1573,7 +1583,7 @@ weights = layer.get_weights()
 tensor = layer.output
 ```
 
-##### 1.14.7.23.3.trainable
+##### 1.14.7.24.3.trainable
 
 网络层在训练期间是否能更新权重.|`bool`
 
@@ -1581,7 +1591,7 @@ tensor = layer.output
 trainable = layer.trainable
 ```
 
-#### 1.14.7.24.LeakyReLU()
+#### 1.14.7.25.LeakyReLU()
 
 实例化带泄漏的ReLU层.
 
@@ -1591,7 +1601,7 @@ from tensorflow.keras import layers
 layer = layers.LeakyReLU(alpha=0.3)  # float|0.3|负斜率系数(泄漏率).
 ```
 
-#### 1.14.7.25.LSTM()
+#### 1.14.7.26.LSTM()
 
 实例化长短时记忆层.
 
@@ -1603,7 +1613,7 @@ layer = layers.LSTM(units=256,  # int|神经元的数量.
                     dropout=0.)  # float|0.|随机丢弃比例.
 ```
 
-#### 1.14.7.26.MaxPooling1D()
+#### 1.14.7.27.MaxPooling1D()
 
 实例化1D最大池化层.
 
@@ -1615,7 +1625,7 @@ layer = layers.MaxPooling1D(pool_size=2,  # int|2|池化窗口.
                             padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.27.MaxPooling2D()
+#### 1.14.7.28.MaxPooling2D()
 
 实例化2D最大池化层.
 
@@ -1627,7 +1637,7 @@ layer = layers.MaxPooling2D(pool_size=(2, 2),  # int or tuple of 2 int|(2, 2)|�
                             padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.28.ReLU()
+#### 1.14.7.29.ReLU()
 
 实例化ReLU层.
 
@@ -1637,7 +1647,7 @@ from tensorflow.keras import layers
 layer = layers.ReLU()
 ```
 
-#### 1.14.7.29.Reshape()
+#### 1.14.7.30.Reshape()
 
 实例化变形层.
 
@@ -1647,7 +1657,7 @@ from tensorflow.keras import layers
 layer = layers.Reshape(target_shape=(None, 10))  # tuple of int|目标形状.
 ```
 
-#### 1.14.7.30.SeparableConv2D()
+#### 1.14.7.31.SeparableConv2D()
 
 实例化深度可分离2D卷积层.
 
@@ -1660,7 +1670,7 @@ layer = layers.SeparableConv2D(filters=32,  # int|卷积核的数量.
                                padding='valid')  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.31.SimpleRNN()
+#### 1.14.7.32.SimpleRNN()
 
 实例化循环网络层.
 
@@ -1672,7 +1682,7 @@ layer = layers.SimpleRNN(units=256,  # int|神经元的数量.
                          return_sequences=True)  # bool|False|是否返回全部序列.
 ```
 
-#### 1.14.7.32.TimeDistributed()
+#### 1.14.7.33.TimeDistributed()
 
 实例化时间片封装器.
 
@@ -1683,7 +1693,7 @@ layer = layers.Dense(32)
 layer = layers.TimeDistributed(layer=layer)  # keras.layers|需要分片的网络层.
 ```
 
-#### 1.14.7.33.UpSampling2D()
+#### 1.14.7.34.UpSampling2D()
 
 ```python
 from tensorflow.keras import layers
@@ -1692,7 +1702,7 @@ from tensorflow.keras import layers
 layer = layers.UpSampling2D(size=(2, 2))  # int or tuple of 2 int|(2, 2)|上采样因子.
 ```
 
-#### 1.14.7.34.ZeroPadding2D()
+#### 1.14.7.35.ZeroPadding2D()
 
 实例化2D零填充层.
 
@@ -1769,7 +1779,18 @@ from tensorflow.keras.losses import MeanAbsoluteError
 loss = MeanAbsoluteError()
 ```
 
-#### 1.14.8.6.SparseCategoricalCrossentropy()
+#### 1.14.8.6.mean_squared_error()
+
+计算均方误差值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras.losses import mean_squared_error
+
+value = mean_squared_error(y_true=[1, 2, 3, 4],  # array-like|真实值.
+                           y_pred=[2, 2, 3, 4])  # array-like|预测值.
+```
+
+#### 1.14.8.7.SparseCategoricalCrossentropy()
 
 实例化多分类交叉熵损失函数(稀释编码).
 
@@ -1787,12 +1808,42 @@ loss = SparseCategoricalCrossentropy(from_logits=False)  # bool|False|是否将�
 
 #### 1.14.9.1.MAE()
 
-实例化平均绝对误差损失函数.
+实例化平均绝对误差评估函数.
 
 ```python
 from tensorflow.keras.metrics import MAE
 
 metric = MAE()
+```
+
+#### 1.14.9.2.Mean()
+
+实例化计算均值评估函数.
+
+```python
+from tensorflow.keras.metrics import Mean
+
+metric = Mean()
+```
+
+##### 1.14.9.2.1.result()
+
+计算评估值.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+from tensorflow.keras.metrics import Mean
+
+metric = Mean()
+metric.update_state([1, 2, 3])
+value = metric.result()
+```
+
+##### 1.14.9.2.2.update_state()
+
+累积用于计算评估的值.
+
+```
+metric.update_state(values=[1, 2, 3])  # array-like|要统计的值.
 ```
 
 ### 1.14.10.mixed_precision
@@ -1988,14 +2039,15 @@ layers = model.layers
 model.load_weights(filepath)  # str or pathlib.Path|文件路径.
 ```
 
-##### 1.14.11.2.9.predict()
+##### 1.14.11.2.9.metrics()
 
-使用模型进行预测.|`numpy.ndarray`
+返回向模型添加的评估函数.
 
 ```python
-y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
-                       batch_size=None,  # int|None|批次大小.
-                       verbose=0)  # int|0|日志显示模式.
+@property
+def metrics(self):
+    """列出全部的评估函数, 使得每个epoch后评估函数将会自动重置."""
+    return [metric_0, metric_1]
 ```
 
 ##### 1.14.11.2.10.output_shape
@@ -2006,7 +2058,17 @@ y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, 
 shape = model.output_shape
 ```
 
-##### 1.14.11.2.11.save()
+##### 1.14.11.2.11.predict()
+
+使用模型进行预测.|`numpy.ndarray`
+
+```python
+y_pred = model.predict(x,  # Numpy array, TensorFlow tensor, `tf.data` dataset, generator or `keras.utils.Sequence`|None|特征数据.
+                       batch_size=None,  # int|None|批次大小.
+                       verbose=0)  # int|0|日志显示模式.
+```
+
+##### 1.14.11.2.12.save()
 
 保存模型.
 
@@ -2015,7 +2077,7 @@ model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
            save_format=None)  # {'tf', 'h5'}|None|保存文件格式.
 ```
 
-##### 1.14.11.2.12.summary()
+##### 1.14.11.2.13.summary()
 
 打印模型的摘要.
 
@@ -2023,12 +2085,64 @@ model.save(filepath='./model.h5',  # str or pathlib.Path|文件路径.
 model.summary()
 ```
 
-##### 1.14.11.2.13.trainable_variables
+##### 1.14.11.2.14.test_step()
+
+实现自定义评估步骤函数.
+
+```python
+def test_step(self, data):
+    """使用自定义的评估步骤, 即可继续使用model.evaluate()."""
+    if len(data) == 3:
+        x, y, sample_weight = data  # 提取样本权重.
+    else:
+        sample_weight = None
+        x, y = data
+
+    # 前向传播.
+    y_pred = self(x, training=False)
+    # 计算损失.
+    self.compiled_loss(y, y_pred, sample_weight=sample_weight)
+    # 更新评估值.
+    self.compiled_metrics.update_state(y, y_pred, sample_weight=sample_weight)
+    
+    return {m.name: m.result() for m in self.metrics}  # 返回评估值字典.
+```
+
+##### 1.14.11.2.15.trainable_variables
 
 模型所有可训练权重的列表.|`list`
 
 ```python
 model.trainable_variables
+```
+
+##### 1.14.11.2.16.train_step()
+
+实现自定义训练步骤函数.
+
+```python
+def train_step(self, data):
+    """使用自定义的训练步骤, 即可继续使用model.fit()."""
+    if len(data) == 3:
+        x, y, sample_weight = data  # 提取样本权重.
+    else:
+        sample_weight = None
+        x, y = data
+
+    with tf.GradientTape() as tape:
+        # 前向传播.
+        y_pred = self(x, training=True)
+        # 计算损失.
+        loss = self.compiled_loss(y, y_pred, sample_weight=sample_weight)
+
+    # 反向传播, 计算梯度.
+    gradients = tape.gradient(loss, self.trainable_variables)
+    # 更新参数.
+    self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
+    # 更新评估值.
+    self.compiled_metrics.update_state(y, y_pred, sample_weight=sample_weight)
+    
+    return {m.name: m.result() for m in self.metrics}  # 返回评估值字典.
 ```
 
 #### 1.14.11.3.Sequential()
@@ -2789,7 +2903,18 @@ tensor = tf.where(condition=(a > b),  # tf.Tensor of type bool|判断条件.
                   y=False)  # tf.Tensor|None|情况为假的返回值.
 ```
 
-## 1.38.zeros_like()
+## 1.38.zeros()
+
+创建全零张量.|`tensorflow.python.framework.ops.EagerTensor`
+
+```python
+import tensorflow as tf
+
+tensor = tf.zeros(shape=(3, 2),  # list/tuple of int|张量的形状.
+                  dtype='int32')  # str|dtypes.float32|元素数据类型.
+```
+
+## 1.39.zeros_like()
 
 创建一个输入数组形状相同的全零张量.|`tensorflow.python.framework.ops.EagerTensor`
 
