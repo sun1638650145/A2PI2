@@ -907,7 +907,15 @@ int main() {
 env.action_space
 ```
 
-#### 4.1.1.1.sample()
+#### 4.1.1.1.n
+
+随机动作的总数.|`int`
+
+```python
+env.action_space.n
+```
+
+#### 4.1.1.2.sample()
 
 获取随机动作.|`int`
 
@@ -923,7 +931,25 @@ action = env.action_space.sample()
 env.close()
 ```
 
-### 4.1.3.render()
+### 4.1.3.observation_space
+
+#### 4.1.3.1.sample()
+
+获取随机环境向量.|`numpy.ndarray`
+
+```python
+env.observation_space.sample()
+```
+
+#### 4.1.3.2.shape
+
+可观察的环境向量的形状.|`tuple`
+
+```python
+env.observation_space.shape
+```
+
+### 4.1.4.render()
 
 渲染环境.
 
@@ -931,7 +957,7 @@ env.close()
 env.render()
 ```
 
-### 4.1.4.reset()
+### 4.1.5.reset()
 
 重置环境.|`numpy.ndarray`
 
@@ -939,7 +965,7 @@ env.render()
 observation = env.reset()
 ```
 
-### 4.1.5.step()
+### 4.1.6.step()
 
 执行动作.|`numpy.ndarray`, `int`, `bool`和`dict`
 

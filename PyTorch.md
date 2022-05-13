@@ -612,3 +612,57 @@ from torchvision.transforms import ToTensor
 arr = np.asarray([[1, 2, 3]])
 tensor = ToTensor()(pic=arr)  # PIL Image or numpy.ndarray|要转换的图像.
 ```
+
+# 3.stable_baselines3
+
+| 版本  | 描述                             | 注意 | 适配M1 |
+| ----- | -------------------------------- | ---- | ------ |
+| 1.5.0 | Torch的强化学习Stable Baselines. | -    | 是     |
+
+## 3.1.common
+
+### 3.1.1.env_util
+
+#### 3.1.1.1.make_vec_env()
+
+创建一组并行环境.|`stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv`
+
+```python
+from stable_baselines3.common.env_util import make_vec_env
+
+envs = make_vec_env(env_id='LunarLander-v2',  # str|环境id.
+                    n_envs=16)  # int|1|并行的环境数量.
+```
+
+## 3.2.PPO()
+
+实例化近端策略算法.
+
+```python
+model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
+            env=envs,  # gym.env|Gym环境.
+            n_steps=1024,  # int|2048|每次更新为每个环境的时间步数.
+            batch_size=64,  # int|64|批次大小.
+            n_epochs=4,  # int|10|优化代理损失的轮数.
+            gamma=0.999,  # float|0.99|折扣系数.
+            gae_lambda=0.98,  # float|0.95|广义优势估计器的偏差与方差权衡因子.
+            ent_coef=0.01,  # float|0.0|损失计算的熵系数.
+            verbose=1)  # {0, 1, 2}|0|日志显示模式.
+```
+
+### 3.2.1.learn()
+
+训练模型.
+
+```python
+model.learn(total_timesteps=200000)  # int|训练步数.
+```
+
+### 3.2.2.save()
+
+保存模型到zip文件.
+
+```python
+model.save(path='./ppo-LunarLander-v2')  # str|文件名.
+```
+
