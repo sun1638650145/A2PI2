@@ -634,6 +634,21 @@ envs = make_vec_env(env_id='LunarLander-v2',  # str|环境id.
                     n_envs=16)  # int|1|并行的环境数量.
 ```
 
+### 3.1.2.evaluation
+
+#### 3.1.2.1.evaluate_policy()
+
+评估模型并返回平均奖励.|`tuple`
+
+```python
+from stable_baselines3.common.evaluation import evaluate_policy
+
+mean_reward, std_reward = evaluate_policy(model=model,  # base_class.BaseAlgorithm|你想评估的模型.
+                                          env=env,  # gym.env|Gym环境.
+                                          n_eval_episodes=10,  # int|10|评估周期.
+                                          deterministic=True)  # bool|True|使用确定动作还是随机动作.
+```
+
 ## 3.2.PPO()
 
 实例化近端策略算法.
