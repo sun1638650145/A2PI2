@@ -649,6 +649,19 @@ mean_reward, std_reward = evaluate_policy(model=model,  # base_class.BaseAlgorit
                                           deterministic=True)  # bool|True|使用确定动作还是随机动作.
 ```
 
+### 3.1.3.vec_env
+
+#### 3.1.3.1.DummyVecEnv()
+
+创建向量化环境包装器, Python进程将逐一调用.|`stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv`
+
+```python
+import gym
+from stable_baselines3.common.vec_env import DummyVecEnv
+
+eval_env = DummyVecEnv(env_fns=[lambda: gym.make('LunarLander-v2')])  # list of functions|环境生成函数列表.
+```
+
 ## 3.2.PPO()
 
 实例化近端策略算法.
@@ -673,7 +686,16 @@ model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
 model.learn(total_timesteps=200000)  # int|训练步数.
 ```
 
-### 3.2.2.save()
+### 3.2.2.load()
+
+加载模型.|`stable_baselines3.ppo.ppo.PPO`
+
+```python
+model = PPO.load(path='ppo-LunarLander-v2',  # str|文件名.
+                 print_system_info=True)  # bool|False|打印保存模型的系统信息和当前的系统信息.
+```
+
+### 3.2.3.save()
 
 保存模型到zip文件.
 
