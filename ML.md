@@ -3709,3 +3709,150 @@ $$
 
     * 由此形成了对样本空间$\mathcal{X}$的簇划分$\{R_1, R_2, ..., R_q\}$, 该划分通常称为Voronoi剖分(Voronoi tessellation).
     * 若将$R_i$中样本全用原型向量$\pmb{p}_i$表示, 则可实现数据的有损压缩(lossy compression). 这称为向量量化(vector quantization).
+
+### 9.4.3.高斯混合聚类
+
+* 与$k$均值、LVQ用原型向量来刻画聚类结构不同, 高斯混合(Mixture-of-Gaussian)聚类采用概率模型来表达聚类原型.
+
+* (多元)高斯分布的定义. 对$n$维样本空间$\mathcal{X}$中的随机向量$\pmb{x}$, 若$\pmb{x}$若服从高斯分布, 其概率密度函数为
+    $$
+    p(\pmb{x})=\frac{1}{(2\pi)^\frac{n}{2}|\pmb{\tiny{\sum}}|^\frac{1}{2}}e^{-\frac{1}{2}(\pmb{x}-\pmb{\mu})^T\pmb{\tiny{\sum}}^{-1}(\pmb{x}-\pmb{\mu})}
+    $$
+
+    * 其中$\pmb{\mu}$是$n$维均值向量, $\pmb{\sum}$是的$n\times n$协方差矩阵.
+    * 记为$\pmb{x}\sim\mathcal{N}(\pmb{\mu}, \pmb{\sum})$.
+    * $\pmb{\sum}$: 对称正定矩阵; $|\pmb{\sum}|$: $\pmb{\sum}$的行列式; $\pmb{\sum}^{-1}$: $\pmb{\sum}$的逆矩阵.
+    * 高斯分布完全由均值向量$\pmb{\mu}$和协方差矩阵$\pmb{\sum}$这两个参数确定.
+
+* 为了明确显示高斯分布与相应参数的依赖关系, 将概率密度函数记为$p(\pmb{x}|\pmb{\mu}, \pmb{\tiny{\sum}})$.
+
+* 高斯混合分布的定义
+    $$
+    p_{\mathcal{M}}(\pmb{x})=\sum^k_{i=1}\alpha_i·p(\pmb{x}|\pmb{\mu}_i,\pmb{\tiny{\sum}}_i)
+    $$
+
+    * $p_{\mathcal{M}}(·)$也是概率密度函数, $\int p_{\mathcal{M}}(\pmb{x})d\pmb{x}=1$.
+    * 该分布是由$k$个混合分布组成, 每个混合成分对应一个高斯分布.
+    * 其中$\pmb{\mu}_i$与$\pmb{\sum}_i$是第$i$个高斯混合分布的参数, 而$\alpha_i>0$为相应的混合系数(mixture coefficient), $\sum^k_{i=1}\alpha_i=1$.
+
+* 假设样本的生成过程由高斯混合分布给出: 首先, 根据$\alpha_1,\alpha_2,..., \alpha_k$定义的先验分布选择高斯混合成分, 其中$\alpha_i$为选择第$i$个混合成分的概率; 然后, 根据被选择的混合成分的概率密度函数进行采样, 从而生成相应的样本.
+
+* 若训练集$D=\{\pmb{x}_1, \pmb{x}_2, ..., \pmb{x}_m\}$由上述过程生成, 令随机变量$z_j\in\{1,2, ..., k\}$表示生成样本$\pmb{x}_j$的高斯混合分布, 其取值未知. $z_j$的先验概率$P(z_j=i)$对应于$\alpha_i(i=1,2,...,k)$.
+
+* 根据贝叶斯定理, $z_j$的后验分布对应于
+    $$
+    \begin{equation}
+    	\begin{aligned}
+    		p_\mathcal{M}(z_j=i|\pmb{x}_j)&=\frac{P(z_j=i)·p_\mathcal{M}(\pmb{x}_j|z_j=i)}{p_\mathcal{M}(\pmb{x}_j)}\\
+    		&=\frac{\alpha_i·p(\pmb{x}_j|\pmb{\mu}_i,\pmb{\sum}_i)}{\sum\limits^k_{l=1}\alpha_l·p(\pmb{x}_j|\pmb{\mu}_l,\pmb{\mathcal{\sum}}_l)}
+    	\end{aligned}
+    \end{equation}
+    $$
+    换言之, $p_\mathcal{M}(z_j=i|\pmb{x}_j)$给出了样本$\pmb{x}_j$由第$i$个高斯混合成分生成的后验概率. 为方便叙述, 将其简记为$\gamma_{ji}\ (i=1, 2, ..., k)$.
+
+* 当高斯混合分布已知时, 高斯混合聚类将把样本集$D$划分为$k$个簇$C=\{C_1, C_2, ..., C_k\}$, 每个样本$\pmb{x}_j$的簇标记$\lambda_j$如下确定:
+    $$
+    \lambda_j=\mathop{\arg\max}_\limits{i\in\{1,2,...,k\}}\ \gamma_{ji}
+    $$
+    从原型聚类的角度来看, 高斯混合聚类是采用概率模型(高斯分布)对原型进行刻画, 簇划分则由原型对应后验概率确定.
+
+* 对于高斯混合分布的定义, 模型参数$\{(\alpha_i, \pmb{\mu}_i, \pmb{\sum}_i)|1\leqslant i\leqslant k\}$, 在给定样本集$D$的求解, 可采用极大似然估计, 即最大化(对数)似然
+    $$
+    \begin{equation}
+    	\begin{aligned}
+    		LL(D)&=\ln\Bigg(\prod^m_{j=1}p_\mathcal{M}(\pmb{x}_j)\Bigg)\\
+    		&=\sum^m_{j=1}\ln\bigg(\sum^k_{i=1}\alpha_i·p(\pmb{x}_j|\pmb{\mu}_i, \sum_i)\bigg)
+    	\end{aligned}
+    \end{equation}
+    $$
+    常采用EM算法进行迭代优化求解.
+
+* 若参数$\{(\alpha_i, \pmb{\mu}_i, \pmb{\sum}_i)|1\leqslant i\leqslant k\}$ 能使上式最大化, 则$\frac{\part LL(D)}{\part\pmb{\mu}_i}=0$有
+    $$
+    \sum^m_{j=1}\frac{\alpha_i·p(\pmb{x}_j|\pmb{\mu}_i,\sum_i)}{
+    \sum^k_{l=1}\alpha_l·p(\pmb{x}_j|\pmb{\mu}_l,\sum_l)
+    }(\pmb{x}_j-\pmb{\mu}_i)=0
+    $$
+
+* 由$p_\mathcal{M}(z_j=i|\pmb{x}_j)=\frac{\alpha_i·p(\pmb{x}_j|\pmb{\mu}_i,\pmb{\sum}_i)}{\sum\limits^k_{l=1}\alpha_l·p(\pmb{x}_j|\pmb{\mu}_l,\pmb{\mathcal{\sum}}_l)}$以及, $\gamma_{ji}=p_\mathcal{M}(z_j=i|\pmb{x}_j)$, 有
+    $$
+    \pmb{\mu}_i=\frac{\sum\limits^m_{j=1}\gamma_{ji}\pmb{x}_j}{\sum\limits^m_{j=1}\gamma_{ji}}
+    $$
+    即各混合成分的均值可通过样本加权平均来估计, 样本权重是每个样本属于该成分的后验概率. 
+
+* 类似的, 由$\frac{\part LL(D)}{\part\sum_i}=0$可得
+    $$
+    \sum_\nolimits i=\frac{\sum\limits^m_{j=1}\gamma_{ji}(\pmb{x}_j-\pmb{\mu}_i)(\pmb{x}_j-\pmb{\mu}_i)^T}{\sum\limits^m_{j=1}\gamma_{ji}}
+    $$
+
+* 对于混合系数$\alpha_i$, 除了要最大化$LL(D)$, 还需满足$\alpha_i\geqslant 0$, $\sum^k_{i=1}\alpha_i=1$.
+
+* 考虑$LL(D)$的拉格朗日形式:
+    $$
+    LL(D)+\lambda\bigg(\sum^k_{i=1}\alpha_i-1\bigg)
+    $$
+    其中$\lambda$为拉格朗日乘子, 由上式对$\alpha_i$的导数为0, 有
+    $$
+    \sum^m_{j=1}\frac{p(x_j|\pmb\mu_i,\sum_i)}{\sum\limits^k_{l=1}\alpha_l·p(x_j|\pmb\mu_l,\sum_l)}+\lambda=0
+    $$
+    两边同乘以$\alpha_i$, 对所有混合成分求和可知$\lambda=-m$, 有
+    $$
+    \alpha_i=\frac{1}{m}\sum^m_{j=1}\gamma_{ji}
+    $$
+    即每个高斯成分的混合系数由样本属于该成分的平均后验概率确定.
+
+* 即上述推导即可获得高斯混合模型的EM算法: 在每步迭代中, 先根据当前参数来计算每个样本属于每个高斯成分的后验概率$\gamma_{ji}$ (E步), 再根据$\pmb{\mu}_i=\frac{\sum^m_{j=1}\gamma_{ji}\pmb{x}_j}{\sum^m_{j=1}\gamma_{ji}}$, $\sum_i=\frac{\sum^m_{j=1}\gamma_{ji}(\pmb{x}_j-\pmb{\mu}_i)(\pmb{x}_j-\pmb{\mu}_i)^T}{\sum^m_{j=1}\gamma_{ji}}$和$\alpha_i=\frac{1}{m}\sum^m_{j=1}\gamma_{ji}$更新模型参数$\{(\alpha_i,\pmb{\mu}_i,\sum_i)|1\leqslant i\leqslant k\}$ (M步).
+
+* 高斯混合聚类算法描述
+
+    ---
+
+    <b>输入:</b> 样本集$D=\{\pmb{x}_1, \pmb{x}_2, ...,\pmb{x}_m\}$;
+
+    ​          高斯混合成分个数$k$.
+
+    <b>过程:</b>
+
+    1:初始化高斯混合分布的模型参数$\{(\alpha_i,\pmb{\mu}_i,\sum_i)|1\leqslant i\leqslant k\}$
+
+    2:<b>repeat</b>
+
+    3:    <b>for</b> $j=1,2,...,m$ <b>do</b>
+
+    4:        根据$p_\mathcal{M}(z_j=i|\pmb{x}_j)$计算$\pmb{x}_j$由各混合成分生成的后验概率, 即
+
+    ​           $\gamma_{ji}=p_\mathcal{M}(z_j=i|\pmb{x}_j)(1\leqslant i\leqslant k)$
+
+    5:    <b>end for</b> 
+
+    6:    <b>for</b> $i=1,2,...,k$ <b>do</b>
+
+    7:        计算新均值向量: $\pmb{\mu}_i'=\frac{\sum^m_{j=1}\gamma_{ji}\pmb{x}_j}{\sum^m_{j=1}\gamma_{ji}}$;
+
+    8:        计算新协方差矩阵: $\sum_i'=\frac{\sum^m_{j=1}\gamma_{ji}(\pmb{x}_j-\pmb{\mu}_i')(\pmb{x}_j-\pmb{\mu}_i')^T}{\sum^m_{j=1}\gamma_{ji}}$;
+
+    9:        计算新混合系数: $\alpha_i'=\frac{\sum^m_{j=1}\gamma_{ji}}{m}$
+
+    10:   <b>end for</b>
+
+    11:   将模型参数$\{(\alpha_i,\pmb{\mu}_i,\sum_i)|1\leqslant i\leqslant k\}$ 更新为$\{(\alpha_i',\pmb{\mu}_i',\sum_i')|1\leqslant i\leqslant k\}$
+
+    12:<b>until</b> 满足停止条件
+
+    13:$C_i=\varnothing\ (1\leqslant i\leqslant k)$
+
+    14:<b>for</b> $j=1,2,...,m$ <b>do</b>
+
+    15:   根据$\lambda_j=\mathop{\arg\max}_\limits{i\in\{1,2,...,k\}}\ \gamma_{ji}$确定$\pmb{x}_j$的簇标记$\lambda_j$;
+
+    16:   将$\pmb{x}_j$划入相应的簇: $C_{\lambda_j}=C_{\lambda_j}\bigcup\{\pmb{x}_j\}$
+
+    17:<b>end for</b>
+
+    <b>输出</b>: 簇划分$C=\{C_1, C_2, ..., C_k\}$
+
+    ---
+
+    * 第3-5行EM算法的E步, 第6-11行EM算法的M步.
+    * 算法的停止条件可设置为最大迭代轮数或似然函数$LL(D)$增长很少甚至不再增长, 第14-17行根据高斯混合分布确定簇划分.
+
