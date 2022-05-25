@@ -3946,3 +3946,88 @@ $$
 
     ---
 
+## 9.6.层次聚类
+
+* 层次聚类(hierarchical clustering)试图在不同层次对数据集进行划分, 从而形成树形的聚类结构.
+
+* 数据集的划分可采用自底向上的聚合策略, 也可采用自顶向下的拆分策略.
+
+* AGNES(AGglomerative NESting)是一种采用自底向上聚合策略的层次聚类算法.
+
+    * 先将数据集中的每个样本看作一个初始聚类簇, 然后在算法运行的每一步中找出距离最近的两个聚类簇进行合并, 该过程不断重复, 直至达到预设的聚类簇个数.
+
+* AGNES的关键是如何计算聚类簇之间的距离.
+
+    * 每个簇是一个样本集合, 只需采用关于集合的某种距离即可. 
+    * 集合间的距离计算常采用豪斯多夫距离(Hausdorff distance).
+    * 给定聚类簇$C_i$与$C_j$可通过下面的式子来计算距离:
+        * 最小距离: $d_\min(C_i, C_j)=\min\limits_{\pmb{x}\in C_i, \pmb{z}\in C_j}\text{dist}(\pmb{x}, \pmb{z})$
+        * 最大距离: $d_\max(C_i, C_j)=\max\limits_{\pmb{x}\in C_i, \pmb{z}\in C_j}\text{dist}(\pmb{x}, \pmb{z})$
+        * 平均距离: $d_\text{avg}(C_i, C_j)=\frac{1}{\abs{C_i}\abs{C_j}}\sum\limits_{\pmb{x}\in C_i}\sum\limits_{\pmb{z}\in C_j}\text{dist}(\pmb{x}, \pmb{z})$
+    * 最小距离由两个簇的最近样本决定, 最大距离由两个簇的最远样本决定, 而平均距离则由两个簇的所有样本共同决定.
+    * 当聚类簇距离由$d_\min$、$d_\max$或$d_\text{avg}$计算时, AGNES 算法被相应地称为单链接(single-linkage)、全链接(complete-linkage)或均链接(average-linkage)算法.
+
+* AGNES 算法描述
+
+    ---
+
+    <b>输入:</b> 样本集$D=\{\pmb{x}_1, \pmb{x}_2, ...,\pmb{x}_m\}$;
+
+    ​          聚类簇距离度量函数$d$;
+
+    ​          聚类簇数$k$.
+
+    <b>过程:</b>
+
+    1:<b>for</b> $j=1,2,...,m$ <b>do</b>
+
+    2:    $C_j=\{\pmb{x}_j\}$
+
+    3:<b>end for</b>
+
+    4:<b>for</b> $i=1, 2, ..., m$ <b>do</b>
+
+    5:    <b>for</b> $j=i+1,...,m$ <b>do</b>
+
+    6:        $M(i,j)=d(C_i,C_j)$;
+
+    7:        $M(j,i)=M(i,j)$
+
+    8:    <b>end for</b>
+
+    9:<b>end for</b>
+
+    10:设置当前聚类簇个数: $q=m$
+
+    11:<b>while</b> $q>k$ <b>do</b>
+
+    12:   找出距离最近的两个聚类簇$C_{i^*}$和$C_{j^*}$;
+
+    13:   合并$C_{i^*}$和$C_{j^*}$: $C_{i^*}=C_{i^*}\bigcup C_{j^*}$;
+
+    14:   <b>for</b> $j=j^*+1,j^*+2,...,q$ <b>do</b>
+
+    15:       将聚类簇$C_j$重编号为$C_{j-1}$
+
+    16:   <b>end for</b>
+
+    17:   删除距离矩阵$M$的第$j^*$行与第$j^*$列;
+
+    18:   <b>for</b> $j=1,2,...,q$ <b>do</b>
+
+    19:       $M(i^*,j)=d(C_{i^*},C_j)$;
+
+    20:       $M(j,i^*)=M(i^*,j)$
+
+    21:   <b>end for</b>
+
+    22:   $q=q-1$
+
+    23:<b>end while</b>
+
+    <b>输出</b>: 簇划分$C=\{C_1, C_2, ..., C_k\}$
+
+    ---
+
+    * $d$ 通常使用$d_\min$, $d_\max$, $d_\text{avg}$.
+    * $i^*<j^*$.
