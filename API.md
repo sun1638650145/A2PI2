@@ -988,7 +988,7 @@ env.action_space
 
 #### 4.1.1.1.n
 
-随机动作的总数.|`int`
+获取动作的总数.|`int`
 
 ```python
 env.action_space.n
@@ -1012,7 +1012,15 @@ env.close()
 
 ### 4.1.3.observation_space
 
-#### 4.1.3.1.sample()
+#### 4.1.3.1.n
+
+获取状态的总数.|`int`
+
+```python
+env.observation_space.n
+```
+
+#### 4.1.3.2.sample()
 
 获取随机环境向量.|`numpy.ndarray`
 
@@ -1020,7 +1028,7 @@ env.close()
 env.observation_space.sample()
 ```
 
-#### 4.1.3.2.shape
+#### 4.1.3.3.shape
 
 可观察的环境向量的形状.|`tuple`
 
@@ -2347,6 +2355,18 @@ rs.shuffle(x)
 import numpy as np
 
 np.random.seed(seed=2021)  # None|随机种子.
+```
+
+### 9.39.19.uniform()
+
+生成均匀分布样本.|`numpy.ndarray`
+
+```python
+import numpy as np
+
+x = np.random.uniform(low=0.0,  # float(可选)|0.0|下界.
+                      high=1.0,  # float(可选)|1.0|下界.
+                      size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
 ## 9.40.ravel()
