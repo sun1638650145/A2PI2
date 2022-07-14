@@ -565,7 +565,7 @@ tensor = tf.io.read_file(filename='./img.jpg')  # str|文件路径.
 import tensorflow as tf
 from tensorflow.keras.activations import relu
 
-tensor = tf.constant([-2., -1., 0.0, 1., 2.])
+tensor = tf.constant([-2., -1., 0., 1., 2.])
 tensor = relu(x=tensor)  # tf.Tensor|输入的张量.
 ```
 
