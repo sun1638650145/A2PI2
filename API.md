@@ -3170,7 +3170,7 @@ processed_im = autocontrast(image=im)  # PIL.Image.Image|输入的图像.
 
 | 版本  | 描述                          | 注意                                                         | 适配M1 |
 | ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
-| 2.6.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
+| 2.9.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
 
 ## 12.1.第一个例子
 
@@ -3772,9 +3772,19 @@ example.my_print("Hello world")
 
 void range(const pybind11::array &array) {
     if (array.ndim() == 2 and array.dtype().kind() == 'i') {  // 判断是否是一个2D数组和元素的数据类型.
+        // 方法一
         for (int i = 0; i < array.shape(0); i ++) {
             for (int j = 0; j < array.shape(1); j ++) {
                 std::cout << *(int*)array.data(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+
+        // 方法二
+        pybind11::array_t<int> array_ = array;  // 将array转换成指定元素类型.
+        for (int i = 0; i < array_.shape(0); i ++) {
+            for (int j = 0; j < array_.shape(1); j ++) {
+                std::cout << array_.at(i, j) << " ";
             }
             std::cout << std::endl;
         }
@@ -4189,7 +4199,7 @@ print(ans64.dtype)
 
 | 版本  | 描述                          | 注意                                                         | 适配M1 |
 | ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
-| 2.6.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
+| 2.9.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
 
 ## 13.1.setup_helpers
 
