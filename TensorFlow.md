@@ -6,7 +6,7 @@
 
 | 版本  | 描述          | 注意                                                         | 适配M1 |
 | ----- | ------------- | ------------------------------------------------------------ | ------ |
-| 2.5.0 | 深度学习框架. | 1. macOS的安装方式请参考[链接](https://developer.apple.com/metal/tensorflow-plugin/). | 是     |
+| 2.9.0 | 深度学习框架. | 1. macOS的安装方式请参考[链接](https://developer.apple.com/metal/tensorflow-plugin/). | 是     |
 
 ## 1.1.clip_by_value()
 
@@ -549,7 +549,7 @@ tensor = tf.io.read_file(filename='./img.jpg')  # str|文件路径.
 
 | 版本  | 描述                         | 注意 |
 | ----- | ---------------------------- | ---- |
-| 2.5.0 | TensorFlow的高阶机器学习API. | -    |
+| 2.9.0 | TensorFlow的高阶机器学习API. | -    |
 
 ### 1.14.1.activations
 
@@ -1179,7 +1179,7 @@ CALLBACKS = [
     ModelCheckpoint(filepath,  # str or PathLike|保存的路径.
                     monitor='val_loss',  # str|'val_loss'|监控的评估值.
                     verbose=0,  # int|0|日志显示模式.
-                    period=1)  # int|1|定时保存的频率.
+                    save_freq='epoch')  # 'epoch' or int|'epoch'|定时保存的频率, 使用数字将按照批次频率保存.
 ]
 ```
 
@@ -1428,39 +1428,7 @@ layer = layers.Embedding(input_dim=128,  # int|输入的维度.
                          embeddings_regularizer=None)  # keras.regularizers|None|是否使用正则化器.
 ```
 
-#### 1.14.7.15.experimental
-
-##### 1.14.7.15.1.preprocessing
-
-###### 1.14.7.15.1.1.StringLookup()
-
-实例化词汇到索引的映射工具.
-
-```python
-from tensorflow.keras import layers
-
-vocab = ['a', 'b', 'c', 'd', 'a']
-char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # int|None|词汇表的最大范围.
-                                                          num_oov_indices=1,  # int|1|超出词汇范围使用的索引.
-                                                          vocabulary=['a', 'b', 'c'],  # list|None|词汇表.
-                                                          invert=False)  # bool|False|翻转操作.
-```
-
-###### 1.14.7.15.1.2.get_vocabulary()
-
-获取词汇表.|`list`
-
-```python
-from tensorflow.keras import layers
-
-char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,
-                                                          num_oov_indices=1,
-                                                          vocabulary=['a', 'b', 'c'],
-                                                          invert=False)
-vocab = char2num.get_vocabulary()
-```
-
-#### 1.14.7.16.Flatten()
+#### 1.14.7.15.Flatten()
 
 实例化展平层.
 
@@ -1470,7 +1438,7 @@ from tensorflow.keras import layers
 layer = layers.Flatten()
 ```
 
-#### 1.14.7.17.GlobalAveragePooling1D()
+#### 1.14.7.16.GlobalAveragePooling1D()
 
 实例化全局1D平均池化层.
 
@@ -1480,7 +1448,7 @@ from tensorflow.keras import layers
 layer = layers.GlobalAveragePooling1D()
 ```
 
-#### 1.14.7.18.GlobalMaxPooling1D()
+#### 1.14.7.17.GlobalMaxPooling1D()
 
 实例化全局1D最大池化层.
 
@@ -1490,7 +1458,7 @@ from tensorflow.keras import layers
 layer = layers.GlobalMaxPooling1D()
 ```
 
-#### 1.14.7.19.GlobalMaxPooling2D()
+#### 1.14.7.18.GlobalMaxPooling2D()
 
 实例化全局2D最大池化层.
 
@@ -1500,7 +1468,7 @@ from tensorflow.keras import layers
 layer = layers.GlobalMaxPooling2D()
 ```
 
-#### 1.14.7.20.GRU()
+#### 1.14.7.19.GRU()
 
 实例化门控循环网络层.
 
@@ -1511,7 +1479,7 @@ layer = layers.GRU(units=256,  # int|神经元的数量.
                    return_sequences=True)  # bool|False|是否返回全部序列.
 ```
 
-#### 1.14.7.21.Input()
+#### 1.14.7.20.Input()
 
 实例化输入层.
 
@@ -1523,7 +1491,7 @@ layer = layers.Input(shape=(224, 224, 3),  # tuple|输入张量的形状.
                      dtype=None)  # str|None|期望的数据类型.
 ```
 
-#### 1.14.7.22.InputLayer()
+#### 1.14.7.21.InputLayer()
 
 实例化输入层.
 
@@ -1533,7 +1501,7 @@ from tensorflow.keras import layers
 layer = layers.InputLayer(input_shape=(224, 224, 3))  # tuple|输入张量的形状.
 ```
 
-#### 1.14.7.23.Lambda()
+#### 1.14.7.22.Lambda()
 
 将一个函数封装称网络层.
 
@@ -1545,7 +1513,7 @@ layer = layers.Lambda(function=lambda x: x**2,  # lambda or function|要封装�
                       name=None)  # str|None|网络层的名称.
 ```
 
-#### 1.14.7.24.Layer()
+#### 1.14.7.23.Layer()
 
 自定义一个符合tf.keras接口的层.
 
@@ -1562,7 +1530,7 @@ class MyLayer(layers.Layer):
         return outputs
 ```
 
-##### 1.14.7.24.1.get_weights()
+##### 1.14.7.23.1.get_weights()
 
 获取当前网络层的权重.|list of `numpy.ndarray`
 
@@ -1575,7 +1543,7 @@ layer(tf.constant([[1., 2., 3.]]))
 weights = layer.get_weights()
 ```
 
-##### 1.14.7.24.2.output
+##### 1.14.7.23.2.output
 
 网络层输出张量.|`tensorflow.python.keras.engine.keras_tensor.KerasTensor`
 
@@ -1583,7 +1551,7 @@ weights = layer.get_weights()
 tensor = layer.output
 ```
 
-##### 1.14.7.24.3.trainable
+##### 1.14.7.23.3.trainable
 
 网络层在训练期间是否能更新权重.|`bool`
 
@@ -1591,7 +1559,7 @@ tensor = layer.output
 trainable = layer.trainable
 ```
 
-#### 1.14.7.25.LeakyReLU()
+#### 1.14.7.24.LeakyReLU()
 
 实例化带泄漏的ReLU层.
 
@@ -1601,7 +1569,7 @@ from tensorflow.keras import layers
 layer = layers.LeakyReLU(alpha=0.3)  # float|0.3|负斜率系数(泄漏率).
 ```
 
-#### 1.14.7.26.LSTM()
+#### 1.14.7.25.LSTM()
 
 实例化长短时记忆层.
 
@@ -1613,7 +1581,7 @@ layer = layers.LSTM(units=256,  # int|神经元的数量.
                     dropout=0.)  # float|0.|随机丢弃比例.
 ```
 
-#### 1.14.7.27.MaxPooling1D()
+#### 1.14.7.26.MaxPooling1D()
 
 实例化1D最大池化层.
 
@@ -1625,7 +1593,7 @@ layer = layers.MaxPooling1D(pool_size=2,  # int|2|池化窗口.
                             padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.28.MaxPooling2D()
+#### 1.14.7.27.MaxPooling2D()
 
 实例化2D最大池化层.
 
@@ -1637,7 +1605,7 @@ layer = layers.MaxPooling2D(pool_size=(2, 2),  # int or tuple of 2 int|(2, 2)|�
                             padding='valid')  # {'valid', 'same'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.29.ReLU()
+#### 1.14.7.28.ReLU()
 
 实例化ReLU层.
 
@@ -1647,7 +1615,7 @@ from tensorflow.keras import layers
 layer = layers.ReLU()
 ```
 
-#### 1.14.7.30.Reshape()
+#### 1.14.7.29.Reshape()
 
 实例化变形层.
 
@@ -1657,7 +1625,7 @@ from tensorflow.keras import layers
 layer = layers.Reshape(target_shape=(None, 10))  # tuple of int|目标形状.
 ```
 
-#### 1.14.7.31.SeparableConv2D()
+#### 1.14.7.30.SeparableConv2D()
 
 实例化深度可分离2D卷积层.
 
@@ -1670,7 +1638,7 @@ layer = layers.SeparableConv2D(filters=32,  # int|卷积核的数量.
                                padding='valid')  # {'valid', 'same' or 'causal'}|'valid'|填充方式.
 ```
 
-#### 1.14.7.32.SimpleRNN()
+#### 1.14.7.31.SimpleRNN()
 
 实例化循环网络层.
 
@@ -1680,6 +1648,34 @@ from tensorflow.keras import layers
 layer = layers.SimpleRNN(units=256,  # int|神经元的数量.
                          dropout=0.,  # float|0.|随机丢弃比例.
                          return_sequences=True)  # bool|False|是否返回全部序列.
+```
+
+#### 1.14.7.32.StringLookup()
+
+实例化词汇到索引的映射工具.
+
+```python
+from tensorflow.keras import layers
+
+vocab = ['a', 'b', 'c', 'd', 'a']
+char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # int|None|词汇表的最大范围.
+                                                          num_oov_indices=1,  # int|1|超出词汇范围使用的索引.
+                                                          vocabulary=['a', 'b', 'c'],  # list|None|词汇表.
+                                                          invert=False)  # bool|False|翻转操作.
+```
+
+##### 1.14.7.32.1.get_vocabulary()
+
+获取词汇表.|`list`
+
+```python
+from tensorflow.keras import layers
+
+char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,
+                                                          num_oov_indices=1,
+                                                          vocabulary=['a', 'b', 'c'],
+                                                          invert=False)
+vocab = char2num.get_vocabulary()
 ```
 
 #### 1.14.7.33.TimeDistributed()
