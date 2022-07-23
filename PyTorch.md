@@ -747,13 +747,55 @@ tensor = ToTensor()(pic=arr)  # PIL Image or numpy.ndarray|要转换的图像.
 
 | 版本  | 描述                             | 注意 | 适配M1 |
 | ----- | -------------------------------- | ---- | ------ |
-| 1.5.0 | Torch的强化学习Stable Baselines. | -    | 是     |
+| 1.6.0 | Torch的强化学习Stable Baselines. | -    | 是     |
 
-## 3.1.common
+## 3.1.A2C()
 
-### 3.1.1.env_util
+实例化优势动作评价算法.
 
-#### 3.1.1.1.make_vec_env()
+```python
+from stable_baselines3 import A2C
+
+
+model = A2C(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
+            env=env,  # gym.env|Gym环境.
+            learning_rate=7e-4,  # float|7e-4|学习率.
+            n_steps=5,  # int|5|每轮环境的时间步数.
+            gamma=0.99,  # float|0.99|折扣系数.
+            gae_lambda=1.0,  # float|1.0|广义优势估计器的偏差与方差权衡因子.
+            ent_coef=0.0,  # float|0.0|损失计算的熵系数.
+            vf_coef=0.5,  # float|0.5|损失计算的价值函数系数.
+            max_grad_norm=0.5,  # float|0.5|梯度标准化的最大值.
+            use_rms_prop=True,  # bool|True|是否使用RMSprop或Adam作为优化器.
+            use_sde=False,  # bool|False|是否使用广义状态依赖探索(gSDE)而不是动作噪声探索.
+            normalize_advantage=False,  # bool|False|是否标准化优势.
+            tensorboard_log=None,  # str|None|日志的保存位置.
+            policy_kwargs=dict(log_std_init=2,  # dict|None|用于创建策略的其他参数.
+                               ortho_init=False),
+            verbose=1)  # {0, 1, 2}|0|日志显示模式.
+```
+
+### 3.1.1.learn()
+
+训练模型.
+
+```python
+model.learn(total_timesteps=2000000)  # int|训练步数.
+```
+
+### 3.1.3.save()
+
+保存模型到zip文件.
+
+```python
+model.save(path='./a2c-AntBulletEnv-v0')  # str|文件名.
+```
+
+## 3.2.common
+
+### 3.2.1.env_util
+
+#### 3.2.1.1.make_vec_env()
 
 创建一组并行环境.|`stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv`
 
@@ -764,9 +806,9 @@ envs = make_vec_env(env_id='LunarLander-v2',  # str|环境id.
                     n_envs=16)  # int|1|并行的环境数量.
 ```
 
-### 3.1.2.evaluation
+### 3.2.2.evaluation
 
-#### 3.1.2.1.evaluate_policy()
+#### 3.2.2.1.evaluate_policy()
 
 评估模型并返回平均奖励.|`tuple`
 
@@ -779,9 +821,9 @@ mean_reward, std_reward = evaluate_policy(model=model,  # base_class.BaseAlgorit
                                           deterministic=True)  # bool|True|使用确定动作还是随机动作.
 ```
 
-### 3.1.3.vec_env
+### 3.2.3.vec_env
 
-#### 3.1.3.1.DummyVecEnv()
+#### 3.2.3.1.DummyVecEnv()
 
 创建向量化环境包装器, Python进程将逐一调用.|`stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv`
 
@@ -792,14 +834,45 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 eval_env = DummyVecEnv(env_fns=[lambda: gym.make('LunarLander-v2')])  # list of functions|环境生成函数列表.
 ```
 
-## 3.2.PPO()
+#### 3.2.3.2.VecNormalize()
+
+并行环境的滑动平均、标准化装饰器.|`stable_baselines3.common.vec_env.vec_normalize.VecNormalize`
+
+```python
+from stable_baselines3.common.vec_env import VecNormalize
+
+env = VecNormalize(venv=env,  # VecEnv|并行环境.
+                   training=True,  # bool|True|是否更新滑动平均.
+                   norm_obs=True,  # bool|True|是否标准化可观察空间.
+                   norm_reward=True,  # bool|True|是否标准化奖罚.
+                   clip_obs=10.0)  # float|10.0|可观察空间的最大值.
+```
+
+##### 3.2.3.2.1.load()
+
+加载环境.|`stable_baselines3.common.vec_env.vec_normalize.VecNormalize`
+
+```python
+env = VecNormalize.load(load_path='./vec.pkl',  # str|文件名.
+                        venv=env)  # VecEnv|并行环境.
+```
+
+##### 3.2.3.2.2.save()
+
+保存环境到pickle文件.
+
+```python
+env.save(save_path='./vec.pkl')  # str|文件名.
+```
+
+## 3.3.PPO()
 
 实例化近端策略算法.
 
 ```python
 model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
             env=envs,  # gym.env|Gym环境.
-            n_steps=1024,  # int|2048|每次更新为每个环境的时间步数.
+            n_steps=1024,  # int|2048|每轮环境的时间步数.
             batch_size=64,  # int|64|批次大小.
             n_epochs=4,  # int|10|优化代理损失的轮数.
             gamma=0.999,  # float|0.99|折扣系数.
@@ -808,7 +881,7 @@ model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
             verbose=1)  # {0, 1, 2}|0|日志显示模式.
 ```
 
-### 3.2.1.learn()
+### 3.3.1.learn()
 
 训练模型.
 
@@ -816,7 +889,7 @@ model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
 model.learn(total_timesteps=200000)  # int|训练步数.
 ```
 
-### 3.2.2.load()
+### 3.3.2.load()
 
 加载模型.|`stable_baselines3.ppo.ppo.PPO`
 
@@ -825,7 +898,7 @@ model = PPO.load(path='ppo-LunarLander-v2',  # str|文件名.
                  print_system_info=True)  # bool|False|打印保存模型的系统信息和当前的系统信息.
 ```
 
-### 3.2.3.save()
+### 3.3.3.save()
 
 保存模型到zip文件.
 
