@@ -110,13 +110,114 @@ model = CatBoostRegressor(iterations=None,  # int|500|最大的决策树数量.
                           cat_features=None)  # list or numpy.ndarray|None|类别的索引列.
 ```
 
-# 2.cv2
+# 2.coremltools
+
+| 版本  | 描述                             | 注意 | 适配M1 |
+| ----- | -------------------------------- | ---- | ------ |
+| 6.0b2 | 将机器学习模型转换成Core ML格式. | -    | 是     |
+
+## 2.1.ClassifierConfig()
+
+实例化Core ML中分类器模型配置类.
+
+```python
+import coremltools as ct
+
+class_labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+classifier_config = ct.ClassifierConfig(class_labels=class_labels)  # list of str|分类器标签.
+```
+
+## 2.2.convert()
+
+转换模型.|`coremltools.models.model.MLModel`
+
+```python
+import coremltools as ct
+
+model = ct.convert(model=keras_model,  # tf.keras.Model(), torch.nn.Module()|TensorFlow或者PyTorch模型.
+                   inputs=[image_input],  # list of ImageType|None|输入数据配置对象.
+                   classifier_config=classifier_config)  # ClassifierConfig(可选)|None|分类器配置对象.
+```
+
+## 2.3.ImageType()
+
+实例化Core ML中用于图像输入的配置类.
+
+```python
+import coremltools as ct
+
+image_input = ct.ImageType(shape=(1, 28, 28, 1),  # list, tuple|None|输入的有效形状.
+                           color_layout='G',  # {'RGB', 'BGR', 'G'}|'RGB'|图像的色彩模式.
+                           channel_first=False)  # bool|None|色彩通道优先.
+```
+
+## 2.4.models
+
+### 2.4.1.MLModel()
+
+#### 2.4.1.1.author
+
+模型作者元数据.|`str`
+
+```python
+model.author = 'Steve R. Sun'
+```
+
+#### 2.4.1.2.input_description
+
+模型输入信息元数据.|`coremltools.models.model._FeatureDescription`
+
+```python
+model.input_description['flatten_input'] = '上传灰度图进行分类.'
+```
+
+#### 2.4.1.3.license
+
+模型开源协议元数据.|`str`
+
+```python
+model.license = 'Apache License 2.0'
+```
+
+#### 2.4.1.4.output_description
+
+模型输出信息元数据.|`coremltools.models.model._FeatureDescription`
+
+```python
+model.output_description['classLabel'] = '分类结果的标签.'
+```
+
+#### 2.4.1.5.save()
+
+保存模型.
+
+```python
+model.save(filename='./tf_model.mlpackage')  # str or pathlib.Path|文件路径.
+```
+
+#### 2.4.1.6.short_description
+
+模型描述信息元数据.|`str`
+
+```python
+model.short_description = 'MNIST手写数字分类器(使用TensorFlow 2.X).'
+```
+
+#### 2.4.1.7.version
+
+模型版本信息元数据.|`str`
+
+```python
+model.version = '1.0'
+```
+
+# 3.cv2
 
 | 版本  | 描述            | 注意                                                         | 适配M1 |
 | ----- | --------------- | ------------------------------------------------------------ | ------ |
 | 4.5.0 | 图像处理软件库. | 1. M1目前需要使用conda安装, 使用conda install opencv                                                                                   2. OpenCV的图片格式是HWC, TensorFlow的是WHC.                                                                                          3. Intel-based Mac安装时使用pip install opencv-python | 是     |
 
-## 2.1.imread()
+## 3.1.imread()
 
 加载指定路径的图片.|`numpy.ndarray`
 
@@ -127,7 +228,7 @@ image = cv2.imread(filename='./image.png',  # str|要加载的文件的路径.
                    flags=2)  # int|None|读入的色彩方式.
 ```
 
-## 2.2.resize()
+## 3.2.resize()
 
 将图像调整到指定大小.|`numpy.ndarray`
 
@@ -139,13 +240,13 @@ image = cv2.resize(src=image,  # numpy.ndarray|输入的图像.
                    dsize=(2000, 1000))  # tuple|修改后图像的尺寸.
 ```
 
-# 3.Eigen
+# 4.Eigen
 
 | 版本  | 描述               | 注意                                                         | 适配M1 |
 | ----- | ------------------ | ------------------------------------------------------------ | ------ |
 | 3.4.0 | C++线性代数模版库. | 1. 在ubuntu 16.04下请使用源码安装, apt的最高版本是3.3beta0, 存在BUG. | 是     |
 
-## 3.1.ArrayXd
+## 4.1.ArrayXd
 
 实例化一维(双精度)动态数组.
 
@@ -163,7 +264,7 @@ int main() {
 }
 ```
 
-## 3.2.ArrayXXd
+## 4.2.ArrayXXd
 
 实例化二维(双精度)动态数组.
 
@@ -181,7 +282,7 @@ int main() {
 }
 ```
 
-### 3.2.1.exp()
+### 4.2.1.exp()
 
 逐元素计算e的幂次.
 
@@ -199,7 +300,7 @@ int main() {
 }
 ```
 
-### 3.2.2.log()
+### 4.2.2.log()
 
 逐元素计算自然对数.
 
@@ -217,7 +318,7 @@ int main() {
 }
 ```
 
-### 3.2.3.pow()
+### 4.2.3.pow()
 
 逐元素计算指定的幂次.
 
@@ -235,7 +336,7 @@ int main() {
 }
 ```
 
-### 3.2.4.tanh()
+### 4.2.4.tanh()
 
 逐元素计算双曲正切.
 
@@ -253,7 +354,7 @@ int main() {
 }
 ```
 
-## 3.3.BDCSVD<>
+## 4.3.BDCSVD<>
 
 实例化对角分治SVD.
 
@@ -272,7 +373,7 @@ int main() {
 }
 ```
 
-### 3.3.1.compute()
+### 4.3.1.compute()
 
 对要分解的矩阵进行计算.
 
@@ -289,7 +390,7 @@ int main() {
 }
 ```
 
-### 3.3.2.matrixU()
+### 4.3.2.matrixU()
 
 获取U矩阵(左奇异向量).
 
@@ -308,7 +409,7 @@ int main() {
 }
 ```
 
-### 3.3.3.matrixV()
+### 4.3.3.matrixV()
 
 获取V矩阵(右奇异向量).
 
@@ -327,7 +428,7 @@ int main() {
 }
 ```
 
-### 3.3.4.singularValues()
+### 4.3.4.singularValues()
 
 获取奇异值向量(按照降序排序).
 
@@ -346,7 +447,7 @@ int main() {
 }
 ```
 
-## 3.4.Map<>
+## 4.4.Map<>
 
 映射到现有的矩阵或向量.
 
@@ -368,7 +469,7 @@ int main() {
 }
 ```
 
-## 3.5.Matrix<>
+## 4.5.Matrix<>
 
 实例化矩阵.
 
@@ -387,7 +488,7 @@ int main() {
 }
 ```
 
-## 3.6.MatrixXd
+## 4.6.MatrixXd
 
 实例化(双精度)动态矩阵.
 
@@ -405,7 +506,7 @@ int main() {
 }
 ```
 
-### 3.6.1.abs()
+### 4.6.1.abs()
 
 将矩阵元素执行逐元素求绝对值.
 
@@ -423,7 +524,7 @@ int main() {
 }
 ```
 
-### 3.6.2.adjoint()
+### 4.6.2.adjoint()
 
 获取矩阵的伴随(共轭转置)矩阵.
 
@@ -441,7 +542,7 @@ int main() {
 }
 ```
 
-### 3.6.3.array()
+### 4.6.3.array()
 
 将矩阵修饰成数组, 便于执行逐元素的操作.
 
@@ -467,7 +568,7 @@ int main() {
 }
 ```
 
-### 3.6.4.block()
+### 4.6.4.block()
 
 对矩阵进行块操作(从起始的`row`和`col`进行切片块大小为`rows`和`cols`的矩阵).
 
@@ -488,7 +589,7 @@ int main() {
 }
 ```
 
-### 3.6.5.cols()
+### 4.6.5.cols()
 
 获取矩阵的列数.
 
@@ -506,7 +607,7 @@ int main() {
 }
 ```
 
-### 3.6.6.colwise()
+### 4.6.6.colwise()
 
 将矩阵修饰成多个向量, 对矩阵进行逐列操作.
 
@@ -524,7 +625,7 @@ int main() {
 }
 ```
 
-### 3.6.7.data()
+### 4.6.7.data()
 
 获取矩阵首地址的指针.
 
@@ -542,7 +643,7 @@ int main() {
 }
 ```
 
-### 3.6.8.inverse()
+### 4.6.8.inverse()
 
 获取矩阵的逆矩阵.
 
@@ -560,7 +661,7 @@ int main() {
 }
 ```
 
-### 3.6.9.maxCoeff()
+### 4.6.9.maxCoeff()
 
 获取矩阵元素的最大值和对应的下标.
 
@@ -582,7 +683,7 @@ int main() {
 }
 ```
 
-### 3.6.10.minCoeff()
+### 4.6.10.minCoeff()
 
 获取矩阵元素的最小值和对应的下标.
 
@@ -604,7 +705,7 @@ int main() {
 }
 ```
 
-### 3.6.11.norm()
+### 4.6.11.norm()
 
 计算矩阵的L2范数.
 
@@ -622,7 +723,7 @@ int main() {
 }
 ```
 
-### 3.6.12.Random
+### 4.6.12.Random
 
 实例化(双精度)均匀分布的随机矩阵.
 
@@ -639,7 +740,7 @@ int main() {
 }
 ```
 
-### 3.6.13.reshaped()
+### 4.6.13.reshaped()
 
 改变矩阵的形状.
 
@@ -657,7 +758,7 @@ int main() {
 }
 ```
 
-### 3.6.14.resize()
+### 4.6.14.resize()
 
 原地改变矩阵的形状.
 
@@ -677,7 +778,7 @@ int main() {
 }
 ```
 
-### 3.6.15.row()
+### 4.6.15.row()
 
 获取矩阵的某行.
 
@@ -695,7 +796,7 @@ int main() {
 }
 ```
 
-### 3.6.16.rows()
+### 4.6.16.rows()
 
 获取矩阵的行数.
 
@@ -713,7 +814,7 @@ int main() {
 }
 ```
 
-### 3.6.17.rowwise()
+### 4.6.17.rowwise()
 
 将矩阵修饰成多个向量, 对矩阵进行逐行操作.
 
@@ -731,7 +832,7 @@ int main() {
 }
 ```
 
-### 3.6.18.setZero()
+### 4.6.18.setZero()
 
 将矩阵的全部元素设置为0.
 
@@ -749,7 +850,7 @@ int main() {
 }
 ```
 
-### 3.6.19.size()
+### 4.6.19.size()
 
 获取矩阵的元素总数.
 
@@ -767,7 +868,7 @@ int main() {
 }
 ```
 
-### 3.6.20.sum()
+### 4.6.20.sum()
 
 计算矩阵的元素和.
 
@@ -785,7 +886,7 @@ int main() {
 }
 ```
 
-### 3.6.21.transpose()
+### 4.6.21.transpose()
 
 获取矩阵的转置矩阵.
 
@@ -803,7 +904,7 @@ int main() {
 }
 ```
 
-### 3.6.22.Zero()
+### 4.6.22.Zero()
 
 实例化一个全零矩阵.
 
@@ -820,7 +921,7 @@ int main() {
 }
 ```
 
-#### 3.6.22.1.unaryExpr()
+#### 4.6.22.1.unaryExpr()
 
 接收一个函数对矩阵进行逐元素的操作.
 
@@ -843,7 +944,7 @@ int main() {
 }
 ```
 
-## 3.7.RowVectorXd
+## 4.7.RowVectorXd
 
 实例化(双精度)动态行向量.
 
@@ -861,7 +962,7 @@ int main() {
 }
 ```
 
-### 3.7.1.size()
+### 4.7.1.size()
 
 获取行向量的元素总数.
 
@@ -879,7 +980,7 @@ int main() {
 }
 ```
 
-## 3.8.RowVectorXi
+## 4.8.RowVectorXi
 
 实例化一个行向量(整型).
 
@@ -897,7 +998,7 @@ int main() {
 }
 ```
 
-### 3.8.1.size()
+### 4.8.1.size()
 
 获取行向量的元素总数.
 
@@ -915,7 +1016,7 @@ int main() {
 }
 ```
 
-## 3.9.VectorXd
+## 4.9.VectorXd
 
 实例化(双精度)列态行向量.
 
@@ -933,7 +1034,7 @@ int main() {
 }
 ```
 
-### 3.9.1.asDiagonal()
+### 4.9.1.asDiagonal()
 
 将向量转换对角阵.
 
@@ -952,7 +1053,7 @@ int main() {
 }
 ```
 
-## 3.10. 对矩阵进行切片
+## 4.10.对矩阵进行切片
 
 ```c++
 #include <iostream>
@@ -970,15 +1071,15 @@ int main() {
 }
 ```
 
-# 4.gym
+# 5.gym
 
 | 版本   | 描述                        | 注意 | 适配M1 |
 | ------ | --------------------------- | ---- | ------ |
 | 0.21.0 | 用于强化学习环境的通用 API. | -    | 是     |
 
-## 4.1.Env()
+## 5.1.Env()
 
-### 4.1.1.action_space
+### 5.1.1.action_space
 
 全部的有效动作.|`gym.spaces.discrete.Discrete`
 
@@ -986,7 +1087,7 @@ int main() {
 env.action_space
 ```
 
-#### 4.1.1.1.n
+#### 5.1.1.1.n
 
 获取动作的总数.|`int`
 
@@ -994,7 +1095,7 @@ env.action_space
 env.action_space.n
 ```
 
-#### 4.1.1.2.sample()
+#### 5.1.1.2.sample()
 
 获取随机动作.|`int`
 
@@ -1002,7 +1103,7 @@ env.action_space.n
 action = env.action_space.sample()
 ```
 
-### 4.1.2.close()
+### 5.1.2.close()
 
 清理环境.
 
@@ -1010,9 +1111,9 @@ action = env.action_space.sample()
 env.close()
 ```
 
-### 4.1.3.observation_space
+### 5.1.3.observation_space
 
-#### 4.1.3.1.n
+#### 5.1.3.1.n
 
 获取状态的总数.|`int`
 
@@ -1020,7 +1121,7 @@ env.close()
 env.observation_space.n
 ```
 
-#### 4.1.3.2.sample()
+#### 5.1.3.2.sample()
 
 获取随机环境向量.|`numpy.ndarray`
 
@@ -1028,7 +1129,7 @@ env.observation_space.n
 env.observation_space.sample()
 ```
 
-#### 4.1.3.3.shape
+#### 5.1.3.3.shape
 
 可观察的环境向量的形状.|`tuple`
 
@@ -1036,7 +1137,7 @@ env.observation_space.sample()
 env.observation_space.shape
 ```
 
-### 4.1.4.render()
+### 5.1.4.render()
 
 渲染环境.
 
@@ -1044,7 +1145,7 @@ env.observation_space.shape
 env.render()
 ```
 
-### 4.1.5.reset()
+### 5.1.5.reset()
 
 重置环境.|`numpy.ndarray`
 
@@ -1052,7 +1153,7 @@ env.render()
 observation = env.reset()
 ```
 
-### 4.1.6.step()
+### 5.1.6.step()
 
 执行动作.|`numpy.ndarray`, `int`, `bool`和`dict`
 
@@ -1060,7 +1161,7 @@ observation = env.reset()
 observation, reward, done, info = env.step(action=action)  # int|动作.
 ```
 
-## 4.2.make()
+## 5.2.make()
 
 创建一个环境.|`gym.wrappers.time_limit.TimeLimit`
 
@@ -1070,13 +1171,13 @@ import gym
 env = gym.make(id='CartPole-v0')  # str|环境id.
 ```
 
-# 5.h5py
+# 6.h5py
 
 | 版本  | 描述                  | 注意                        | 适配M1 |
 | ----- | --------------------- | --------------------------- | ------ |
 | 3.1.0 | HDF5的Python操作接口. | 1. M1目前需要使用conda安装. | 是     |
 
-## 5.1.File()
+## 6.1.File()
 
 创建一个文件对象.|`h5py._hl.files.File`
 
@@ -1087,7 +1188,7 @@ fp = h5py.File(name='./file.h5',  # str or file-like object|硬盘上的文件�
                mode='w')  # {'r', 'r+', 'w', 'w- or x', 'a'}|模式.
 ```
 
-### 5.1.1.attrs[]
+### 6.1.1.attrs[]
 
 添加到文件对象的属性.
 
@@ -1100,7 +1201,7 @@ fp.attrs['a'] = 1
 print(fp.attrs['a'])
 ```
 
-### 5.1.2.close()
+### 6.1.2.close()
 
 关闭文件对象.
 
@@ -1111,7 +1212,7 @@ fp = h5py.File('./file.h5', 'w')
 fp.close()
 ```
 
-### 5.1.3.create_dataset()
+### 6.1.3.create_dataset()
 
 创建新的HDF5数据集.|`h5py._hl.dataset.Dataset`
 
@@ -1123,7 +1224,7 @@ dataset = fp.create_dataset(name='dataset',  # str|数据集的名称.
                             dtype=float)  # Numpy Dtype or str|数据集元素的类型.
 ```
 
-### 5.1.4.create_group()
+### 6.1.4.create_group()
 
 创建新的HDF5组.|`h5py._hl.group.Group`
 
@@ -1134,13 +1235,13 @@ fp = h5py.File(name='./file.h5', mode='w')
 group = fp.create_group(name='group')  # str|组的名称.
 ```
 
-# 6.imageio
+# 7.imageio
 
 | 版本  | 描述            | 注意 | 适配M1 |
 | ----- | --------------- | ---- | ------ |
 | 2.9.0 | 图像处理软件库. | -    | 是     |
 
-## 6.1.imread()
+## 7.1.imread()
 
 加载指定路径的图片.|`imageio.core.util.Array`
 
@@ -1150,13 +1251,13 @@ import imageio
 image = imageio.imread(uri='./image.jpg')  # str or pathlib.Path or bytes or file|要加载的文件的路径.
 ```
 
-# 7.lightgbm
+# 8.lightgbm
 
 | 版本  | 描述                  | 注意                                                         | 适配M1 |
 | ----- | --------------------- | ------------------------------------------------------------ | ------ |
 | 3.1.1 | 基于树的梯度提升框架. | 1. M1目前需要使用conda安装.                                                                                                                           2. 可直接在sklearn使用.                                                                                                                                       3. Intel-based Mac需要先使用brew安装libomp | 是     |
 
-## 7.1.LGBMClassifier()
+## 8.1.LGBMClassifier()
 
 实例化LGBM分类器.
 
@@ -1169,7 +1270,7 @@ model = LGBMClassifier(boosting_type='gbdt',  # {'gbdt', 'dart', 'goss', 'rf'}(�
                        n_estimators=100)  # int(可选)|100|树的数量.
 ```
 
-### 7.1.1.fit()
+### 8.1.1.fit()
 
 训练LGBM分类器.|`self`
 
@@ -1179,7 +1280,7 @@ model.fit(X,  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|�
           eval_set)  # list of (X, y) tuple(可选)|None|验证集元组列表.
 ```
 
-### 7.1.2.predict()
+### 8.1.2.predict()
 
 使用LGBM分类器进行预测.|`numpy.ndarray`
 
@@ -1187,19 +1288,19 @@ model.fit(X,  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|�
 y_preds = model.predict(X)  # array-like or 形状为[n_samples, n_features]的稀疏矩阵|用于预测的数据.
 ```
 
-# 8.matplotlib
+# 9.matplotlib
 
 | 版本  | 描述          | 注意 | 适配M1 |
 | ----- | ------------- | ---- | ------ |
 | 3.3.2 | Python绘图库. | -    | 是     |
 
-## 8.1.axes
+## 9.1.axes
 
 | 版本 | 描述                                              | 注意 |
 | ---- | ------------------------------------------------- | ---- |
 | -    | axes是matplotlib的图形接口, 提供设置坐标系的功能. | -    |
 
-### 8.1.1.add_patch()
+### 9.1.1.add_patch()
 
 添加元素.
 
@@ -1212,7 +1313,7 @@ axes.add_patch(p=plt.Rectangle((0, 0), width=0.5, height=0.5))
 plt.show()
 ```
 
-### 8.1.2.annotate()
+### 9.1.2.annotate()
 
 为坐标点进行注释.
 
@@ -1234,7 +1335,7 @@ ax.annotate(text='annotate',  # str|注释的内容.
 plt.show()
 ```
 
-### 8.1.3.axis()
+### 9.1.3.axis()
 
 坐标轴的设置选项.
 
@@ -1245,7 +1346,7 @@ ax = plt.subplot()
 ax.axis('off')
 ```
 
-### 8.1.4.clabel()
+### 9.1.4.clabel()
 
 在等高线上显示高度.
 
@@ -1263,7 +1364,7 @@ ax.clabel(cs)
 plt.show()
 ```
 
-### 8.1.5.contour()
+### 9.1.5.contour()
 
 绘制等高线.|`matplotlib.contour.QuadContourSet`
 
@@ -1285,7 +1386,7 @@ cs = ax.contour(X,  # array-like|横坐标.
 plt.show()
 ```
 
-### 8.1.6.grid()
+### 9.1.6.grid()
 
 绘制网格线.
 
@@ -1299,7 +1400,7 @@ ax.grid(axis='x',  # {'both', 'x', 'y'}(可选)|'both'|绘制的范围.
 plt.show()
 ```
 
-### 8.1.7.legend()
+### 9.1.7.legend()
 
 放置图例.
 
@@ -1312,13 +1413,13 @@ ax.legend(loc='center')  # {'upper right', 'upper left', 'lower left', 'lower ri
 plt.show()
 ```
 
-### 8.1.8.patch
+### 9.1.8.patch
 
 | 版本 | 描述                                   | 注意 |
 | ---- | -------------------------------------- | ---- |
 | -    | patches是画布颜色和边框颜色的控制接口. | -    |
 
-#### 8.1.8.1.set_alpha()
+#### 9.1.8.1.set_alpha()
 
 设置画布的透明度.
 
@@ -1332,7 +1433,7 @@ ax.patch.set_facecolor('green')
 plt.show()
 ```
 
-#### 8.1.8.2.set_facecolor()
+#### 9.1.8.2.set_facecolor()
 
 设置画布的颜色.
 
@@ -1346,7 +1447,7 @@ ax.patch.set_facecolor(color='green')  # str|颜色.
 plt.show()
 ```
 
-### 8.1.9.set_title()
+### 9.1.9.set_title()
 
 设置标题.
 
@@ -1359,7 +1460,7 @@ ax.set_title('this is title')
 plt.show()
 ```
 
-### 8.1.10.set_xlabel()
+### 9.1.10.set_xlabel()
 
 设置x轴的内容.
 
@@ -1372,7 +1473,7 @@ ax.set_xlabel(xlabel='this is x label')  # str|文本内容.
 plt.show()
 ```
 
-### 8.1.11.set_xticks()
+### 9.1.11.set_xticks()
 
 设置x轴的刻度.
 
@@ -1385,7 +1486,7 @@ ax.set_xticks(ticks=[1, 2, 3, 4])  # list(空列表就表示不显示刻度)|刻
 plt.show()
 ```
 
-### 8.1.12.set_yticks()
+### 9.1.12.set_yticks()
 
 设置y轴的刻度.
 
@@ -1398,13 +1499,13 @@ ax.set_yticks(ticks=[1, 2, 3, 4])  # list(空列表就表示不显示刻度)|刻
 plt.show()
 ```
 
-###  8.1.13.spines
+###  9.1.13.spines
 
 | 版本 | 描述                          | 注意 |
 | ---- | ----------------------------- | ---- |
 | -    | 画布的边框, 包括上下左右四个. | -    |
 
-#### 8.1.13.1.set_color()
+#### 9.1.13.1.set_color()
 
 设置画布边框的颜色.
 
@@ -1420,7 +1521,7 @@ ax.spines['bottom'].set_color(c='green')
 plt.show()
 ```
 
-### 8.1.14.text()
+### 9.1.14.text()
 
 给点添加文本.|`matplotlib.text.Text`
 
@@ -1435,13 +1536,13 @@ ax.text(x=0.5,  # float|注释点的x坐标.
 plt.show()
 ```
 
-## 8.2.pyplot
+## 9.2.pyplot
 
 | 版本 | 描述                                                         | 注意 |
 | ---- | ------------------------------------------------------------ | ---- |
 | -    | pyplot是matplotlib的state-based接口, 主要用于简单的交互式绘图和程序化绘图. | -    |
 
-### 8.2.1.axis()
+### 9.2.1.axis()
 
 设置坐标轴.
 
@@ -1455,7 +1556,7 @@ plt.axis([xmin, xmax, ymin, ymax])
 plt.show()
 ```
 
-### 8.2.2.barh()
+### 9.2.2.barh()
 
 绘制水平方向的条形图.
 
@@ -1469,7 +1570,7 @@ plt.barh(y=['No.1', 'No.2', 'No.3', 'No.4'],  # float或者array-like|条形图�
 plt.show()
 ```
 
-### 8.2.3.clabel()
+### 9.2.3.clabel()
 
 在等高线上显示高度.
 
@@ -1486,7 +1587,7 @@ plt.clabel(cs)  # matplotlib.contour.QuadContourSet|等高线标签.
 plt.show()
 ```
 
-### 8.2.4.colorbar()
+### 9.2.4.colorbar()
 
 显示色彩条.|`matplotlib.colorbar.Colorbar`
 
@@ -1500,7 +1601,7 @@ plt.colorbar()
 plt.show()
 ```
 
-### 8.2.5.figure()
+### 9.2.5.figure()
 
 创建画布.|`matplotlib.figure.Figure`
 
@@ -1510,7 +1611,7 @@ import matplotlib.pyplot as plt
 figure = plt.figure(figsize=(5, 5))  # (float, float)(可选)|(6.4, 4.8)|画布的尺寸.
 ```
 
-### 8.2.6.imread()
+### 9.2.6.imread()
 
 加载指定路径的图片.|`numpy.ndarray`
 
@@ -1520,7 +1621,7 @@ import matplotlib.pyplot as plt
 image = plt.imread(fname='./image.jpg')  # str or file-like|要加载的文件的路径.
 ```
 
-### 8.2.7.imshow()
+### 9.2.7.imshow()
 
 将图片数组在画布上显示.|`matplotlib.image.AxesImage`
 
@@ -1534,7 +1635,7 @@ plt.imshow(X=image,  # array-like or PIL image|希望显示的图像数据.
 plt.show()
 ```
 
-### 8.2.8.matshow()
+### 9.2.8.matshow()
 
 将矩阵绘制成图像.
 
@@ -1547,7 +1648,7 @@ plt.matshow(A=mat)  # array-like(M, N)|要绘制的矩阵.
 plt.show()
 ```
 
-### 8.2.9.pcolormesh()
+### 9.2.9.pcolormesh()
 
 使用非规则的矩形创建网格背景图.
 
@@ -1568,7 +1669,7 @@ plt.pcolormesh(X,  # array-like|横坐标.
 plt.show()
 ```
 
-### 8.2.10.plot()
+### 9.2.10.plot()
 
 绘制函数图像.
 
@@ -1583,7 +1684,7 @@ plt.plot(x, y)  # 1D array-like|函数的变量.
 plt.show()
 ```
 
-### 8.2.11.Rectangle()
+### 9.2.11.Rectangle()
 
 实例化矩阵.
 
@@ -1598,7 +1699,7 @@ axes.add_patch(plt.Rectangle(xy=(0, 0),  # (float, float)|锚点.
 plt.show()
 ```
 
-### 8.2.12.rcParams[]
+### 9.2.12.rcParams[]
 
 实例化配置文件实例.
 
@@ -1608,7 +1709,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = 'Arial Unicode MS'  # 默认字体
 ```
 
-### 8.2.13.savefig()
+### 9.2.13.savefig()
 
 保存当前的画布.
 
@@ -1618,7 +1719,7 @@ import matplotlib.pyplot as plt
 plt.savefig(fname)  # str or path-like or file-like A path|要加载的文件的路径.
 ```
 
-### 8.2.14.semilogx()
+### 9.2.14.semilogx()
 
 在x轴上绘制对数缩放的图.
 
@@ -1630,7 +1731,7 @@ plt.semilogx(range(1, 6), range(1, 6))
 plt.show()
 ```
 
-### 8.2.15.scatter()
+### 9.2.15.scatter()
 
 绘制散点图.
 
@@ -1650,7 +1751,7 @@ plt.scatter(x=x,  # float or array-like 形状必须是(n, )|x坐标.
 plt.show()
 ```
 
-### 8.2.16.show()
+### 9.2.16.show()
 
 显示画布.
 
@@ -1665,7 +1766,7 @@ plt.plot(x, y)
 plt.show()
 ```
 
-### 8.2.17.subplot()
+### 9.2.17.subplot()
 
 在当前画布上创建子图.|`matplotlib.axes._subplots.AxesSubplot`
 
@@ -1675,7 +1776,7 @@ import matplotlib.pyplot as plt
 axes = plt.subplot()
 ```
 
-### 8.2.18.subplots()
+### 9.2.18.subplots()
 
 同时创建画布和一组子图.|`matplotlib.figure.Figure`和`array of matplotlib.axes._subplots.AxesSubplot`
 
@@ -1687,7 +1788,7 @@ figure, axes = plt.subplots(nrows=4,  # int|1|子图数量的行数.
                             figsize=(10, 10))  # tuple(list) of int|画布的大小.
 ```
 
-### 8.2.19.subplots_adjust()
+### 9.2.19.subplots_adjust()
 
 调整子图布局.
 
@@ -1702,7 +1803,7 @@ plt.subplots_adjust(left=0.125,  # float(可选)|None|子图左边框距离画�
                     hspace=0.2)  # float(可选)|None|两张子图之间的上下间隔.
 ```
 
-### 8.2.20.tight_layout()
+### 9.2.20.tight_layout()
 
 自动调整子图布局.
 
@@ -1712,7 +1813,7 @@ import matplotlib.pyplot as plt
 plt.tight_layout()
 ```
 
-### 8.2.21.title()
+### 9.2.21.title()
 
 设置标题.
 
@@ -1724,7 +1825,7 @@ plt.title(label='this is title')  # str|文本内容.
 plt.show()
 ```
 
-### 8.2.22.xlabel()
+### 9.2.22.xlabel()
 
 设置x轴的内容.
 
@@ -1736,7 +1837,7 @@ plt.xlabel(xlabel='x')  # str|文本内容.
 plt.show()
 ```
 
-### 8.2.23.xlim()
+### 9.2.23.xlim()
 
 设置x轴的显示范围.
 
@@ -1748,7 +1849,7 @@ plt.xlim([1, 2])  # [left, right]|[左界, 右界].
 plt.show()
 ```
 
-### 8.2.24.ylabel()
+### 9.2.24.ylabel()
 
 设置y轴的内容.
 
@@ -1760,13 +1861,13 @@ plt.ylabel(ylabel='y')  # str|文本内容.
 plt.show()
 ```
 
-# 9.numpy
+# 10.numpy
 
 | 版本   | 描述            | 注意                        | 适配M1 |
 | ------ | --------------- | --------------------------- | ------ |
 | 1.19.4 | Python数值计算. | 1. M1目前需要使用conda安装. | 是     |
 
-## 9.1.abs()
+## 10.1.abs()
 
 逐元素计算绝对值.|`numpy.ndarray`
 
@@ -1777,7 +1878,7 @@ arr = [1, 2, -1, 3]
 x = np.abs(arr)  # array_like|输入的数据.
 ```
 
-## 9.2.any()
+## 10.2.any()
 
 判断数组是否存在某个元素为True, 如果有返回True, 否则返回False.|`numpy.bool_`
 
@@ -1788,7 +1889,7 @@ arr = [1, 0, 1, 1]
 x = np.any(a=arr)  # array_like|输入的数据.
 ```
 
-## 9.3.arange()
+## 10.3.arange()
 
 返回指定范围的整数数组.|`numpy.ndarray`
 
@@ -1800,7 +1901,7 @@ arr = np.arange(start=1,  # number(可选)|None|起始值.
                 step=2)  # number(可选)|None|步长.
 ```
 
-## 9.4.argmax()
+## 10.4.argmax()
 
 返回指定维度最大值的索引.|`numpy.int64`
 
@@ -1812,7 +1913,7 @@ max_value = np.argmax(a=arr,  # array_like|输入的数据.
                 			axis=None)  # int(可选)|None|筛选所沿的维度.
 ```
 
-## 9.5.argmin()
+## 10.5.argmin()
 
 返回指定维度最小值的索引.|`numpy.int64`
 
@@ -1824,7 +1925,7 @@ max_value = np.argmin(a=arr,  # array_like|输入的数据.
                 			axis=None)  # int(可选)|None|筛选所沿的维度.
 ```
 
-## 9.6.argsort()
+## 10.6.argsort()
 
 对数组索引进行升序排序.|`numpy.ndarray`
 
@@ -1835,7 +1936,7 @@ arr = [1, 3, 2, 5, 4]
 arr = np.argsort(a=arr)  # array_like|输入的数据.
 ```
 
-## 9.7.around()
+## 10.7.around()
 
 逐元素进行四舍五入取整.|`numpy.ndarray`
 
@@ -1846,7 +1947,7 @@ arr = [1.4, 1.6]
 x = np.around(a=arr)  # array_like|输入的数据.
 ```
 
-## 9.8.asarray()
+## 10.8.asarray()
 
 将输入转换为ndarray数组.|`numpy.ndarray`
 
@@ -1858,7 +1959,7 @@ nd_arr = np.asarray(a=arr,  # array_like|输入的数据.
                     dtype=None)  # data-type(可选)|None|元素的数据类型.
 ```
 
-## 9.9.asmatrix()
+## 10.9.asmatrix()
 
 将输入转换为矩阵.|`numpy.matrix`
 
@@ -1869,7 +1970,7 @@ arr = [1, 2, 3]
 mat = np.asmatrix(data=arr)  # array_like|输入的数据.
 ```
 
-## 9.10.ceil()
+## 10.10.ceil()
 
 逐元素进行向上取整.|`numpy.ndarray`
 
@@ -1880,7 +1981,7 @@ arr = [5.1, 4.9]
 x = np.ceil(arr)  # array_like|输入的数据.
 ```
 
-## 9.11.clip()
+## 10.11.clip()
 
 逐元素裁切张量.|`numpy.ndarray`
 
@@ -1893,7 +1994,7 @@ new_arr = np.clip(a=arr,  # array_like|输入的数据.
                   a_max=2)  # scalar or array_like or None|最大值.
 ```
 
-## 9.12.concatenate()
+## 10.12.concatenate()
 
 按照指定维度合并多个数组.|`numpy.ndarray`
 
@@ -1907,7 +2008,7 @@ x = np.concatenate([arr0, arr1, arr2],  # array_like|要合并的数组.
                    axis=1)  # int(可选)|0|沿指定维度合并.
 ```
 
-## 9.13.cos()
+## 10.13.cos()
 
 逐元素计算余弦值.|`numpy.ndarray`
 
@@ -1918,7 +2019,7 @@ arr = [5.1, 4.9]
 x = np.cos(arr)  # array_like|输入的数据.
 ```
 
-## 9.14.c_[]
+## 10.14.c_[]
 
 将第二个数组沿水平方向与第一个数组连接.|`numpy.ndarray`
 
@@ -1930,7 +2031,7 @@ arr1 = [[3], [3], [3]]
 x = np.c_[arr0, arr1]
 ```
 
-## 9.15.diag()
+## 10.15.diag()
 
 提取对角线的值, 或构建对角阵.|`numpy.ndarray`
 
@@ -1941,7 +2042,7 @@ arr = [1, 2, 3]
 x = np.diag(v=arr)  # array_like|输入的数据.
 ```
 
-## 9.16.dot()
+## 10.16.dot()
 
 计算两个数组的点乘.|`numpy.ndarray`
 
@@ -1954,7 +2055,7 @@ x = np.dot(a=arr0,  # array_like|第一个元素.
            b=arr1)  # array_like|第二个元素.
 ```
 
-## 9.17.equal()
+## 10.17.equal()
 
 逐元素判断元素值是否一致.|`numpy.ndarray`
 
@@ -1966,7 +2067,7 @@ arr2 = [1, 2, 2]
 x = np.equal(arr1, arr2)  # array_like|输入的数据.
 ```
 
-## 9.18.exp()
+## 10.18.exp()
 
 逐元素计算e的幂次.|`numpy.ndarray`
 
@@ -1977,7 +2078,7 @@ arr = [1, 2, 3]
 x = np.exp(arr)  # array_like|输入的数据.
 ```
 
-## 9.19.expm1()
+## 10.19.expm1()
 
 逐元素计算e的幂次并减1.|`numpy.ndarray`
 
@@ -1988,7 +2089,7 @@ arr = [1, 2, 3]
 x = np.expm1(arr)  # array_like|输入的数据.
 ```
 
-## 9.21.expand_dims()
+## 10.20.expand_dims()
 
 增加数组的维度.|`numpy.ndarray`
 
@@ -2000,7 +2101,7 @@ x = np.expand_dims(a=arr,  # array_like|输入的数组.
                    axis=0)  # int or tuple of ints|添加新维度的位置.
 ```
 
-## 9.22.eye()
+## 10.21.eye()
 
 生成单位阵.|`numpy.ndarray`
 
@@ -2010,7 +2111,7 @@ import numpy as np
 mat = np.eye(N=3)  # int|矩阵的行数.
 ```
 
-## 9.23.hstack()
+## 10.22.hstack()
 
 按照行合并数组.|`numpy.ndarray`
 
@@ -2022,7 +2123,7 @@ arr1 = [[3], [3]]
 x = np.hstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 9.23.lexsort()
+## 10.23.lexsort()
 
 根据指定键(列)进行排序.|`numpy.ndarray`
 
@@ -2038,13 +2139,13 @@ indices = np.lexsort(keys=[arr[:, 0], ])
 x = arr[indices]
 ```
 
-## 9.24.linalg
+## 10.24.linalg
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | numpy的线性代数库. | -    |
 
-### 9.24.1.det()
+### 10.24.1.det()
 
 获取矩阵的行列式.|`numpy.ndarray`
 
@@ -2056,7 +2157,7 @@ mat = [[1, 2],
 x = np.linalg.det(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 9.24.2.inv()
+### 10.24.2.inv()
 
 获取矩阵的逆矩阵.|`numpy.ndarray`
 
@@ -2068,7 +2169,7 @@ mat = [[1, 2],
 x = np.linalg.inv(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 9.24.3.norm()
+### 10.24.3.norm()
 
 计算矩阵或向量范数.|`numpy.float64`
 
@@ -2081,7 +2182,7 @@ x = np.linalg.norm(x=arr,  # array_like|输入的数据.
                    ord=2)  # {non-zero int, inf, -inf, 'fro', 'nuc'}(可选)|None|范数选项.
 ```
 
-### 9.24.4.svd()
+### 10.24.4.svd()
 
 奇异值分解.|`tuple of numpy.ndarray`
 
@@ -2093,7 +2194,7 @@ arr = [[1, 2],
 u, s, vh = np.linalg.svd(a=arr)  # array_like|输入的数据.
 ```
 
-## 9.25.linspace()
+## 10.25.linspace()
 
 返回指定间隔内的等差数列.|`numpy.ndarray`
 
@@ -2105,7 +2206,7 @@ x = np.linspace(start=1,  # array_like|起始值.
                 num=10)  # int(可选)|50|生成序列的样本的总数.
 ```
 
-## 9.26.load()
+## 10.26.load()
 
 从npy、npz或者序列化文件加载数组或序列化的对象.|`numpy.ndarray`
 
@@ -2117,7 +2218,7 @@ arr = np.load(file='./arr.npy',  # file-like object, string, or pathlib.Path|读
               encoding='ASCII')  # str(可选)|'ASCII'|解码方式.
 ```
 
-## 9.27.log()
+## 10.27.log()
 
 逐元素计算自然对数.|`numpy.ndarray`
 
@@ -2128,7 +2229,7 @@ arr = [1, 2, 3]
 x = np.log(arr)  # array_like|输入的数据.
 ```
 
-## 9.28.log1p()
+## 10.28.log1p()
 
 逐元素计算本身加1的自然对数.|`numpy.ndarray`
 
@@ -2139,7 +2240,7 @@ arr = [1, 2, 3]
 x = np.log1p(arr)  # array_like|输入的数据.
 ```
 
-## 9.29.log2()
+## 10.29.log2()
 
 逐元素计算以2为底对数.|`numpy.ndarray`
 
@@ -2150,7 +2251,7 @@ arr = [1, 2, 3]
 x = np.log2(arr)  # array_like|输入的数据.
 ```
 
-## 9.30.mat()
+## 10.30.mat()
 
 将输入转换为矩阵.|`numpy.matrix`
 
@@ -2162,7 +2263,7 @@ mat = np.mat(data=arr,  # array_like|输入的数据.
              dtype=None)  # data-type|None|矩阵元素的数据类型.
 ```
 
-## 9.31.matmul()
+## 10.31.matmul()
 
 两个数组的矩阵乘积|`numpy.ndarray`
 
@@ -2175,7 +2276,7 @@ x = np.matmul(arr0,  # array_like|第一个元素.
               arr1)  # array_like|第二个元素.
 ```
 
-## 9.32.max()
+## 10.32.max()
 
 返回沿指定维度的最大值.|`numpy.float64`
 
@@ -2187,7 +2288,7 @@ max_value = np.max(a=arr,  # array_like|输入的数据.
                    axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 9.33.maximum()
+## 10.33.maximum()
 
 返回数组逐元素的最大值.|`numpy.ndarray`
 
@@ -2199,7 +2300,7 @@ arr1 = [1, 5, 2]
 x = np.maximum(arr0, arr1)  # array_like|输入的数据.
 ```
 
-## 9.34.mean()
+## 10.34.mean()
 
 沿指定维度计算均值.|`numpy.float64`
 
@@ -2211,7 +2312,7 @@ x = np.mean(a=arr,  # array_like|输入的数据.
             axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 9.35.meshgrid()
+## 10.35.meshgrid()
 
 生成坐标矩阵.|`list of numpy.ndarray`
 
@@ -2223,7 +2324,7 @@ y_coord = np.linspace(0, 4, 5)
 vec_mat = np.meshgrid(x_coord, y_coord)  # array_like|坐标向量.
 ```
 
-## 9.36.nonzero()
+## 10.36.nonzero()
 
 返回非零元素索引.|`tuple_of_arrays`
 
@@ -2234,7 +2335,7 @@ arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
 x = np.nonzero(a=arr)  # array_like|输入的数据.
 ```
 
-## 9.37.ones()
+## 10.37.ones()
 
 生成全一数组.|`numpy.ndarray`
 
@@ -2245,7 +2346,7 @@ x = np.ones(shape=[2, 3],  # int or sequence of ints|数组的形状.
             dtype=np.int8)  # data-type(可选)|numpy.float64|矩阵元素的数据类型.
 ```
 
-## 9.38.outer()
+## 10.38.outer()
 
 两个矩阵的外积(`np.matmul(x.T, y) = np.outer(x, y)`).|`numpy.ndarray`
 
@@ -2258,7 +2359,7 @@ x = np.outer(a=arr0,  # array_like|第一个元素.
              b=arr1)  # array_like|第二个元素.
 ```
 
-## 9.39.power()
+## 10.39.power()
 
 逐元素计算指定幂次.|`numpy.ndarray`
 
@@ -2268,13 +2369,13 @@ import numpy as np
 x = np.power([1, 2], [1, 3])   # array_like|底数和指数.
 ```
 
-## 9.40.random
+## 10.40.random
 
 | 版本 | 描述                     | 注意 |
 | ---- | ------------------------ | ---- |
 | -    | numpy的随机数生成函数库. | -    |
 
-### 9.40.1.choice()
+### 10.40.1.choice()
 
 从给定的1D数组中随机采样.|`numpy.ndarray`
 
@@ -2286,7 +2387,7 @@ num = np.random.choice(a=arr,  # 1-D array-like or int|输入的数组.
                        size=1)  # int or tuple of ints(可选)|None|采样结果形状.
 ```
 
-### 9.40.2.multinomial()
+### 10.40.2.multinomial()
 
 从多项分布中抽取样本.|`numpy.ndarray`
 
@@ -2298,7 +2399,7 @@ x = np.random.multinomial(n=1,  # int|实验次数.
                           size=1)  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 9.40.3.normal()
+### 10.40.3.normal()
 
 生成正态分布样本.|`numpy.ndarray`
 
@@ -2308,7 +2409,7 @@ import numpy as np
 x = np.random.normal(size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 9.40.4.permutation()
+### 10.40.4.permutation()
 
 随机打乱序列.|`numpy.ndarray`
 
@@ -2319,7 +2420,7 @@ arr = [1, 2, 3, 4]
 x = np.random.permutation(arr)  # array_like|输入的数据.
 ```
 
-### 9.40.5.rand()
+### 10.40.5.rand()
 
 生成均匀分布随机数组.|`numpy.ndarray`
 
@@ -2329,7 +2430,7 @@ import numpy as np
 x = np.random.rand(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 9.40.6.randint()
+### 10.40.6.randint()
 
 返回指定区间[low, high)随机整数.|`int`
 
@@ -2340,7 +2441,7 @@ x = np.random.randint(low=1,  # int or array-like of ints|左边界.
                       high=10)  # int or array-like of ints(可选)|None|右边界.
 ```
 
-### 9.40.7.randn()
+### 10.40.7.randn()
 
 生成正态分布随机数组.|`numpy.ndarray`
 
@@ -2350,7 +2451,7 @@ import numpy as np
 x = np.random.randn(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 9.40.8.RandomState()
+### 10.40.8.RandomState()
 
 实例化伪随机数生成器.|`numpy.random.mtrand.RandomState`
 
@@ -2360,7 +2461,7 @@ import numpy as np
 rs = np.random.RandomState(seed=2021)  # None|随机种子.
 ```
 
-#### 9.40.8.1.shuffle()
+#### 10.40.8.1.shuffle()
 
 打乱数据.|`numpy.ndarray`
 
@@ -2372,7 +2473,7 @@ x = np.asarray([1, 2, 3, 4])
 rs.shuffle(x)
 ```
 
-### 9.40.9.seed()
+### 10.40.9.seed()
 
 设置随机种子.
 
@@ -2382,7 +2483,7 @@ import numpy as np
 np.random.seed(seed=2021)  # None|随机种子.
 ```
 
-### 9.40.19.uniform()
+### 10.40.19.uniform()
 
 生成均匀分布样本.|`numpy.ndarray`
 
@@ -2394,7 +2495,7 @@ x = np.random.uniform(low=0.0,  # float(可选)|0.0|下界.
                       size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-## 9.41.ravel()
+## 10.41.ravel()
 
 展平数组.|`numpy.ndarray`
 
@@ -2406,7 +2507,7 @@ x = np.ravel(a=x,  # array_like|输入的数据.
              order='f')  # {'C','F', 'A', 'K'}(可选)|'C'|索引读取顺序.
 ```
 
-## 9.42.reshape()
+## 10.42.reshape()
 
 改变数组的形状.|`numpy.ndarray`
 
@@ -2418,7 +2519,7 @@ x = np.reshape(a=arr,  # array_like|要改变形状的数组.
                newshape=[2, 2])  # int or tuple of ints|新的形状.
 ```
 
-## 9.43.save()
+## 10.43.save()
 
 将数组保存进二进制的npy文件.
 
@@ -2431,7 +2532,7 @@ np.save(file='arr.npy',  # file, str, or pathlib.Path|文件保存的路径.
         allow_pickle=True)  # |bool(可选)|True|允许使用序列化保存数组.
 ```
 
-## 9.44.sort()
+## 10.44.sort()
 
 返回排序(升序)后的数组.|`numpy.ndarray`
 
@@ -2442,7 +2543,7 @@ arr = [1, 3, 2, 4]
 x = np.sort(a=arr)  # array_like|要排序的数组.
 ```
 
-## 9.45.split()
+## 10.45.split()
 
 拆分数组.|`list of ndarrays`
 
@@ -2455,7 +2556,7 @@ arr_list = np.split(ary=arr,  # numpy.ndarray|要拆分的数组.
                     axis=1)  # int(可选)|0|所沿的维度.
 ```
 
-## 9.46.sqrt()
+## 10.46.sqrt()
 
 逐元素计算平方根.|`numpy.ndarray`
 
@@ -2466,7 +2567,7 @@ arr = [1, 2, 3]
 x = np.sqrt(arr)  # array_like|输入的数据.
 ```
 
-## 9.47.squeeze()
+## 10.47.squeeze()
 
 删除维度为一的维度.|`numpy.ndarray`
 
@@ -2477,7 +2578,7 @@ arr = [[1, 2, 3]]
 x = np.squeeze(arr)  # array_like|输入的数据.
 ```
 
-## 9.48.std()
+## 10.48.std()
 
 沿指定维度计算标准差.|`numpy.float64`
 
@@ -2489,7 +2590,7 @@ std_value = np.std(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 9.49.sum()
+## 10.49.sum()
 
 沿指定维度求和.|`numpy.ndarray`
 
@@ -2501,7 +2602,7 @@ sum_value = np.sum(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 9.50.transpose()
+## 10.50.transpose()
 
 转置数组.|`numpy.ndarray`
 
@@ -2517,7 +2618,7 @@ x0 = np.transpose(a=arr,  # 输入的数组|array-like
 x1 = arr.T
 ```
 
-## 9.51.var()
+## 10.51.var()
 
 沿指定维度计算方差.|`numpy.float64`
 
@@ -2529,7 +2630,7 @@ var_value = np.var(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 9.52.void()
+## 10.52.void()
 
 实例化`numpy.void`对象.
 
@@ -2539,7 +2640,7 @@ import numpy as np
 x = np.void(b'abc')  # bytes|输入的数据.
 ```
 
-## 9.53.vstack()
+## 10.53.vstack()
 
 按照列合并数组.|`numpy.ndarray`
 
@@ -2551,7 +2652,7 @@ arr1 = [[3, 4]]
 x = np.vstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 9.54.where()
+## 10.54.where()
 
 根据判断条件, 真值返回`x`, 假值返回`y`.|`numpy.ndarray`
 
@@ -2565,7 +2666,7 @@ arr = np.where(a > b,  # array_like, bool|判断条件.
                False)  # array_like|None|情况为假的返回值.
 ```
 
-## 9.55.zeros()
+## 10.55.zeros()
 
 生成全零数组.|`numpy.ndarray`
 
@@ -2576,13 +2677,13 @@ x = np.zeros(shape=[2, 3],  # int or sequence of ints|数组的形状.
              dtype=np.int8)  # data-type(可选)|numpy.float64|矩阵元素的数据类型.
 ```
 
-# 10.pandas
+# 11.pandas
 
 | 版本  | 描述                  | 注意                        | 适配M1 |
 | ----- | --------------------- | --------------------------- | ------ |
 | 1.1.4 | 结构化数据分析软件库. | 1. M1目前需要使用conda安装. | 是     |
 
-## 10.1.concat()
+## 11.1.concat()
 
 沿特定轴连接pandas对象.|`pandas.core.frame.DataFrame`
 
@@ -2596,7 +2697,7 @@ df = pd.concat([sr0, sr1, sr2],  # Series or DataFrame|要连接的pandas对象.
                axis=1)  # {0/'index', 1/'columns'}|0|所沿的维度.
 ```
 
-## 10.2.DataFrame()
+## 11.2.DataFrame()
 
 实例化DataFrame对象.|`pandas.core.frame.DataFrame`
 
@@ -2609,7 +2710,7 @@ df = pd.DataFrame(data=df_map,  # ndarray (structured or homogeneous), Iterable,
                   columns=None)  # Index or array-like|None(0, 1, 2, ..., n)|列名.
 ```
 
-### 10.2.1.columns
+### 11.2.1.columns
 
 DataFrame的列标签.|`pandas.core.indexes.base.Index`
 
@@ -2622,7 +2723,7 @@ df = pd.DataFrame(df_map)
 print(df.columns)
 ```
 
-### 10.2.2.convert_dtypes()
+### 11.2.2.convert_dtypes()
 
 将数据自动转换成最佳数据类型.|`pandas.core.frame.DataFrame`
 
@@ -2634,7 +2735,7 @@ df = pd.DataFrame(df_map)
 df = df.convert_dtypes()
 ```
 
-### 10.2.3.corr()
+### 11.2.3.corr()
 
 计算列成对相关度.|`pandas.core.frame.DataFrame`
 
@@ -2646,7 +2747,7 @@ df = pd.DataFrame(df_map)
 correlation_value = df.corr()
 ```
 
-### 10.2.4.drop()
+### 11.2.4.drop()
 
 根据指定的标签删除行或者列.|`pandas.core.frame.DataFrame`
 
@@ -2659,7 +2760,7 @@ new_df = df.drop(labels=1,  # single label or list-like|None|要删除的行或�
              		 axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
 ```
 
-### 10.2.5.drop_duplicates()
+### 11.2.5.drop_duplicates()
 
 返回删除重复行的DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -2673,7 +2774,7 @@ new_df = df.drop_duplicates(subset=None,  # column label or sequence of labels(�
                         		inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 10.2.6.fillna()
+### 11.2.6.fillna()
 
 填充缺失值.|`pandas.core.frame.DataFrame`
 
@@ -2686,7 +2787,7 @@ new_df = df.fillna(value=10,  # scalar, dict, Series, or DataFrame|填充缺失�
                		 inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 10.2.7.head()
+### 11.2.7.head()
 
 返回前n行数据.|`pandas.core.frame.DataFrame`
 
@@ -2698,7 +2799,7 @@ df = pd.DataFrame(df_map)
 head_value = df.head(n=1)  # int|5|行数.
 ```
 
-### 10.2.8.iloc[]
+### 11.2.8.iloc[]
 
 按照行号取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2710,7 +2811,7 @@ df = pd.DataFrame(df_map)
 new_df = df.iloc[0:2]
 ```
 
-### 10.2.9.info()
+### 11.2.9.info()
 
 在终端打印摘要信息.
 
@@ -2722,7 +2823,7 @@ df = pd.DataFrame(df_map)
 df.info()
 ```
 
-### 10.2.10.loc[]
+### 11.2.10.loc[]
 
 按照行名称取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2734,7 +2835,7 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 10.2.11.map()
+### 11.2.11.map()
 
 根据输入的对应关系映射Series.|`pandas.core.series.Series`
 
@@ -2746,7 +2847,7 @@ map_dict = {'a': 3, 'b': 2, 'c': 1}
 sr = df['key'].map(map_dict)
 ```
 
-### 10.2.12.median()
+### 11.2.12.median()
 
 获取DataFrame的中位数.|`pandas.core.series.Series`
 
@@ -2758,7 +2859,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 10.2.13.replace()
+### 11.2.13.replace()
 
 替换DataFrame中的值.|`pandas.core.frame.DataFrame`
 
@@ -2771,7 +2872,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 10.2.14.reset_index()
+### 11.2.14.reset_index()
 
 重置DataFrame中的索引.|`pandas.core.frame.DataFrame`
 
@@ -2783,7 +2884,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 10.2.15.sample()
+### 11.2.15.sample()
 
 返回随机采样的DataFrame样本.|`pandas.core.frame.DataFrame`
 
@@ -2795,7 +2896,7 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 10.2.16.select_dtypes()
+### 11.2.16.select_dtypes()
 
 返回指定元素类型的列组成的新DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -2806,7 +2907,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
 df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
 ```
 
-### 10.2.17.to_csv()
+### 11.2.17.to_csv()
 
 写入csv文件.
 
@@ -2821,7 +2922,7 @@ df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件�
           encoding=None)  # str(可选)|'utf-8'|编码方式.
 ```
 
-### 10.2.18.values
+### 11.2.18.values
 
 返回DataFrame的值数据.|`numpy.ndarray`
 
@@ -2832,7 +2933,7 @@ df = pd.DataFrame(data={'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]})
 values = df.values
 ```
 
-## 10.3.date_sample()
+## 11.3.date_sample()
 
 生成固定频率的时间索引.|`pandas.core.indexes.datetimes.DatetimeIndex`
 
@@ -2844,7 +2945,7 @@ datetime_index = pd.date_range(start='2021/05/18',  # str or datetime-like(可�
                                freq='M')  # str or DateOffset|'D'|生成的频率.
 ```
 
-## 10.4.get_dummies()
+## 11.4.get_dummies()
 
 将类别变量转换成Dummy编码的变量.|`pandas.core.frame.DataFrame`
 
@@ -2855,7 +2956,7 @@ sr = pd.Series(['a', 'b', 'c', 'a'])
 coding = pd.get_dummies(data=sr)  # array-like, Series, or DataFrame|输入的数据.
 ```
 
-## 10.5.groupby()
+## 11.5.groupby()
 
 按照列对DataFrame进行分组.|`pandas.core.groupby.generic.DataFrameGroupBy`
 
@@ -2866,7 +2967,7 @@ df = pd.DataFrame([[1, 2], [3, 4], [5, 6]], columns=['c1', 'c2'])
 group = df.groupby(by='c2')
 ```
 
-## 10.6.isnull()
+## 11.6.isnull()
 
 检测逐个元素是否是缺失值.|`pandas.core.series.Series`
 
@@ -2877,7 +2978,7 @@ sr = pd.Series([1, 2, None])
 value = pd.isnull(sr)
 ```
 
-## 10.7.merge()
+## 11.7.merge()
 
 将两个DataFrame按照列键值进行合并.|`pandas.core.frame.DataFrame`
 
@@ -2894,7 +2995,7 @@ df = pd.merge(left=df0,  # DataFrame|要合并的DataFrame.
               sort=True)  # bool|False|是否进行排序.
 ```
 
-## 10.8.notnull()
+## 11.8.notnull()
 
 检测逐个元素是否是非缺失值.|`pandas.core.series.Series`
 
@@ -2905,7 +3006,7 @@ sr = pd.Series([1, 2, None])
 value = pd.notnull(sr)
 ```
 
-## 10.9.read_csv()
+## 11.9.read_csv()
 
 读取csv文件.|`pandas.core.frame.DataFrame`
 
@@ -2919,7 +3020,7 @@ df = pd.read_csv(filepath_or_buffer='./table.csv',  # str, path object or file-l
                  encoding=None)  # str(可选)|None|编码方式.
 ```
 
-## 10.10.Series()
+## 11.10.Series()
 
 实例化Series对象.|`pandas.core.series.Series`
 
@@ -2930,9 +3031,9 @@ sr = pd.Series(data=[0, 1, 2],  # array-like, Iterable, dict, or scalar value|�
                index=[1, 2, 3])  # array-like or Index (1d)|None|索引名.
 ```
 
-### 10.10.1.dt
+### 11.10.1.dt
 
-#### 10.10.1.1day
+#### 11.10.1.1day
 
 提取时间中的日期信息.|`pandas.core.series.Series`
 
@@ -2944,7 +3045,7 @@ sr = pd.to_datetime(sr)
 day = sr.dt.day
 ```
 
-#### 10.10.1.2.dayofweek
+#### 11.10.1.2.dayofweek
 
 提取时间中的周几信息.|`pandas.core.series.Series`
 
@@ -2956,7 +3057,7 @@ sr = pd.to_datetime(sr)
 dayofweek = sr.dt.dayofweek
 ```
 
-#### 10.10.1.3.hour
+#### 11.10.1.3.hour
 
 提取时间中的小时信息.|`pandas.core.series.Series`
 
@@ -2968,7 +3069,7 @@ sr = pd.to_datetime(sr)
 hour = sr.dt.hour
 ```
 
-#### 10.10.1.4.month
+#### 11.10.1.4.month
 
 提取时间中的月份信息.|`pandas.core.series.Series`
 
@@ -2980,7 +3081,7 @@ sr = pd.to_datetime(sr)
 month = sr.dt.month
 ```
 
-#### 10.10.1.5.weekday
+#### 11.10.1.5.weekday
 
 提取时间中的周几信息.|`pandas.core.series.Series`
 
@@ -2992,7 +3093,7 @@ sr = pd.to_datetime(sr)
 weekday = sr.dt.weekday
 ```
 
-### 10.10.2.isin()
+### 11.10.2.isin()
 
 逐元素判断Series是否包含指定值.|`pandas.core.series.Series`
 
@@ -3003,7 +3104,7 @@ sr = pd.Series([0, 1, 2])
 sr_isin = sr.isin(values=[2])  # set or list-like|指定值. 
 ```
 
-### 10.10.3.mode()
+### 11.10.3.mode()
 
 返回数据集的众数.|`pandas.core.series.Series`
 
@@ -3014,7 +3115,7 @@ sr = pd.Series([0, 1, 2, 2])
 value = sr.mode()
 ```
 
-### 10.10.4.plot()
+### 11.10.4.plot()
 
 绘制图像.
 
@@ -3026,7 +3127,7 @@ sr = pd.Series([0, 1, 2])
 sr.plot()
 ```
 
-### 10.10.5.sort_index()
+### 11.10.5.sort_index()
 
 通过索引值为Series排序.|`pandas.core.series.Series`
 
@@ -3037,7 +3138,7 @@ sr = pd.Series([0, 1, 2], index=[3, 2, 1])
 sr = sr.sort_index()
 ```
 
-### 10.10.6.tolist()
+### 11.10.6.tolist()
 
 返回值列表.|`list`
 
@@ -3048,7 +3149,7 @@ sr = pd.Series([0, 1, 2], index=[3, 2, 1])
 value = sr.tolist()
 ```
 
-## 10.11.to_datetime()
+## 11.11.to_datetime()
 
 将数据转换为日期类型.|`pandas.core.series.Series`
 
@@ -3059,7 +3160,7 @@ sr = pd.Series(['2016/05/20', '2021/05/20'])
 sr = pd.to_datetime(arg=sr)  # int, float, str, datetime, list, tuple, 1-d array, Series, DataFrame/dict-like|输入数据.
 ```
 
-## 10.12.unique()
+## 11.12.unique()
 
 返回唯一值组成的数组.|`numpy.ndarray`
 
@@ -3070,7 +3171,7 @@ sr = pd.Series([0, 1, 1, 1, 2])
 arr = pd.unique(values=sr)  # 1d array-like|输入的数据.
 ```
 
-## 10.13.value_count()
+## 11.13.value_count()
 
 计算非空值出现的次数.|`pandas.core.series.Series`
 
@@ -3081,19 +3182,19 @@ sr = pd.Series([1, 2, 2, 3, None])
 values = pd.value_counts(values=sr)  # ndarray (1-d)|输入的数据.
 ```
 
-# 11.PIL
+# 12.PIL
 
 | 版本  | 描述               | 注意                            | 适配M1 |
 | ----- | ------------------ | ------------------------------- | ------ |
 | 8.4.0 | Python 图像处理库. | 1. 安装时使用pip install pillow | 是     |
 
-## 11.1.Image
+## 12.1.Image
 
 | 版本 | 描述             | 注意 |
 | ---- | ---------------- | ---- |
 | -    | PIL图像类装饰器. | -    |
 
-### 11.1.1.convert()
+### 12.1.1.convert()
 
 转换图像的色彩空间.|`PIL.Image.Image`
 
@@ -3104,7 +3205,7 @@ im = open('img.jpeg')
 im = im.convert(mode='CMYK')  # {'L', 'RGB', 'RGBA', 'CMYK'}|None|模式.
 ```
 
-### 11.1.2.fromarray()
+### 12.1.2.fromarray()
 
 将ndarray转换为图像.|`PIL.Image.Image`
 
@@ -3116,7 +3217,7 @@ arr = np.asarray([[0.1, 0.2], [0.3, 0.4]])
 im = fromarray(obj=arr)  # numpy.ndarray|输入的数组.
 ```
 
-### 11.1.3.open()
+### 12.1.3.open()
 
 打开图像文件.|`PIL.Image.Image`
 
@@ -3126,7 +3227,7 @@ from PIL.Image import open
 im = open(fp='img.jpeg')  # A filename (string), pathlib.Path object or a file object|加载的图像路径.
 ```
 
-### 11.1.4.resize()
+### 12.1.4.resize()
 
 调整图像的大小.|`PIL.Image.Image`
 
@@ -3137,7 +3238,7 @@ im = open('img.jpeg')
 new_im = im.resize(size=[100, 100])
 ```
 
-### 11.1.5.save()
+### 12.1.5.save()
 
 保存图像文件.
 
@@ -3148,13 +3249,13 @@ im = open('img.jpeg')
 im.save(fp='new_image.jpg')  # A filename (string), pathlib.Path object or a file object|保存图像路径.
 ```
 
-## 11.2.ImageOps
+## 12.2.ImageOps
 
 | 版本 | 描述             | 注意 |
 | ---- | ---------------- | ---- |
 | -    | PIL标准图像操作. | -    |
 
-### 11.2.1.autocontrast
+### 12.2.1.autocontrast
 
 最大化(标准化)图像的对比度.|`PIL.Image.Image`
 
@@ -3166,13 +3267,13 @@ im = open('img.jpeg')
 processed_im = autocontrast(image=im)  # PIL.Image.Image|输入的图像.
 ```
 
-# 12.pybind11
+# 13.pybind11
 
 | 版本  | 描述                          | 注意                                                         | 适配M1 |
 | ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
 | 2.9.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
 
-## 12.1.第一个例子
+## 13.1.第一个例子
 
 1. example.cc代码
 
@@ -3231,9 +3332,9 @@ import example
 ans = example.add(a=1, b=1)
 ```
 
-## 12.2.类与继承
+## 13.2.类与继承
 
-### 12.2.1.实现类
+### 13.2.1.实现类
 
 1. example.cc代码
 
@@ -3282,7 +3383,7 @@ print(animal.name)
 animal.call()
 ```
 
-### 12.2.2.实现继承
+### 13.2.2.实现继承
 
 1. example.cc代码
 
@@ -3378,7 +3479,7 @@ dog.call()
 print(isinstance(dog, example.Animal))
 ```
 
-### 12.2.3.允许Python侧动态获取新属性
+### 13.2.3.允许Python侧动态获取新属性
 
 1. example.cc代码
 
@@ -3426,7 +3527,7 @@ animal = example.Animal()
 animal.age = 3
 ```
 
-### 12.2.4.属性的访问权限
+### 13.2.4.属性的访问权限
 
 1. example.cc代码
 
@@ -3484,7 +3585,7 @@ except AttributeError:
 print("name: %s, age: %d." % (animal.name, animal.age))
 ```
 
-### 12.2.5.在C++侧使用Python对象的属性
+### 13.2.5.在C++侧使用Python对象的属性
 
 1. example.cc代码
 
@@ -3528,9 +3629,9 @@ class Person(object):
 example.get_person_name(Person(money=10, name='Tom'))
 ```
 
-## 12.3.异常处理
+## 13.3.异常处理
 
-### 12.3.1.实现自定义异常
+### 13.3.1.实现自定义异常
 
 0. pybind11只提供了有限的可被Python解释器捕获的异常, 因此只有手动注册没有提供的异常.
 1. example.cc代码
@@ -3575,9 +3676,9 @@ except BaseException:
     print('成功捕获异常.')
 ```
 
-## 12.4.设置参数相关
+## 13.4.设置参数相关
 
-### 12.4.1.常规情况
+### 13.4.1.常规情况
 
 1. example.cc代码
 
@@ -3609,7 +3710,7 @@ import example
 ans = example.add()
 ```
 
-### 12.4.2.默认参数为None
+### 13.4.2.默认参数为None
 
 1. example.cc代码
 
@@ -3649,9 +3750,9 @@ ans0 = example.add(1)
 ans1 = example.add(1, 2)
 ```
 
-## 12.5. Python的语法糖
+## 13.5.Python的语法糖
 
-### 12.5.1.在Python侧使用alias
+### 13.5.1.在Python侧使用alias
 
 1. example.cc代码
 
@@ -3685,7 +3786,7 @@ import example
 example.my_print("Hello world")
 ```
 
-### 12.5.2.接受任意数量的参数
+### 13.5.2.接受任意数量的参数
 
 1. example.cc代码
 
@@ -3726,7 +3827,7 @@ import example
 ans = example.add(1, 2, a=3, b=4)
 ```
 
-### 12.5.3.使用Python侧的print函数
+### 13.5.3.使用Python侧的print函数
 
 1. example.cc代码
 
@@ -3758,9 +3859,9 @@ import example
 example.my_print("Hello world")
 ```
 
-## 12.6.绑定NumPy
+## 13.6.绑定NumPy
 
-### 12.6.1.直接访问
+### 13.6.1.直接访问
 
 1. example.cc代码
 
@@ -3814,7 +3915,7 @@ import example
 example.range(np.asarray([[1, 2], [3, 4]]))
 ```
 
-### 12.6.2.提供的方法
+### 13.6.2.提供的方法
 
 1. example.cc代码
 
@@ -3864,9 +3965,9 @@ import example
 example.show_methods(np.asarray([[1, 2], [3, 4]]))
 ```
 
-## 12.7.绑定CUDA
+## 13.7.绑定CUDA
 
-### 12.7.1.调用GPU计算
+### 13.7.1.调用GPU计算
 
 1. example.cu代码
 
@@ -3930,7 +4031,7 @@ example.multiply_with_scalar(3, arr)
 print(arr)
 ```
 
-### 12.7.2.调用cuBLAS
+### 13.7.2.调用cuBLAS
 
 1. example.cu代码
 
@@ -4059,9 +4160,9 @@ mat_c = example.matmul_on_gpu(mat_a, mat_b)
 print(mat_c)
 ```
 
-## 12.8.其他
+## 13.8.其他
 
-### 12.8.1.绑定Eigen
+### 13.8.1.绑定Eigen
 
 1. example.cc代码
 
@@ -4096,7 +4197,7 @@ import example
 trans_mat = example.transpose([[1, 2], [3, 4]])
 ```
 
-### 12.8.2.实现重载
+### 13.8.2.实现重载
 
 1. example.cc代码
 
@@ -4134,7 +4235,7 @@ int_ans = example.add(1, 1)
 float_ans = example.add(0.9, 1.1)
 ```
 
-### 12.8.3.区分32位和64位的数据类型
+### 13.8.3.区分32位和64位的数据类型
 
 0. 受限于 Python 3.x 没有区分32位和64位的类型, 这里需要依赖于NumPy, 同时pybind11没有对于NumPy标量处理的模板, 因此需要借助`pybind11::buffer`实现.
 
@@ -4195,15 +4296,15 @@ ans64 = example.create_matrix(n64, n64)
 print(ans64.dtype)
 ```
 
-# 13.pybind11
+# 14.pybind11
 
 | 版本  | 描述                          | 注意                                                         | 适配M1 |
 | ----- | ----------------------------- | ------------------------------------------------------------ | ------ |
 | 2.9.2 | C++11 和 Python 混编操作接口. | 1. 在 Linux 下需要使用 python3-dev                                                                                                                       2. pybind11 的 Python 软件包能自动安装对应的C++库文件.                                                                      3. 需要同时安装 pybind11-global 才能让 cmake 正确的在虚拟环境中找到 pybind11. | 是     |
 
-## 13.1.setup_helpers
+## 14.1.setup_helpers
 
-### 13.1.1.build_ext
+### 14.1.1.build_ext
 
 实例化一个build_ext将在编译的过程中自动寻找系统所拥有的最高版本的c++
 
@@ -4218,7 +4319,7 @@ setup(
 )
 ```
 
-### 13.1.2.Pybind11Extension
+### 14.1.2.Pybind11Extension
 
 Pybind11Extension用于自动构建c++的动态链接库.
 
@@ -4242,15 +4343,15 @@ setup(
 )
 ```
 
-# 14.pydot
+# 15.pydot
 
 | 版本  | 描述                  | 注意                                                         | 适配M1 |
 | ----- | --------------------- | ------------------------------------------------------------ | ------ |
 | 1.4.2 | graphviz的Python接口. | 1. 需要同时安装pydot和graphviz                                                                                                     2.M1目前需要使用conda安装, 使用pip安装不能正常识别. | 是     |
 
-## 14.1.Dot
+## 15.1.Dot
 
-### 14.1.1.write_png()
+### 15.1.1.write_png()
 
 将图写入png图片.
 
@@ -4261,7 +4362,7 @@ graph = pydot.graph_from_dot_data(s='digraph{a; b; a->b;}')
 graph[0].write_png(path='./1.png')  # str|保存的文件位置.
 ```
 
-## 14.2.graph_from_dot_data()
+## 15.2.graph_from_dot_data()
 
 从dot脚本中加载Dot列表.|`list`
 
@@ -4272,7 +4373,7 @@ graph = pydot.graph_from_dot_data(s='digraph{a; b; a->b;}')  # str|dot脚本.
 graph[0].write_png('./1.png')
 ```
 
-## 14.3.graph_from_dot_file()
+## 15.3.graph_from_dot_file()
 
 从dot文件中加载Dot列表.|`list`
 
@@ -4283,15 +4384,15 @@ graph = pydot.graph_from_dot_file(path='./test.dot')  # str|dot脚本文件.
 graph[0].write_png('./1.png')
 ```
 
-# 15.scipy
+# 16.scipy
 
 | 版本  | 描述            | 注意                        | 适配M1 |
 | ----- | --------------- | --------------------------- | ------ |
 | 1.6.3 | Python科学计算. | 1. M1目前需要使用conda安装. | 是     |
 
-## 15.1.stats
+## 16.1.stats
 
-### 15.1.1.boxcox()
+### 16.1.1.boxcox()
 
 返回Box-Cox幂变换变换后的数据集.|`numpy.ndarray`和`float`(可选)
 
@@ -4301,9 +4402,9 @@ from scipy.stats import boxcox
 y_trans, lmbda = boxcox(x=[1, 2, 3, 4, 5])  # numpy.ndarray|输入的数据.
 ```
 
-### 15.1.2.f
+### 16.1.2.f
 
-#### 15.1.2.1.cdf()
+#### 16.1.2.1.cdf()
 
 计算F分布的累积分布函数.|`numpy.ndarray`
 
@@ -4315,7 +4416,7 @@ value = f.cdf(x=range(0, 10),  # array-like|输入的数据.
               dfd=1)  # float|第二自由度.
 ```
 
-### 15.1.3.ttest_rel()
+### 16.1.3.ttest_rel()
 
 计算两个样本的t检验.|`scipy.stats.stats.Ttest_relResult`
 
@@ -4326,9 +4427,9 @@ res = ttest_rel(a=[1, 2, 3],  # array_like｜输入的样本a.
                 b=[2, 4, 6])  # array_like｜输入的样本b.
 ```
 
-## 15.2.special
+## 16.2.special
 
-### 15.2.1.inv_boxcox()
+### 16.2.1.inv_boxcox()
 
 返回Box-Cox幂变换变换前的数据集.|`numpy.ndarray`
 
@@ -4341,19 +4442,19 @@ y = inv_boxcox(y_trans,  # numpy.ndarray|变换后的数据.
                lmbda)  # float|变换参数.
 ```
 
-# 16.sklearn
+# 17.sklearn
 
 | 版本   | 描述                          | 注意                                                         | 适配M1 |
 | ------ | ----------------------------- | ------------------------------------------------------------ | ------ |
 | 0.24.2 | Python机器学习和数据挖掘模块. | 1. M1目前需要使用conda安装.                                                                                         2. 安装的包名是scikit-learn. | 是     |
 
-## 16.1.datasets
+## 17.1.datasets
 
 | 版本 | 描述                 | 注意                                                         |
 | ---- | -------------------- | ------------------------------------------------------------ |
 | -    | sklearn的内置数据集. | 数据集保存的位置 /path/to/lib/python3/site-packages/sklearn/datasets/data |
 
-### 16.1.1.load_iris()
+### 17.1.1.load_iris()
 
 加载返回iris数据集.|`sklearn.utils.Bunch`
 
@@ -4363,13 +4464,13 @@ from sklearn.datasets import load_iris
 dataset = load_iris()
 ```
 
-## 16.2.ensemble
+## 17.2.ensemble
 
 | 版本 | 描述                   | 注意                                                         |
 | ---- | ---------------------- | ------------------------------------------------------------ |
 | -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 16.2.1.AdaBoostClassifier()
+### 17.2.1.AdaBoostClassifier()
 
 实例化AdaBoost分类器.
 
@@ -4380,7 +4481,7 @@ model = AdaBoostClassifier(n_estimators=50,  # int|50|基学习器的数量.
                            learning_rate=1.)  # float|1.0|学习率.
 ```
 
-### 16.2.2.GradientBoostingClassifier()
+### 17.2.2.GradientBoostingClassifier()
 
 实例化梯度提升分类器.
 
@@ -4392,7 +4493,7 @@ model = GradientBoostingClassifier(learning_rate=0.1,  # float|0.1|学习率.
 
 ```
 
-### 16.2.3.RandomForestClassifier()
+### 17.2.3.RandomForestClassifier()
 
 实例化随机森林分类器.
 
@@ -4406,7 +4507,7 @@ model = RandomForestClassifier(n_estimators=100,  # int|100|基学习器的数�
                                verbose=0)  # int|0|日志显示模式.
 ```
 
-### 16.2.4.RandomForestRegressor()
+### 17.2.4.RandomForestRegressor()
 
 实例化随机森林回归器.
 
@@ -4420,7 +4521,7 @@ model = RandomForestRegressor(n_estimators=100,  # int|100|基学习器的数量
                               verbose=0)  # int|0|日志显示模式.
 ```
 
-### 16.2.5.StackingClassifier()
+### 17.2.5.StackingClassifier()
 
 实例化Stacking分类器.
 
@@ -4431,7 +4532,7 @@ model = StackingClassifier(estimators,  # list of (str, estimator)|基学习器�
                            final_estimator=None)  # estimator|sklearn.linear_model.LogisticRegression|二级学习器.
 ```
 
-### 16.2.6.VotingClassifier()
+### 17.2.6.VotingClassifier()
 
 实例化投票分类器.
 
@@ -4443,13 +4544,13 @@ model = VotingClassifier(estimators,  # list of (str, estimator)|基学习器的
                          weights=None)  # array-like of shape (n_classifiers,)|None|基学习器的权重.
 ```
 
-## 16.3.linear_model
+## 17.3.linear_model
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的线性模型模块. | -    |
 
-### 16.3.1.LinearRegression()
+### 17.3.1.LinearRegression()
 
 实例化线性回归器.
 
@@ -4459,7 +4560,7 @@ from sklearn.linear_model import LinearRegression
 model = LinearRegression()
 ```
 
-#### 16.3.1.1.fit()
+#### 17.3.1.1.fit()
 
 训练线性回归器.|`self`
 
@@ -4472,7 +4573,7 @@ model.fit(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特
           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-#### 16.3.1.2.predict()
+#### 17.3.1.2.predict()
 
 使用线性回归器进行预测.|`numpy.ndarray`
 
@@ -4483,7 +4584,7 @@ model = LinearRegression()
 y_preds = model.predict(X)  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
 ```
 
-#### 16.3.1.3.score()
+#### 17.3.1.3.score()
 
 计算验证集的平均准确率.|`float`
 
@@ -4496,7 +4597,7 @@ accuracy = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_
                        sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 16.3.2.LogisticRegression()
+### 17.3.2.LogisticRegression()
 
 实例化逻辑回归器.
 
@@ -4506,13 +4607,13 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-## 16.4.metrics
+## 17.4.metrics
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的评估模块. | -    |
 
-### 16.4.1.accuracy_score()
+### 17.4.1.accuracy_score()
 
 计算分类器的准确率.|`numpy.float64`
 
@@ -4524,7 +4625,7 @@ accuracy = accuracy_score(y_true,  # 1d array-like, or label indicator array / s
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 16.4.2.confusion_matrix()
+### 17.4.2.confusion_matrix()
 
 计算分类器的混淆矩阵.|`numpy.ndarray`
 
@@ -4536,7 +4637,7 @@ matrix = confusion_matrix(y_true,  # array-like of shape (n_samples,)|真实标�
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 16.4.3.r2_score()
+### 17.4.3.r2_score()
 
 计算R2决定系数.|`numpy.float64`
 
@@ -4548,13 +4649,13 @@ r2 = r2_score(y_true,  # array-like of shape (n_samples,) or (n_samples, n_outpu
               sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-## 16.5.model_selection
+## 17.5.model_selection
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的模型选择模块. | -    |
 
-### 16.5.1.cross_val_predict()
+### 17.5.1.cross_val_predict()
 
 对每个样本进行交叉验证.|`numpy.ndarray`
 
@@ -4567,7 +4668,7 @@ res = cross_val_predict(estimator,  # estimator object|基学习器.
                         cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 16.5.2.cross_val_score()
+### 17.5.2.cross_val_score()
 
 进行交叉验证.|`numpy.ndarray`
 
@@ -4581,7 +4682,7 @@ res = cross_val_score(estimator,  # estimator object|基学习器.
                       cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 16.5.3.GridSearchCV()
+### 17.5.3.GridSearchCV()
 
 实例化网格搜索器.
 
@@ -4596,7 +4697,7 @@ gs = GridSearchCV(estimator,  # estimator object|基学习器.
                   verbose=0)  # int|0|日志显示模式.
 ```
 
-#### 16.5.3.1.fit()
+#### 17.5.3.1.fit()
 
 组合所有参数网格进行训练.|`self`
 
@@ -4613,7 +4714,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
        y=None)  # array-like of shape (n_samples, n_output) or (n_samples,)|None|标签.
 ```
 
-#### 16.5.3.2.best_params_
+#### 17.5.3.2.best_params_
 
 最佳参数.|`dict`
 
@@ -4621,7 +4722,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
 gs.best_params_
 ```
 
-#### 16.5.3.3.best_score_
+#### 17.5.3.3.best_score_
 
 最佳平均交叉验证分数.|`float`
 
@@ -4629,7 +4730,7 @@ gs.best_params_
 gs.best_score_
 ```
 
-### 16.5.4.LeaveOneOut()
+### 17.5.4.LeaveOneOut()
 
 实例化留一法交叉验证器.
 
@@ -4639,7 +4740,7 @@ from sklearn.model_selection import LeaveOneOut
 loo = LeaveOneOut()
 ```
 
-#### 16.5.4.1.split()
+#### 17.5.4.1.split()
 
 划分数据.|`yield`
 
@@ -4651,7 +4752,7 @@ train_set, test_set = loo.split(X,  # array-like of shape (n_samples, n_features
                                 y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 16.5.5.StratifiedKFold()
+### 17.5.5.StratifiedKFold()
 
 实例化分层K折交叉验证器.
 
@@ -4663,7 +4764,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
                         random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-#### 16.5.5.1.n_splits
+#### 17.5.5.1.n_splits
 
 交叉验证的划分数.|`int`
 
@@ -4671,7 +4772,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
 kfold.n_splits
 ```
 
-#### 16.5.5.2.split()
+#### 17.5.5.2.split()
 
 划分数据.|`yield`
 
@@ -4685,7 +4786,7 @@ train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_featur
                                   y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 16.5.6.train_test_split()
+### 17.5.6.train_test_split()
 
 将数据集拆分成训练和测试集.|`list`
 
@@ -4698,13 +4799,13 @@ x_train, x_test, y_train, y_test = train_test_split(X, y,  # lists, numpy arrays
                                                     shuffle=True)  # bool|True|是否打乱数据.
 ```
 
-## 16.6.preprocessing
+## 17.6.preprocessing
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的数据预处理模块. | 1. 预处理器的类方法基本没有差异, 具体参见`LabelEncoder`的类方法. |
 
-### 16.6.1.LabelEncoder()
+### 17.6.1.LabelEncoder()
 
 实例化标签编码器.
 
@@ -4714,7 +4815,7 @@ from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 ```
 
-#### 16.6.1.1.fit_transform()
+#### 17.6.1.1.fit_transform()
 
 预处理数据.|`numpy.ndarray`
 
@@ -4726,7 +4827,7 @@ le = LabelEncoder()
 y = le.fit_transform(y=raw_y)  # array-like of shape (n_samples,)|要处理的数据.
 ```
 
-### 16.6.2.MinMaxScaler()
+### 17.6.2.MinMaxScaler()
 
 实例化MinMax缩放器.
 
@@ -4736,7 +4837,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 ```
 
-### 16.6.3.MultiLabelBinarizer()
+### 17.6.3.MultiLabelBinarizer()
 
 实例化多标签二值化缩放器.
 
@@ -4746,7 +4847,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()
 ```
 
-#### 16.6.3.1.classes_
+#### 17.6.3.1.classes_
 
 原始的标签.|`numpy.ndarray`
 
@@ -4754,7 +4855,7 @@ mlb = MultiLabelBinarizer()
 mlb.classes_
 ```
 
-### 16.6.4.StandardScaler()
+### 17.6.4.StandardScaler()
 
 实例化标准化器.
 
@@ -4764,13 +4865,13 @@ from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 ```
 
-## 16.7.svm
+## 17.7.svm
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的支持向量机模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 16.7.1.SVC()
+### 17.7.1.SVC()
 
 实例化支持向量分类器.
 
@@ -4783,7 +4884,7 @@ model = SVC(C=1.0,  # float|1.0|正则化系数.
             class_weight=None)  # dict or 'balanced'|None|类别权重.
 ```
 
-### 16.7.2.SVR()
+### 17.7.2.SVR()
 
 实例化支持向量回归器.
 
@@ -4794,13 +4895,13 @@ model = SVR(kernel='rbf',  # {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}
             C=1.0)  # float|1.0|正则化系数.
 ```
 
-## 16.8.tree
+## 17.8.tree
 
 | 版本 | 描述                 | 注意                                                         |
 | ---- | -------------------- | ------------------------------------------------------------ |
 | -    | sklearn的决策树模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 16.8.1.DecisionTreeClassifier()
+### 17.8.1.DecisionTreeClassifier()
 
 实例化决策树分类器.
 
@@ -4811,7 +4912,7 @@ model = DecisionTreeClassifier(criterion='gini',  # {'gini', 'entropy'}|'gini'|�
                                random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-### 16.8.2.export_graphviz()
+### 17.8.2.export_graphviz()
 
 导出决策树结构为Dot语言.|`str`
 
@@ -4826,7 +4927,7 @@ dot_str = export_graphviz(decision_tree=model,  # decision tree regressor or cla
                           class_names=None)  # list of str or bool|None|类别的名称.
 ```
 
-### 16.8.3.plot_tree()
+### 17.8.3.plot_tree()
 
 绘制决策树.
 
@@ -4838,15 +4939,15 @@ model = DecisionTreeClassifier(criterion='gini',
 plot_tree(decision_tree=model)  # decision tree regressor or classifier|要绘制的决策树.
 ```
 
-## 16.9.utils
+## 17.9.utils
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的工具模块. | -    |
 
-### 16.9.1.multiclass
+### 17.9.1.multiclass
 
-#### 16.9.1.1.type_of_target()
+#### 17.9.1.1.type_of_target()
 
 判断数据的类型.|`str`
 
@@ -4857,7 +4958,7 @@ y = ['a', 'b', 'c']
 res = type_of_target(y=y)  # array-like|输入的数据.
 ```
 
-### 16.9.2.resample()
+### 17.9.2.resample()
 
 对数组进行重采样.|`list`
 
@@ -4869,13 +4970,13 @@ new_arr = resample(arr,  # array-like|输入的数据, (可以输入多个).
                    random_state=2022)  # int|None|随机状态.
 ```
 
-# 17.tokenizers
+# 18.tokenizers
 
 | 版本   | 描述                  | 注意                        | 适配M1 |
 | ------ | --------------------- | --------------------------- | ------ |
 | 0.10.1 | 快速和自定义的分词器. | 1. M1目前需要使用conda安装. | 是     |
 
-## 17.1.ByteLevelBPETokenizer()
+## 18.1.ByteLevelBPETokenizer()
 
 实例化字符级BPE分词器.
 
@@ -4888,7 +4989,7 @@ tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',  # str(可选)|None|词�
                                   lowercase=False)  # bool|False|是否全部转换为小写字母.
 ```
 
-### 17.1.1.decode()
+### 18.1.1.decode()
 
 解码给定的ID列表.|`str`
 
@@ -4904,7 +5005,7 @@ encoding_list = [31414, 34379, 328]
 raw_text = tokenizer.decode(ids=encoding_list)  # list|要解码的ID列表.
 ```
 
-### 17.1.2.encode()
+### 18.1.2.encode()
 
 编码给定的序列(对).|`tokenizers.Encoding`
 
@@ -4920,7 +5021,7 @@ raw_text = 'Hello Transformers!'
 encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
 ```
 
-#### 17.1.2.1.ids
+#### 18.1.2.1.ids
 
 编码后的ID列表.|`list`
 
@@ -4928,15 +5029,15 @@ encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
 encoding.ids
 ```
 
-# 18.transformers
+# 19.transformers
 
 | 版本   | 描述                | 注意                                                         | 适配M1 |
 | ------ | ------------------- | ------------------------------------------------------------ | ------ |
 | 4.18.0 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                                                               2. 部分功能需要依赖sentencepiece模块. | 是     |
 
-## 18.1.AlbertTokenizer
+## 19.1.AlbertTokenizer
 
-### 18.1.1.\__call__()
+### 19.1.1.\__call__()
 
 为Albert分词(预处理)一个或者多个数据.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
@@ -4958,7 +5059,7 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
 input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
-### 18.1.2.from_pretrained()
+### 19.1.2.from_pretrained()
 
 实例化Albert预训练分词器.|`transformers.models.albert.tokenization_albert.AlbertTokenizer`
 
@@ -4969,9 +5070,9 @@ tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='alber
                                             do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
 ```
 
-## 18.2.BertTokenizer
+## 19.2.BertTokenizer
 
-### 18.2.1.\__call__()
+### 19.2.1.\__call__()
 
 为Bert分词(预处理)一个或者多个数据.|{`input_ids`, (`token_type_ids`), (`attention_mask`)}
 
@@ -4993,7 +5094,7 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
 input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
-### 18.2.2.from_pretrained()
+### 19.2.2.from_pretrained()
 
 实例化Bert预训练分词器.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
@@ -5004,9 +5105,9 @@ tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-ba
                                           do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
 ```
 
-## 18.3.RobertaConfig
+## 19.3.RobertaConfig
 
-### 18.3.1.from_pretrained()
+### 19.3.1.from_pretrained()
 
 获取Roberta的预训练配置信息.|`transformers.models.roberta.configuration_roberta.RobertaConfig`
 
@@ -5016,9 +5117,9 @@ from transformers import RobertaConfig
 config = RobertaConfig.from_pretrained(pretrained_model_name_or_path='roberta-base')  # str|预训练的配置信息名称或者路径.
 ```
 
-## 18.4.TFAlbertModel
+## 19.4.TFAlbertModel
 
-### 18.4.1.\_\_call\_\_()
+### 19.4.1.\_\_call\_\_()
 
 调用Albert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPooling`
 
@@ -5033,7 +5134,7 @@ outputs = model(input_ids=input_ids,
 sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
 ```
 
-### 18.4.2.from_pretrained()
+### 19.4.2.from_pretrained()
 
 实例化预训练的Albert模型.|`transformers.models.albert.modeling_tf_albert.TFAlbertModel`
 
@@ -5044,9 +5145,9 @@ model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base
                                       trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-## 18.5.TFBertModel
+## 19.5.TFBertModel
 
-### 18.5.1.\_\_call\_\_()
+### 19.5.1.\_\_call\_\_()
 
 调用Bert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPoolingAndCrossAttentions`
 
@@ -5061,7 +5162,7 @@ outputs = model(input_ids=input_ids,
 sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
 ```
 
-### 18.5.2.from_pretrained()
+### 19.5.2.from_pretrained()
 
 实例化预训练的Bert模型.|`transformers.models.bert.modeling_tf_bert.TFBertModel`
 
@@ -5072,9 +5173,9 @@ model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-unc
                                     trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-## 18.6.TFRobertaModel
+## 19.6.TFRobertaModel
 
-### 18.6.1.from_pretrained()
+### 19.6.1.from_pretrained()
 
 实例化预训练的Roberta模型.|`transformers.models.roberta.modeling_tf_roberta.TFRobertaModel`
 
@@ -5085,13 +5186,13 @@ model = TFRobertaModel.from_pretrained(pretrained_model_name_or_path='roberta-ba
                                        trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-# 19.xgboost
+# 20.xgboost
 
 | 版本  | 描述                  | 注意                                                         | 适配M1 |
 | ----- | --------------------- | ------------------------------------------------------------ | ------ |
 | 1.4.2 | 梯度提升决策树(GBDT). | 1. 可直接在sklearn使用.                                                                                                                              2. 模型的类方法基本没有差异, 具体参见`XGBClassifier`的类方法. | 是     |
 
-## 19.1.XGBClassifier()
+## 20.1.XGBClassifier()
 
 实例化XGBoost分类器.
 
@@ -5109,7 +5210,7 @@ model = XGBClassifier(max_depth=None,  # int|None|基学习器的最大深度.
                       random_state=None)  # int|None|随机状态.
 ```
 
-### 19.1.1.fit()
+### 20.1.1.fit()
 
 训练XGBoost分类器.|`self`
 
@@ -5125,7 +5226,7 @@ model.fit(X,  # array_like|特征数据.
           verbose=True)  # bool|日志显示模式.
 ```
 
-### 19.1.2.predict()
+### 20.1.2.predict()
 
 使用XGBoost分类器进行预测.|`numpy.ndarray`
 
@@ -5136,7 +5237,7 @@ model = XGBClassifier()
 y_preds = model.predict(X)  # array_like|特征数据.
 ```
 
-### 19.1.3.score()
+### 20.1.3.score()
 
 计算验证集的平均准确率.|`float`
 
@@ -5148,7 +5249,7 @@ accuracy = model.score(X,  # array-like of shape (n_samples, n_features)|特征�
                        y)  # array-like of shape (n_samples,) or (n_samples, n_outputs)|标签.
 ```
 
-## 19.2.XGBRegressor()
+## 20.2.XGBRegressor()
 
 实例化XGBoost回归器.
 

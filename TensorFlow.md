@@ -1658,10 +1658,10 @@ layer = layers.SimpleRNN(units=256,  # int|神经元的数量.
 from tensorflow.keras import layers
 
 vocab = ['a', 'b', 'c', 'd', 'a']
-char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # int|None|词汇表的最大范围.
-                                                          num_oov_indices=1,  # int|1|超出词汇范围使用的索引.
-                                                          vocabulary=['a', 'b', 'c'],  # list|None|词汇表.
-                                                          invert=False)  # bool|False|翻转操作.
+char2num = layers.preprocessing.StringLookup(max_tokens=None,  # int|None|词汇表的最大范围.
+                                             num_oov_indices=1,  # int|1|超出词汇范围使用的索引.
+                                             vocabulary=['a', 'b', 'c'],  # list|None|词汇表.
+                                             invert=False)  # bool|False|翻转操作.
 ```
 
 ##### 1.14.7.32.1.get_vocabulary()
@@ -1671,10 +1671,10 @@ char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,  # in
 ```python
 from tensorflow.keras import layers
 
-char2num = layers.experimental.preprocessing.StringLookup(max_tokens=None,
-                                                          num_oov_indices=1,
-                                                          vocabulary=['a', 'b', 'c'],
-                                                          invert=False)
+char2num = layers.preprocessing.StringLookup(max_tokens=None,
+                                             num_oov_indices=1,
+                                             vocabulary=['a', 'b', 'c'],
+                                             invert=False)
 vocab = char2num.get_vocabulary()
 ```
 
