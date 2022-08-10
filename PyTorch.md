@@ -6,7 +6,7 @@
 
 | 版本   | 描述          | 注意 | 适配M1 |
 | ------ | ------------- | ---- | ------ |
-| 1.12.0 | 深度学习框架. | -    | 是     |
+| 1.12.1 | 深度学习框架. | -    | 是     |
 
 ## 1.1.argmax()
 
@@ -195,7 +195,20 @@ x = torch.matmul(input=tensor0,  # torch.Tensor|第一个张量.
 | ---- | -------------------------- | ---- |
 | -    | Torch的计算图的基本构建块. | -    |
 
-### 1.12.1.CrossEntropyLoss()
+### 1.12.1.Conv2d()
+
+实例化2D卷积层.
+
+```python
+from torch.nn import Conv2d
+
+layer = Conv2d(in_channels=1,  # int|输入图片的色彩通道数量.
+               out_channels=32,  # int|卷积核的数量.
+               kernel_size=3,  # int or tuple|卷积核的尺寸.
+               padding='same')  # int, tuple or {'same', 'valid'}(可选)|0|填充方式.
+```
+
+### 1.12.2.CrossEntropyLoss()
 
 实例化交叉熵损失函数.
 
@@ -205,7 +218,7 @@ from torch.nn import CrossEntropyLoss
 loss = CrossEntropyLoss()
 ```
 
-### 1.12.2.Dropout()
+### 1.12.3.Dropout()
 
 实例化Dropout层.
 
@@ -215,7 +228,7 @@ from torch import nn
 layer = nn.Dropout(p=0.5)  # float|0.5|随机丢弃比例.
 ```
 
-### 1.12.3.Flatten()
+### 1.12.4.Flatten()
 
 实例化展平层.
 
@@ -225,9 +238,9 @@ from torch import nn
 layer = nn.Flatten()
 ```
 
-### 1.12.4.functional
+### 1.12.5.functional
 
-#### 1.12.4.1.binary_cross_entropy_with_logits()
+#### 1.12.5.1.binary_cross_entropy_with_logits()
 
 计算带有sigmoid的二分类交叉熵的值.|`torch.Tensor`
 
@@ -241,7 +254,7 @@ loss = binary_cross_entropy_with_logits(input=y_pred,  # torch.Tensor|预测值.
                                         target=y)  # torch.Tensor|真实值.
 ```
 
-#### 1.12.4.2.relu()
+#### 1.12.5.2.relu()
 
 应用relu函数在输入的张量上.|`torch.Tensor`
 
@@ -253,7 +266,7 @@ tensor = torch.Tensor([-2., -1., 0., 1., 2.])
 tensor = relu(input=tensor)  # torch.Tensor|输入的张量.
 ```
 
-#### 1.12.4.3.softmax()
+#### 1.12.5.3.softmax()
 
 应用softmax函数在输入的张量上.|`torch.Tensor`
 
@@ -266,7 +279,7 @@ tensor = softmax(input=tensor,  # torch.Tensor|输入的张量.
                  dim=0)  # int|指定的维度.
 ```
 
-### 1.12.5.Linear()
+### 1.12.6.Linear()
 
 实例化全连接层.
 
@@ -277,7 +290,17 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.12.6.Module()
+### 1.12.7.MaxPool2d()
+
+实例化2D最大池化层.
+
+```python
+from torch.nn import MaxPool2d
+
+layer = MaxPool2d(kernel_size=2)  # int or tuple|池化窗口.
+```
+
+### 1.12.8.Module()
 
 实例化`Module`.
 
@@ -301,7 +324,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.12.6.1.eval()
+#### 1.12.8.1.eval()
 
 设置模块为评估模式.
 
@@ -309,7 +332,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.12.6.2.load_state_dict()
+#### 1.12.8.2.load_state_dict()
 
 加载模块的权重.
 
@@ -317,7 +340,7 @@ model.eval()
 model.load_state_dict(state_dict)  # dict|参数字典.
 ```
 
-#### 1.12.6.3.parameters()
+#### 1.12.8.3.parameters()
 
 返回模块参数迭代器.
 
@@ -325,7 +348,7 @@ model.load_state_dict(state_dict)  # dict|参数字典.
 model.parameters()
 ```
 
-#### 1.12.6.4.state_dict()
+#### 1.12.8.4.state_dict()
 
 返回模块参数字典.
 
@@ -333,7 +356,7 @@ model.parameters()
 model.state_dict()
 ```
 
-#### 1.12.6.5.train()
+#### 1.12.8.5.train()
 
 设置模块为训练模式.
 
@@ -341,7 +364,7 @@ model.state_dict()
 model.train()
 ```
 
-### 1.12.7.ReLU()
+### 1.12.9.ReLU()
 
 实例化ReLU层.
 
@@ -351,7 +374,7 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-### 1.12.8.Sequential()
+### 1.12.10.Sequential()
 
 实例化`Sequential`.
 
@@ -365,7 +388,7 @@ model = nn.Sequential(
 )
 ```
 
-#### 1.12.8.1.add_module()
+#### 1.12.10.1.add_module()
 
 添加一个模块到`Sequential`结尾, 使用给定名称.
 
@@ -374,7 +397,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
                  module=nn.Flatten())  # nn.Module|模块.
 ```
 
-#### 1.12.8.2.append()
+#### 1.12.10.2.append()
 
 添加一个模块到`Sequential`结尾.
 
@@ -382,7 +405,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
 model.append(module=nn.Flatten())  # nn.Module|模块.
 ```
 
-### 1.12.9.Softmax()
+### 1.12.11.Softmax()
 
 实例化Softmax层.
 
@@ -681,7 +704,7 @@ tensor = torch.zeros(size=[2, 3])  # sequence of ints|张量的形状.
 
 | 版本   | 描述                           | 注意 | 适配M1 |
 | ------ | ------------------------------ | ---- | ------ |
-| 0.12.0 | Torch的图像和视频数据集和模型. | -    | 是     |
+| 0.13.1 | Torch的图像和视频数据集和模型. | -    | 是     |
 
 ## 2.1.datasets
 
