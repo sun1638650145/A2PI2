@@ -1970,7 +1970,18 @@ arr = [1, 2, 3]
 mat = np.asmatrix(data=arr)  # array_like|输入的数据.
 ```
 
-## 10.10.ceil()
+## 10.10.bincount()
+
+计算非负整数数组中每个值的出现次数.|`numpy.ndarray`
+
+```python
+import numpy as np
+
+arr = [1, 2, 3, 1, 1]
+x = np.bincount(arr)  # array_like|输入的数据.
+```
+
+## 10.11.ceil()
 
 逐元素进行向上取整.|`numpy.ndarray`
 
@@ -1981,7 +1992,7 @@ arr = [5.1, 4.9]
 x = np.ceil(arr)  # array_like|输入的数据.
 ```
 
-## 10.11.clip()
+## 10.12.clip()
 
 逐元素裁切张量.|`numpy.ndarray`
 
@@ -1994,7 +2005,7 @@ new_arr = np.clip(a=arr,  # array_like|输入的数据.
                   a_max=2)  # scalar or array_like or None|最大值.
 ```
 
-## 10.12.concatenate()
+## 10.13.concatenate()
 
 按照指定维度合并多个数组.|`numpy.ndarray`
 
@@ -2008,7 +2019,7 @@ x = np.concatenate([arr0, arr1, arr2],  # array_like|要合并的数组.
                    axis=1)  # int(可选)|0|沿指定维度合并.
 ```
 
-## 10.13.cos()
+## 10.14.cos()
 
 逐元素计算余弦值.|`numpy.ndarray`
 
@@ -2019,7 +2030,7 @@ arr = [5.1, 4.9]
 x = np.cos(arr)  # array_like|输入的数据.
 ```
 
-## 10.14.c_[]
+## 10.15.c_[]
 
 将第二个数组沿水平方向与第一个数组连接.|`numpy.ndarray`
 
@@ -2031,7 +2042,7 @@ arr1 = [[3], [3], [3]]
 x = np.c_[arr0, arr1]
 ```
 
-## 10.15.delete()
+## 10.16.delete()
 
 删除指定维度的数据.|`numpy.ndarray`
 
@@ -2046,7 +2057,7 @@ x = np.delete(arr=arr,  # array_like|输入的数据.
               axis=1)  # int(可选)|None|要删除的维度.
 ```
 
-## 10.16.diag()
+## 10.17.diag()
 
 提取对角线的值, 或构建对角阵.|`numpy.ndarray`
 
@@ -2057,7 +2068,7 @@ arr = [1, 2, 3]
 x = np.diag(v=arr)  # array_like|输入的数据.
 ```
 
-## 10.17.dot()
+## 10.18.dot()
 
 计算两个数组的点乘.|`numpy.ndarray`
 
@@ -2070,7 +2081,7 @@ x = np.dot(a=arr0,  # array_like|第一个元素.
            b=arr1)  # array_like|第二个元素.
 ```
 
-## 10.18.equal()
+## 10.19.equal()
 
 逐元素判断元素值是否一致.|`numpy.ndarray`
 
@@ -2082,7 +2093,7 @@ arr2 = [1, 2, 2]
 x = np.equal(arr1, arr2)  # array_like|输入的数据.
 ```
 
-## 10.19.exp()
+## 10.20.exp()
 
 逐元素计算e的幂次.|`numpy.ndarray`
 
@@ -2093,7 +2104,7 @@ arr = [1, 2, 3]
 x = np.exp(arr)  # array_like|输入的数据.
 ```
 
-## 10.20.expm1()
+## 10.21.expm1()
 
 逐元素计算e的幂次并减1.|`numpy.ndarray`
 
@@ -2104,7 +2115,7 @@ arr = [1, 2, 3]
 x = np.expm1(arr)  # array_like|输入的数据.
 ```
 
-## 10.21.expand_dims()
+## 10.22.expand_dims()
 
 增加数组的维度.|`numpy.ndarray`
 
@@ -2116,7 +2127,7 @@ x = np.expand_dims(a=arr,  # array_like|输入的数组.
                    axis=0)  # int or tuple of ints|添加新维度的位置.
 ```
 
-## 10.22.eye()
+## 10.23.eye()
 
 生成单位阵.|`numpy.ndarray`
 
@@ -2126,7 +2137,7 @@ import numpy as np
 mat = np.eye(N=3)  # int|矩阵的行数.
 ```
 
-## 10.23.hstack()
+## 10.24.hstack()
 
 按照行合并数组.|`numpy.ndarray`
 
@@ -2138,7 +2149,7 @@ arr1 = [[3], [3]]
 x = np.hstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 10.24.lexsort()
+## 10.25.lexsort()
 
 根据指定键(列)进行排序.|`numpy.ndarray`
 
@@ -2154,13 +2165,13 @@ indices = np.lexsort(keys=[arr[:, 0], ])
 x = arr[indices]
 ```
 
-## 10.25.linalg
+## 10.26.linalg
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | numpy的线性代数库. | -    |
 
-### 10.25.1.det()
+### 10.26.1.det()
 
 获取矩阵的行列式.|`numpy.ndarray`
 
@@ -2172,7 +2183,7 @@ mat = [[1, 2],
 x = np.linalg.det(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 10.25.2.inv()
+### 10.26.2.inv()
 
 获取矩阵的逆矩阵.|`numpy.ndarray`
 
@@ -2184,7 +2195,7 @@ mat = [[1, 2],
 x = np.linalg.inv(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 10.25.3.norm()
+### 10.26.3.norm()
 
 计算矩阵或向量范数.|`numpy.float64`
 
@@ -2197,7 +2208,7 @@ x = np.linalg.norm(x=arr,  # array_like|输入的数据.
                    ord=2)  # {non-zero int, inf, -inf, 'fro', 'nuc'}(可选)|None|范数选项.
 ```
 
-### 10.25.4.svd()
+### 10.26.4.svd()
 
 奇异值分解.|`tuple of numpy.ndarray`
 
@@ -2209,7 +2220,7 @@ arr = [[1, 2],
 u, s, vh = np.linalg.svd(a=arr)  # array_like|输入的数据.
 ```
 
-## 10.26.linspace()
+## 10.27.linspace()
 
 返回指定间隔内的等差数列.|`numpy.ndarray`
 
@@ -2221,7 +2232,7 @@ x = np.linspace(start=1,  # array_like|起始值.
                 num=10)  # int(可选)|50|生成序列的样本的总数.
 ```
 
-## 10.27.load()
+## 10.28.load()
 
 从npy、npz或者序列化文件加载数组或序列化的对象.|`numpy.ndarray`
 
@@ -2233,7 +2244,7 @@ arr = np.load(file='./arr.npy',  # file-like object, string, or pathlib.Path|读
               encoding='ASCII')  # str(可选)|'ASCII'|解码方式.
 ```
 
-## 10.28.log()
+## 10.29.log()
 
 逐元素计算自然对数.|`numpy.ndarray`
 
@@ -2244,7 +2255,7 @@ arr = [1, 2, 3]
 x = np.log(arr)  # array_like|输入的数据.
 ```
 
-## 10.29.log1p()
+## 10.30.log1p()
 
 逐元素计算本身加1的自然对数.|`numpy.ndarray`
 
@@ -2255,7 +2266,7 @@ arr = [1, 2, 3]
 x = np.log1p(arr)  # array_like|输入的数据.
 ```
 
-## 10.30.log2()
+## 10.31.log2()
 
 逐元素计算以2为底对数.|`numpy.ndarray`
 
@@ -2266,7 +2277,7 @@ arr = [1, 2, 3]
 x = np.log2(arr)  # array_like|输入的数据.
 ```
 
-## 10.31.mat()
+## 10.32.mat()
 
 将输入转换为矩阵.|`numpy.matrix`
 
@@ -2278,7 +2289,7 @@ mat = np.mat(data=arr,  # array_like|输入的数据.
              dtype=None)  # data-type|None|矩阵元素的数据类型.
 ```
 
-## 10.32.matmul()
+## 10.33.matmul()
 
 两个数组的矩阵乘积|`numpy.ndarray`
 
@@ -2291,7 +2302,7 @@ x = np.matmul(arr0,  # array_like|第一个元素.
               arr1)  # array_like|第二个元素.
 ```
 
-## 10.33.max()
+## 10.34.max()
 
 返回沿指定维度的最大值.|`numpy.float64`
 
@@ -2303,7 +2314,7 @@ max_value = np.max(a=arr,  # array_like|输入的数据.
                    axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 10.34.maximum()
+## 10.35.maximum()
 
 返回数组逐元素的最大值.|`numpy.ndarray`
 
@@ -2315,7 +2326,7 @@ arr1 = [1, 5, 2]
 x = np.maximum(arr0, arr1)  # array_like|输入的数据.
 ```
 
-## 10.35.mean()
+## 10.36.mean()
 
 沿指定维度计算均值.|`numpy.float64`
 
@@ -2327,7 +2338,7 @@ x = np.mean(a=arr,  # array_like|输入的数据.
             axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 10.36.meshgrid()
+## 10.37.meshgrid()
 
 生成坐标矩阵.|`list of numpy.ndarray`
 
@@ -2339,7 +2350,7 @@ y_coord = np.linspace(0, 4, 5)
 vec_mat = np.meshgrid(x_coord, y_coord)  # array_like|坐标向量.
 ```
 
-## 10.37.nonzero()
+## 10.38.nonzero()
 
 返回非零元素索引.|`tuple_of_arrays`
 
@@ -2350,7 +2361,7 @@ arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
 x = np.nonzero(a=arr)  # array_like|输入的数据.
 ```
 
-## 10.38.ones()
+## 10.39.ones()
 
 生成全一数组.|`numpy.ndarray`
 
@@ -2361,7 +2372,7 @@ x = np.ones(shape=[2, 3],  # int or sequence of ints|数组的形状.
             dtype=np.int8)  # data-type(可选)|numpy.float64|矩阵元素的数据类型.
 ```
 
-## 10.39.outer()
+## 10.40.outer()
 
 两个矩阵的外积(`np.matmul(x.T, y) = np.outer(x, y)`).|`numpy.ndarray`
 
@@ -2374,7 +2385,7 @@ x = np.outer(a=arr0,  # array_like|第一个元素.
              b=arr1)  # array_like|第二个元素.
 ```
 
-## 10.40.power()
+## 10.41.power()
 
 逐元素计算指定幂次.|`numpy.ndarray`
 
@@ -2384,13 +2395,13 @@ import numpy as np
 x = np.power([1, 2], [1, 3])   # array_like|底数和指数.
 ```
 
-## 10.41.random
+## 10.42.random
 
 | 版本 | 描述                     | 注意 |
 | ---- | ------------------------ | ---- |
 | -    | numpy的随机数生成函数库. | -    |
 
-### 10.41.1.choice()
+### 10.42.1.choice()
 
 从给定的1D数组中随机采样.|`numpy.ndarray`
 
@@ -2402,7 +2413,7 @@ num = np.random.choice(a=arr,  # 1-D array-like or int|输入的数组.
                        size=1)  # int or tuple of ints(可选)|None|采样结果形状.
 ```
 
-### 10.41.2.multinomial()
+### 10.42.2.multinomial()
 
 从多项分布中抽取样本.|`numpy.ndarray`
 
@@ -2414,7 +2425,7 @@ x = np.random.multinomial(n=1,  # int|实验次数.
                           size=1)  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 10.41.3.normal()
+### 10.42.3.normal()
 
 生成正态分布样本.|`numpy.ndarray`
 
@@ -2424,7 +2435,7 @@ import numpy as np
 x = np.random.normal(size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 10.41.4.permutation()
+### 10.42.4.permutation()
 
 随机打乱序列.|`numpy.ndarray`
 
@@ -2435,7 +2446,7 @@ arr = [1, 2, 3, 4]
 x = np.random.permutation(arr)  # array_like|输入的数据.
 ```
 
-### 10.41.5.rand()
+### 10.42.5.rand()
 
 生成均匀分布随机数组.|`numpy.ndarray`
 
@@ -2445,7 +2456,7 @@ import numpy as np
 x = np.random.rand(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 10.41.6.randint()
+### 10.42.6.randint()
 
 返回指定区间[low, high)随机整数.|`int`
 
@@ -2456,7 +2467,7 @@ x = np.random.randint(low=1,  # int or array-like of ints|左边界.
                       high=10)  # int or array-like of ints(可选)|None|右边界.
 ```
 
-### 10.41.7.randn()
+### 10.42.7.randn()
 
 生成正态分布随机数组.|`numpy.ndarray`
 
@@ -2466,7 +2477,7 @@ import numpy as np
 x = np.random.randn(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 10.41.8.RandomState()
+### 10.42.8.RandomState()
 
 实例化伪随机数生成器.|`numpy.random.mtrand.RandomState`
 
@@ -2476,7 +2487,7 @@ import numpy as np
 rs = np.random.RandomState(seed=2021)  # None|随机种子.
 ```
 
-#### 10.41.8.1.shuffle()
+#### 10.42.8.1.shuffle()
 
 打乱数据.|`numpy.ndarray`
 
@@ -2488,7 +2499,7 @@ x = np.asarray([1, 2, 3, 4])
 rs.shuffle(x)
 ```
 
-### 10.41.9.seed()
+### 10.42.9.seed()
 
 设置随机种子.
 
@@ -2498,7 +2509,7 @@ import numpy as np
 np.random.seed(seed=2021)  # None|随机种子.
 ```
 
-### 10.41.10.uniform()
+### 10.42.10.uniform()
 
 生成均匀分布样本.|`numpy.ndarray`
 
@@ -2510,7 +2521,7 @@ x = np.random.uniform(low=0.0,  # float(可选)|0.0|下界.
                       size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-## 10.42.ravel()
+## 10.43.ravel()
 
 展平数组.|`numpy.ndarray`
 
@@ -2522,7 +2533,7 @@ x = np.ravel(a=x,  # array_like|输入的数据.
              order='f')  # {'C','F', 'A', 'K'}(可选)|'C'|索引读取顺序.
 ```
 
-## 10.43.reshape()
+## 10.44.reshape()
 
 改变数组的形状.|`numpy.ndarray`
 
@@ -2534,7 +2545,7 @@ x = np.reshape(a=arr,  # array_like|要改变形状的数组.
                newshape=[2, 2])  # int or tuple of ints|新的形状.
 ```
 
-## 10.44.save()
+## 10.45.save()
 
 将数组保存进二进制的npy文件.
 
@@ -2547,7 +2558,7 @@ np.save(file='arr.npy',  # file, str, or pathlib.Path|文件保存的路径.
         allow_pickle=True)  # |bool(可选)|True|允许使用序列化保存数组.
 ```
 
-## 10.45.sort()
+## 10.46.sort()
 
 返回排序(升序)后的数组.|`numpy.ndarray`
 
@@ -2558,7 +2569,7 @@ arr = [1, 3, 2, 4]
 x = np.sort(a=arr)  # array_like|要排序的数组.
 ```
 
-## 10.46.split()
+## 10.47.split()
 
 拆分数组.|`list of ndarrays`
 
@@ -2571,7 +2582,7 @@ arr_list = np.split(ary=arr,  # numpy.ndarray|要拆分的数组.
                     axis=1)  # int(可选)|0|所沿的维度.
 ```
 
-## 10.47.sqrt()
+## 10.48.sqrt()
 
 逐元素计算平方根.|`numpy.ndarray`
 
@@ -2582,7 +2593,7 @@ arr = [1, 2, 3]
 x = np.sqrt(arr)  # array_like|输入的数据.
 ```
 
-## 10.48.squeeze()
+## 10.49.squeeze()
 
 删除维度为一的维度.|`numpy.ndarray`
 
@@ -2593,7 +2604,7 @@ arr = [[1, 2, 3]]
 x = np.squeeze(arr)  # array_like|输入的数据.
 ```
 
-## 10.49.std()
+## 10.50.std()
 
 沿指定维度计算标准差.|`numpy.float64`
 
@@ -2605,7 +2616,7 @@ std_value = np.std(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.50.sum()
+## 10.51.sum()
 
 沿指定维度求和.|`numpy.ndarray`
 
@@ -2617,7 +2628,7 @@ sum_value = np.sum(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.51.transpose()
+## 10.52.transpose()
 
 转置数组.|`numpy.ndarray`
 
@@ -2633,7 +2644,7 @@ x0 = np.transpose(a=arr,  # 输入的数组|array-like
 x1 = arr.T
 ```
 
-## 10.52.var()
+## 10.53.var()
 
 沿指定维度计算方差.|`numpy.float64`
 
@@ -2645,7 +2656,7 @@ var_value = np.var(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.53.void()
+## 10.54.void()
 
 实例化`numpy.void`对象.
 
@@ -2655,7 +2666,7 @@ import numpy as np
 x = np.void(b'abc')  # bytes|输入的数据.
 ```
 
-## 10.54.vstack()
+## 10.55.vstack()
 
 按照列合并数组.|`numpy.ndarray`
 
@@ -2667,7 +2678,7 @@ arr1 = [[3, 4]]
 x = np.vstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 10.55.where()
+## 10.56.where()
 
 根据判断条件, 真值返回`x`, 假值返回`y`.|`numpy.ndarray`
 
@@ -2681,7 +2692,7 @@ arr = np.where(a > b,  # array_like, bool|判断条件.
                False)  # array_like|None|情况为假的返回值.
 ```
 
-## 10.56.zeros()
+## 10.57.zeros()
 
 生成全零数组.|`numpy.ndarray`
 
