@@ -783,7 +783,7 @@ tensor = ToTensor()(pic=arr)  # PIL Image or numpy.ndarray|要转换的图像.
 
 | 版本  | 描述                             | 注意 | 适配M1 |
 | ----- | -------------------------------- | ---- | ------ |
-| 1.6.0 | Torch的强化学习Stable Baselines. | -    | 是     |
+| 1.6.2 | Torch的强化学习Stable Baselines. | -    | 是     |
 
 ## 3.1.A2C()
 
@@ -914,7 +914,8 @@ model = PPO(policy='MlpPolicy',  # {'MlpPolicy', 'CnnPolicy'}|使用的策略.
             gamma=0.999,  # float|0.99|折扣系数.
             gae_lambda=0.98,  # float|0.95|广义优势估计器的偏差与方差权衡因子.
             ent_coef=0.01,  # float|0.0|损失计算的熵系数.
-            verbose=1)  # {0, 1, 2}|0|日志显示模式.
+            verbose=1,  # {0, 1, 2}|0|日志显示模式.
+            device='auto')  # torch.device or str|'auto'|分配的硬件设备(Torch支持的硬件设备).
 ```
 
 ### 3.3.1.learn()
