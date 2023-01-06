@@ -118,7 +118,7 @@ metric = COCORecall(class_ids=range(20),  # list of int|要评估指标的类别
 
 ### 1.6.1.RetinaNet()
 
-实例化RetinaNet.
+实例化`RetinaNet`模型.
 
 ```python
 from keras_cv.models import RetinaNet
@@ -138,6 +138,31 @@ model = RetinaNet(classes=20,  # int|数据集的类别数.
 
 ```python
 model.backbone.trainable = False
+```
+
+### 1.6.2.StableDiffusion()
+
+实例化`StableDiffusion`模型.
+
+```python
+from keras_cv.models import StableDiffusion
+
+model = StableDiffusion(img_height=512,  # int|512|要生成图片的高度, 注意必需是128的整数倍.
+                        img_width=512)  # int|512|要生成图片的宽度, 注意必需是128的整数倍.
+```
+
+#### 1.6.2.1.text_to_image()
+
+根据描述文本生成图像.|`numpy.ndarray`
+
+```python
+from keras_cv.models import StableDiffusion
+
+model = StableDiffusion()
+images = model.text_to_image(prompt='white rabbit',  # str|提示语.
+                             batch_size=1,  # int|1|生成图像的数量.
+                             num_steps=25,  # int|25|迭代次数, 用于控制图片质量.
+                             seed=2023)  # int|None|随机种子.
 ```
 
 # 2.tensorflow
