@@ -4468,19 +4468,88 @@ y = inv_boxcox(y_trans,  # numpy.ndarray|变换后的数据.
                lmbda)  # float|变换参数.
 ```
 
-# 17.sklearn
+# 17.sentencepiece
+
+| 版本   | 描述                        | 注意 | 适配M1 |
+| ------ | --------------------------- | ---- | ------ |
+| 0.1.99 | 无监督文本分词器和去分词器. | -    | 是     |
+
+## 17.1.SentencePieceProcessor()
+
+实例化SentencePiece处理器.
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')  # str|模型文件的路径.
+```
+
+### 17.1.1.Decode()
+
+解码给定的ID列表.|`str`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+text = sp.Decode(input=[10547, 121, 31841, 1211, 31906])  # list of int|要解码的ID列表.
+```
+
+### 17.1.2.Encode()
+
+编码给定的序列(对).|`list`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+encoding = sp.Encode(input='Hello, World!')  # str or list of str|要编码的序列(对).
+```
+
+### 17.1.3.EncodeAsPieces()
+
+编码给定的序列(对)成片段.|`list`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+encoding = sp.EncodeAsPieces(input='Hello, World!')  # str or list of str|要编码的序列(对).
+```
+
+## 17.2.SentencePieceTrainer
+
+### 17.2.1.Train()
+
+训练模型.
+
+```python
+import sentencepiece as spm
+
+spm.SentencePieceTrainer.Train(input='./corpus',  # str|原始语料库文件(格式为每行一句话).
+                               model_prefix='en',  # str|输出模型前缀, 生成<model_prefix>.model和<model_prefix>.vocab.
+                               model_type='unigram',  # {'bpe', 'char', 'unigram',  'word'}|'unigram'|使用的分词算法.
+                               vocab_size=8000,  # int|8000|词汇表大小.
+                               character_coverage=0.9995,  # float|0.9995|模型的字符覆盖率.
+                               unk_id=0,  # int|0|未知词汇<unk>的id.
+                               bos_id=1,  # int|1|序列开始<s>的id.
+                               eos_id=2,  # int|2|序列结束</s>的id.
+                               pad_id=-1)  # int|-1|填充<pad>的id.
+```
+
+# 18.sklearn
 
 | 版本   | 描述                          | 注意                                                         | 适配M1 |
 | ------ | ----------------------------- | ------------------------------------------------------------ | ------ |
 | 0.24.2 | Python机器学习和数据挖掘模块. | 1. M1目前需要使用conda安装.                                                                                         2. 安装的包名是scikit-learn. | 是     |
 
-## 17.1.datasets
+## 18.1.datasets
 
 | 版本 | 描述                 | 注意                                                         |
 | ---- | -------------------- | ------------------------------------------------------------ |
 | -    | sklearn的内置数据集. | 数据集保存的位置 /path/to/lib/python3/site-packages/sklearn/datasets/data |
 
-### 17.1.1.load_iris()
+### 18.1.1.load_iris()
 
 加载返回iris数据集.|`sklearn.utils.Bunch`
 
@@ -4490,13 +4559,13 @@ from sklearn.datasets import load_iris
 dataset = load_iris()
 ```
 
-## 17.2.ensemble
+## 18.2.ensemble
 
 | 版本 | 描述                   | 注意                                                         |
 | ---- | ---------------------- | ------------------------------------------------------------ |
 | -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 17.2.1.AdaBoostClassifier()
+### 18.2.1.AdaBoostClassifier()
 
 实例化AdaBoost分类器.
 
@@ -4507,7 +4576,7 @@ model = AdaBoostClassifier(n_estimators=50,  # int|50|基学习器的数量.
                            learning_rate=1.)  # float|1.0|学习率.
 ```
 
-### 17.2.2.GradientBoostingClassifier()
+### 18.2.2.GradientBoostingClassifier()
 
 实例化梯度提升分类器.
 
@@ -4519,7 +4588,7 @@ model = GradientBoostingClassifier(learning_rate=0.1,  # float|0.1|学习率.
 
 ```
 
-### 17.2.3.RandomForestClassifier()
+### 18.2.3.RandomForestClassifier()
 
 实例化随机森林分类器.
 
@@ -4533,7 +4602,7 @@ model = RandomForestClassifier(n_estimators=100,  # int|100|基学习器的数�
                                verbose=0)  # int|0|日志显示模式.
 ```
 
-### 17.2.4.RandomForestRegressor()
+### 18.2.4.RandomForestRegressor()
 
 实例化随机森林回归器.
 
@@ -4547,7 +4616,7 @@ model = RandomForestRegressor(n_estimators=100,  # int|100|基学习器的数量
                               verbose=0)  # int|0|日志显示模式.
 ```
 
-### 17.2.5.StackingClassifier()
+### 18.2.5.StackingClassifier()
 
 实例化Stacking分类器.
 
@@ -4558,7 +4627,7 @@ model = StackingClassifier(estimators,  # list of (str, estimator)|基学习器�
                            final_estimator=None)  # estimator|sklearn.linear_model.LogisticRegression|二级学习器.
 ```
 
-### 17.2.6.VotingClassifier()
+### 18.2.6.VotingClassifier()
 
 实例化投票分类器.
 
@@ -4570,13 +4639,13 @@ model = VotingClassifier(estimators,  # list of (str, estimator)|基学习器的
                          weights=None)  # array-like of shape (n_classifiers,)|None|基学习器的权重.
 ```
 
-## 17.3.linear_model
+## 18.3.linear_model
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的线性模型模块. | -    |
 
-### 17.3.1.LinearRegression()
+### 18.3.1.LinearRegression()
 
 实例化线性回归器.
 
@@ -4586,7 +4655,7 @@ from sklearn.linear_model import LinearRegression
 model = LinearRegression()
 ```
 
-#### 17.3.1.1.fit()
+#### 18.3.1.1.fit()
 
 训练线性回归器.|`self`
 
@@ -4599,7 +4668,7 @@ model.fit(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特
           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-#### 17.3.1.2.predict()
+#### 18.3.1.2.predict()
 
 使用线性回归器进行预测.|`numpy.ndarray`
 
@@ -4610,7 +4679,7 @@ model = LinearRegression()
 y_preds = model.predict(X)  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
 ```
 
-#### 17.3.1.3.score()
+#### 18.3.1.3.score()
 
 计算验证集的平均准确率.|`float`
 
@@ -4623,7 +4692,7 @@ accuracy = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_
                        sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 17.3.2.LogisticRegression()
+### 18.3.2.LogisticRegression()
 
 实例化逻辑回归器.
 
@@ -4633,13 +4702,13 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-## 17.4.metrics
+## 18.4.metrics
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的评估模块. | -    |
 
-### 17.4.1.accuracy_score()
+### 18.4.1.accuracy_score()
 
 计算分类器的准确率.|`numpy.float64`
 
@@ -4651,9 +4720,9 @@ accuracy = accuracy_score(y_true,  # 1d array-like, or label indicator array / s
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 17.4.2.ConfusionMatrixDisplay()
+### 18.4.2.ConfusionMatrixDisplay()
 
-#### 17.4.2.1.from_predictions()
+#### 18.4.2.1.from_predictions()
 
 绘制混淆矩阵.
 
@@ -4668,7 +4737,7 @@ ConfusionMatrixDisplay.from_predictions(y_true=y_true,  # array-like of shape (n
 plt.show()
 ```
 
-### 17.4.3.confusion_matrix()
+### 18.4.3.confusion_matrix()
 
 计算分类器的混淆矩阵.|`numpy.ndarray`
 
@@ -4680,7 +4749,7 @@ matrix = confusion_matrix(y_true,  # array-like of shape (n_samples,)|真实标�
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 17.4.4.r2_score()
+### 18.4.4.r2_score()
 
 计算R2决定系数.|`numpy.float64`
 
@@ -4692,13 +4761,13 @@ r2 = r2_score(y_true,  # array-like of shape (n_samples,) or (n_samples, n_outpu
               sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-## 17.5.model_selection
+## 18.5.model_selection
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的模型选择模块. | -    |
 
-### 17.5.1.cross_val_predict()
+### 18.5.1.cross_val_predict()
 
 对每个样本进行交叉验证.|`numpy.ndarray`
 
@@ -4711,7 +4780,7 @@ res = cross_val_predict(estimator,  # estimator object|基学习器.
                         cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 17.5.2.cross_val_score()
+### 18.5.2.cross_val_score()
 
 进行交叉验证.|`numpy.ndarray`
 
@@ -4725,7 +4794,7 @@ res = cross_val_score(estimator,  # estimator object|基学习器.
                       cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 17.5.3.GridSearchCV()
+### 18.5.3.GridSearchCV()
 
 实例化网格搜索器.
 
@@ -4740,7 +4809,7 @@ gs = GridSearchCV(estimator,  # estimator object|基学习器.
                   verbose=0)  # int|0|日志显示模式.
 ```
 
-#### 17.5.3.1.fit()
+#### 18.5.3.1.fit()
 
 组合所有参数网格进行训练.|`self`
 
@@ -4757,7 +4826,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
        y=None)  # array-like of shape (n_samples, n_output) or (n_samples,)|None|标签.
 ```
 
-#### 17.5.3.2.best_params_
+#### 18.5.3.2.best_params_
 
 最佳参数.|`dict`
 
@@ -4765,7 +4834,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
 gs.best_params_
 ```
 
-#### 17.5.3.3.best_score_
+#### 18.5.3.3.best_score_
 
 最佳平均交叉验证分数.|`float`
 
@@ -4773,7 +4842,7 @@ gs.best_params_
 gs.best_score_
 ```
 
-### 17.5.4.LeaveOneOut()
+### 18.5.4.LeaveOneOut()
 
 实例化留一法交叉验证器.
 
@@ -4783,7 +4852,7 @@ from sklearn.model_selection import LeaveOneOut
 loo = LeaveOneOut()
 ```
 
-#### 17.5.4.1.split()
+#### 18.5.4.1.split()
 
 划分数据.|`yield`
 
@@ -4795,7 +4864,7 @@ train_set, test_set = loo.split(X,  # array-like of shape (n_samples, n_features
                                 y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 17.5.5.StratifiedKFold()
+### 18.5.5.StratifiedKFold()
 
 实例化分层K折交叉验证器.
 
@@ -4807,7 +4876,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
                         random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-#### 17.5.5.1.n_splits
+#### 18.5.5.1.n_splits
 
 交叉验证的划分数.|`int`
 
@@ -4815,7 +4884,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
 kfold.n_splits
 ```
 
-#### 17.5.5.2.split()
+#### 18.5.5.2.split()
 
 划分数据.|`yield`
 
@@ -4829,7 +4898,7 @@ train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_featur
                                   y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 17.5.6.train_test_split()
+### 18.5.6.train_test_split()
 
 将数据集拆分成训练和测试集.|`list`
 
@@ -4842,13 +4911,13 @@ x_train, x_test, y_train, y_test = train_test_split(X, y,  # lists, numpy arrays
                                                     shuffle=True)  # bool|True|是否打乱数据.
 ```
 
-## 17.6.preprocessing
+## 18.6.preprocessing
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的数据预处理模块. | 1. 预处理器的类方法基本没有差异, 具体参见`LabelEncoder`的类方法. |
 
-### 17.6.1.LabelEncoder()
+### 18.6.1.LabelEncoder()
 
 实例化标签编码器.
 
@@ -4858,7 +4927,7 @@ from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 ```
 
-#### 17.6.1.1.fit_transform()
+#### 18.6.1.1.fit_transform()
 
 预处理数据.|`numpy.ndarray`
 
@@ -4870,7 +4939,7 @@ le = LabelEncoder()
 y = le.fit_transform(y=raw_y)  # array-like of shape (n_samples,)|要处理的数据.
 ```
 
-### 17.6.2.MinMaxScaler()
+### 18.6.2.MinMaxScaler()
 
 实例化MinMax缩放器.
 
@@ -4880,7 +4949,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 ```
 
-### 17.6.3.MultiLabelBinarizer()
+### 18.6.3.MultiLabelBinarizer()
 
 实例化多标签二值化缩放器.
 
@@ -4890,7 +4959,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()
 ```
 
-#### 17.6.3.1.classes_
+#### 18.6.3.1.classes_
 
 原始的标签.|`numpy.ndarray`
 
@@ -4898,7 +4967,7 @@ mlb = MultiLabelBinarizer()
 mlb.classes_
 ```
 
-### 17.6.4.StandardScaler()
+### 18.6.4.StandardScaler()
 
 实例化标准化器.
 
@@ -4908,13 +4977,13 @@ from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 ```
 
-## 17.7.svm
+## 18.7.svm
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的支持向量机模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 17.7.1.SVC()
+### 18.7.1.SVC()
 
 实例化支持向量分类器.
 
@@ -4927,7 +4996,7 @@ model = SVC(C=1.0,  # float|1.0|正则化系数.
             class_weight=None)  # dict or 'balanced'|None|类别权重.
 ```
 
-### 17.7.2.SVR()
+### 18.7.2.SVR()
 
 实例化支持向量回归器.
 
@@ -4938,13 +5007,13 @@ model = SVR(kernel='rbf',  # {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}
             C=1.0)  # float|1.0|正则化系数.
 ```
 
-## 17.8.tree
+## 18.8.tree
 
 | 版本 | 描述                 | 注意                                                         |
 | ---- | -------------------- | ------------------------------------------------------------ |
 | -    | sklearn的决策树模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 17.8.1.DecisionTreeClassifier()
+### 18.8.1.DecisionTreeClassifier()
 
 实例化决策树分类器.
 
@@ -4955,7 +5024,7 @@ model = DecisionTreeClassifier(criterion='gini',  # {'gini', 'entropy'}|'gini'|�
                                random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-### 17.8.2.export_graphviz()
+### 18.8.2.export_graphviz()
 
 导出决策树结构为Dot语言.|`str`
 
@@ -4970,7 +5039,7 @@ dot_str = export_graphviz(decision_tree=model,  # decision tree regressor or cla
                           class_names=None)  # list of str or bool|None|类别的名称.
 ```
 
-### 17.8.3.plot_tree()
+### 18.8.3.plot_tree()
 
 绘制决策树.
 
@@ -4982,15 +5051,15 @@ model = DecisionTreeClassifier(criterion='gini',
 plot_tree(decision_tree=model)  # decision tree regressor or classifier|要绘制的决策树.
 ```
 
-## 17.9.utils
+## 18.9.utils
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的工具模块. | -    |
 
-### 17.9.1.multiclass
+### 18.9.1.multiclass
 
-#### 17.9.1.1.type_of_target()
+#### 18.9.1.1.type_of_target()
 
 判断数据的类型.|`str`
 
@@ -5001,7 +5070,7 @@ y = ['a', 'b', 'c']
 res = type_of_target(y=y)  # array-like|输入的数据.
 ```
 
-### 17.9.2.resample()
+### 18.9.2.resample()
 
 对数组进行重采样.|`list`
 
@@ -5013,13 +5082,13 @@ new_arr = resample(arr,  # array-like|输入的数据, (可以输入多个).
                    random_state=2022)  # int|None|随机状态.
 ```
 
-# 18.tokenizers
+# 19.tokenizers
 
 | 版本   | 描述                  | 注意                        | 适配M1 |
 | ------ | --------------------- | --------------------------- | ------ |
 | 0.10.1 | 快速和自定义的分词器. | 1. M1目前需要使用conda安装. | 是     |
 
-## 18.1.ByteLevelBPETokenizer()
+## 19.1.ByteLevelBPETokenizer()
 
 实例化字符级BPE分词器.
 
@@ -5032,7 +5101,7 @@ tokenizer = ByteLevelBPETokenizer(vocab='./vocab.json',  # str(可选)|None|词�
                                   lowercase=False)  # bool|False|是否全部转换为小写字母.
 ```
 
-### 18.1.1.decode()
+### 19.1.1.decode()
 
 解码给定的ID列表.|`str`
 
@@ -5048,7 +5117,7 @@ encoding_list = [31414, 34379, 328]
 raw_text = tokenizer.decode(ids=encoding_list)  # list|要解码的ID列表.
 ```
 
-### 18.1.2.encode()
+### 19.1.2.encode()
 
 编码给定的序列(对).|`tokenizers.Encoding`
 
@@ -5064,7 +5133,7 @@ raw_text = 'Hello Transformers!'
 encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
 ```
 
-#### 18.1.2.1.ids
+#### 19.1.2.1.ids
 
 编码后的ID列表.|`list`
 
@@ -5072,15 +5141,15 @@ encoding = tokenizer.encode(sequence=raw_text)  # str|要编码的序列(对).
 encoding.ids
 ```
 
-# 19.transformers
+# 20.transformers
 
 | 版本   | 描述                | 注意                                                         | 适配M1 |
 | ------ | ------------------- | ------------------------------------------------------------ | ------ |
 | 4.18.0 | SOTA自然语言处理库. | 1. 默认的缓存路径是~/.cache/huggingface/transformers                                                               2. 部分功能需要依赖sentencepiece模块. | 是     |
 
-## 19.1.AlbertTokenizer
+## 20.1.AlbertTokenizer
 
-### 19.1.1.\__call__()
+### 20.1.1.\__call__()
 
 为Albert分词(预处理)一个或者多个数据.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
@@ -5102,7 +5171,7 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
 input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
-### 19.1.2.from_pretrained()
+### 20.1.2.from_pretrained()
 
 实例化Albert预训练分词器.|`transformers.models.albert.tokenization_albert.AlbertTokenizer`
 
@@ -5113,9 +5182,9 @@ tokenizer = AlbertTokenizer.from_pretrained(pretrained_model_name_or_path='alber
                                             do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
 ```
 
-## 19.2.BertTokenizer
+## 20.2.BertTokenizer
 
-### 19.2.1.\__call__()
+### 20.2.1.\__call__()
 
 为Bert分词(预处理)一个或者多个数据.|{`input_ids`, (`token_type_ids`), (`attention_mask`)}
 
@@ -5137,7 +5206,7 @@ encoder = tokenizer(text=x,  # list of str|需要预处理的文本.
 input_ids, attention_mask, token_type_ids = encoder['input_ids'], encoder['attention_mask'], encoder['token_type_ids']
 ```
 
-### 19.2.2.from_pretrained()
+### 20.2.2.from_pretrained()
 
 实例化Bert预训练分词器.|`transformers.tokenization_utils_base.BatchEncoding{'input_ids': tf.Tensor, 'token_type_ids': tf.Tensor, 'attention_mask': tf.Tensor}`
 
@@ -5148,9 +5217,9 @@ tokenizer = BertTokenizer.from_pretrained(pretrained_model_name_or_path='bert-ba
                                           do_lower_case=True)  # bool(可选)|True|是否全部转换为小写字母.
 ```
 
-## 19.3.RobertaConfig
+## 20.3.RobertaConfig
 
-### 19.3.1.from_pretrained()
+### 20.3.1.from_pretrained()
 
 获取Roberta的预训练配置信息.|`transformers.models.roberta.configuration_roberta.RobertaConfig`
 
@@ -5160,9 +5229,9 @@ from transformers import RobertaConfig
 config = RobertaConfig.from_pretrained(pretrained_model_name_or_path='roberta-base')  # str|预训练的配置信息名称或者路径.
 ```
 
-## 19.4.TFAlbertModel
+## 20.4.TFAlbertModel
 
-### 19.4.1.\_\_call\_\_()
+### 20.4.1.\_\_call\_\_()
 
 调用Albert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPooling`
 
@@ -5177,7 +5246,7 @@ outputs = model(input_ids=input_ids,
 sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
 ```
 
-### 19.4.2.from_pretrained()
+### 20.4.2.from_pretrained()
 
 实例化预训练的Albert模型.|`transformers.models.albert.modeling_tf_albert.TFAlbertModel`
 
@@ -5188,9 +5257,9 @@ model = TFAlbertModel.from_pretrained(pretrained_model_name_or_path='albert-base
                                       trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-## 19.5.TFBertModel
+## 20.5.TFBertModel
 
-### 19.5.1.\_\_call\_\_()
+### 20.5.1.\_\_call\_\_()
 
 调用Bert模型.|`transformers.modeling_tf_outputs.TFBaseModelOutputWithPoolingAndCrossAttentions`
 
@@ -5205,7 +5274,7 @@ outputs = model(input_ids=input_ids,
 sequence_output, pooled_output = outputs.last_hidden_state, outputs.pooler_output
 ```
 
-### 19.5.2.from_pretrained()
+### 20.5.2.from_pretrained()
 
 实例化预训练的Bert模型.|`transformers.models.bert.modeling_tf_bert.TFBertModel`
 
@@ -5216,9 +5285,9 @@ model = TFBertModel.from_pretrained(pretrained_model_name_or_path='bert-base-unc
                                     trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-## 19.6.TFRobertaModel
+## 20.6.TFRobertaModel
 
-### 19.6.1.from_pretrained()
+### 20.6.1.from_pretrained()
 
 实例化预训练的Roberta模型.|`transformers.models.roberta.modeling_tf_roberta.TFRobertaModel`
 
@@ -5229,13 +5298,13 @@ model = TFRobertaModel.from_pretrained(pretrained_model_name_or_path='roberta-ba
                                        trainable=True)  # bool|True|参数是否可以训练.
 ```
 
-# 20.xgboost
+# 21.xgboost
 
 | 版本  | 描述                  | 注意                                                         | 适配M1 |
 | ----- | --------------------- | ------------------------------------------------------------ | ------ |
 | 1.4.2 | 梯度提升决策树(GBDT). | 1. 可直接在sklearn使用.                                                                                                                              2. 模型的类方法基本没有差异, 具体参见`XGBClassifier`的类方法. | 是     |
 
-## 20.1.XGBClassifier()
+## 21.1.XGBClassifier()
 
 实例化XGBoost分类器.
 
@@ -5253,7 +5322,7 @@ model = XGBClassifier(max_depth=None,  # int|None|基学习器的最大深度.
                       random_state=None)  # int|None|随机状态.
 ```
 
-### 20.1.1.fit()
+### 21.1.1.fit()
 
 训练XGBoost分类器.|`self`
 
@@ -5269,7 +5338,7 @@ model.fit(X,  # array_like|特征数据.
           verbose=True)  # bool|日志显示模式.
 ```
 
-### 20.1.2.predict()
+### 21.1.2.predict()
 
 使用XGBoost分类器进行预测.|`numpy.ndarray`
 
@@ -5280,7 +5349,7 @@ model = XGBClassifier()
 y_preds = model.predict(X)  # array_like|特征数据.
 ```
 
-### 20.1.3.score()
+### 21.1.3.score()
 
 计算验证集的平均准确率.|`float`
 
@@ -5292,7 +5361,7 @@ accuracy = model.score(X,  # array-like of shape (n_samples, n_features)|特征�
                        y)  # array-like of shape (n_samples,) or (n_samples, n_outputs)|标签.
 ```
 
-## 20.2.XGBRegressor()
+## 21.2.XGBRegressor()
 
 实例化XGBoost回归器.
 
