@@ -4506,7 +4506,18 @@ sp = spm.SentencePieceProcessor(model_file='./en.model')
 encoding = sp.Encode(input='Hello, World!')  # str or list of str|要编码的序列(对).
 ```
 
-### 17.1.3.EncodeAsPieces()
+### 17.1.3.EncodeAsIds()
+
+编码给定的序列(对)成ID.|`list`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+encoding = sp.EncodeAsIds(input='Hello, World!')  # str or list of str|要编码的序列(对).
+```
+
+### 17.1.4.EncodeAsPieces()
 
 编码给定的序列(对)成片段.|`list`
 
@@ -4515,6 +4526,39 @@ import sentencepiece as spm
 
 sp = spm.SentencePieceProcessor(model_file='./en.model')
 encoding = sp.EncodeAsPieces(input='Hello, World!')  # str or list of str|要编码的序列(对).
+```
+
+### 17.1.5.bos_id()
+
+序列开始`<s>`的id.|`int`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+bos_id = sp.bos_id()
+```
+
+### 17.1.6.eos_id()
+
+序列结束`<\s>`的id.|`int`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+eos_id = sp.eos_id()
+```
+
+### 17.1.7.pad_id()
+
+填充`<pad>`的id.|`int`
+
+```python
+import sentencepiece as spm
+
+sp = spm.SentencePieceProcessor(model_file='./en.model')
+pad_id = sp.pad_id()
 ```
 
 ## 17.2.SentencePieceTrainer
