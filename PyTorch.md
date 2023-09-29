@@ -690,17 +690,16 @@ tensor = tensor.unsqueeze(dim=1)  # int|添加新维度的位置.
 
 ```python
 import numpy as np
+from torch import Tensor
 from torch.utils.data import DataLoader
 
 arr = np.asarray([[1], [2], [3], [4]])
 
-
 def collate_fn(batch):
-    """对每个样本值乘2."""
     for sample in batch:
         sample *= 2
 
-    return batch
+    return Tensor(batch)
 
 dataloader = DataLoader(dataset=arr,  # array-like|要加载的数据集.
                         batch_size=2,  # int(可选)|1|批次大小.
