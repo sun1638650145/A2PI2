@@ -696,6 +696,7 @@ from torch.utils.data import DataLoader
 arr = np.asarray([[1], [2], [3], [4]])
 
 def collate_fn(batch):
+    """对每个样本值乘2."""
     for sample in batch:
         sample *= 2
 
