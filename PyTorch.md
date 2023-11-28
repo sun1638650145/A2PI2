@@ -385,7 +385,17 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.19.8.MaxPool2d()
+### 1.19.8.LogSoftmax()
+
+实例化LogSoftmax层.
+
+```python
+from torch import nn
+
+layer = nn.LogSoftmax(dim=0)  # int(可选)|None|指定的维度.
+```
+
+### 1.19.9.MaxPool2d()
 
 实例化2D最大池化层.
 
@@ -395,7 +405,7 @@ from torch.nn import MaxPool2d
 layer = MaxPool2d(kernel_size=2)  # int or tuple|池化窗口.
 ```
 
-### 1.19.9.Module()
+### 1.19.10.Module()
 
 实例化`Module`.
 
@@ -419,7 +429,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.19.9.1.eval()
+#### 1.19.10.1.eval()
 
 设置模块为评估模式.
 
@@ -427,7 +437,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.19.9.2.load_state_dict()
+#### 1.19.10.2.load_state_dict()
 
 加载模块的权重.
 
@@ -435,7 +445,7 @@ model.eval()
 model.load_state_dict(state_dict)  # dict|参数字典.
 ```
 
-#### 1.19.9.3.parameters()
+#### 1.19.10.3.parameters()
 
 返回模块参数迭代器.
 
@@ -443,7 +453,7 @@ model.load_state_dict(state_dict)  # dict|参数字典.
 model.parameters()
 ```
 
-#### 1.19.9.4.state_dict()
+#### 1.19.10.4.state_dict()
 
 返回模块参数字典.
 
@@ -451,7 +461,7 @@ model.parameters()
 model.state_dict()
 ```
 
-#### 1.19.9.5.train()
+#### 1.19.10.5.train()
 
 设置模块为训练模式.
 
@@ -459,7 +469,7 @@ model.state_dict()
 model.train()
 ```
 
-### 1.19.10.ModuleList()
+### 1.19.11.ModuleList()
 
 实例化`ModuleList`.
 
@@ -472,7 +482,7 @@ layers = nn.ModuleList(modules=(linear_layer,
                                 linear_layer))  # list of Module or tuple of Module|Module组成的列表.
 ```
 
-### 1.19.11.Parameter()
+### 1.19.12.Parameter()
 
 实例化Parameter层, 可将张量视为一个`Module`.
 
@@ -484,7 +494,7 @@ tensor = torch.randn(3, 4)
 layer = nn.Parameter(data=tensor)  # torch.Tensor|参数张量.
 ```
 
-### 1.19.12.ReLU()
+### 1.19.13.ReLU()
 
 实例化ReLU层.
 
@@ -494,7 +504,7 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-### 1.19.13.Sequential()
+### 1.19.14.Sequential()
 
 实例化`Sequential`.
 
@@ -508,7 +518,7 @@ model = nn.Sequential(
 )
 ```
 
-#### 1.19.13.1.add_module()
+#### 1.19.14.1.add_module()
 
 添加一个模块到`Sequential`结尾, 使用给定名称.
 
@@ -517,7 +527,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
                  module=nn.Flatten())  # nn.Module|模块.
 ```
 
-#### 1.19.13.2.append()
+#### 1.19.14.2.append()
 
 添加一个模块到`Sequential`结尾.
 
@@ -525,7 +535,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
 model.append(module=nn.Flatten())  # nn.Module|模块.
 ```
 
-### 1.19.14.Softmax()
+### 1.19.15.Softmax()
 
 实例化Softmax层.
 
@@ -535,11 +545,11 @@ from torch import nn
 layer = nn.Softmax(dim=0)  # int(可选)|None|指定的维度.
 ```
 
-### 1.19.15.utils
+### 1.19.16.utils
 
-#### 1.19.15.1.rnn
+#### 1.19.16.1.rnn
 
-##### 1.19.15.1.1.pad_sequence()
+##### 1.19.16.1.1.pad_sequence()
 
 对不同长度的`Tensor`列表进行填充.|`torch.Tensor`
 
