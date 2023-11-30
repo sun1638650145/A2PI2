@@ -374,7 +374,21 @@ tensor = softmax(input=tensor,  # torch.Tensor|输入的张量.
                  dim=0)  # int|指定的维度.
 ```
 
-### 1.19.7.Linear()
+### 1.19.7.init
+
+#### 1.19.7.1.xavier_uniform_()
+
+使用均匀分布的Xavier方法初始化输入张量.|`torch.Tensor`
+
+```python
+import torch
+from torch.nn.init import xavier_uniform_
+
+tensor = torch.ones(3, 4)
+tensor = xavier_uniform_(tensor=tensor)  # torch.Tensor|输入的张量.
+```
+
+### 1.19.8.Linear()
 
 实例化全连接层.
 
@@ -385,7 +399,7 @@ layer = nn.Linear(in_features=32,  # int|输入神经元的数量.
                   out_features=32)  # int|神经元的数量.
 ```
 
-### 1.19.8.LogSoftmax()
+### 1.19.9.LogSoftmax()
 
 实例化LogSoftmax层.
 
@@ -395,7 +409,7 @@ from torch import nn
 layer = nn.LogSoftmax(dim=0)  # int(可选)|None|指定的维度.
 ```
 
-### 1.19.9.MaxPool2d()
+### 1.19.10.MaxPool2d()
 
 实例化2D最大池化层.
 
@@ -405,7 +419,7 @@ from torch.nn import MaxPool2d
 layer = MaxPool2d(kernel_size=2)  # int or tuple|池化窗口.
 ```
 
-### 1.19.10.Module()
+### 1.19.11.Module()
 
 实例化`Module`.
 
@@ -429,7 +443,7 @@ class Model(nn.Module):
         return self.output_layer(x)
 ```
 
-#### 1.19.10.1.eval()
+#### 1.19.11.1.eval()
 
 设置模块为评估模式.
 
@@ -437,7 +451,7 @@ class Model(nn.Module):
 model.eval()
 ```
 
-#### 1.19.10.2.load_state_dict()
+#### 1.19.11.2.load_state_dict()
 
 加载模块的权重.
 
@@ -445,7 +459,15 @@ model.eval()
 model.load_state_dict(state_dict)  # dict|参数字典.
 ```
 
-#### 1.19.10.3.parameters()
+#### 1.19.11.3.named_parameters()
+
+返回模块名称参数组成元组的迭代器.
+
+```python
+model.named_parameters()
+```
+
+#### 1.19.11.4.parameters()
 
 返回模块参数迭代器.
 
@@ -453,7 +475,7 @@ model.load_state_dict(state_dict)  # dict|参数字典.
 model.parameters()
 ```
 
-#### 1.19.10.4.state_dict()
+#### 1.19.11.5.state_dict()
 
 返回模块参数字典.
 
@@ -461,7 +483,7 @@ model.parameters()
 model.state_dict()
 ```
 
-#### 1.19.10.5.train()
+#### 1.19.11.6.train()
 
 设置模块为训练模式.
 
@@ -469,7 +491,7 @@ model.state_dict()
 model.train()
 ```
 
-### 1.19.11.ModuleList()
+### 1.19.12.ModuleList()
 
 实例化`ModuleList`.
 
@@ -482,7 +504,7 @@ layers = nn.ModuleList(modules=(linear_layer,
                                 linear_layer))  # list of Module or tuple of Module|Module组成的列表.
 ```
 
-### 1.19.12.Parameter()
+### 1.19.13.Parameter()
 
 实例化Parameter层, 可将张量视为一个`Module`.
 
@@ -494,7 +516,7 @@ tensor = torch.randn(3, 4)
 layer = nn.Parameter(data=tensor)  # torch.Tensor|参数张量.
 ```
 
-### 1.19.13.ReLU()
+### 1.19.14.ReLU()
 
 实例化ReLU层.
 
@@ -504,7 +526,7 @@ from torch import nn
 layer = nn.ReLU()
 ```
 
-### 1.19.14.Sequential()
+### 1.19.15.Sequential()
 
 实例化`Sequential`.
 
@@ -518,7 +540,7 @@ model = nn.Sequential(
 )
 ```
 
-#### 1.19.14.1.add_module()
+#### 1.19.15.1.add_module()
 
 添加一个模块到`Sequential`结尾, 使用给定名称.
 
@@ -527,7 +549,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
                  module=nn.Flatten())  # nn.Module|模块.
 ```
 
-#### 1.19.14.2.append()
+#### 1.19.15.2.append()
 
 添加一个模块到`Sequential`结尾.
 
@@ -535,7 +557,7 @@ model.add_module(name='flatten_layer',  # str|模块名称.
 model.append(module=nn.Flatten())  # nn.Module|模块.
 ```
 
-### 1.19.15.Softmax()
+### 1.19.16.Softmax()
 
 实例化Softmax层.
 
@@ -545,11 +567,11 @@ from torch import nn
 layer = nn.Softmax(dim=0)  # int(可选)|None|指定的维度.
 ```
 
-### 1.19.16.utils
+### 1.19.17.utils
 
-#### 1.19.16.1.rnn
+#### 1.19.17.1.rnn
 
-##### 1.19.16.1.1.pad_sequence()
+##### 1.19.17.1.1.pad_sequence()
 
 对不同长度的`Tensor`列表进行填充.|`torch.Tensor`
 
@@ -746,7 +768,15 @@ tensor = tensor.detach()
 tensor.device
 ```
 
-### 1.29.5.dtype
+### 1.29.5.dim()
+
+张量的维度.|`int`
+
+```python
+tensor.dim()
+```
+
+### 1.29.6.dtype
 
 张量的数据类型.|`torch.dtype`
 
@@ -754,7 +784,7 @@ tensor.device
 tensor.dtype
 ```
 
-### 1.29.6.grad
+### 1.29.7.grad
 
 张量的梯度.|`torch.Tensor`
 
@@ -762,7 +792,7 @@ tensor.dtype
 tensor.grad
 ```
 
-### 1.29.7.grad_fn
+### 1.29.8.grad_fn
 
 张量的梯度函数.|`class`
 
@@ -770,7 +800,7 @@ tensor.grad
 tensor.grad_fn
 ```
 
-### 1.29.8.item()
+### 1.29.9.item()
 
 将张量的值转换为Python数字.|`float`
 
@@ -781,7 +811,7 @@ tensor = torch.Tensor(data=[1])
 tensor.item()
 ```
 
-### 1.29.9.requires_grad
+### 1.29.10.requires_grad
 
 张量是否需要返回梯度.|`bool`
 
@@ -789,7 +819,7 @@ tensor.item()
 tensor.requires_grad
 ```
 
-### 1.29.10.requires_grad_()
+### 1.29.11.requires_grad_()
 
 设置张量是否需要返回梯度.
 
@@ -797,7 +827,7 @@ tensor.requires_grad
 tensor.requires_grad_(requires_grad=True)  # bool|True|是否需要返回梯度.
 ```
 
-### 1.29.11.reshape()
+### 1.29.12.reshape()
 
 指定张量的形状(如果的可能的话返回是输入的视图).|`torch.Tensor`
 
@@ -808,7 +838,7 @@ tensor = torch.Tensor([1, 2, 3, 4])
 tensor = tensor.reshape((2, 2))  # tuple of ints|新的形状.
 ```
 
-### 1.29.12.shape
+### 1.29.13.shape
 
 张量的形状.|`torch.Size`
 
@@ -816,7 +846,7 @@ tensor = tensor.reshape((2, 2))  # tuple of ints|新的形状.
 tensor.shape
 ```
 
-### 1.29.13.to()
+### 1.29.14.to()
 
 执行张量的设备转换.|`torch.Tensor`
 
@@ -831,7 +861,7 @@ if cuda.is_available():
                                        #  'xla', 'lazy', 'vulkan', 'meta', 'hpu'}|转换到的目标设备.
 ```
 
-### 1.29.14.transpose()
+### 1.29.15.transpose()
 
 对张量维度`dim0`和`dim1`进行转置操作.|`torch.Tensor`
 
@@ -844,7 +874,7 @@ tensor = tensor.transpose(dim0=1,  # int|要被转置的第一个维度.
                           dim1=0)  # int|要被转置的第二个维度.
 ```
 
-### 1.29.15.unsqueeze()
+### 1.29.16.unsqueeze()
 
 增加张量的维度.|`torch.Tensor`
 
@@ -855,7 +885,7 @@ tensor = Tensor(data=[1, 2, 3])
 tensor = tensor.unsqueeze(dim=1)  # int|添加新维度的位置.
 ```
 
-### 1.29.view()
+### 1.29.17.view()
 
 指定张量的形状(返回是输入的视图).|`torch.Tensor`
 
