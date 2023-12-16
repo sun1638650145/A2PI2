@@ -2137,7 +2137,31 @@ import numpy as np
 mat = np.eye(N=3)  # int|矩阵的行数.
 ```
 
-## 10.24.hstack()
+## 10.24.fliplr()
+
+左/右反转元素的顺序.|`numpy.ndarray`
+
+```python
+import numpy as np
+
+arr = [[1, 2],
+       [3, 4]]
+x = np.fliplr(m=arr)  # array-like|数组, 至少是二维
+```
+
+## 10.25.flipud()
+
+上/下反转元素的顺序.|`numpy.ndarray`
+
+```python
+import numpy as np
+
+arr = [[1, 2],
+       [3, 4]]
+x = np.flipup(m=arr)  # array-like|数组, 至少是二维
+```
+
+## 10.26.hstack()
 
 按照行合并数组.|`numpy.ndarray`
 
@@ -2149,7 +2173,7 @@ arr1 = [[3], [3]]
 x = np.hstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 10.25.lexsort()
+## 10.27.lexsort()
 
 根据指定键(列)进行排序.|`numpy.ndarray`
 
@@ -2165,13 +2189,13 @@ indices = np.lexsort(keys=[arr[:, 0], ])
 x = arr[indices]
 ```
 
-## 10.26.linalg
+## 10.28.linalg
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | numpy的线性代数库. | -    |
 
-### 10.26.1.det()
+### 10.28.1.det()
 
 获取矩阵的行列式.|`numpy.ndarray`
 
@@ -2183,7 +2207,7 @@ mat = [[1, 2],
 x = np.linalg.det(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 10.26.2.inv()
+### 10.28.2.inv()
 
 获取矩阵的逆矩阵.|`numpy.ndarray`
 
@@ -2195,7 +2219,7 @@ mat = [[1, 2],
 x = np.linalg.inv(a=mat)  # array_like|输入的矩阵.
 ```
 
-### 10.26.3.norm()
+### 10.28.3.norm()
 
 计算矩阵或向量范数.|`numpy.float64`
 
@@ -2208,7 +2232,7 @@ x = np.linalg.norm(x=arr,  # array_like|输入的数据.
                    ord=2)  # {non-zero int, inf, -inf, 'fro', 'nuc'}(可选)|None|范数选项.
 ```
 
-### 10.26.4.svd()
+### 10.28.4.svd()
 
 奇异值分解.|`tuple of numpy.ndarray`
 
@@ -2220,7 +2244,7 @@ arr = [[1, 2],
 u, s, vh = np.linalg.svd(a=arr)  # array_like|输入的数据.
 ```
 
-## 10.27.linspace()
+## 10.29.linspace()
 
 返回指定间隔内的等差数列.|`numpy.ndarray`
 
@@ -2232,7 +2256,7 @@ x = np.linspace(start=1,  # array_like|起始值.
                 num=10)  # int(可选)|50|生成序列的样本的总数.
 ```
 
-## 10.28.load()
+## 10.30.load()
 
 从npy、npz或者序列化文件加载数组或序列化的对象.|`numpy.ndarray`
 
@@ -2244,7 +2268,7 @@ arr = np.load(file='./arr.npy',  # file-like object, string, or pathlib.Path|读
               encoding='ASCII')  # str(可选)|'ASCII'|解码方式.
 ```
 
-## 10.29.log()
+## 10.31.log()
 
 逐元素计算自然对数.|`numpy.ndarray`
 
@@ -2255,7 +2279,7 @@ arr = [1, 2, 3]
 x = np.log(arr)  # array_like|输入的数据.
 ```
 
-## 10.30.log1p()
+## 10.32.log1p()
 
 逐元素计算本身加1的自然对数.|`numpy.ndarray`
 
@@ -2266,7 +2290,7 @@ arr = [1, 2, 3]
 x = np.log1p(arr)  # array_like|输入的数据.
 ```
 
-## 10.31.log2()
+## 10.33.log2()
 
 逐元素计算以2为底对数.|`numpy.ndarray`
 
@@ -2277,7 +2301,7 @@ arr = [1, 2, 3]
 x = np.log2(arr)  # array_like|输入的数据.
 ```
 
-## 10.32.mat()
+## 10.34.mat()
 
 将输入转换为矩阵.|`numpy.matrix`
 
@@ -2289,7 +2313,7 @@ mat = np.mat(data=arr,  # array_like|输入的数据.
              dtype=None)  # data-type|None|矩阵元素的数据类型.
 ```
 
-## 10.33.matmul()
+## 10.35.matmul()
 
 两个数组的矩阵乘积|`numpy.ndarray`
 
@@ -2302,7 +2326,7 @@ x = np.matmul(arr0,  # array_like|第一个元素.
               arr1)  # array_like|第二个元素.
 ```
 
-## 10.34.max()
+## 10.36.max()
 
 返回沿指定维度的最大值.|`numpy.float64`
 
@@ -2314,7 +2338,7 @@ max_value = np.max(a=arr,  # array_like|输入的数据.
                    axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 10.35.maximum()
+## 10.37.maximum()
 
 返回数组逐元素的最大值.|`numpy.ndarray`
 
@@ -2326,7 +2350,7 @@ arr1 = [1, 5, 2]
 x = np.maximum(arr0, arr1)  # array_like|输入的数据.
 ```
 
-## 10.36.mean()
+## 10.38.mean()
 
 沿指定维度计算均值.|`numpy.float64`
 
@@ -2338,7 +2362,7 @@ x = np.mean(a=arr,  # array_like|输入的数据.
             axis=None)  # int(可选)|None|所沿的维度.
 ```
 
-## 10.37.meshgrid()
+## 10.39.meshgrid()
 
 生成坐标矩阵.|`list of numpy.ndarray`
 
@@ -2350,7 +2374,7 @@ y_coord = np.linspace(0, 4, 5)
 vec_mat = np.meshgrid(x_coord, y_coord)  # array_like|坐标向量.
 ```
 
-## 10.38.nonzero()
+## 10.40.nonzero()
 
 返回非零元素索引.|`tuple_of_arrays`
 
@@ -2361,7 +2385,7 @@ arr = np.asarray([1, 2, 3, 4, 0, 0, 5])
 x = np.nonzero(a=arr)  # array_like|输入的数据.
 ```
 
-## 10.39.ones()
+## 10.41.ones()
 
 生成全一数组.|`numpy.ndarray`
 
@@ -2372,7 +2396,7 @@ x = np.ones(shape=[2, 3],  # int or sequence of ints|数组的形状.
             dtype=np.int8)  # data-type(可选)|numpy.float64|矩阵元素的数据类型.
 ```
 
-## 10.40.outer()
+## 10.42.outer()
 
 两个矩阵的外积(`np.matmul(x.T, y) = np.outer(x, y)`).|`numpy.ndarray`
 
@@ -2385,7 +2409,7 @@ x = np.outer(a=arr0,  # array_like|第一个元素.
              b=arr1)  # array_like|第二个元素.
 ```
 
-## 10.41.power()
+## 10.43.power()
 
 逐元素计算指定幂次.|`numpy.ndarray`
 
@@ -2395,13 +2419,13 @@ import numpy as np
 x = np.power([1, 2], [1, 3])   # array_like|底数和指数.
 ```
 
-## 10.42.random
+## 10.44.random
 
 | 版本 | 描述                     | 注意 |
 | ---- | ------------------------ | ---- |
 | -    | numpy的随机数生成函数库. | -    |
 
-### 10.42.1.choice()
+### 10.44.1.choice()
 
 从给定的1D数组中随机采样.|`numpy.ndarray`
 
@@ -2413,7 +2437,7 @@ num = np.random.choice(a=arr,  # 1-D array-like or int|输入的数组.
                        size=1)  # int or tuple of ints(可选)|None|采样结果形状.
 ```
 
-### 10.42.2.multinomial()
+### 10.44.2.multinomial()
 
 从多项分布中抽取样本.|`numpy.ndarray`
 
@@ -2425,7 +2449,7 @@ x = np.random.multinomial(n=1,  # int|实验次数.
                           size=1)  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 10.42.3.normal()
+### 10.44.3.normal()
 
 生成正态分布样本.|`numpy.ndarray`
 
@@ -2435,7 +2459,7 @@ import numpy as np
 x = np.random.normal(size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-### 10.42.4.permutation()
+### 10.44.4.permutation()
 
 随机打乱序列.|`numpy.ndarray`
 
@@ -2446,7 +2470,7 @@ arr = [1, 2, 3, 4]
 x = np.random.permutation(arr)  # array_like|输入的数据.
 ```
 
-### 10.42.5.rand()
+### 10.44.5.rand()
 
 生成均匀分布随机数组.|`numpy.ndarray`
 
@@ -2456,7 +2480,7 @@ import numpy as np
 x = np.random.rand(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 10.42.6.randint()
+### 10.44.6.randint()
 
 返回指定区间[low, high)随机整数.|`int`
 
@@ -2467,7 +2491,7 @@ x = np.random.randint(low=1,  # int or array-like of ints|左边界.
                       high=10)  # int or array-like of ints(可选)|None|右边界.
 ```
 
-### 10.42.7.randn()
+### 10.44.7.randn()
 
 生成正态分布随机数组.|`numpy.ndarray`
 
@@ -2477,7 +2501,7 @@ import numpy as np
 x = np.random.randn(2, 3)  # int(可选)|None|数组的形状.
 ```
 
-### 10.42.8.RandomState()
+### 10.44.8.RandomState()
 
 实例化伪随机数生成器.|`numpy.random.mtrand.RandomState`
 
@@ -2487,7 +2511,7 @@ import numpy as np
 rs = np.random.RandomState(seed=2021)  # None|随机种子.
 ```
 
-#### 10.42.8.1.shuffle()
+#### 10.44.8.1.shuffle()
 
 打乱数据.|`numpy.ndarray`
 
@@ -2499,7 +2523,7 @@ x = np.asarray([1, 2, 3, 4])
 rs.shuffle(x)
 ```
 
-### 10.42.9.seed()
+### 10.44.9.seed()
 
 设置随机种子.
 
@@ -2509,7 +2533,7 @@ import numpy as np
 np.random.seed(seed=2021)  # None|随机种子.
 ```
 
-### 10.42.10.uniform()
+### 10.44.10.uniform()
 
 生成均匀分布样本.|`numpy.ndarray`
 
@@ -2521,7 +2545,7 @@ x = np.random.uniform(low=0.0,  # float(可选)|0.0|下界.
                       size=[2, 3])  # int or tuple of ints(可选)|None|数组的形状.
 ```
 
-## 10.43.ravel()
+## 10.45.ravel()
 
 展平数组.|`numpy.ndarray`
 
@@ -2533,7 +2557,7 @@ x = np.ravel(a=x,  # array_like|输入的数据.
              order='f')  # {'C','F', 'A', 'K'}(可选)|'C'|索引读取顺序.
 ```
 
-## 10.44.reshape()
+## 10.46.reshape()
 
 改变数组的形状.|`numpy.ndarray`
 
@@ -2545,7 +2569,20 @@ x = np.reshape(a=arr,  # array_like|要改变形状的数组.
                newshape=[2, 2])  # int or tuple of ints|新的形状.
 ```
 
-## 10.45.save()
+## 10.47.rot90()
+
+将数组逆时针旋转90度.|`numpy.ndarray`
+
+```python
+import numpy as np
+
+arr = [[1, 2],
+       [3, 4]]
+x = np.rot90(m=arr,  # array-like|数组, 至少是二维.
+             k=1)  # int|1|旋转的次数.
+```
+
+## 10.48.save()
 
 将数组保存进二进制的npy文件.
 
@@ -2555,10 +2592,10 @@ import numpy as np
 arr = [1, 2, 3]
 np.save(file='arr.npy',  # file, str, or pathlib.Path|文件保存的路径.
         arr=arr,  # array_like|要保存的数据.
-        allow_pickle=True)  # |bool(可选)|True|允许使用序列化保存数组.
+        allow_pickle=True)  # bool(可选)|True|允许使用序列化保存数组.
 ```
 
-## 10.46.sort()
+## 10.49.sort()
 
 返回排序(升序)后的数组.|`numpy.ndarray`
 
@@ -2569,7 +2606,7 @@ arr = [1, 3, 2, 4]
 x = np.sort(a=arr)  # array_like|要排序的数组.
 ```
 
-## 10.47.split()
+## 10.50.split()
 
 拆分数组.|`list of ndarrays`
 
@@ -2582,7 +2619,7 @@ arr_list = np.split(ary=arr,  # numpy.ndarray|要拆分的数组.
                     axis=1)  # int(可选)|0|所沿的维度.
 ```
 
-## 10.48.sqrt()
+## 10.51.sqrt()
 
 逐元素计算平方根.|`numpy.ndarray`
 
@@ -2593,7 +2630,7 @@ arr = [1, 2, 3]
 x = np.sqrt(arr)  # array_like|输入的数据.
 ```
 
-## 10.49.squeeze()
+## 10.52.squeeze()
 
 删除维度为一的维度.|`numpy.ndarray`
 
@@ -2604,7 +2641,7 @@ arr = [[1, 2, 3]]
 x = np.squeeze(arr)  # array_like|输入的数据.
 ```
 
-## 10.50.std()
+## 10.53.std()
 
 沿指定维度计算标准差.|`numpy.float64`
 
@@ -2616,7 +2653,7 @@ std_value = np.std(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.51.sum()
+## 10.54.sum()
 
 沿指定维度求和.|`numpy.ndarray`
 
@@ -2628,7 +2665,7 @@ sum_value = np.sum(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.52.transpose()
+## 10.55.transpose()
 
 转置数组.|`numpy.ndarray`
 
@@ -2644,7 +2681,7 @@ x0 = np.transpose(a=arr,  # 输入的数组|array-like
 x1 = arr.T
 ```
 
-## 10.53.var()
+## 10.56.var()
 
 沿指定维度计算方差.|`numpy.float64`
 
@@ -2656,7 +2693,7 @@ var_value = np.var(a=arr,  # array_like|输入的数据.
                    axis=None)  # None or int or tuple of ints(可选)|None|所沿的维度.
 ```
 
-## 10.54.void()
+## 10.57.void()
 
 实例化`numpy.void`对象.
 
@@ -2666,7 +2703,7 @@ import numpy as np
 x = np.void(b'abc')  # bytes|输入的数据.
 ```
 
-## 10.55.vstack()
+## 10.58.vstack()
 
 按照列合并数组.|`numpy.ndarray`
 
@@ -2678,7 +2715,7 @@ arr1 = [[3, 4]]
 x = np.vstack(tup=[arr0, arr1])  # array-like|数组序列.
 ```
 
-## 10.56.where()
+## 10.59.where()
 
 根据判断条件, 真值返回`x`, 假值返回`y`.|`numpy.ndarray`
 
@@ -2692,7 +2729,7 @@ arr = np.where(a > b,  # array_like, bool|判断条件.
                False)  # array_like|None|情况为假的返回值.
 ```
 
-## 10.57.zeros()
+## 10.60.zeros()
 
 生成全零数组.|`numpy.ndarray`
 
@@ -4603,13 +4640,30 @@ from sklearn.datasets import load_iris
 dataset = load_iris()
 ```
 
-## 18.2.ensemble
+## 18.2.decomposition
+
+| 版本 | 描述                             | 注意 |
+| ---- | -------------------------------- | ---- |
+| -    | sklearn的(矩阵分解算法)降维模块. | -    |
+
+### 18.2.1.PCA()
+
+实例化主成分分析器.
+
+```python
+from sklearn.decomposition import PCA
+
+model = PCA(n_components=None,  # int, float or 'mle'|None|要保留的成分数量.
+            random_state=None)  # int, RandomState instance or None|None|随机状态.
+```
+
+## 18.3.ensemble
 
 | 版本 | 描述                   | 注意                                                         |
 | ---- | ---------------------- | ------------------------------------------------------------ |
 | -    | sklearn的集成学习模块. | 1. 基于sklearn API的其他框架可以使用此模块的一些功能.                                                                                    2. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 18.2.1.AdaBoostClassifier()
+### 18.3.1.AdaBoostClassifier()
 
 实例化AdaBoost分类器.
 
@@ -4620,7 +4674,7 @@ model = AdaBoostClassifier(n_estimators=50,  # int|50|基学习器的数量.
                            learning_rate=1.)  # float|1.0|学习率.
 ```
 
-### 18.2.2.GradientBoostingClassifier()
+### 18.3.2.GradientBoostingClassifier()
 
 实例化梯度提升分类器.
 
@@ -4632,7 +4686,7 @@ model = GradientBoostingClassifier(learning_rate=0.1,  # float|0.1|学习率.
 
 ```
 
-### 18.2.3.RandomForestClassifier()
+### 18.3.3.RandomForestClassifier()
 
 实例化随机森林分类器.
 
@@ -4646,7 +4700,7 @@ model = RandomForestClassifier(n_estimators=100,  # int|100|基学习器的数�
                                verbose=0)  # int|0|日志显示模式.
 ```
 
-### 18.2.4.RandomForestRegressor()
+### 18.3.4.RandomForestRegressor()
 
 实例化随机森林回归器.
 
@@ -4660,7 +4714,7 @@ model = RandomForestRegressor(n_estimators=100,  # int|100|基学习器的数量
                               verbose=0)  # int|0|日志显示模式.
 ```
 
-### 18.2.5.StackingClassifier()
+### 18.3.5.StackingClassifier()
 
 实例化Stacking分类器.
 
@@ -4671,7 +4725,7 @@ model = StackingClassifier(estimators,  # list of (str, estimator)|基学习器�
                            final_estimator=None)  # estimator|sklearn.linear_model.LogisticRegression|二级学习器.
 ```
 
-### 18.2.6.VotingClassifier()
+### 18.3.6.VotingClassifier()
 
 实例化投票分类器.
 
@@ -4683,13 +4737,13 @@ model = VotingClassifier(estimators,  # list of (str, estimator)|基学习器的
                          weights=None)  # array-like of shape (n_classifiers,)|None|基学习器的权重.
 ```
 
-## 18.3.linear_model
+## 18.4.linear_model
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的线性模型模块. | -    |
 
-### 18.3.1.LinearRegression()
+### 18.4.1.LinearRegression()
 
 实例化线性回归器.
 
@@ -4699,7 +4753,7 @@ from sklearn.linear_model import LinearRegression
 model = LinearRegression()
 ```
 
-#### 18.3.1.1.fit()
+#### 18.4.1.1.fit()
 
 训练线性回归器.|`self`
 
@@ -4712,7 +4766,7 @@ model.fit(X,  # {array-like, sparse matrix} of shape (n_samples, n_features)|特
           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-#### 18.3.1.2.predict()
+#### 18.4.1.2.predict()
 
 使用线性回归器进行预测.|`numpy.ndarray`
 
@@ -4723,7 +4777,7 @@ model = LinearRegression()
 y_preds = model.predict(X)  # {array-like, sparse matrix} of shape (n_samples, n_features)|特征数据.
 ```
 
-#### 18.3.1.3.score()
+#### 18.4.1.3.score()
 
 计算验证集的平均准确率.|`float`
 
@@ -4736,7 +4790,7 @@ accuracy = model.score(X,  # {array-like, sparse matrix} of shape (n_samples, n_
                        sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 18.3.2.LogisticRegression()
+### 18.4.2.LogisticRegression()
 
 实例化逻辑回归器.
 
@@ -4746,13 +4800,13 @@ from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 ```
 
-## 18.4.metrics
+## 18.5.metrics
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的评估模块. | -    |
 
-### 18.4.1.accuracy_score()
+### 18.5.1.accuracy_score()
 
 计算分类器的准确率.|`numpy.float64`
 
@@ -4764,9 +4818,9 @@ accuracy = accuracy_score(y_true,  # 1d array-like, or label indicator array / s
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 18.4.2.ConfusionMatrixDisplay()
+### 18.5.2.ConfusionMatrixDisplay()
 
-#### 18.4.2.1.from_predictions()
+#### 18.5.2.1.from_predictions()
 
 绘制混淆矩阵.
 
@@ -4781,7 +4835,7 @@ ConfusionMatrixDisplay.from_predictions(y_true=y_true,  # array-like of shape (n
 plt.show()
 ```
 
-### 18.4.3.confusion_matrix()
+### 18.5.3.confusion_matrix()
 
 计算分类器的混淆矩阵.|`numpy.ndarray`
 
@@ -4793,7 +4847,7 @@ matrix = confusion_matrix(y_true,  # array-like of shape (n_samples,)|真实标�
                           sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-### 18.4.4.r2_score()
+### 18.5.4.r2_score()
 
 计算R2决定系数.|`numpy.float64`
 
@@ -4805,13 +4859,13 @@ r2 = r2_score(y_true,  # array-like of shape (n_samples,) or (n_samples, n_outpu
               sample_weight=None)  # array-like of shape (n_samples,)|None|样本权重.
 ```
 
-## 18.5.model_selection
+## 18.6.model_selection
 
 | 版本 | 描述                   | 注意 |
 | ---- | ---------------------- | ---- |
 | -    | sklearn的模型选择模块. | -    |
 
-### 18.5.1.cross_val_predict()
+### 18.6.1.cross_val_predict()
 
 对每个样本进行交叉验证.|`numpy.ndarray`
 
@@ -4824,7 +4878,7 @@ res = cross_val_predict(estimator,  # estimator object|基学习器.
                         cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 18.5.2.cross_val_score()
+### 18.6.2.cross_val_score()
 
 进行交叉验证.|`numpy.ndarray`
 
@@ -4838,7 +4892,7 @@ res = cross_val_score(estimator,  # estimator object|基学习器.
                       cv=None)  # int|5|交叉验证的划分数.
 ```
 
-### 18.5.3.GridSearchCV()
+### 18.6.3.GridSearchCV()
 
 实例化网格搜索器.
 
@@ -4853,7 +4907,7 @@ gs = GridSearchCV(estimator,  # estimator object|基学习器.
                   verbose=0)  # int|0|日志显示模式.
 ```
 
-#### 18.5.3.1.fit()
+#### 18.6.3.1.fit()
 
 组合所有参数网格进行训练.|`self`
 
@@ -4870,7 +4924,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
        y=None)  # array-like of shape (n_samples, n_output) or (n_samples,)|None|标签.
 ```
 
-#### 18.5.3.2.best_params_
+#### 18.6.3.2.best_params_
 
 最佳参数.|`dict`
 
@@ -4878,7 +4932,7 @@ gs.fit(X,  # array-like of shape (n_samples, n_features)|特征数据.
 gs.best_params_
 ```
 
-#### 18.5.3.3.best_score_
+#### 18.6.3.3.best_score_
 
 最佳平均交叉验证分数.|`float`
 
@@ -4886,7 +4940,7 @@ gs.best_params_
 gs.best_score_
 ```
 
-### 18.5.4.LeaveOneOut()
+### 18.6.4.LeaveOneOut()
 
 实例化留一法交叉验证器.
 
@@ -4896,7 +4950,7 @@ from sklearn.model_selection import LeaveOneOut
 loo = LeaveOneOut()
 ```
 
-#### 18.5.4.1.split()
+#### 18.6.4.1.split()
 
 划分数据.|`yield`
 
@@ -4908,7 +4962,7 @@ train_set, test_set = loo.split(X,  # array-like of shape (n_samples, n_features
                                 y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 18.5.5.StratifiedKFold()
+### 18.6.5.StratifiedKFold()
 
 实例化分层K折交叉验证器.
 
@@ -4920,7 +4974,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
                         random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-#### 18.5.5.1.n_splits
+#### 18.6.5.1.n_splits
 
 交叉验证的划分数.|`int`
 
@@ -4928,7 +4982,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
 kfold.n_splits
 ```
 
-#### 18.5.5.2.split()
+#### 18.6.5.2.split()
 
 划分数据.|`yield`
 
@@ -4942,7 +4996,7 @@ train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_featur
                                   y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 18.5.6.train_test_split()
+### 18.6.6.train_test_split()
 
 将数据集拆分成训练和测试集.|`list`
 
@@ -4955,13 +5009,13 @@ x_train, x_test, y_train, y_test = train_test_split(X, y,  # lists, numpy arrays
                                                     shuffle=True)  # bool|True|是否打乱数据.
 ```
 
-## 18.6.preprocessing
+## 18.7.preprocessing
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的数据预处理模块. | 1. 预处理器的类方法基本没有差异, 具体参见`LabelEncoder`的类方法. |
 
-### 18.6.1.LabelEncoder()
+### 18.7.1.LabelEncoder()
 
 实例化标签编码器.
 
@@ -4971,9 +5025,21 @@ from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 ```
 
-#### 18.6.1.1.fit_transform()
+#### 18.7.1.1.fit()
 
-预处理数据.|`numpy.ndarray`
+训练数据.
+
+```python
+from sklearn.preprocessing import LabelEncoder
+
+raw_y = ['a', 'a', 'b', 'c']
+le = LabelEncoder()
+le.fit(y=raw_y)  # array-like of shape (n_samples,)|要处理的数据.
+```
+
+#### 18.7.1.2.fit_transform()
+
+训练并处理转换数据.|`numpy.ndarray`
 
 ```python
 from sklearn.preprocessing import LabelEncoder
@@ -4983,7 +5049,21 @@ le = LabelEncoder()
 y = le.fit_transform(y=raw_y)  # array-like of shape (n_samples,)|要处理的数据.
 ```
 
-### 18.6.2.MinMaxScaler()
+#### 18.7.1.3.transform()
+
+处理转换数据.|`numpy.ndarray`
+
+```python
+from sklearn.preprocessing import LabelEncoder
+
+raw_y = ['a', 'a', 'b', 'c']
+raw_y_test = ['c', 'b', 'a']
+le = LabelEncoder()
+le.fit(y=raw_y)
+y = le.transform(y=raw_y_test)  # array-like of shape (n_samples,)|要处理的数据.
+```
+
+### 18.7.2.MinMaxScaler()
 
 实例化MinMax缩放器.
 
@@ -4993,7 +5073,7 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 ```
 
-### 18.6.3.MultiLabelBinarizer()
+### 18.7.3.MultiLabelBinarizer()
 
 实例化多标签二值化缩放器.
 
@@ -5003,7 +5083,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()
 ```
 
-#### 18.6.3.1.classes_
+#### 18.7.3.1.classes_
 
 原始的标签.|`numpy.ndarray`
 
@@ -5011,7 +5091,7 @@ mlb = MultiLabelBinarizer()
 mlb.classes_
 ```
 
-### 18.6.4.StandardScaler()
+### 18.7.4.StandardScaler()
 
 实例化标准化器.
 
@@ -5021,13 +5101,13 @@ from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 ```
 
-## 18.7.svm
+## 18.8.svm
 
 | 版本 | 描述                     | 注意                                                         |
 | ---- | ------------------------ | ------------------------------------------------------------ |
 | -    | sklearn的支持向量机模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 18.7.1.SVC()
+### 18.8.1.SVC()
 
 实例化支持向量分类器.
 
@@ -5040,7 +5120,7 @@ model = SVC(C=1.0,  # float|1.0|正则化系数.
             class_weight=None)  # dict or 'balanced'|None|类别权重.
 ```
 
-### 18.7.2.SVR()
+### 18.8.2.SVR()
 
 实例化支持向量回归器.
 
@@ -5051,13 +5131,13 @@ model = SVR(kernel='rbf',  # {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}
             C=1.0)  # float|1.0|正则化系数.
 ```
 
-## 18.8.tree
+## 18.9.tree
 
 | 版本 | 描述                 | 注意                                                         |
 | ---- | -------------------- | ------------------------------------------------------------ |
 | -    | sklearn的决策树模块. | 1. 模型的类方法基本没有差异, 具体参见`LinearRegression`的类方法. |
 
-### 18.8.1.DecisionTreeClassifier()
+### 18.9.1.DecisionTreeClassifier()
 
 实例化决策树分类器.
 
@@ -5068,7 +5148,7 @@ model = DecisionTreeClassifier(criterion='gini',  # {'gini', 'entropy'}|'gini'|�
                                random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-### 18.8.2.export_graphviz()
+### 18.9.2.export_graphviz()
 
 导出决策树结构为Dot语言.|`str`
 
@@ -5083,7 +5163,7 @@ dot_str = export_graphviz(decision_tree=model,  # decision tree regressor or cla
                           class_names=None)  # list of str or bool|None|类别的名称.
 ```
 
-### 18.8.3.plot_tree()
+### 18.9.3.plot_tree()
 
 绘制决策树.
 
@@ -5095,15 +5175,15 @@ model = DecisionTreeClassifier(criterion='gini',
 plot_tree(decision_tree=model)  # decision tree regressor or classifier|要绘制的决策树.
 ```
 
-## 18.9.utils
+## 18.10.utils
 
 | 版本 | 描述               | 注意 |
 | ---- | ------------------ | ---- |
 | -    | sklearn的工具模块. | -    |
 
-### 18.9.1.multiclass
+### 18.10.1.multiclass
 
-#### 18.9.1.1.type_of_target()
+#### 18.10.1.1.type_of_target()
 
 判断数据的类型.|`str`
 
@@ -5114,7 +5194,7 @@ y = ['a', 'b', 'c']
 res = type_of_target(y=y)  # array-like|输入的数据.
 ```
 
-### 18.9.2.resample()
+### 18.10.2.resample()
 
 对数组进行重采样.|`list`
 
