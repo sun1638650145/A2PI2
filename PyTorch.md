@@ -663,7 +663,15 @@ optimizer = Adam(params,  # 需要优化的参数.
                  lr=1e-3)  # float(可选)|1e-3|学习率.
 ```
 
-#### 1.25.1.1.step()
+#### 1.25.1.1.param_groups
+
+优化器的参数组, 可以指定优化哪些张量以及特定的优化选项.|`list`
+
+```python
+optimizer.param_groups
+```
+
+#### 1.25.1.2.step()
 
 更新梯度.
 
@@ -671,7 +679,7 @@ optimizer = Adam(params,  # 需要优化的参数.
 optimizer.step()
 ```
 
-#### 1.25.1.2.zero_grad()
+#### 1.25.1.3.zero_grad()
 
 将梯度设置为零.
 
