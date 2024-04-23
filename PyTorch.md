@@ -238,7 +238,8 @@ traced_model = torch.jit.trace(func=model,  # torch.nn.Module|要转换的模型
 ```python
 from torch import load
 
-model = load(f='./model.pt')  # str or a file-like|文件路径.
+model = load(f='./model.pt',  # str or a file-like|文件路径.
+             map_location=None)  # str or torch.device(可选)|指定重新映射保存模型的位置.
 ```
 
 ## 1.17.manual_seed()
@@ -335,7 +336,7 @@ layer = Conv2d(in_channels=1,  # int|输入图片的色彩通道数量.
 ```python
 from torch.nn import CrossEntropyLoss
 
-loss = CrossEntropyLoss()
+loss = CrossEntropyLoss(ignore_index=-100)  # int(可选)|-100|忽略该值参与梯度计算.
 ```
 
 ### 1.22.3.Dropout()
@@ -511,7 +512,16 @@ model.named_parameters()
 model.parameters()
 ```
 
-#### 1.22.11.5.state_dict()
+#### 1.22.11.5.register_buffer()
+
+向模块添加缓冲区, 缓冲区不被视为模型参数, 但是模块状态的一部分.
+
+```python
+ model.register_buffer(name='buffer',  # str|缓冲区的名称.
+                      tensor=torch.zeros(2, 3))  # Tensor or None|要注册的缓冲区.
+```
+
+#### 1.22.11.6.state_dict()
 
 返回模块参数字典.
 
@@ -519,7 +529,7 @@ model.parameters()
 model.state_dict()
 ```
 
-#### 1.22.11.6.train()
+#### 1.22.11.7.train()
 
 设置模块为训练模式.
 
@@ -660,7 +670,9 @@ tensor = torch.ones(size=[2, 3])  # sequence of ints|张量的形状.
 from torch.optim import Adam
 
 optimizer = Adam(params,  # 需要优化的参数.
-                 lr=1e-3)  # float(可选)|1e-3|学习率.
+                 lr=1e-3,  # float(可选)|1e-3|学习率.
+                 betas=(0.9, 0.999),  # tuple of floats(可选)|(0.9, 0.999)|用于计算梯度及其平方滑动平均的系数.
+                 eps=1e-8)  # float(可选)|1e-8|提高数值稳定性的常小数.
 ```
 
 #### 1.25.1.1.param_groups
