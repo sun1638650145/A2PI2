@@ -2874,7 +2874,18 @@ df = pd.DataFrame(df_map)
 new_df = df.iloc[0:2]
 ```
 
-### 11.2.9.info()
+### 11.2.9.index
+
+DataFrame的索引.|`pandas.core.indexes.range.RangeIndex`
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
+df.index
+```
+
+### 11.2.10.info()
 
 在终端打印摘要信息.
 
@@ -2886,7 +2897,7 @@ df = pd.DataFrame(df_map)
 df.info()
 ```
 
-### 11.2.10.loc[]
+### 11.2.11.loc[]
 
 按照行名称取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2898,7 +2909,7 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 11.2.11.map()
+### 11.2.12.map()
 
 根据输入的对应关系映射Series.|`pandas.core.series.Series`
 
@@ -2910,7 +2921,7 @@ map_dict = {'a': 3, 'b': 2, 'c': 1}
 sr = df['key'].map(map_dict)
 ```
 
-### 11.2.12.median()
+### 11.2.13.median()
 
 获取DataFrame的中位数.|`pandas.core.series.Series`
 
@@ -2922,7 +2933,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 11.2.13.replace()
+### 11.2.14.replace()
 
 替换DataFrame中的值.|`pandas.core.frame.DataFrame`
 
@@ -2935,7 +2946,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.14.reset_index()
+### 11.2.15.reset_index()
 
 重置DataFrame中的索引.|`pandas.core.frame.DataFrame`
 
@@ -2947,7 +2958,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.15.sample()
+### 11.2.16.sample()
 
 返回随机采样的DataFrame样本.|`pandas.core.frame.DataFrame`
 
@@ -2959,7 +2970,7 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 11.2.16.select_dtypes()
+### 11.2.17.select_dtypes()
 
 返回指定元素类型的列组成的新DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -2970,7 +2981,18 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
 df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
 ```
 
-### 11.2.17.to_csv()
+### 11.2.18.sum()
+
+沿指定轴对DataFrame求和.|`pandas.core.series.Series`
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'col1': [0, 1, 2], 'col2': [0.1, 0.5, 1.0]})
+sum_value = df.sum(axis=1)  # int|0|沿指定维度求和.
+```
+
+### 11.2.19.to_csv()
 
 写入csv文件.
 
@@ -2985,7 +3007,7 @@ df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件�
           encoding=None)  # str(可选)|'utf-8'|编码方式.
 ```
 
-### 11.2.18.values
+### 11.2.20.values
 
 返回DataFrame的值数据.|`numpy.ndarray`
 
@@ -3083,7 +3105,17 @@ df = pd.read_csv(filepath_or_buffer='./table.csv',  # str, path object or file-l
                  encoding=None)  # str(可选)|None|编码方式.
 ```
 
-## 11.10.Series()
+## 11.10.read_parquet()
+
+读取parquet文件.|`pandas.core.frame.DataFrame`
+
+```python
+import pandas as pd
+
+df = pd.read_parquet(path='./table.parquet')  # str, path object or file-like object|读取的文件路径.
+```
+
+## 11.11.Series()
 
 实例化Series对象.|`pandas.core.series.Series`
 
@@ -3094,9 +3126,9 @@ sr = pd.Series(data=[0, 1, 2],  # array-like, Iterable, dict, or scalar value|�
                index=[1, 2, 3])  # array-like or Index (1d)|None|索引名.
 ```
 
-### 11.10.1.dt
+### 11.11.1.dt
 
-#### 11.10.1.1day
+#### 11.11.1.1day
 
 提取时间中的日期信息.|`pandas.core.series.Series`
 
@@ -3108,7 +3140,7 @@ sr = pd.to_datetime(sr)
 day = sr.dt.day
 ```
 
-#### 11.10.1.2.dayofweek
+#### 11.11.1.2.dayofweek
 
 提取时间中的周几信息.|`pandas.core.series.Series`
 
@@ -3120,7 +3152,7 @@ sr = pd.to_datetime(sr)
 dayofweek = sr.dt.dayofweek
 ```
 
-#### 11.10.1.3.hour
+#### 11.11.1.3.hour
 
 提取时间中的小时信息.|`pandas.core.series.Series`
 
@@ -3132,7 +3164,7 @@ sr = pd.to_datetime(sr)
 hour = sr.dt.hour
 ```
 
-#### 11.10.1.4.month
+#### 11.11.1.4.month
 
 提取时间中的月份信息.|`pandas.core.series.Series`
 
@@ -3144,7 +3176,7 @@ sr = pd.to_datetime(sr)
 month = sr.dt.month
 ```
 
-#### 11.10.1.5.weekday
+#### 11.11.1.5.weekday
 
 提取时间中的周几信息.|`pandas.core.series.Series`
 
@@ -3156,7 +3188,7 @@ sr = pd.to_datetime(sr)
 weekday = sr.dt.weekday
 ```
 
-### 11.10.2.isin()
+### 11.11.2.isin()
 
 逐元素判断Series是否包含指定值.|`pandas.core.series.Series`
 
@@ -3167,7 +3199,7 @@ sr = pd.Series([0, 1, 2])
 sr_isin = sr.isin(values=[2])  # set or list-like|指定值. 
 ```
 
-### 11.10.3.mode()
+### 11.11.3.mode()
 
 返回数据集的众数.|`pandas.core.series.Series`
 
@@ -3178,7 +3210,7 @@ sr = pd.Series([0, 1, 2, 2])
 value = sr.mode()
 ```
 
-### 11.10.4.plot()
+### 11.11.4.plot()
 
 绘制图像.
 
@@ -3190,7 +3222,7 @@ sr = pd.Series([0, 1, 2])
 sr.plot()
 ```
 
-### 11.10.5.sort_index()
+### 11.11.5.sort_index()
 
 通过索引值为Series排序.|`pandas.core.series.Series`
 
@@ -3201,7 +3233,7 @@ sr = pd.Series([0, 1, 2], index=[3, 2, 1])
 sr = sr.sort_index()
 ```
 
-### 11.10.6.tolist()
+### 11.11.6.tolist()
 
 返回值列表.|`list`
 
@@ -3212,7 +3244,7 @@ sr = pd.Series([0, 1, 2], index=[3, 2, 1])
 value = sr.tolist()
 ```
 
-## 11.11.to_datetime()
+## 11.12.to_datetime()
 
 将数据转换为日期类型.|`pandas.core.series.Series`
 
@@ -3223,7 +3255,7 @@ sr = pd.Series(['2016/05/20', '2021/05/20'])
 sr = pd.to_datetime(arg=sr)  # int, float, str, datetime, list, tuple, 1-d array, Series, DataFrame/dict-like|输入数据.
 ```
 
-## 11.12.unique()
+## 11.13.unique()
 
 返回唯一值组成的数组.|`numpy.ndarray`
 
@@ -3234,7 +3266,7 @@ sr = pd.Series([0, 1, 1, 1, 2])
 arr = pd.unique(values=sr)  # 1d array-like|输入的数据.
 ```
 
-## 11.13.value_count()
+## 11.14.value_count()
 
 计算非空值出现的次数.|`pandas.core.series.Series`
 
@@ -4985,7 +5017,31 @@ gs.best_params_
 gs.best_score_
 ```
 
-### 19.6.4.LeaveOneOut()
+### 19.6.4.KFold()
+
+实例化K折交叉验证器.
+
+```python
+from sklearn.model_selection import KFold
+
+kfold = KFold(n_splits=5,  # int|5|交叉验证的划分数.
+              shuffle=False,  # bool|False|是否打乱数据.
+              random_state=None)  # int, RandomState instance or None|None|随机状态.
+```
+
+#### 19.6.4.1.split()
+
+划分数据.|`yield`
+
+```python
+from sklearn.model_selection import KFold
+
+kfold = KFold(n_splits=5, shuffle=False, random_state=None)
+train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_features)|特征数据.
+                                  y=None)  # array-like of shape (n_samples,)|标签.
+```
+
+### 19.6.5.LeaveOneOut()
 
 实例化留一法交叉验证器.
 
@@ -4995,7 +5051,7 @@ from sklearn.model_selection import LeaveOneOut
 loo = LeaveOneOut()
 ```
 
-#### 19.6.4.1.split()
+#### 19.6.5.1.split()
 
 划分数据.|`yield`
 
@@ -5007,7 +5063,7 @@ train_set, test_set = loo.split(X,  # array-like of shape (n_samples, n_features
                                 y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 19.6.5.StratifiedKFold()
+### 19.6.6.StratifiedKFold()
 
 实例化分层K折交叉验证器.
 
@@ -5019,7 +5075,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
                         random_state=None)  # int, RandomState instance or None|None|随机状态.
 ```
 
-#### 19.6.5.1.n_splits
+#### 19.6.6.1.n_splits
 
 交叉验证的划分数.|`int`
 
@@ -5027,7 +5083,7 @@ kfold = StratifiedKFold(n_splits=5,  # int|5|交叉验证的划分数.
 kfold.n_splits
 ```
 
-#### 19.6.5.2.split()
+#### 19.6.6.2.split()
 
 划分数据.|`yield`
 
@@ -5041,7 +5097,7 @@ train_set, test_set = kfold.split(X,  # array-like of shape (n_samples, n_featur
                                   y=None)  # array-like of shape (n_samples,)|标签.
 ```
 
-### 19.6.6.train_test_split()
+### 19.6.7.train_test_split()
 
 将数据集拆分成训练和测试集.|`list`
 
