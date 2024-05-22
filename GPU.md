@@ -8,7 +8,7 @@
 
 | 版本 |           描述           | 注意 |
 | :--: | :----------------------: | :--: |
-| 11.2 | 用于构建GPU加速应用程序. |  -   |
+| 12.2 | 用于构建GPU加速应用程序. |  -   |
 
 ## 1.1.第一个例子
 
@@ -190,7 +190,7 @@ int main() {
 
     errorWrapper(cudaMallocManaged(&a, size)); // 有返回值的函数使用errorWrapper()处理.
 
-    InitVector<<<10, -1>>>(a, 10); // // 没有返回值的函数使用errorVoid()处理.
+    InitVector<<<10, -1>>>(a, 10); // 没有返回值的函数使用errorVoid()处理.
     errorVoid();
     errorWrapper(cudaDeviceSynchronize());
 
@@ -483,6 +483,42 @@ int main() {
 
     cudaFree(a);
     cudaFreeHost(host_a);
+
+    return 0;
+}
+```
+
+## 1.8.使用`atomicAdd`避免数据竞争.
+
+```c++
+#include <iostream>
+
+#define N 100
+
+// 在GPU上求和.
+__global__ void SumOnGPU(int *sum, const int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    int local_sum = 0;
+    for (int i = index; i < n; i += stride) {
+        local_sum += i + 1;
+    }
+
+    atomicAdd(sum, local_sum); // 使用atomicAdd避免竞争条件.
+}
+
+int main() {
+    int *sum;
+
+    cudaMallocManaged(&sum, sizeof(int));
+
+    SumOnGPU<<<N, 1>>>(sum, N);
+    cudaDeviceSynchronize();
+
+    std::cout << *sum << std::endl;
+
+    cudaFree(sum);
 
     return 0;
 }
