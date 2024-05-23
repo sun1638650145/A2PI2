@@ -488,7 +488,7 @@ int main() {
 }
 ```
 
-## 1.8.使用`atomicAdd`避免数据竞争.
+## 1.8.使用`atomicAdd`避免数据竞争
 
 ```c++
 #include <iostream>
@@ -519,6 +519,31 @@ int main() {
     std::cout << *sum << std::endl;
 
     cudaFree(sum);
+
+    return 0;
+}
+```
+
+## 1.9.使用`__device__`函数
+
+```c++
+#include <cstdio>
+
+// 声明的__device__函数只能在GPU上被调用.
+__device__ const char* GetString() {
+    return "Hello, World\n";
+}
+
+__global__ void PrintString() {
+    // 核函数只能调用__device__函数.
+    const char *string = GetString();
+
+    printf("%s", string);
+}
+
+int main() {
+    PrintString<<<1, 1>>>();
+    cudaDeviceSynchronize();
 
     return 0;
 }
