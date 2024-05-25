@@ -707,9 +707,54 @@ int main() {
 }
 ```
 
-# 3.CUDA命令
+# 3.Thrust
 
-## 3.1.nsight-sys
+## 3.1.inclusive_scan()
+
+并行化前缀和.
+
+```c++
+#include <iostream>
+
+#include "thrust/scan.h"
+
+#define N 100
+
+// 初始化向量.
+__global__ void InitializationVector(int *vector, const int n) {
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = gridDim.x * blockDim.x;
+
+    for (int i = index; i < n; i += stride) {
+        vector[i] = i + 1;
+    }
+}
+
+int main() {
+    int *vector;
+    size_t size = N * sizeof(int);
+
+    // 分配UM内存并进行初始化向量.
+    cudaMallocManaged(&vector, size);
+    InitializationVector<<<N, 1>>>(vector, N);
+    cudaDeviceSynchronize();
+
+    // 计算向量的前缀和.
+    thrust::inclusive_scan(vector, vector + N, vector);
+
+    // 输出最后一个元素的值.
+    std::cout << vector[N - 1] << std::endl;
+
+    // 释放UM内存.
+    cudaFree(vector);
+
+    return 0;
+}
+```
+
+# 4.CUDA命令
+
+## 4.1.nsight-sys
 
 在Linux上启动`Nsight Systems`工具.
 
@@ -717,7 +762,7 @@ int main() {
 nsight-sys
 ```
 
-## 3.2.nsys
+## 4.2.nsys
 
 用于分析CUDA程序.
 
@@ -729,7 +774,7 @@ nsys profile --force-overwrite=true --stats=true -o report.qdrep ./out
 * `--stats` 是否将摘要信息输出到终端.
 * `-o` 指定`qdrep`报告文件名.
 
-## 3.3.nvcc
+## 4.3.nvcc
 
 基本与`gcc`的使用方式相同, 用于编译CUDA C/C++源代码.
 
@@ -741,7 +786,7 @@ nvcc -arch=sm_70 -lcublas -o out main.cu -run
 * `-l` 添加库的位置.
 * `-run` 编译成功后直接执行二进制文件.
 
-## 3.4.nvidia-smi
+## 4.4.nvidia-smi
 
 `nvidia-smi`(Systems Management Interface)用于查询加速系统内的GPU信息.
 
@@ -749,13 +794,13 @@ nvcc -arch=sm_70 -lcublas -o out main.cu -run
 nvidia-smi
 ```
 
-# 4.Metal
+# 5.Metal
 
 | 版本 |               描述               |                             注意                             |
 | :--: | :------------------------------: | :----------------------------------------------------------: |
 | 2.4  | 渲染3D图形, 使用GPU进行并行计算. | 此文档使用[Metal-cpp](https://developer.apple.com/cn/metal/cpp/), 而非常见的`Objective-C`. |
 
-## 4.1.查询设备信息
+## 5.1.查询设备信息
 
 1. main.cpp代码
 
@@ -805,7 +850,7 @@ nvidia-smi
                               ${APPLE_FWK_QUARTZ_CORE})  # 让系统提供默认Metal设备对象, 链接到Core Graphics框架(命令行也需要显式声明).
    ```
 
-## 4.2.实现在GPU上简单的向量加法
+## 5.2.实现在GPU上简单的向量加法
 
 1. main.cpp代码
 
