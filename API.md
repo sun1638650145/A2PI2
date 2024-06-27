@@ -2773,7 +2773,19 @@ df = pd.DataFrame(data=df_map,  # ndarray (structured or homogeneous), Iterable,
                   columns=None)  # Index or array-like|None(0, 1, 2, ..., n)|列名.
 ```
 
-### 11.2.1.columns
+### 11.2.1.aggregate()
+
+在指定轴上进行一(多)个聚合操作.|`pandas.core.series.Series`
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2], 'values': [0.1, 0.5, 1.0]}
+df = pd.DataFrame(df_map)
+sum_sr = df.aggregate(func='sum')  # function, str, list or dict|用于聚合数据的函数.
+```
+
+### 11.2.2.columns
 
 DataFrame的列标签.|`pandas.core.indexes.base.Index`
 
@@ -2786,7 +2798,21 @@ df = pd.DataFrame(df_map)
 print(df.columns)
 ```
 
-### 11.2.2.convert_dtypes()
+#### 11.2.2.1.difference()
+
+返回不在`other`中的元素的索引.|`pandas.core.indexes.base.Index`
+
+```python
+import pandas as pd
+
+df1 = pd.DataFrame({'B': [2, 2], 'C': [3, 3], 'E': [5, 5], 'A': [1, 1]})
+df2 = pd.DataFrame({'B': [1, 2], 'C': [3, 4]})
+
+diff = df1.columns.difference(other=df2.columns,  # Index or array-like|被查找的索引.
+                              sort=False)  # bool|True|是否进行排序.
+```
+
+### 11.2.3.convert_dtypes()
 
 将数据自动转换成最佳数据类型.|`pandas.core.frame.DataFrame`
 
@@ -2798,7 +2824,7 @@ df = pd.DataFrame(df_map)
 df = df.convert_dtypes()
 ```
 
-### 11.2.3.corr()
+### 11.2.4.corr()
 
 计算列成对相关度.|`pandas.core.frame.DataFrame`
 
@@ -2810,7 +2836,7 @@ df = pd.DataFrame(df_map)
 correlation_value = df.corr()
 ```
 
-### 11.2.4.drop()
+### 11.2.5.drop()
 
 根据指定的标签删除行或者列.|`pandas.core.frame.DataFrame`
 
@@ -2823,7 +2849,7 @@ new_df = df.drop(labels=1,  # single label or list-like|None|要删除的行或�
              		 axis=0)  # {0/'index', 1/'columns'}|0|所沿的维度.
 ```
 
-### 11.2.5.drop_duplicates()
+### 11.2.6.drop_duplicates()
 
 返回删除重复行的DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -2837,7 +2863,7 @@ new_df = df.drop_duplicates(subset=None,  # column label or sequence of labels(�
                         		inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.6.fillna()
+### 11.2.7.fillna()
 
 填充缺失值.|`pandas.core.frame.DataFrame`
 
@@ -2850,7 +2876,7 @@ new_df = df.fillna(value=10,  # scalar, dict, Series, or DataFrame|填充缺失�
                		 inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.7.head()
+### 11.2.8.head()
 
 返回前n行数据.|`pandas.core.frame.DataFrame`
 
@@ -2862,7 +2888,7 @@ df = pd.DataFrame(df_map)
 head_value = df.head(n=1)  # int|5|行数.
 ```
 
-### 11.2.8.iloc[]
+### 11.2.9.iloc[]
 
 按照行号取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2874,7 +2900,7 @@ df = pd.DataFrame(df_map)
 new_df = df.iloc[0:2]
 ```
 
-### 11.2.9.index
+### 11.2.10.index
 
 DataFrame的索引.|`pandas.core.indexes.range.RangeIndex`
 
@@ -2885,7 +2911,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
 df.index
 ```
 
-### 11.2.10.info()
+### 11.2.11.info()
 
 在终端打印摘要信息.
 
@@ -2897,7 +2923,20 @@ df = pd.DataFrame(df_map)
 df.info()
 ```
 
-### 11.2.11.loc[]
+### 11.2.12.join()
+
+将另一个DataFrame进行连接.|`pandas.core.frame.DataFrame`
+
+```python
+import pandas as pd
+
+df1 = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})
+df2 = pd.DataFrame({'C': [5, 6]})
+
+df = df1.join(other=df2)  # DataFrame or Series|被连接的DataFrame.
+```
+
+### 11.2.13.loc[]
 
 按照行名称取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2909,7 +2948,7 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 11.2.12.map()
+### 11.2.14.map()
 
 根据输入的对应关系映射Series.|`pandas.core.series.Series`
 
@@ -2921,7 +2960,7 @@ map_dict = {'a': 3, 'b': 2, 'c': 1}
 sr = df['key'].map(map_dict)
 ```
 
-### 11.2.13.median()
+### 11.2.15.median()
 
 获取DataFrame的中位数.|`pandas.core.series.Series`
 
@@ -2933,7 +2972,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 11.2.14.replace()
+### 11.2.16.replace()
 
 替换DataFrame中的值.|`pandas.core.frame.DataFrame`
 
@@ -2946,7 +2985,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.15.reset_index()
+### 11.2.17.reset_index()
 
 重置DataFrame中的索引.|`pandas.core.frame.DataFrame`
 
@@ -2958,7 +2997,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 11.2.16.sample()
+### 11.2.18.sample()
 
 返回随机采样的DataFrame样本.|`pandas.core.frame.DataFrame`
 
@@ -2970,7 +3009,7 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 11.2.17.select_dtypes()
+### 11.2.19.select_dtypes()
 
 返回指定元素类型的列组成的新DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -2981,7 +3020,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
 df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
 ```
 
-### 11.2.18.sum()
+### 11.2.20.sum()
 
 沿指定轴对DataFrame求和.|`pandas.core.series.Series`
 
@@ -2992,7 +3031,7 @@ df = pd.DataFrame({'col1': [0, 1, 2], 'col2': [0.1, 0.5, 1.0]})
 sum_value = df.sum(axis=1)  # int|0|沿指定维度求和.
 ```
 
-### 11.2.19.to_csv()
+### 11.2.21.to_csv()
 
 写入csv文件.
 
@@ -3007,7 +3046,7 @@ df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件�
           encoding=None)  # str(可选)|'utf-8'|编码方式.
 ```
 
-### 11.2.20.values
+### 11.2.22.values
 
 返回DataFrame的值数据.|`numpy.ndarray`
 
@@ -3077,7 +3116,7 @@ df = pd.merge(left=df0,  # DataFrame|要合并的DataFrame.
               how='inner',  # {'left', 'right', 'outer', 'inner'}|'inner'|合并的方式.
               left_on='values',  # label or list, or array-like|None|左侧参考项.
               right_on='values',  # label or list, or array-like|None|右侧参考项.
-              sort=True)  # bool|False|是否进行排序.
+              sort=True)  # bool|False|true
 ```
 
 ## 11.8.notnull()
@@ -5601,6 +5640,6 @@ model = XGBRegressor(max_depth=None,  # int|None|基学习器的最大深度.
                      n_jobs=None,  # int|None|并行运行数量.
                      subsample=None,  # float|None|随机采样率.
                      colsample_bytree=None,  # float|None|每棵树的属性随机采样率.
-                     random_state=None)  # int|None|随机状态.
+                     random_state=None,  # int|None|随机状态.
+                     gamma=None)  # float|None|叶节点进一步产生分支所需的最小损失.
 ```
-
