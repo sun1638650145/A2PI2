@@ -14,9 +14,11 @@
 
 * <b>TensorFlow.md</b> TensorFlow 生态的中文API
 
-* <b>GPU.md</b> GPU编程的中文API
+* <b>GPU.md</b> GPU 编程的中文API
 
 * <b>PyTorch.md</b> PyTorch 生态的中文API
+
+* <b>LLM.md</b> 大语言模型开发的中文API
 
 * 由于作者本人错误的之前上传一堆打包的pdf文件导致项目很大
 
