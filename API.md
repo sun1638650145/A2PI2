@@ -2758,9 +2758,9 @@ x = np.zeros(shape=[2, 3],  # int or sequence of ints|数组的形状.
 
 # 12.pandas
 
-| 版本  | 描述                  | 注意 | 适配M1 |
-| ----- | --------------------- | ---- | ------ |
-| 2.3.0 | 结构化数据分析软件库. | -    | 是     |
+| 版本  | 描述                                                  | 注意 | 适配Apple silicon |
+| ----- | ----------------------------------------------------- | ---- | ----------------- |
+| 3.0.5 | 为数据分析, 时间序列分析和统计计算提供强大的数据结构. | -    | 是                |
 
 ## 12.1.concat()
 
@@ -2879,7 +2879,20 @@ new_df = df.drop_duplicates(subset=None,  # column label or sequence of labels(�
                         		inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 12.2.7.fillna()
+### 12.2.7.dropna()
+
+删除缺失值.|`pandas.DataFrame`
+
+```python
+import pandas as pd
+
+df_map = {'key': [0, 1, 2, 3], 'values': [0.1, 0.5, None, 1.0]}
+df = pd.DataFrame(df_map)
+new_df = df.dropna(axis=0,     # {0, 1}|0|确定删除包含缺失值的行还是列.
+                   how='any')  # {'any', 'all'}|'any'|确定删除方式是至少一个缺失值还是所有值都缺失.
+```
+
+### 12.2.8.fillna()
 
 填充缺失值.|`pandas.core.frame.DataFrame`
 
@@ -2892,7 +2905,7 @@ new_df = df.fillna(value=10,  # scalar, dict, Series, or DataFrame|填充缺失�
                		 inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 12.2.8.head()
+### 12.2.9.head()
 
 返回前n行数据.|`pandas.core.frame.DataFrame`
 
@@ -2904,7 +2917,7 @@ df = pd.DataFrame(df_map)
 head_value = df.head(n=1)  # int|5|行数.
 ```
 
-### 12.2.9.iloc[]
+### 12.2.10.iloc[]
 
 按照行号取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2916,7 +2929,7 @@ df = pd.DataFrame(df_map)
 new_df = df.iloc[0:2]
 ```
 
-### 12.2.10.index
+### 12.2.11.index
 
 DataFrame的索引.|`pandas.core.indexes.range.RangeIndex`
 
@@ -2927,7 +2940,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c'], 'values': [1, 2, 3]})
 df.index
 ```
 
-### 12.2.11.info()
+### 12.2.12.info()
 
 在终端打印摘要信息.
 
@@ -2939,7 +2952,7 @@ df = pd.DataFrame(df_map)
 df.info()
 ```
 
-### 12.2.12.join()
+### 12.2.13.join()
 
 将另一个DataFrame进行连接.|`pandas.core.frame.DataFrame`
 
@@ -2952,7 +2965,7 @@ df2 = pd.DataFrame({'C': [5, 6]})
 df = df1.join(other=df2)  # DataFrame or Series|被连接的DataFrame.
 ```
 
-### 12.2.13.loc[]
+### 12.2.14.loc[]
 
 按照行名称取出数据.|`pandas.core.frame.DataFrame`
 
@@ -2964,7 +2977,7 @@ df = pd.DataFrame(df_map, index=df_map['key'])
 new_df = df.loc['a':'b']
 ```
 
-### 12.2.14.map()
+### 12.2.15.map()
 
 根据输入的对应关系映射Series.|`pandas.core.series.Series`
 
@@ -2976,7 +2989,7 @@ map_dict = {'a': 3, 'b': 2, 'c': 1}
 sr = df['key'].map(map_dict)
 ```
 
-### 12.2.15.median()
+### 12.2.16.median()
 
 获取DataFrame的中位数.|`pandas.core.series.Series`
 
@@ -2988,7 +3001,7 @@ df = pd.DataFrame(df_map)
 median_value = df.median()
 ```
 
-### 12.2.16.replace()
+### 12.2.17.replace()
 
 替换DataFrame中的值.|`pandas.core.frame.DataFrame`
 
@@ -3001,7 +3014,7 @@ new_df = df.replace(to_replace=2,  # str, regex, list, dict, Series, int, float,
                     inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 12.2.17.reset_index()
+### 12.2.18.reset_index()
 
 重置DataFrame中的索引.|`pandas.core.frame.DataFrame`
 
@@ -3013,7 +3026,7 @@ new_df = df.reset_index(drop=True,  # bool|False|是否丢弃原来的索引.
                         inplace=False)  # bool|False|是否修改源DataFrame.
 ```
 
-### 12.2.18.sample()
+### 12.2.19.sample()
 
 返回随机采样的DataFrame样本.|`pandas.core.frame.DataFrame`
 
@@ -3025,7 +3038,7 @@ new_df = df.sample(n=None,  # int(可选)|None|采样数.
                    frac=0.75)  # float(可选)|None|采样的比例.
 ```
 
-### 12.2.19.select_dtypes()
+### 12.2.20.select_dtypes()
 
 返回指定元素类型的列组成的新DataFrame.|`pandas.core.frame.DataFrame`
 
@@ -3036,7 +3049,7 @@ df = pd.DataFrame({'key': ['a', 'b', 'c', 'd'], 'values': [1, 2, 3, 4]})
 df = df.select_dtypes(include='int')  # scalar or list-like|None|指定的数据类型.
 ```
 
-### 12.2.20.sum()
+### 12.2.21.sum()
 
 沿指定轴对DataFrame求和.|`pandas.core.series.Series`
 
@@ -3047,7 +3060,7 @@ df = pd.DataFrame({'col1': [0, 1, 2], 'col2': [0.1, 0.5, 1.0]})
 sum_value = df.sum(axis=1)  # int|0|沿指定维度求和.
 ```
 
-### 12.2.21.to_csv()
+### 12.2.22.to_csv()
 
 写入csv文件.
 
@@ -3062,7 +3075,19 @@ df.to_csv(path_or_buf='./table.csv',  # str or file handle|None|写入的文件�
           encoding=None)  # str(可选)|'utf-8'|编码方式.
 ```
 
-### 12.2.22.values
+### 12.2.23.to_excel()
+
+写入一个Excel工作表.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'key': [0, 1, 2], 'value': [0.1, 0.5, 1.0]})
+df.to_excel(excel_writer='./table.xlsx',  # path-like, file-like, or ExcelWriter object|None|写入的文件路径.
+            index=True)                  # bool|True|行名.
+```
+
+### 12.2.24.values
 
 返回DataFrame的值数据.|`numpy.ndarray`
 
